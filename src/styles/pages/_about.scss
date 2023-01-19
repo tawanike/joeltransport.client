@@ -1,0 +1,60 @@
+@import "../utils/mixins";
+
+.About {
+    position: relative;
+
+    &__our-story {
+        position: relative;
+        padding: 64px 0px;
+
+        &--image {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+    }
+
+    &__leadership {
+        & > h2 {
+            text-align: center;
+        }
+
+        & > p {
+            text-align: center;
+        }
+
+        &--bio {
+            display: flex;
+            flex-direction: row;
+        }
+
+        &--image {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            background-color: var(--color-black-300);
+            margin-right: 128px
+        }
+
+        &--about {
+            width: 700px;
+            height: auto;
+            margin-bottom: 64px;
+        }
+
+    }
+
+    &__team {
+        &--image {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        &--text {
+            width: 1240px;
+            margin-top: 32px;
+            margin-bottom: 64px;
+        }
+    }
+}

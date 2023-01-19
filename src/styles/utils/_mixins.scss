@@ -1,0 +1,5 @@
+@mixin centeredContainer($width, $height, $marginTop, $marginBottom) {
+  width: $width;
+  height: $height;
+  margin: $marginTop auto $marginBottom;
+}
