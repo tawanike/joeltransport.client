@@ -1,10 +1,15 @@
 html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 10rem;
+    scroll-behavior: smooth;
+    scroll-padding-top: 10rem;
 }
 
 body {
-  font-family: var(--font-family);
-  font-size: var(--font-size);
-  font-weight: var(font-weight-regular);
+    font-family: var(--font-family);
+    font-size: var(--font-size);
+    font-weight: var(font-weight-regular);
+    padding: 0;
+}
+
+.container {
+    max-width: 1500px;
 }

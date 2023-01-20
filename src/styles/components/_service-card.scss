@@ -1,38 +1,46 @@
 .ServiceCard {
-  display: flex;
-  flex-direction: column;
-  padding: 32px;
-  gap: 10px;
-  width: 400px;
-  height: 300px;
-  background-color: #f9f9f9;
-  border-radius: 16px;
-
-  &__header {
     display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
-
-  &__icon {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 64px;
-    height: 64px;
-    border-radius: 8px;
-    margin-right: 28px;
-  }
-
-  &__content {
-    padding: 0px;
-    padding: 8px 0px 8px 0px;
-    line-height: 24px;
-    font-size: 18px;
-    font-weight: var(--font-weight-light);
-  }
-
-  & > button {
-    width: 50%;
-  }
+    flex-direction: column;
+    padding: 32px;
+    height: 300px;
+    background-color: #f9f9f9;
+    border-radius: 16px;
+    &__header {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+    &__icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 64px;
+        height: 64px;
+        border-radius: 8px;
+        margin-right: 28px;
+        color: white;
+        font-size: 32px;
+        &--orange {
+            background-color: #da3832;
+        }
+        &--blue {
+            background-color: #191632;
+        }
+        &--light-blue {
+            background-color: #3157aa;
+        }
+        &--brown {
+            background-color: #583E5B;
+        }
+    }
+    &__content {
+        padding: 0px;
+        padding: 8px 0px 8px 0px;
+        line-height: 24px;
+        font-size: 18px;
+        font-weight: var(--font-weight-light);
+    }
+    &>button {
+        width: 50%;
+    }
 }
