@@ -1,26 +1,30 @@
 import React from 'react';
-import Image from 'next/image';
+import { Button } from 'react-bootstrap';
 import Navigation from './Navigation';
 
-function Header() {
-  return (
-    <div className="container-fluid p-0">
-      <div className='container'>
-        <div className="Header__topNav row">
-          <div className="Header__logo w-50">
-            <Image src="/img/logo.png" alt="Logo" width={96} height={52} />
-          </div>
-          <div className="Header__account w-50 d-flex justify-content-end">
-            <span className="pt-3">Are you an agent?</span>
-            <span className="Header__divider pt-3">|</span>
-            <button className="btn btn-secondary">Login</button>
-            <button className="btn btn-primary">Sign up</button>
-          </div>
+const Header = () => {
+    return (
+        <div className="container-fluid">
+            <div className="row">
+                <div className="container">
+                    <div className="Header__topNav row">
+                        <div className="col-8">
+                            <div className="Header__logo">
+                                <img src="/img/logo.png" alt="Logo" />
+                            </div>
+                        </div>
+                        <div className="Header__account col-4 d-flex justify-content-end align-items-center">
+                            <span className='agent'>Are you an agent?</span>
+                            <span className="Header__divider mx-3">|</span>
+                            <Button variant="outline-primary">Login</Button>
+                            <Button variant="primary ms-3">Sign up</Button>
+                        </div>
+                    </div>
+                </div>
+                <Navigation />
+            </div>
         </div>
-      </div>
-      <Navigation />
-    </div>
-  )
+    )
 }
 
 export default Header
