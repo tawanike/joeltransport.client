@@ -33,7 +33,7 @@ export const productConfig: ProductConfig[] = [
         title: 'Pet relocation',
         description: 'We provide domestic and international Pet Moving Services using our trusted pet removal teams working to the local and international regulations on the movement of pets.',
         image: 'pet.png',
-        route: 'pet-relocation'
+        route: 'specialized-services'
     },
 
     {
@@ -41,21 +41,21 @@ export const productConfig: ProductConfig[] = [
         title: 'Fine art relocation',
         description: 'We move Fine Art pieces domestically and internationally in safely packaged and secure packaging and/or crating to prevent damage. This service is backed up by our insurance service option.',
         image: 'art.png',
-        route: 'fine-art-relocation'
+        route: 'specialized-services'
     },
     {
         id: 6,
         title: 'Vehicle transportation',
         description: 'We provide domestic and international Vehicle Moving services, for vehicles that can move using their own power. Moving of non-runner vehicles is significantly more costly, with limited-service options.',
         image: 'vehicle.png',
-        route: 'vehicle-transportation'
+        route: 'specialized-services'
     },
     {
         id: 7,
         title: 'Dangerous goods',
         description: 'Our Dangerous Goods moving service uses highly trained specialist teams. Dangerous goods we move include Paints, Chemicals, Flammable Gases, Flammable Liquids and Solids or Corrosives.',
         image: 'danger.png',
-        route: 'dangerous-goods'
+        route: 'specialized-services'
     }
 ]
 

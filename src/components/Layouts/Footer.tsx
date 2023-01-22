@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 function Footer() {
     return (
-        <div className="Footer container-fluid">
+        <div className="Footer container-fluid mt-5">
 
             <div className="container">
                 <div className="row">
