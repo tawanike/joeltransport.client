@@ -1,11 +1,30 @@
-import Link from 'next/link';
 import { useRouter } from 'next/router'
-import { Breadcrumb, Button } from 'react-bootstrap';
+import { Breadcrumb } from 'react-bootstrap';
+import HomeMoversView from '../../components/Resources/homeMoversView.component';
+import OfficeRemovalsComponent from '../../components/Resources/OfficeRemovalsView.component';
+import StorageComponent from '../../components/Resources/StorageView.component';
+import SpecialisedServicesComponent from '../../components/Resources/SpecialisedServices.component';
 import { CoverImage } from '../../components/ui';
 
 const Resources = () => {
     const router = useRouter();
     const { slug } = router.query
+
+    const loadView = (slug: string) => {
+        switch (slug) {
+            case "home-moves":
+                return <HomeMoversView />;
+            case "office-removals":
+                return <OfficeRemovalsComponent />;
+            case "storage":
+                return <StorageComponent />;
+            case "specialized-services":
+                return <SpecialisedServicesComponent />;
+            default:
+                break;
+        }
+    }
+
     return (
         <div className="resources container-fluid">
             <CoverImage
@@ -26,12 +45,10 @@ const Resources = () => {
                                 <Breadcrumb.Item active>{slug}</Breadcrumb.Item>
                             </Breadcrumb>
                         </div>
-                        <div className="resources__products-summary col-12">
-                            <div className="row">
-                            </div>
-                        </div>
+
                     </div>
                 </div>
+                {loadView(slug as string)}
             </div>
         </div>
     )
