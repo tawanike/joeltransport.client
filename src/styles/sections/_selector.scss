@@ -1,32 +1,49 @@
+.selectorContainer {
+    margin-top: -80px;
+}
+
 .Selector {
-  background-color: transparent;
-  display: flex;
-  flex-direction: column;
-
-  &__options {
-    padding-left: 70px;
-  }
-
-  &__button {
-    margin-bottom: -8px;
-    margin-left: 4px;
-    border: 0;
-    background-color: #fefefe;
-    font-size: 16px;
-    font-weight: var(--font-weight-medium);
-    color: var(--color-primary);
-  }
-
-  &__instructions {
     display: flex;
-    justify-content: space-between;
-    background-color: var(--color-white);
-    border-radius: 8px;
-    padding: 32px 24px;
-    box-shadow: 0px 4px 20px -2px #6e80b4;
-
-    & > div > h4 {
-      margin-bottom: 16px;
+    overflow: hidden;
+    flex-direction: column;
+    &__options {
+        padding-left: 70px;
     }
-  }
+    &__button {
+        padding: 12px;
+        margin-bottom: -4px;
+        margin-left: 6px;
+        font-weight: var(--font-weight-medium);
+        z-index: 5;
+        &.btn-outline-primary {
+            background-color: #FEFFFF;
+            border: 0;
+            &:hover {
+                background-color: $primary;
+            }
+        }
+    }
+    &__instructions {
+        display: flex;
+        position: relative;
+        justify-content: space-between;
+        background-color: var(--color-white);
+        border-radius: 8px;
+        padding: 50px 24px;
+        box-shadow: 0px 6px 20px -10px #6e80b4;
+        &>div>h4 {
+            margin-bottom: 16px;
+        }
+        &__get-started {
+            display: grid;
+            place-items: center end;
+        }
+        &__text {
+            display: grid;
+            place-items: center start;
+            p {
+                margin-bottom: 0;
+            }
+        }
+    }
 }
