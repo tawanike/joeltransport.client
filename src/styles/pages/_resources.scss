@@ -208,4 +208,67 @@
             }
         }
     }
+    &__downloads {
+        ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        &__outline {
+            &__icon {
+                .icon-container {
+                    width: 1.6rem;
+                    height: 1.6rem;
+                    color: $alternate-blue;
+                    display: grid;
+                    place-items: center;
+                    font-weight: 500;
+                    border-radius: 3px;
+                    overflow: hidden;
+                }
+            }
+            &__head {
+                p {
+                    font-size: 0.8rem;
+                    font-weight: 600;
+                    margin: 0;
+                }
+            }
+            &__summary {
+                p {
+                    font-size: 0.8rem;
+                    font-weight: 400;
+                    margin: 0;
+                }
+            }
+            &__button {
+                .btn-link {
+                    padding-left: 0;
+                    color: $secondary;
+                }
+            }
+        }
+    }
+    &__article {
+        &__social {
+            font-size: 1.5rem;
+        }
+        &__head {
+            font-size: 1rem;
+            font-weight: 700;
+        }
+        &__body {
+            width: 60%;
+            &__list {
+                ul {
+                    padding: 0;
+                    margin: 0;
+                    list-style: none;
+                    li {
+                        font-size: 0.8rem;
+                    }
+                }
+            }
+        }
+    }
 }
