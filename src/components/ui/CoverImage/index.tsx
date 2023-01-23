@@ -1,22 +1,26 @@
 import Image from "next/image";
+import { FC } from "react";
 
-type CoverImageProps = {
+interface IProps {
     size: "small" | "medium" | "large";
     src: string;
+    pageTitle: string;
+    description: string;
 }
 
-function CoverImage({ size, src }: CoverImageProps) {
-    // TODO: Determine size of image
+const CoverImage: FC<IProps> = ({ size, src, pageTitle, description }) => {
 
-  return (
-    <div className="CoverImage" style={{ paddingTop: 2}}>
-      <Image fill src={src} alt="" />
-      <div className="CoverImage__text">
-        <h1>About us</h1>
-        <p>Meet the experts in moving and storage</p>
-    </div>
-    </div>
-  )
+    return (
+        <div className="row mb-5">
+            <div className="CoverImage">
+                <Image fill src={src} alt="" />
+                <div className="CoverImage__text">
+                    <h1>{pageTitle}</h1>
+                    <p>{description}</p>
+                </div>
+            </div>
+        </div>
+    )
 }
 
 export default CoverImage
