@@ -1,0 +1,22 @@
+// Accodion
+.accordion {
+    border: none;
+}
+
+.accordion-button:not(.collapsed) {
+    color: black;
+    background-color: white;
+    box-shadow: none;
+    font-weight: 600;
+}
+
+//tabs
+.nav-tabs {
+    --bs-nav-tabs-link-active-border-color: transparent transparent #fa551e;
+    --bs-nav-tabs-link-hover-border-color: transparent transparent #fac3b0;
+}
+
+.nav-link {
+    padding-left: 0;
+    padding-right: 45px;
+}

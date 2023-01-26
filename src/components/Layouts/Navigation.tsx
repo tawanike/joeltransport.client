@@ -27,14 +27,17 @@ function Navigation() {
                             <Link href="/resources" passHref>
                                 <NavDropdown.Item href="/resources">Resources</NavDropdown.Item>
                             </Link>
+                            <Link href="/resources/careers" passHref>
+                                <NavDropdown.Item href="/resources/careers">Careers</NavDropdown.Item>
+                            </Link>
                         </NavDropdown>
                         <NavDropdown title="About us" id="navbarScrollingDropdown">
                             <Link href="/about" passHref>
                                 <NavDropdown.Item href="/about">About Us</NavDropdown.Item>
                             </Link>
                         </NavDropdown>
-                        <Link href="/contactus" passHref>
-                            <Nav.Link href="/contactus">Contact us</Nav.Link>
+                        <Link href="/contact-us" passHref>
+                            <Nav.Link href="/contact-us">Contact us</Nav.Link>
                         </Link>
                     </Nav>
                 </Navbar.Collapse>
