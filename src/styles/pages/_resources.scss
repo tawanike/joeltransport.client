@@ -271,4 +271,61 @@
             }
         }
     }
+    &__modal {
+        &__icon {
+            display: grid;
+            place-items: center;
+            color: $success;
+            font-size: 4rem;
+            &.danger {
+                color: $danger;
+            }
+        }
+        &__head {
+            display: grid;
+            place-items: center;
+            h3 {
+                margin-bottom: 0;
+            }
+        }
+        &__text {
+            display: grid;
+            place-items: center;
+            text-align: center;
+            p {
+                margin-bottom: 0;
+            }
+        }
+        &__button {
+            display: grid;
+            place-items: center;
+        }
+    }
+    &__careerEntry {
+        border: 1px solid #E9E9E9;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);
+        border-radius: 8px;
+        &__fulltime {
+            display: grid;
+            place-items: center start;
+            p {
+                margin-bottom: 0;
+            }
+            .clock {
+                font-size: 1.3rem;
+                margin-right: 5px;
+            }
+        }
+        &__apply {
+            display: grid;
+            place-items: center end;
+            .btn-link {
+                color: $secondary;
+            }
+        }
+    }
+    &__emptyCareers {
+        border: 1px solid #C7C6CA;
+        border-radius: 16px;
+    }
 }

@@ -1,56 +1,47 @@
 @import "../utils/mixins";
-
 .About {
-    position: relative;
-
     &__our-story {
-        position: relative;
         padding: 64px 0px;
-
         &--image {
-            position: relative;
             overflow: hidden;
             border-radius: 12px;
         }
     }
-
     &__leadership {
-        & > h2 {
+        &__head {
+            display: grid;
+            place-items: center;
+        }
+        &>h2 {
             text-align: center;
         }
-
-        & > p {
+        &>p {
             text-align: center;
         }
-
         &--bio {
             display: flex;
             flex-direction: row;
         }
-
         &--image {
-            position: relative;
-            width: 300px;
-            height: 200px;
-            background-color: var(--color-black-300);
-            margin-right: 128px
+            background-color: #FFFFFF;
+            border: 2.0665px solid #FFFFFF;
+            box-shadow: 0px 100px 80px rgba(0, 0, 0, 0.02), 0px 64.8148px 46.8519px rgba(0, 0, 0, 0.0151852), 0px 38.5185px 25.4815px rgba(0, 0, 0, 0.0121481), 0px 20px 13px rgba(0, 0, 0, 0.01), 0px 8.14815px 6.51852px rgba(0, 0, 0, 0.00785185), 0px 1.85185px 3.14815px rgba(0, 0, 0, 0.00481481);
+            border-radius: 8px;
+            img {
+                width: 100%;
+                height: auto;
+                border-radius: 8px;
+            }
         }
-
         &--about {
-            width: 700px;
-            height: auto;
             margin-bottom: 64px;
         }
-
     }
-
     &__team {
         &--image {
-            position: relative;
             border-radius: 12px;
             overflow: hidden;
         }
-
         &--text {
             width: 1240px;
             margin-top: 32px;
