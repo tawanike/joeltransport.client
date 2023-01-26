@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { Button } from "react-bootstrap";
 import { RightImageSectionConfig } from "../../_configurations/rightsection.config";
+import CallMeBackButton from "../shared/callMeBackButton.component";
 
 const LeftImageSection: FC<RightImageSectionConfig> = ({ title, description, image, secondaryButton, primaryButton }) => {
     return <>
@@ -20,8 +21,7 @@ const LeftImageSection: FC<RightImageSectionConfig> = ({ title, description, ima
                             </div>
                             <div className="resources__product-description__summary__information-button py-3">
                                 {
-                                    secondaryButton &&
-                                    <Button variant="outline-secondary" className='me-3'>{secondaryButton.title}</Button>
+                                    secondaryButton && <CallMeBackButton title={secondaryButton.title} />
                                 }
 
                                 {
