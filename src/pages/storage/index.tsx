@@ -1,23 +1,20 @@
-import Image from 'next/image';
 import { CoverImage } from '../../components/ui';
 
-export default function Resources() {
+const Storage = () => {
     return (
-        <div className="container-fluid">
+        <div className="Resources container-fluid">
             <CoverImage
                 size="medium"
                 src="/img/kaleb.png"
-                pageTitle='Documents'
+                pageTitle='Services'
                 description='Meet the experts in moving and storage'
             />
 
             <div className="Resources__documents">
-                <h2>Resourceful documents</h2>
-            </div>
-
-            <div className="Resources__documents">
-                <h2>Here are some related articles</h2>
+                <h2>Storage Page</h2>
             </div>
         </div>
     )
 }
+
+export default Storage;
