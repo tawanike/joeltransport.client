@@ -8,8 +8,10 @@ import RightImageSection from "./rightImageSection.component";
 import uuid from "react-uuid";
 import { BsCheck2 } from "react-icons/bs";
 import { Button } from "react-bootstrap";
+import { useRouter } from 'next/router';
 
 const StorageComponent = () => {
+    const router = useRouter();
     const details = [
         "Wooden crates​",
         "Size 1000 m2"
@@ -60,8 +62,8 @@ const StorageComponent = () => {
                                         </p>
                                     </div>
                                     <div className="resources__product-description__summary__information-button py-3">
-                                        <Button variant="outline-secondary" className='me-3'>Call me back</Button>
-                                        <Button variant="secondary" className='me-3'>Get a quote</Button>
+                                        <Button variant="outline-secondary" className='me-3' onClick={() => router.push('/contact-us')}>Call me back</Button>
+                                        <Button variant="secondary" className='me-3' onClick={() => router.push('/storage')}>Get a quote</Button>
                                     </div>
                                 </div>
                             </div>

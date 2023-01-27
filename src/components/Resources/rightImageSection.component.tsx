@@ -2,8 +2,10 @@ import { FC } from "react";
 import { Button } from "react-bootstrap";
 import { RightImageSectionConfig } from "../../_configurations/rightsection.config";
 import CallMeBackButton from "../shared/callMeBackButton.component";
+import { useRouter } from 'next/router';
 
 const RightImageSection: FC<RightImageSectionConfig> = ({ title, description, image, secondaryButton, primaryButton }) => {
+    const router = useRouter();
     return <>
         <div className="resources__documents container mt-5">
             <div className="row">
@@ -23,7 +25,7 @@ const RightImageSection: FC<RightImageSectionConfig> = ({ title, description, im
 
                                 {
                                     primaryButton &&
-                                    <Button variant="secondary">{primaryButton.title}</Button>
+                                    <Button variant="secondary" onClick={() => router.push('/move-services')}>{primaryButton.title}</Button>
                                 }
                             </div>
                         </div>

@@ -7,6 +7,7 @@ import { homeMoversConfig } from "../../_configurations/benefits.config";
 import { pageSections } from "../../_configurations/resourcesPageSections.config";
 import BlueSection from "./blueSection.component";
 import { RightImageSectionConfig } from "../../_configurations/rightsection.config";
+import CallMeBackButton from "../shared/callMeBackButton.component";
 
 const HomeMoversView = () => {
     return <>
@@ -85,7 +86,7 @@ const HomeMoversView = () => {
                                 </p>
                             </div>
                             <div className="resources__product-description__summary__information-button py-3">
-                                <Button variant="outline-secondary" className='me-3'>Call me back</Button>
+                                <CallMeBackButton title="Call me back"/>
                             </div>
                         </div>
 
