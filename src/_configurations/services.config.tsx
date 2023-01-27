@@ -18,7 +18,7 @@ export const servicesConfig: ServiceConfig[] = [
         id: '1',
         title: 'Domestic move',
         description: 'Planning to relocate your home around Gauteng? Schedule your move online.',
-        link: '/move-services',
+        link: '/services/home-moves',
         image: '',
         bgColor: 'light-blue',
         icon: <BiHomeSmile />
@@ -27,7 +27,7 @@ export const servicesConfig: ServiceConfig[] = [
         id: '2',
         title: 'Long distance move',
         description: 'Get in-touch with one of expects to help you plan your international move.',
-        link: '/move-services',
+        link: '/services/home-moves',
         image: '',
         bgColor: 'orange',
         icon: <FaLocationArrow />
@@ -36,7 +36,7 @@ export const servicesConfig: ServiceConfig[] = [
         id: '3',
         title: 'International move',
         description: 'Get in-touch with one of expects to help you with your move',
-        link: '/move-services',
+        link: '/services/home-moves',
         image: '',
         bgColor: 'brown',
         icon: <FaPlaneDeparture />
@@ -45,7 +45,7 @@ export const servicesConfig: ServiceConfig[] = [
         id: '4',
         title: 'Office relocation',
         description: 'Get in-touch with one of expects to help you plan your international move.',
-        link: '/move-services',
+        link: '/services/office-removals',
         image: '',
         bgColor: 'orange',
         icon: <MdOutlineEmojiTransportation />
@@ -54,7 +54,7 @@ export const servicesConfig: ServiceConfig[] = [
         id: '5',
         title: 'Specialized services',
         description: 'Planning to relocate your piano, art, pet? get in touch with one of our expects to help you with your move or relocation. ',
-        link: '/move-services',
+        link: '/services/specialized-services',
         image: '',
         bgColor: 'light-blue',
         icon: <FaLaptopHouse />
@@ -63,7 +63,7 @@ export const servicesConfig: ServiceConfig[] = [
         id: '6',
         title: 'Storage services',
         description: 'Looking for a shot-term or long term storage? book and schedule your storage online.',
-        link: '/storage',
+        link: '/services/storage',
         image: '',
         bgColor: 'orange',
         icon: <FaWarehouse />

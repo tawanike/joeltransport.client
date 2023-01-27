@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { SelectorConfig, selectorConfig } from '../../_configurations/selectors.config';
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/router';
 
 const Selector = () => {
     const router = useRouter();
