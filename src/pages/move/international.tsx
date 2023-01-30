@@ -1,6 +1,6 @@
 import { CoverImage } from '../../components/ui';
 
-const MoveServices = () => {
+const InternationalMoveServices = () => {
     return (
         <div className="Resources container-fluid">
             <CoverImage
@@ -11,10 +11,10 @@ const MoveServices = () => {
             />
 
             <div className="Resources__documents">
-                <h2>Move Services Page</h2>
+                <h2>International Move Services Page</h2>
             </div>
         </div>
     )
 }
 
-export default MoveServices;
+export default InternationalMoveServices;
