@@ -13,6 +13,7 @@ const phoneRegExp = /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?
 const ContactUs = () => {
     const { post } = useAPI();
     const [show, setShow] = useState(false);
+    const [validated, setValidated] = useState(false);
 
     const validationSchema = yup.object().shape({
         first_name: yup.string()
@@ -112,7 +113,7 @@ const ContactUs = () => {
                             validationSchema={validationSchema}
                             >
                                 {(props: FormikProps<any>) => (
-                                    <Form encType="multipart/form-data">
+                                    <BSForm noValidate validated={validated}  encType="multipart/form-data" onSubmit={props.handleSubmit}>
                                         <Row className="mb-5">
                                             <BSForm.Group as={Col} md="6" controlId="first_name">
                                                 <ErrorMessage name="first_name" />
@@ -137,7 +138,7 @@ const ContactUs = () => {
                                         </Row>
                                         <Row className="mb-5">
                                             <BSForm.Group as={Col} md="12" controlId="email">
-                                            <ErrorMessage name="email" />
+                                                <ErrorMessage name="email" className='text-success' />
                                                 <Field
                                                     type="email"
                                                     placeholder="Email*"
@@ -246,7 +247,7 @@ const ContactUs = () => {
                                             <Uploader onChange={(files) => props.setFieldValue("attachment", files[0])}/>
                                         </Row>
                                         <Button variant="secondary" className='p-3 col-12' type="submit">Send</Button>
-                                    </Form>
+                                    </BSForm>
                                 )}
                             </Formik>
                         </div>
