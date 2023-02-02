@@ -1,3 +1,5 @@
+import 'react-phone-number-input/style.css'
+
 import '../styles/styles.scss';
 
 import { Open_Sans } from '@next/font/google';
