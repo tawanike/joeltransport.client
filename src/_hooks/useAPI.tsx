@@ -3,6 +3,8 @@ import UserAuthStateContext from "../_contexts/userAuth.context";
 import { LOGOUT, RequestOptions } from "../_models/types";
 
 const useAPI = () => {
+    const API_URL = 'http://localhost:8000/v1';
+    console.log('API_URL', API_URL);
     const { UserAuthState, dispatchUserAuth } = useContext(UserAuthStateContext);
 
     const request = (method: string) => {
@@ -15,7 +17,7 @@ const useAPI = () => {
                 requestOptions.headers['Content-Type'] = 'application/json';
                 requestOptions.body = JSON.stringify(body);
             }
-            return fetch(url, requestOptions).then(handleResponse);
+            return fetch(API_URL + url, requestOptions).then(handleResponse);
         }
     }
 
