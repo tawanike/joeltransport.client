@@ -18,7 +18,7 @@ export const servicesConfig: ServiceConfig[] = [
         id: '1',
         title: 'Domestic move',
         description: 'Planning to relocate your home around Gauteng? Schedule your move online.',
-        link: '/services/home-moves',
+        link: '/move/domestic',
         image: '',
         bgColor: 'light-blue',
         icon: <BiHomeSmile />
@@ -27,7 +27,7 @@ export const servicesConfig: ServiceConfig[] = [
         id: '2',
         title: 'Long distance move',
         description: 'Get in-touch with one of expects to help you plan your international move.',
-        link: '/services/home-moves',
+        link: '/move/international',
         image: '',
         bgColor: 'orange',
         icon: <FaLocationArrow />
@@ -36,7 +36,7 @@ export const servicesConfig: ServiceConfig[] = [
         id: '3',
         title: 'International move',
         description: 'Get in-touch with one of expects to help you with your move',
-        link: '/services/home-moves',
+        link: '/move/international',
         image: '',
         bgColor: 'brown',
         icon: <FaPlaneDeparture />

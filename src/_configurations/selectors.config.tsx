@@ -10,7 +10,7 @@ export const selectorConfig: SelectorConfig[] = [
     {
         id: 1,
         title: "Domestic",
-        route: "/move-services",
+        route: "/move/domestic",
         heading: "Looking for moving services? Get an instant quote.",
         description: "Are you in Gauteng planning to move homes, get free quote online."
     },

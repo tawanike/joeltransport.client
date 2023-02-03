@@ -1,0 +1,52 @@
+.move-cost-card {
+    background-color: #F4F6F8;
+    padding: 2rem;
+    p {
+        margin-bottom: 0;
+        font-weight: 500;
+    }
+    &__section {
+        margin-top: 1rem;
+        &__head {
+            p {
+                font-size: 0.8rem;
+            }
+        }
+        &__details {
+            &__title {
+                p {
+                    font-size: 0.8rem;
+                }
+                &--cost {
+                    display: grid;
+                    place-items: center end;
+                }
+            }
+        }
+        &--total {
+            border-top: 1px solid #D9D9D9;
+            padding-top: 1rem;
+            ul {
+                list-style: none;
+                padding: 0;
+            }
+        }
+        &--payable {
+            background-color: $alternate-blue;
+            margin-top: 0;
+            padding: 1.5rem 2rem;
+            border-radius: 0 0 0.6rem 0.6rem;
+            ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+                p {
+                    margin-bottom: 0;
+                    color: #ffffff;
+                    font-size: 0.8rem;
+                    font-weight: 600;
+                }
+            }
+        }
+    }
+}
