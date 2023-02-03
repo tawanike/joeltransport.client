@@ -14,7 +14,7 @@ const CoverImage: FC<IProps> = ({ size, src, pageTitle, description }) => {
         <div className="row mb-5">
             <div className="CoverImage">
                 <Image fill src={src} alt="" />
-                <div className="CoverImage__text">
+                <div className="CoverImage__text container">
                     <h1>{pageTitle}</h1>
                     <p>{description}</p>
                 </div>
