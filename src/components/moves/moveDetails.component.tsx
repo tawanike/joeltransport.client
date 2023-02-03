@@ -1,11 +1,29 @@
+import { useState, useEffect } from 'react';
 import { Formik } from 'formik';
-import { Button, Col, InputGroup, Row } from 'react-bootstrap';
+import Select from 'react-select';
+import { Button, Col, Row } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import * as yup from 'yup';
-
-
+import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
+import useNumberInput from "../../_hooks/useNumberInput";
 
 const MoveDetails = () => {
+    const [isSetFrom, setFrom] = useState(false);
+    const [isSetTo, setTo] = useState(false);
+    const [bookingId, setBookingId] = useState<string>();
+    const { ValueDisplay: BubbleWrapDisplay, Value: BubbleWrapValue } = useNumberInput();
+
+    useEffect(() => {
+        (async () => {
+            console.log('isSetFrom', isSetFrom);
+            console.log('isSetTo', isSetTo);
+
+            if (isSetFrom && isSetTo) {
+
+            }
+        })()
+    },[isSetFrom, isSetTo])
+
     const schema = yup.object().shape({
         from: yup.string().required(),
         to: yup.string().required(),
@@ -20,10 +38,13 @@ const MoveDetails = () => {
             initialValues={{
                 from: '',
                 to: '',
-                property_type: '',
-                date: '',
-                residency_type: '',
-                move_time: ''
+                move_type: '',
+                move_date: '',
+                move_time_period: '',
+                from_residence_type: '',
+                to_residence_type: '',
+                from_floors_count: 0,
+                from_bedrooms_count: 1
             }}
         >
             {({
@@ -34,99 +55,88 @@ const MoveDetails = () => {
                 touched,
                 isValid,
                 errors,
+                setFieldValue
             }) => (
                 <Form noValidate onSubmit={handleSubmit}>
                     <Row className="mb-5">
                         <Form.Group as={Col} md="6" controlId="from">
                             <Form.Label>From</Form.Label>
-                            <Form.Control
-                                as="select"
-                                name="from"
-                                value={values.from}
-                                onChange={handleChange}
-                                isValid={touched.from && !errors.from}
-                            >
-                                <option>Select your city</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
-                            </Form.Control>
+                                <GooglePlacesAutocomplete
+                                    apiKey="AIzaSyC_GzK_Vl1Z4sC0-SjAlJd8lzhodDk1coE"
+                                    minLengthAutocomplete={5}
+                                    selectProps={{
+                                        value: values.from,
+                                        onChange: (location: any) => {setFieldValue('from', location); setFrom(true)}
+                                      }}
+                                    />
                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group as={Col} md="6" controlId="to">
                             <Form.Label>To</Form.Label>
-                            <Form.Control
-                                as="select"
-                                name="to"
-                                value={values.to}
-                                onChange={handleChange}
-                                isValid={touched.to && !errors.to}
-                            >
-                                <option>Select your city</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
-                            </Form.Control>
+                                <GooglePlacesAutocomplete
+                                    apiKey="AIzaSyC_GzK_Vl1Z4sC0-SjAlJd8lzhodDk1coE"
+                                    minLengthAutocomplete={5}
+                                    selectProps={{
+                                        value: values.to,
+                                        onChange: (location: any) => {setFieldValue('to', location); setTo(true)}
+                                    }}
+                                />
                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                         </Form.Group>
                     </Row>
                     <Row className="mb-5">
                         <Form.Group as={Col} md="6" controlId="property_type">
                             <Form.Label>Property type</Form.Label>
-                            <Form.Control
-                                as="select"
-                                name="property_type"
-                                value={values.property_type}
-                                onChange={handleChange}
-                                isValid={touched.property_type && !errors.property_type}
-                            >
-                                <option>Select property</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
-                            </Form.Control>
+                            <Select name="property_type" onChange={handleChange} options={[]} className=''  />
                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                         </Form.Group>
-                        <Form.Group as={Col} md="6" controlId="date">
-                            <Form.Label>Date</Form.Label>
-                            <Form.Control
-                                type="date"
-                                name="date"
-                                value={values.date}
-                                placeholder="Choose date"
-                                onChange={handleChange}
-                                isValid={touched.date && !errors.date}
-                            />
+                        <Form.Group as={Col} md="6" controlId="residency_type">
+                            <Form.Label>Residency type</Form.Label>
+                            <Select name="residency_type" onChange={handleChange} options={[]} className=''  />
                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                        </Form.Group>
+
+                    </Row>
+                    <Row className="mb-5">
+                        <Form.Group as={Col} md="6" controlId="date">
+                            <Form.Label>From floors count</Form.Label>
+                            {BubbleWrapDisplay}
+                        </Form.Group>
+                        <Form.Group as={Col} md="6" controlId="date">
+                            <Form.Label>To floors count</Form.Label>
+                            {BubbleWrapDisplay}
                         </Form.Group>
                     </Row>
                     <Row className="mb-5">
-                        <Form.Group as={Col} md="6" controlId="residency_type">
-                            <Form.Label>Residency type</Form.Label>
+                        <Form.Group as={Col} md="6" controlId="date">
+                            <Form.Label>From bedrooms count</Form.Label>
+                            {BubbleWrapDisplay}
+                        </Form.Group>
+                    </Row>
+                    <Row className="mb-5">
+                        <Form.Group as={Col} md="6" controlId="move_date">
+                            <Form.Label>Date</Form.Label>
                             <Form.Control
-                                as="select"
-                                name="residency_type"
-                                value={values.residency_type}
+                                type="date"
+                                name="move_date"
+                                value={values.move_date}
+                                placeholder="Choose date"
                                 onChange={handleChange}
-                                isValid={touched.residency_type && !errors.residency_type}
-                            >
-                                <option>Select residency</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
-                            </Form.Control>
+                                isValid={touched.move_date && !errors.move_date}
+                            />
                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                         </Form.Group>
+
                         <Form.Group as={Col} md="6" className="">
                             <Form.Label>What time would you like to move?</Form.Label>
                             <Form.Check
                                 type="radio"
                                 required
-                                name="move_time"
+                                name="move_time_period"
                                 label="Morning between (6am to 12pm)"
                                 onChange={handleChange}
-                                isInvalid={!!errors.move_time}
-                                feedback={errors.move_time}
+                                isInvalid={!!errors.move_time_period}
+                                feedback={errors.move_time_period}
                                 feedbackType="invalid"
                                 id="morning"
                                 feedbackTooltip
@@ -134,17 +144,16 @@ const MoveDetails = () => {
                             <Form.Check
                                 type="radio"
                                 required
-                                name="move_time"
+                                name="move_time_period"
                                 label="Afternoon between (12pm to 4pm)"
                                 onChange={handleChange}
-                                isInvalid={!!errors.move_time}
-                                feedback={errors.move_time}
+                                isInvalid={!!errors.move_time_period}
+                                feedback={errors.move_time_period}
                                 feedbackType="invalid"
                                 id="afternoon"
                                 feedbackTooltip
                             />
                         </Form.Group>
-
                     </Row>
                     <Button type="submit">Submit form</Button>
                 </Form>
