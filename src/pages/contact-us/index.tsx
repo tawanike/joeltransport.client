@@ -102,7 +102,7 @@ const ContactUs = () => {
                                     }
                                 }
 
-                                const results: any = await fetch('http://localhost:8000/v1/contacts', {
+                                const results: any = await fetch('http://jtapidev-env.eba-j3ac2nik.eu-west-1.elasticbeanstalk.com/v1/contacts', {
                                     method: 'POST',
                                     body: formData
                                 });

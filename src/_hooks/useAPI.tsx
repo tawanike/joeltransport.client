@@ -3,7 +3,7 @@ import UserAuthStateContext from "../_contexts/userAuth.context";
 import { LOGOUT, RequestOptions } from "../_models/types";
 
 const useAPI = () => {
-    const API_URL = 'http://localhost:8000/v1';
+    const API_URL = 'http://jtapidev-env.eba-j3ac2nik.eu-west-1.elasticbeanstalk.com/v1';
     console.log('API_URL', API_URL);
     const { UserAuthState, dispatchUserAuth } = useContext(UserAuthStateContext);
 
