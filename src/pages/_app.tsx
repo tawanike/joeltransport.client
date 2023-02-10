@@ -6,6 +6,7 @@ import { Open_Sans } from '@next/font/google';
 import type { AppProps } from 'next/app';
 import { Layout } from '../components/Layouts';
 import { initialUserAuthState, UserAuthReducer, UserAuthStateProvider } from '../_contexts/userAuth.context';
+import { initialMoveState, MoveReducer, MoveStateProvider } from '../_contexts/move.context';
 import { useReducer } from 'react';
 
 const OpenSans = Open_Sans({
@@ -15,12 +16,15 @@ const OpenSans = Open_Sans({
 
 export default function App({ Component, pageProps }: AppProps) {
     const [UserAuthState, dispatchUserAuth] = useReducer(UserAuthReducer, initialUserAuthState);
+    const [MoveState, dispatchMove] = useReducer(MoveReducer, initialMoveState);
 
     return <UserAuthStateProvider value={{ UserAuthState, dispatchUserAuth }}>
-        <main className={`${OpenSans.className} container-fluid`}>
-            <Layout>
-                <Component {...pageProps} />
-            </Layout>
-        </main>
+        <MoveStateProvider value={{ MoveState, dispatchMove }}>
+            <main className={`${OpenSans.className} container-fluid`}>
+                <Layout>
+                    <Component {...pageProps} />
+                </Layout>
+            </main>
+        </MoveStateProvider>
     </UserAuthStateProvider>
 }

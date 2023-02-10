@@ -3,8 +3,7 @@ import UserAuthStateContext from "../_contexts/userAuth.context";
 import { LOGOUT, RequestOptions } from "../_models/types";
 
 const useAPI = () => {
-    const API_URL = 'http://jtapidev-env.eba-j3ac2nik.eu-west-1.elasticbeanstalk.com/v1';
-    console.log('API_URL', API_URL);
+    const API_URL = process.env.NEXT_PUBLIC_API_URL;
     const { UserAuthState, dispatchUserAuth } = useContext(UserAuthStateContext);
 
     const request = (method: string) => {
@@ -24,7 +23,7 @@ const useAPI = () => {
     const authHeader = (url: string) => {
         const token = authToken();
         const isLoggedIn = !!token;
-        const isApiUrl = url.startsWith(process.env.REACT_APP_API_URL as string);
+        const isApiUrl = url.startsWith(process.env.NEXT_PUBLIC_API_URL as string);
         if (isLoggedIn && isApiUrl) {
             return { Authorization: `Bearer ${token}` };
         } else {

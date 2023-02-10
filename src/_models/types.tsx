@@ -1,6 +1,7 @@
 //Authorization
 export const LOGIN = "LOGIN";
 export const LOGOUT = "LOGOUT";
+export const ADJUST_ADDITIONAL_SERVICES = "ADJUST_ADDITIONAL_SERVICES";
 
 export enum UserRoles {
     Global = "global",
@@ -30,6 +31,21 @@ export type RequestDetails = {
     token?: string
 }
 
+export type CostSummary = {
+    bubbleWrap: {
+        quantity: number,
+        price: number
+    } | null;
+    largeBox: {
+        quantity: number,
+        price: number
+    } | null;
+    mediumBox: {
+        quantity: number,
+        price: number
+    } | null;
+}
+
 export type FetchWrapper = {
     get: (url: string, body?: any) => Promise<any>;
     post: (url: string, body: any) => Promise<any>;
@@ -40,3 +56,16 @@ export type FetchWrapper = {
 export type LoginDetails = { username: string, password: string };
 
 export interface IAction { type: string, payload?: any }
+
+export interface IProduct {
+    id: string,
+    title: string,
+    description: string,
+    image: string | null,
+    category: number,
+    ordering: number,
+    published: boolean,
+    size: string,
+    unit: string,
+    price: number
+}

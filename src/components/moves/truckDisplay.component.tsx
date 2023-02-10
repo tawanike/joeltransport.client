@@ -13,7 +13,7 @@ const TruckDisplay: FC<IProps> = ({ truckDetails }) => {
                 <BsTruck />
             </div>
             <div className="col-12 truckDisplay__body">
-                {truckDetails.description.map(desc => <>
+                {truckDetails?.description.map(desc => <>
                     <div className="col-12 mb-3">
                         <div className="row">
                             <div className="col-6 truckDisplay__body__item truckDisplay__body__item--left ps-4">

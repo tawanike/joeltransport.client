@@ -1,12 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Carousel } from "react-bootstrap";
 import { RxCaretLeft, RxCaretRight } from "react-icons/rx";
 import { truckDetailsConfig } from "../../_configurations/truckDetails.config";
+
 import TruckDisplay from "./truckDisplay.component";
+
 
 const ChooseTruck = () => {
     const [index, setIndex] = useState(0);
-
     const handleSelect = (selectedIndex: number, e: any) => {
         setIndex(selectedIndex);
     };

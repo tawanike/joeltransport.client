@@ -1,10 +1,54 @@
+import { FC, useContext, useEffect } from "react";
 import { Form, Table } from "react-bootstrap";
+import MoveStateContext from "../../_contexts/move.context";
 import useNumberInput from "../../_hooks/useNumberInput";
+import { ADJUST_ADDITIONAL_SERVICES, IProduct } from "../../_models/types";
 
-const AddedServices = () => {
+interface IProps {
+    products: IProduct[];
+}
+const AddedServices: FC<IProps> = ({ products }) => {
     const { ValueDisplay: BubbleWrapDisplay, Value: BubbleWrapValue } = useNumberInput();
     const { ValueDisplay: LargeBoxesDisplay, Value: LargeBoxesValue } = useNumberInput();
     const { ValueDisplay: MediumBoxesDisplay, Value: MediumBoxesValue } = useNumberInput();
+    const { MoveState, dispatchMove } = useContext(MoveStateContext)
+    console.log("added service", products);
+    useEffect(() => {
+        dispatchMove({
+            type: ADJUST_ADDITIONAL_SERVICES,
+            payload: {
+                bubbleWrap: {
+                    quantity: BubbleWrapValue,
+                    price: products.find(product => product.title === "Bubble Wrap")?.price
+                }
+            }
+        })
+    }, [BubbleWrapValue])
+
+    useEffect(() => {
+        dispatchMove({
+            type: ADJUST_ADDITIONAL_SERVICES,
+            payload: {
+                largeBox: {
+                    quantity: LargeBoxesValue,
+                    price: products.find(product => product.title === "Box (Small)")?.price
+                }
+            }
+        })
+    }, [LargeBoxesValue])
+
+    useEffect(() => {
+        dispatchMove({
+            type: ADJUST_ADDITIONAL_SERVICES,
+            payload: {
+                mediumBox: {
+                    quantity: MediumBoxesValue,
+                    price: products.find(product => product.title === "Box (Medium)")?.price
+                }
+            }
+        })
+    }, [MediumBoxesValue])
+
     return <>
         <Table borderless>
             <thead className="moves__step__body__table-head">
