@@ -11,6 +11,7 @@ const MoveCostCard = () => {
     }, [CostSummaryState])
 
     const getSubTotal = () => {
+        console.log(Object.keys(CostSummaryState))
         return (Object.keys(CostSummaryState) as Array<keyof CostSummary>)
             .map((expense) => {
                 if (CostSummaryState && CostSummaryState[expense]) {
@@ -43,7 +44,7 @@ const MoveCostCard = () => {
                                             <BsInfoCircle />
                                         </div>
                                         <div className="col-5 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
-                                            <p>R0.00</p>
+                                            <p>R{CostSummaryState.truck ? CostSummaryState.truck.price : '0.00'}</p>
                                         </div>
                                     </div>
                                 </li>
@@ -56,7 +57,7 @@ const MoveCostCard = () => {
                                             <BsInfoCircle />
                                         </div>
                                         <div className="col-5 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
-                                            <p>R0.00</p>
+                                            <p>R{CostSummaryState.truck && CostSummaryState.truck.offPeakDiscount ? CostSummaryState.truck.offPeakDiscount : '0.00'}</p>
                                         </div>
                                     </div>
                                 </li>
@@ -80,20 +81,7 @@ const MoveCostCard = () => {
                                             <BsInfoCircle />
                                         </div>
                                         <div className="col-5 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
-                                            <p>R0.00</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div className="row">
-                                        <div className="col-6 move-cost-card__section__details__title">
-                                            <p>Move insurance</p>
-                                        </div>
-                                        <div className="col-1 move-cost-card__section__details__title">
-                                            <BsInfoCircle />
-                                        </div>
-                                        <div className="col-5 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
-                                            <p>R0.00</p>
+                                            <p>R{CostSummaryState.bakkieShuttle ? CostSummaryState.bakkieShuttle.price * CostSummaryState.bakkieShuttle.quantity : '0.00'}</p>
                                         </div>
                                     </div>
                                 </li>
@@ -152,7 +140,6 @@ const MoveCostCard = () => {
                         </div>
                     </div>
                 </div>
-
                 <div className="col-12 move-cost-card__section move-cost-card__section--total mt-5">
                     <div className="row">
                         <div className="col-12 move-cost-card__section__details">
@@ -177,17 +164,13 @@ const MoveCostCard = () => {
                                         </div>
                                     </div>
                                 </li>
-
                             </ul>
                         </div>
                     </div>
                 </div>
-
-
             </div>
         </div>
         <div className="col-12 move-cost-card__section move-cost-card__section--payable">
-
             <div className="col-12 move-cost-card__section__details">
                 <ul>
                     <li className="">

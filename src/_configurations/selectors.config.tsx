@@ -17,7 +17,7 @@ export const selectorConfig: SelectorConfig[] = [
     {
         id: 2,
         title: "International",
-        route: "/contact-us",
+        route: "/move/international",
         heading: "Looking for long distance moving services?",
         description: "For long distance & international services, we’ll need to collect your info & one of our specialist will be in touch."
     },

@@ -6,6 +6,8 @@ import { Layout } from '../components/Layouts';
 import { initialUserAuthState, UserAuthReducer, UserAuthStateProvider } from '../_contexts/userAuth.context';
 import { initialCostSummaryState, CostSummaryReducer, CostSummaryStateProvider } from '../_contexts/costSummary.context';
 import { useReducer } from 'react';
+import { SSRProvider } from 'react-bootstrap';
+import BookingContextProvider from 'src/_contexts/booking.context';
 
 const OpenSans = Open_Sans({
     subsets: ['latin'],
@@ -16,13 +18,19 @@ export default function App({ Component, pageProps }: AppProps) {
     const [UserAuthState, dispatchUserAuth] = useReducer(UserAuthReducer, initialUserAuthState);
     const [CostSummaryState, dispatchCostSummary] = useReducer(CostSummaryReducer, initialCostSummaryState);
 
-    return <UserAuthStateProvider value={{ UserAuthState, dispatchUserAuth }}>
-        <CostSummaryStateProvider value={{ CostSummaryState, dispatchCostSummary }}>
-            <main className={`${OpenSans.className} container-fluid`}>
-                <Layout>
-                    <Component {...pageProps} />
-                </Layout>
-            </main>
-        </CostSummaryStateProvider>
-    </UserAuthStateProvider>
+    return (
+        <SSRProvider>
+            <UserAuthStateProvider value={{ UserAuthState, dispatchUserAuth }}>
+                <BookingContextProvider>
+                    <CostSummaryStateProvider value={{ CostSummaryState, dispatchCostSummary }}>
+                        <main className={`${OpenSans.className} container-fluid`}>
+                            <Layout>
+                                <Component {...pageProps} />
+                            </Layout>
+                        </main>
+                    </CostSummaryStateProvider>
+                </BookingContextProvider>
+            </UserAuthStateProvider>
+        </SSRProvider>
+    )
 }

@@ -1,6 +1,9 @@
 //Authorization
 export const LOGIN = "LOGIN";
 export const LOGOUT = "LOGOUT";
+export const GET_BOOKING = "GET_BOOKING";
+export const SELECT_TRUCK = "SELECT_TRUCK";
+export const ADD_BAKKIE_SHUTTLE = "ADD_BAKKIE_SHUTTLE";
 export const ADJUST_ADDITIONAL_SERVICES = "ADJUST_ADDITIONAL_SERVICES";
 
 export enum UserRoles {
@@ -46,6 +49,15 @@ export type CostSummary = {
         quantity: number,
         price: number
     } | null;
+    truck: {
+        quantity: number,
+        price: number,
+        offPeakDiscount: number
+    } | null;
+    bakkieShuttle: {
+        quantity: number,
+        price: number
+    } | null;
 }
 
 export type FetchWrapper = {
@@ -62,6 +74,8 @@ export interface IAction { type: string, payload?: any }
 export interface IProduct {
     id: string,
     title: string,
+    slug: string,
+    subtitle: string,
     description: string,
     image: string | null,
     category: number,
@@ -69,5 +83,14 @@ export interface IProduct {
     published: boolean,
     size: string,
     unit: string,
-    price: number
+    price: number;
+    weight: number | null;
+    load_capacity: number | null;
+    off_peak_discount: number;
+}
+
+
+export interface IBooking {
+    id: string,
+
 }
