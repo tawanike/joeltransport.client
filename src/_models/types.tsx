@@ -50,7 +50,7 @@ export type CostSummary = {
     truck: {
         quantity: number,
         price: number,
-        offPickDiscount: number
+        offPeakDiscount: number
     } | null;
     bakkieShuttle: {
         quantity: number,
