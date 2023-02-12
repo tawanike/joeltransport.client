@@ -1,6 +1,7 @@
 .truckDisplay {
     border: 1px solid #D9D9D9;
     border-radius: 8px;
+    flex-direction: row;
     &--active {
         border: 1px solid #002E69;
         border-radius: 8px;

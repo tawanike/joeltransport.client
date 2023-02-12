@@ -1,6 +1,27 @@
+import { useContext, useEffect } from "react";
 import { BsInfoCircle } from "react-icons/bs";
+import MoveStateContext from "../../_contexts/move.context";
+import { CostSummary } from "../../_models/types";
 
 const MoveCostCard = () => {
+    const { MoveState, dispatchMove } = useContext(MoveStateContext);
+
+    useEffect(() => {
+        console.log("Inside cost card", MoveState);
+    }, [MoveState])
+
+    const getSubTotal = () => {
+        console.log(Object.keys(MoveState))
+        return (Object.keys(MoveState) as Array<keyof CostSummary>)
+            .map((expense) => {
+                if (MoveState && MoveState[expense]) {
+                    return (MoveState[expense]?.quantity || 0) * (MoveState[expense]?.price || 0);
+                }
+                return 0
+            })
+            .reduce((sum, exp) => sum + exp, 0) ;
+    }
+
     return <>
         <div className="col-12 move-cost-card">
             <div className="row">
@@ -23,7 +44,7 @@ const MoveCostCard = () => {
                                             <BsInfoCircle />
                                         </div>
                                         <div className="col-5 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
-                                            <p>R0.00</p>
+                                            <p>R{ MoveState.truck ? MoveState.truck.price : '0.00' }</p>
                                         </div>
                                     </div>
                                 </li>
@@ -36,7 +57,7 @@ const MoveCostCard = () => {
                                             <BsInfoCircle />
                                         </div>
                                         <div className="col-5 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
-                                            <p>R0.00</p>
+                                            <p>R{ MoveState.truck && MoveState.truck.offPeakDiscount ? MoveState.truck.offPeakDiscount : '0.00'  }</p>
                                         </div>
                                     </div>
                                 </li>
@@ -60,20 +81,7 @@ const MoveCostCard = () => {
                                             <BsInfoCircle />
                                         </div>
                                         <div className="col-5 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
-                                            <p>R0.00</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div className="row">
-                                        <div className="col-6 move-cost-card__section__details__title">
-                                            <p>Move insurance</p>
-                                        </div>
-                                        <div className="col-1 move-cost-card__section__details__title">
-                                            <BsInfoCircle />
-                                        </div>
-                                        <div className="col-5 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
-                                            <p>R0.00</p>
+                                            <p>R{ MoveState.bakkieShuttle ? MoveState.bakkieShuttle.price * MoveState.bakkieShuttle.quantity : '0.00'  }</p>
                                         </div>
                                     </div>
                                 </li>
@@ -86,7 +94,11 @@ const MoveCostCard = () => {
                                             <BsInfoCircle />
                                         </div>
                                         <div className="col-5 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
-                                            <p>R0.00</p>
+                                            <p>R{
+                                                MoveState.bubbleWrap ?
+                                                    MoveState.bubbleWrap.price * MoveState.bubbleWrap.quantity :
+                                                    0.00
+                                            }</p>
                                         </div>
                                     </div>
                                 </li>
@@ -99,7 +111,11 @@ const MoveCostCard = () => {
 
                                         </div>
                                         <div className="col-5 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
-                                            <p>R0.00</p>
+                                            <p>R{
+                                                MoveState.largeBox ?
+                                                    MoveState.largeBox.price * MoveState.largeBox.quantity :
+                                                    0.00
+                                            }</p>
                                         </div>
                                     </div>
                                 </li>
@@ -112,7 +128,11 @@ const MoveCostCard = () => {
 
                                         </div>
                                         <div className="col-5 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
-                                            <p>R0.00</p>
+                                            <p>R{
+                                                MoveState.mediumBox ?
+                                                    MoveState.mediumBox.price * MoveState.mediumBox.quantity :
+                                                    0.00
+                                            }</p>
                                         </div>
                                     </div>
                                 </li>
@@ -131,7 +151,7 @@ const MoveCostCard = () => {
                                             <p>Sub total</p>
                                         </div>
                                         <div className="col-6 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
-                                            <p>R0.00</p>
+                                            <p>R{getSubTotal()}</p>
                                         </div>
                                     </div>
                                 </li>
@@ -141,7 +161,7 @@ const MoveCostCard = () => {
                                             <p>VAT (15%)</p>
                                         </div>
                                         <div className="col-6 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
-                                            <p>R0.00</p>
+                                            <p>R{getSubTotal() * .15}</p>
                                         </div>
                                     </div>
                                 </li>
@@ -164,7 +184,7 @@ const MoveCostCard = () => {
                                 <p>Total</p>
                             </div>
                             <div className="col-6 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
-                                <p>R0.00</p>
+                                <p>R{(getSubTotal() * .15) + getSubTotal()}</p>
                             </div>
                         </div>
                     </li>

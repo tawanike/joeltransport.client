@@ -1,11 +1,66 @@
+import { FC, useContext, useEffect } from "react";
 import { Form, Table } from "react-bootstrap";
 import Select from 'react-select';
+import { addBakkieShuttle } from "src/_actions/added-services.actions";
+import MoveStateContext from "../../_contexts/move.context";
 import useNumberInput from "../../_hooks/useNumberInput";
+import { ADJUST_ADDITIONAL_SERVICES, IProduct } from "../../_models/types";
 
-const AddedServices = () => {
+interface IProps {
+    products: IProduct[];
+}
+const AddedServices: FC<IProps> = ({ products }) => {
     const { ValueDisplay: BubbleWrapDisplay, Value: BubbleWrapValue } = useNumberInput();
     const { ValueDisplay: LargeBoxesDisplay, Value: LargeBoxesValue } = useNumberInput();
     const { ValueDisplay: MediumBoxesDisplay, Value: MediumBoxesValue } = useNumberInput();
+    const { MoveState, dispatchMove } = useContext(MoveStateContext)
+
+    useEffect(() => {
+        dispatchMove({
+            type: ADJUST_ADDITIONAL_SERVICES,
+            payload: {
+                bubbleWrap: {
+                    quantity: BubbleWrapValue,
+                    price: products.find(product => product.subtitle === "bubble-wrap")?.price
+                }
+            }
+        })
+    }, [BubbleWrapValue])
+
+    useEffect(() => {
+        dispatchMove({
+            type: ADJUST_ADDITIONAL_SERVICES,
+            payload: {
+                largeBox: {
+                    quantity: LargeBoxesValue,
+                    price: products.find(product => product.subtitle === "box-large")?.price
+                }
+            }
+        })
+    }, [LargeBoxesValue])
+
+    useEffect(() => {
+        dispatchMove({
+            type: ADJUST_ADDITIONAL_SERVICES,
+            payload: {
+                mediumBox: {
+                    quantity: MediumBoxesValue,
+                    price: products.find(product => product.subtitle === "box-medium")?.price
+                }
+            }
+        })
+    }, [MediumBoxesValue]);
+
+
+    const selectBakkieShuttle = (selected: any) => {
+        const price = products.find(product => product.subtitle === "bakkie-shuttle")?.price || 0;
+        dispatchMove(addBakkieShuttle({
+                    quantity: selected.value === 2 ? 2 : 1,
+                    price: price
+                }));
+    }
+
+
     return <>
         <Table borderless>
             <thead className="moves__step__body__table-head">
@@ -18,12 +73,18 @@ const AddedServices = () => {
             <tbody>
                 <tr>
                     <td> <div className="col-12 center"> Bakkie Shuttle</div></td>
-                    <td className="border-elements"><div>
-                    <Select name="residency_type" onChange={() => true} options={[]} className=''  />
-                    </div></td>
+                    <td className="border-elements">
+                        <div>
+                            <Select name="residency_type" onChange={selectBakkieShuttle} options={[
+                                { value: 0, label: 'Loading Address' },
+                                { value: 1, label: 'Delivery Address' },
+                                { value: 2, label: 'Both Addresses' },
+                            ]} className=''  />
+                        </div>
+                    </td>
                     <td><div>N/A</div></td>
                 </tr>
-                <tr>
+                {<tr>
                     <td><div className="col-12 center">Bubble wrap</div></td>
                     <td className="border-elements">
                         <div> <Form.Check
@@ -35,7 +96,7 @@ const AddedServices = () => {
                         /></div>
                     </td>
                     <td><div className="col-12 center">{BubbleWrapDisplay}</div></td>
-                </tr>
+                </tr> }
                 <tr>
                     <td> <div className="col-12 center"> Boxes </div></td>
                     <td className="border-elements">

@@ -1,28 +1,71 @@
-import { useState, useEffect } from 'react';
 import { Formik } from 'formik';
-import Select from 'react-select';
-import { Button, Col, Row } from 'react-bootstrap';
+import { useContext, useEffect, useState } from 'react';
+import { Col, Row } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
-import * as yup from 'yup';
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
-import useNumberInput from "../../_hooks/useNumberInput";
+import Select from 'react-select';
+import { getBooking } from 'src/_actions/booking.actions';
+import { BookingContext } from 'src/_contexts/booking.context';
+import { useAPI, useNumberInput } from "src/_hooks";
 
-const MoveDetails = () => {
-    const [isSetFrom, setFrom] = useState(false);
+import * as yup from 'yup';
+
+
+const MoveDetails = ({ changeMoveDate }: any) => {
+    const api = useAPI();
+    const bookingContext = useContext(BookingContext);
     const [isSetTo, setTo] = useState(false);
+    const [isSetFrom, setFrom] = useState(false);
+    const [ isSetMoveDate, setsSetMoveDate] = useState(false);
+    const [ moveDate, setMoveDate] = useState();
+    const [ moveTime, setMoveTime] = useState(0);
+    const [isSetMoveTime, setIsSetMoveTime] = useState(false);
+
+
+    const [isSetPropertyType, setPropertyType] = useState(false);
+    const [propertyTypeValue, setPropertyTypeValue] = useState<string>();
+    const [residencyTypeValue, setResidencyTypeValue] = useState<string>();
+
+    const [isSetResidencyType, setResidencyType] = useState(false);
     const [bookingId, setBookingId] = useState<string>();
-    const { ValueDisplay: BubbleWrapDisplay, Value: BubbleWrapValue } = useNumberInput();
+    const { ValueDisplay: ToFloorsCountDisplay, Value: ToFloorsCountValue } = useNumberInput();
+    const { ValueDisplay: FromFloorsCountDisplay, Value: FromFloorsCountValue } = useNumberInput();
+    const { ValueDisplay: FromBedroomsCountDisplay, Value: FromBedroomsCountValue } = useNumberInput();
 
     useEffect(() => {
         (async () => {
-            console.log('isSetFrom', isSetFrom);
-            console.log('isSetTo', isSetTo);
+            changeMoveDate(moveDate);
+            // If property type is multi storey, floor count is required
+            if (isSetFrom && isSetTo && isSetMoveDate && FromBedroomsCountValue > 0 && isSetMoveTime &&
+                isSetPropertyType && isSetResidencyType) {
+                    const payload = {
+                        from: isSetFrom,
+                        to: isSetTo,
+                        move_type: 0,
+                        move_date: moveDate,
+                        move_time_period: moveTime,
 
-            if (isSetFrom && isSetTo) {
+                        property_type: propertyTypeValue,
+                        // to_property_type: toPropertyTypeValue,
 
+                        residence_type: residencyTypeValue,
+                        // to_residence_type: 'to_residence_type',
+
+
+                        from_bedrooms_count: FromBedroomsCountValue,
+                        to_floor_count: ToFloorsCountValue,
+
+                        from_floors_count: FromFloorsCountValue,
+                        // to_bedrooms_count: ToBedroomsCountValue,
+                    }
+
+                    api.post('/bookings', payload).then((response) => {
+                        bookingContext.dispatch(getBooking(response))
+                    });
             }
         })()
-    },[isSetFrom, isSetTo])
+    },[isSetFrom, isSetTo, isSetMoveDate, FromBedroomsCountValue, moveTime, isSetMoveTime, isSetPropertyType,
+        isSetResidencyType, ToFloorsCountValue, FromFloorsCountValue, propertyTypeValue, residencyTypeValue, moveDate]);
 
     const schema = yup.object().shape({
         from: yup.string().required(),
@@ -34,7 +77,9 @@ const MoveDetails = () => {
     return <div className="col-12 move__step__body">
         <Formik
             validationSchema={schema}
-            onSubmit={console.log}
+            onSubmit={(values, actions) => {
+                console.log(values);
+            }}
             initialValues={{
                 from: '',
                 to: '',
@@ -87,12 +132,29 @@ const MoveDetails = () => {
                     <Row className="mb-5">
                         <Form.Group as={Col} md="6" controlId="property_type">
                             <Form.Label>Property type</Form.Label>
-                            <Select name="property_type" onChange={handleChange} options={[]} className=''  />
+                            <Select name="property_type"
+                            onChange={(values: any) => {
+                                setFieldValue('property_type', values);
+                                setPropertyType(true)
+                            }}
+                            options={[
+                                { value: 0, label: 'Single Storey' },
+                                { value: 1, label: 'Multi Storey' }
+                            ]} className=''  />
                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group as={Col} md="6" controlId="residency_type">
                             <Form.Label>Residency type</Form.Label>
-                            <Select name="residency_type" onChange={handleChange} options={[]} className=''  />
+                            <Select name="residency_type"
+                            onChange={(values: any) => {
+                                setFieldValue('residency_type', values);
+                                setResidencyType(true)
+                            }}
+                            options={[
+                                { value: 0, label: 'Apartment' },
+                                { value: 1, label: 'Standalone' },
+                                { value: 2, label: 'Complex' }
+                            ]} className=''  />
                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                         </Form.Group>
 
@@ -100,17 +162,17 @@ const MoveDetails = () => {
                     <Row className="mb-5">
                         <Form.Group as={Col} md="6" controlId="date">
                             <Form.Label>From floors count</Form.Label>
-                            {BubbleWrapDisplay}
+                            {FromFloorsCountDisplay}
                         </Form.Group>
                         <Form.Group as={Col} md="6" controlId="date">
                             <Form.Label>To floors count</Form.Label>
-                            {BubbleWrapDisplay}
+                            {ToFloorsCountDisplay}
                         </Form.Group>
                     </Row>
                     <Row className="mb-5">
                         <Form.Group as={Col} md="6" controlId="date">
                             <Form.Label>From bedrooms count</Form.Label>
-                            {BubbleWrapDisplay}
+                            {FromBedroomsCountDisplay}
                         </Form.Group>
                     </Row>
                     <Row className="mb-5">
@@ -119,9 +181,14 @@ const MoveDetails = () => {
                             <Form.Control
                                 type="date"
                                 name="move_date"
+
                                 value={values.move_date}
                                 placeholder="Choose date"
-                                onChange={handleChange}
+                                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                    handleChange(event);
+                                    setsSetMoveDate(true);
+                                    setMoveDate(event.target.valueAsDate);
+                                }}
                                 isValid={touched.move_date && !errors.move_date}
                             />
                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
@@ -134,11 +201,16 @@ const MoveDetails = () => {
                                 required
                                 name="move_time_period"
                                 label="Morning between (6am to 12pm)"
-                                onChange={handleChange}
+                                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                    handleChange(event);
+                                    setIsSetMoveTime(true);
+                                    setMoveTime(0);
+                                }}
                                 isInvalid={!!errors.move_time_period}
                                 feedback={errors.move_time_period}
                                 feedbackType="invalid"
                                 id="morning"
+                                value="0"
                                 feedbackTooltip
                             />
                             <Form.Check
@@ -146,16 +218,20 @@ const MoveDetails = () => {
                                 required
                                 name="move_time_period"
                                 label="Afternoon between (12pm to 4pm)"
-                                onChange={handleChange}
+                                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                    handleChange(event);
+                                    setIsSetMoveTime(true);
+                                    setMoveTime(1);
+                                }}
                                 isInvalid={!!errors.move_time_period}
                                 feedback={errors.move_time_period}
                                 feedbackType="invalid"
                                 id="afternoon"
+                                value="1"
                                 feedbackTooltip
                             />
                         </Form.Group>
                     </Row>
-                    <Button type="submit">Submit form</Button>
                 </Form>
             )}
         </Formik>
