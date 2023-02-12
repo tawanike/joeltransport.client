@@ -1,13 +1,11 @@
-import { useState } from 'react';
-import { BsCartPlus, BsInfoCircle, BsPerson, BsTruck } from 'react-icons/bs';
-import { RxCaretDown } from 'react-icons/rx';
 import AddedServices from 'components/moves/addedService.component';
-import ChooseTruck from 'components/moves/chooseTruck.component';
-import MoveCostCard from 'components/moves/moveCostCard.component';
+import InventoryForm from 'components/moves/inventoryForm.component';
 import MoveDetails from 'components/moves/moveDetails.component';
 import PersonalInformation from 'components/moves/personalInfomation.componnent';
 import { CoverImage } from 'components/ui';
-import InventoryForm from 'components/moves/inventoryForm.component';
+import { useState } from 'react';
+import { BsCartPlus, BsInfoCircle, BsPerson, BsTruck } from 'react-icons/bs';
+import { RxCaretDown } from 'react-icons/rx';
 
 const InternationalMoveServices = () => {
     const [currentView, setCurrentView] = useState("")
@@ -83,7 +81,7 @@ const InternationalMoveServices = () => {
                                             </div>
                                         </div>
                                     </div>
-                                    {currentView === "added" && <AddedServices />}
+                                    {currentView === "added" && <AddedServices products={[]} />}
                                 </div>
                             </div>
 
