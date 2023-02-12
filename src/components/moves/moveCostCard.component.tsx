@@ -11,6 +11,7 @@ const MoveCostCard = () => {
     }, [MoveState])
 
     const getSubTotal = () => {
+        console.log(Object.keys(MoveState))
         return (Object.keys(MoveState) as Array<keyof CostSummary>)
             .map((expense) => {
                 if (MoveState && MoveState[expense]) {
@@ -18,7 +19,7 @@ const MoveCostCard = () => {
                 }
                 return 0
             })
-            .reduce((sum, exp) => sum + exp, 0);
+            .reduce((sum, exp) => sum + exp, 0) ;
     }
 
     return <>
@@ -43,7 +44,7 @@ const MoveCostCard = () => {
                                             <BsInfoCircle />
                                         </div>
                                         <div className="col-5 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
-                                            <p>R0.00</p>
+                                            <p>R{ MoveState.truck ? MoveState.truck.price : '0.00' }</p>
                                         </div>
                                     </div>
                                 </li>
@@ -56,7 +57,7 @@ const MoveCostCard = () => {
                                             <BsInfoCircle />
                                         </div>
                                         <div className="col-5 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
-                                            <p>R0.00</p>
+                                            <p>R{ MoveState.truck && MoveState.truck.offPeakDiscount ? MoveState.truck.offPeakDiscount : '0.00'  }</p>
                                         </div>
                                     </div>
                                 </li>
@@ -80,20 +81,7 @@ const MoveCostCard = () => {
                                             <BsInfoCircle />
                                         </div>
                                         <div className="col-5 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
-                                            <p>R0.00</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div className="row">
-                                        <div className="col-6 move-cost-card__section__details__title">
-                                            <p>Move insurance</p>
-                                        </div>
-                                        <div className="col-1 move-cost-card__section__details__title">
-                                            <BsInfoCircle />
-                                        </div>
-                                        <div className="col-5 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
-                                            <p>R0.00</p>
+                                            <p>R{ MoveState.bakkieShuttle ? MoveState.bakkieShuttle.price * MoveState.bakkieShuttle.quantity : '0.00'  }</p>
                                         </div>
                                     </div>
                                 </li>
