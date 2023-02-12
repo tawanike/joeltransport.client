@@ -17,7 +17,7 @@ const MoveDetails = ({ changeMoveDate }: any) => {
     const [isSetTo, setTo] = useState(false);
     const [isSetFrom, setFrom] = useState(false);
     const [ isSetMoveDate, setsSetMoveDate] = useState(false);
-    const [ moveDate, setMoveDate] = useState();
+    const [ moveDate, setMoveDate] = useState<string | Date>(new Date);
     const [ moveTime, setMoveTime] = useState(0);
     const [isSetMoveTime, setIsSetMoveTime] = useState(false);
 
