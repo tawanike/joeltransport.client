@@ -10,7 +10,7 @@ import { IProduct } from "src/_models/types";
 import TruckDisplay from "./truckDisplay.component";
 
 
-    const ChooseTruck = ({ isHoliday }: any) => {
+    const ChooseTruck = ({ isHoliday, setChooseTruckComplete }: any) => {
         const api = useAPI();
         const { MoveState, dispatchMove } = useContext(MoveStateContext);
         const [trucks, setTrucks] = useState<IProduct[]>([]);
@@ -22,6 +22,8 @@ import TruckDisplay from "./truckDisplay.component";
             setIndex(selectedIndex);
             setActiveTruck(trucks[selectedIndex]);
         };
+
+        setChooseTruckComplete(true)
 
         useEffect(() => {
             (async() => {

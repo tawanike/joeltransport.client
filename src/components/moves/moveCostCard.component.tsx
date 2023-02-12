@@ -51,7 +51,7 @@ const MoveCostCard = () => {
                                 <li>
                                     <div className="row">
                                         <div className="col-6 move-cost-card__section__details__title">
-                                            <p>Off pick discount</p>
+                                            <p>Off peak discount</p>
                                         </div>
                                         <div className="col-1 move-cost-card__section__details__title">
                                             <BsInfoCircle />

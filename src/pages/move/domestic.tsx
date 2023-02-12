@@ -25,6 +25,11 @@ const DomesticMoveServices = () => {
     const [AdditionalServices, setAdditionalServices] = useState<IProduct[]>();
     const [ServiceType, setServiceType] = useState<IProduct[]>();
 
+
+    const [moveDetailsComplete, setMoveDetailsComplete] = useState(false);
+    const [chooseTruckComplete, setChooseTruckComplete] = useState(false);
+    const [personalInformationComplete, setPersonalInformationComplete] = useState(false);
+
     useEffect(() => {
         const getProducts = async () => {
             const products = await productService.getProducts(fetchWrapper);
@@ -41,6 +46,13 @@ const DomesticMoveServices = () => {
         console.log('HOLIDAYS', za_holidays.getHolidays(2023));
         console.log('za_holidays', za_holidays.isHoliday(moveDate));
     }, [moveDate]);
+
+    useEffect(() => {
+        if (moveDetailsComplete && chooseTruckComplete && personalInformationComplete) {
+            setCanConfirmMove(true);
+        }
+
+    }, [moveDetailsComplete, chooseTruckComplete, personalInformationComplete]);
 
     const toggleView = (view: string) => {
         if (currentView === view) {
@@ -80,7 +92,9 @@ const DomesticMoveServices = () => {
                                             </div>
                                         </div>
                                     </div>
-                                    {currentView === "move" && <MoveDetails changeMoveDate={setMoveDate} />}
+                                    {currentView === "move" && <MoveDetails
+                                    changeMoveDate={setMoveDate}
+                                    setMoveDetailsComplete={setMoveDetailsComplete} />}
                                 </div>
                             </div>
                             <div className="moves__step col-12 mb-3">
@@ -96,7 +110,10 @@ const DomesticMoveServices = () => {
                                             </div>
                                         </div>
                                     </div>
-                                    {currentView === "truck" && <ChooseTruck isHoliday={isHoliday} />}
+                                    {currentView === "truck" && <ChooseTruck
+                                        isHoliday={isHoliday}
+                                        setChooseTruckComplete={setChooseTruckComplete}
+                                    />}
                                 </div>
                             </div>
 
@@ -130,7 +147,8 @@ const DomesticMoveServices = () => {
                                             </div>
                                         </div>
                                     </div>
-                                    {currentView === "personal" && <PersonalInformation />}
+                                    {currentView === "personal" && <PersonalInformation
+                                    setPersonalInformationComplete={setPersonalInformationComplete} />}
                                 </div>
                             </div>
 
