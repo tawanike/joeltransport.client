@@ -187,7 +187,7 @@ const MoveDetails = ({ changeMoveDate }: any) => {
                                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                                     handleChange(event);
                                     setsSetMoveDate(true);
-                                    setMoveDate(event.target.valueAsDate);
+                                    setMoveDate(event.target.value);
                                 }}
                                 isValid={touched.move_date && !errors.move_date}
                             />
