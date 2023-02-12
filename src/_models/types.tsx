@@ -31,6 +31,8 @@ export type RequestDetails = {
     token?: string
 }
 
+export type AuthView = "login" | "register" | "forgotPassword" | "resetPassword" | "verifyEmail";
+
 export type CostSummary = {
     bubbleWrap: {
         quantity: number,

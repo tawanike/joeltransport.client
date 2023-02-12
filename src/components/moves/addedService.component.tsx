@@ -1,6 +1,6 @@
 import { FC, useContext, useEffect } from "react";
 import { Form, Table } from "react-bootstrap";
-import MoveStateContext from "../../_contexts/move.context";
+import CostSummaryStateContext from "../../_contexts/costSummary.context";
 import useNumberInput from "../../_hooks/useNumberInput";
 import { ADJUST_ADDITIONAL_SERVICES, IProduct } from "../../_models/types";
 
@@ -11,10 +11,10 @@ const AddedServices: FC<IProps> = ({ products }) => {
     const { ValueDisplay: BubbleWrapDisplay, Value: BubbleWrapValue } = useNumberInput();
     const { ValueDisplay: LargeBoxesDisplay, Value: LargeBoxesValue } = useNumberInput();
     const { ValueDisplay: MediumBoxesDisplay, Value: MediumBoxesValue } = useNumberInput();
-    const { MoveState, dispatchMove } = useContext(MoveStateContext)
+    const { CostSummaryState, dispatchCostSummary } = useContext(CostSummaryStateContext)
     console.log("added service", products);
     useEffect(() => {
-        dispatchMove({
+        dispatchCostSummary({
             type: ADJUST_ADDITIONAL_SERVICES,
             payload: {
                 bubbleWrap: {
@@ -26,7 +26,7 @@ const AddedServices: FC<IProps> = ({ products }) => {
     }, [BubbleWrapValue])
 
     useEffect(() => {
-        dispatchMove({
+        dispatchCostSummary({
             type: ADJUST_ADDITIONAL_SERVICES,
             payload: {
                 largeBox: {
@@ -38,7 +38,7 @@ const AddedServices: FC<IProps> = ({ products }) => {
     }, [LargeBoxesValue])
 
     useEffect(() => {
-        dispatchMove({
+        dispatchCostSummary({
             type: ADJUST_ADDITIONAL_SERVICES,
             payload: {
                 mediumBox: {

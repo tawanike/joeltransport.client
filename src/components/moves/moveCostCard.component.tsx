@@ -1,20 +1,20 @@
 import { useContext, useEffect } from "react";
 import { BsInfoCircle } from "react-icons/bs";
-import MoveStateContext from "../../_contexts/move.context";
+import CostSummaryStateContext from "../../_contexts/costSummary.context";
 import { CostSummary } from "../../_models/types";
 
 const MoveCostCard = () => {
-    const { MoveState, dispatchMove } = useContext(MoveStateContext);
+    const { CostSummaryState, dispatchCostSummary } = useContext(CostSummaryStateContext);
 
     useEffect(() => {
-        console.log("Inside cost card", MoveState);
-    }, [MoveState])
+        console.log("Inside cost card", CostSummaryState);
+    }, [CostSummaryState])
 
     const getSubTotal = () => {
-        return (Object.keys(MoveState) as Array<keyof CostSummary>)
+        return (Object.keys(CostSummaryState) as Array<keyof CostSummary>)
             .map((expense) => {
-                if (MoveState && MoveState[expense]) {
-                    return (MoveState[expense]?.quantity || 0) * (MoveState[expense]?.price || 0);
+                if (CostSummaryState && CostSummaryState[expense]) {
+                    return (CostSummaryState[expense]?.quantity || 0) * (CostSummaryState[expense]?.price || 0);
                 }
                 return 0
             })
@@ -107,8 +107,8 @@ const MoveCostCard = () => {
                                         </div>
                                         <div className="col-5 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
                                             <p>R{
-                                                MoveState.bubbleWrap ?
-                                                    MoveState.bubbleWrap.price * MoveState.bubbleWrap.quantity :
+                                                CostSummaryState.bubbleWrap ?
+                                                    CostSummaryState.bubbleWrap.price * CostSummaryState.bubbleWrap.quantity :
                                                     0.00
                                             }</p>
                                         </div>
@@ -124,8 +124,8 @@ const MoveCostCard = () => {
                                         </div>
                                         <div className="col-5 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
                                             <p>R{
-                                                MoveState.largeBox ?
-                                                    MoveState.largeBox.price * MoveState.largeBox.quantity :
+                                                CostSummaryState.largeBox ?
+                                                    CostSummaryState.largeBox.price * CostSummaryState.largeBox.quantity :
                                                     0.00
                                             }</p>
                                         </div>
@@ -141,8 +141,8 @@ const MoveCostCard = () => {
                                         </div>
                                         <div className="col-5 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
                                             <p>R{
-                                                MoveState.mediumBox ?
-                                                    MoveState.mediumBox.price * MoveState.mediumBox.quantity :
+                                                CostSummaryState.mediumBox ?
+                                                    CostSummaryState.mediumBox.price * CostSummaryState.mediumBox.quantity :
                                                     0.00
                                             }</p>
                                         </div>
