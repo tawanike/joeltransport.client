@@ -11,7 +11,7 @@ import { useAPI, useNumberInput } from "src/_hooks";
 import * as yup from 'yup';
 
 
-const MoveDetails = ({ changeMoveDate }: any) => {
+const MoveDetails = ({ changeMoveDate, setMoveDetailsComplete }: any) => {
     const api = useAPI();
     const bookingContext = useContext(BookingContext);
     const [isSetTo, setTo] = useState(false);
@@ -31,6 +31,8 @@ const MoveDetails = ({ changeMoveDate }: any) => {
     const { ValueDisplay: ToFloorsCountDisplay, Value: ToFloorsCountValue } = useNumberInput();
     const { ValueDisplay: FromFloorsCountDisplay, Value: FromFloorsCountValue } = useNumberInput();
     const { ValueDisplay: FromBedroomsCountDisplay, Value: FromBedroomsCountValue } = useNumberInput();
+
+    setMoveDetailsComplete(true);
 
     useEffect(() => {
         (async () => {

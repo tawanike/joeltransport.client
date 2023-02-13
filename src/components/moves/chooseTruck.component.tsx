@@ -2,26 +2,36 @@
 import { useContext, useEffect, useState } from "react";
 import { Carousel } from "react-bootstrap";
 import { RxCaretLeft, RxCaretRight } from "react-icons/rx";
-import { useAPI } from 'src/_hooks';
 import { selectTruck } from "src/_actions/trucks.actions";
-import CostSummaryStateContext from "../../_contexts/costSummary.context";
+import { useAPI } from 'src/_hooks';
 import { IProduct } from "src/_models/types";
+import CostSummaryStateContext from "../../_contexts/costSummary.context";
 import TruckDisplay from "./truckDisplay.component";
 
 
-const ChooseTruck = ({ isHoliday }: any) => {
-    const api = useAPI();
+    const ChooseTruck = ({ isHoliday, setChooseTruckComplete }: any) => {
+        const api = useAPI();
+        const [trucks, setTrucks] = useState<IProduct[]>([]);
+        const [selectedTruck, setSelectedTruck] = useState<IProduct>();
+        const [activeTruck, setActiveTruck] = useState<IProduct>();
+        const [index, setIndex] = useState(0);
+
+
+
     const { CostSummaryState, dispatchCostSummary } = useContext(CostSummaryStateContext);
-    const [trucks, setTrucks] = useState<IProduct[]>([]);
-    const [selectedTruck, setSelectedTruck] = useState<IProduct>();
-    const [activeTruck, setActiveTruck] = useState<IProduct>();
-    const [index, setIndex] = useState(0);
+
 
     const handleSelect = (selectedIndex: number, e: any) => {
         setIndex(selectedIndex);
         setActiveTruck(trucks[selectedIndex]);
     };
 
+        useEffect(() => {
+            (async() => {
+                const trucks = await api.get("/products?category=2", false);
+                setTrucks(trucks.results);
+            })();
+        }, []);
     useEffect(() => {
         (async () => {
             const trucks = await api.get("/products?category=2", false);

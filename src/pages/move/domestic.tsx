@@ -1,20 +1,20 @@
-import { useContext, useEffect, useState } from 'react';
 import Holidays from 'date-holidays';
+import { useContext, useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { BsCartPlus, BsInfoCircle, BsPerson, BsTruck } from 'react-icons/bs';
 import { RxCaretDown } from 'react-icons/rx';
+import UserAuthStateContext from '../../_contexts/userAuth.context';
 import useAPI from "../../_hooks/useAPI";
+import { AuthView, CostSummary, IProduct } from '../../_models/types';
+import { productService } from '../../_services/product.service';
 import AddedServices from '../../components/moves/addedService.component';
 import ChooseTruck from '../../components/moves/chooseTruck.component';
 import MoveCostCard from '../../components/moves/moveCostCard.component';
 import MoveDetails from '../../components/moves/moveDetails.component';
 import PersonalInformation from '../../components/moves/personalInfomation.componnent';
+import AuthModalComponent from '../../components/shared/auth/authModal.component';
 import CallMeBackButton from '../../components/shared/callMeBackButton.component';
 import { CoverImage } from '../../components/ui';
-import { AuthView, CostSummary, IProduct } from '../../_models/types';
-import { productService } from '../../_services/product.service';
-import UserAuthStateContext from '../../_contexts/userAuth.context';
-import AuthModalComponent from '../../components/shared/auth/authModal.component';
 
 const DomesticMoveServices = () => {
     const [moveDate, setMoveDate] = useState<string | Date>(new Date);
@@ -29,6 +29,11 @@ const DomesticMoveServices = () => {
     const { UserAuthState } = useContext(UserAuthStateContext);
     const [showAuthModal, setShowAuthModal] = useState(false);
     const [authView, setAuthView] = useState<AuthView>("login");
+
+
+    const [moveDetailsComplete, setMoveDetailsComplete] = useState(false);
+    const [chooseTruckComplete, setChooseTruckComplete] = useState(false);
+    const [personalInformationComplete, setPersonalInformationComplete] = useState(false);
 
     useEffect(() => {
         const getProducts = async () => {
@@ -46,6 +51,13 @@ const DomesticMoveServices = () => {
         console.log('HOLIDAYS', za_holidays.getHolidays(2023));
         console.log('za_holidays', za_holidays.isHoliday(moveDate));
     }, [moveDate]);
+
+    useEffect(() => {
+        if (moveDetailsComplete && chooseTruckComplete && personalInformationComplete) {
+            setCanConfirmMove(true);
+        }
+
+    }, [moveDetailsComplete, chooseTruckComplete, personalInformationComplete]);
 
     useEffect(() => {
         goToCheckout();
@@ -99,7 +111,9 @@ const DomesticMoveServices = () => {
                                             </div>
                                         </div>
                                     </div>
-                                    {currentView === "move" && <MoveDetails changeMoveDate={setMoveDate} />}
+                                    {currentView === "move" && <MoveDetails
+                                    changeMoveDate={setMoveDate}
+                                    setMoveDetailsComplete={setMoveDetailsComplete} />}
                                 </div>
                             </div>
                             <div className="moves__step col-12 mb-3">
@@ -115,7 +129,10 @@ const DomesticMoveServices = () => {
                                             </div>
                                         </div>
                                     </div>
-                                    {currentView === "truck" && <ChooseTruck isHoliday={isHoliday} />}
+                                    {currentView === "truck" && <ChooseTruck
+                                        isHoliday={isHoliday}
+                                        setChooseTruckComplete={setChooseTruckComplete}
+                                    />}
                                 </div>
                             </div>
 
@@ -149,7 +166,8 @@ const DomesticMoveServices = () => {
                                             </div>
                                         </div>
                                     </div>
-                                    {currentView === "personal" && <PersonalInformation />}
+                                    {currentView === "personal" && <PersonalInformation
+                                    setPersonalInformationComplete={setPersonalInformationComplete} />}
                                 </div>
                             </div>
 
