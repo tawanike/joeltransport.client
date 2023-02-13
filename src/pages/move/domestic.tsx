@@ -1,29 +1,34 @@
 import Holidays from 'date-holidays';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { BsCartPlus, BsInfoCircle, BsPerson, BsTruck } from 'react-icons/bs';
 import { RxCaretDown } from 'react-icons/rx';
+import UserAuthStateContext from '../../_contexts/userAuth.context';
 import useAPI from "../../_hooks/useAPI";
-import { CostSummary, IProduct } from '../../_models/types';
+import { AuthView, CostSummary, IProduct } from '../../_models/types';
 import { productService } from '../../_services/product.service';
 import AddedServices from '../../components/moves/addedService.component';
 import ChooseTruck from '../../components/moves/chooseTruck.component';
 import MoveCostCard from '../../components/moves/moveCostCard.component';
 import MoveDetails from '../../components/moves/moveDetails.component';
 import PersonalInformation from '../../components/moves/personalInfomation.componnent';
+import AuthModalComponent from '../../components/shared/auth/authModal.component';
 import CallMeBackButton from '../../components/shared/callMeBackButton.component';
 import { CoverImage } from '../../components/ui';
 
 const DomesticMoveServices = () => {
-    const [ moveDate, setMoveDate] = useState<string | Date>(new Date);
+    const [moveDate, setMoveDate] = useState<string | Date>(new Date);
     const [isHoliday, setIsHoliday] = useState(false);
     const [currentView, setCurrentView] = useState("")
-    const [canConfirmMove, setCanConfirmMove] = useState(false);
+    const [canConfirmMove, setCanConfirmMove] = useState(true);
     const fetchWrapper = useAPI();
     const [Costs, setCosts] = useState<CostSummary>({} as CostSummary);
     const [Trucks, setTrucks] = useState<IProduct[]>();
     const [AdditionalServices, setAdditionalServices] = useState<IProduct[]>();
     const [ServiceType, setServiceType] = useState<IProduct[]>();
+    const { UserAuthState } = useContext(UserAuthStateContext);
+    const [showAuthModal, setShowAuthModal] = useState(false);
+    const [authView, setAuthView] = useState<AuthView>("login");
 
 
     const [moveDetailsComplete, setMoveDetailsComplete] = useState(false);
@@ -54,6 +59,10 @@ const DomesticMoveServices = () => {
 
     }, [moveDetailsComplete, chooseTruckComplete, personalInformationComplete]);
 
+    useEffect(() => {
+        goToCheckout();
+    }, [UserAuthState]);
+
     const toggleView = (view: string) => {
         if (currentView === view) {
             setCurrentView("");
@@ -62,7 +71,17 @@ const DomesticMoveServices = () => {
         setCurrentView(view);
     }
 
-    return (
+    const goToCheckout = () => {
+        if (!UserAuthState && canConfirmMove) {
+            setAuthView("login");
+            setShowAuthModal(true);
+        } else {
+            console.log("move to checkout");
+        }
+    }
+
+    return <>
+        <AuthModalComponent showAuthModal={showAuthModal} setShowAuthModal={setShowAuthModal} setAuthView={setAuthView} view={authView} />
         <div className="moves container-fluid">
             <CoverImage
                 size="medium"
@@ -164,7 +183,7 @@ const DomesticMoveServices = () => {
                             </div>
                             <div className="col-2">
                                 <div className="col-12">
-                                    <Button disabled={!canConfirmMove} variant='secondary'>Confirm move</Button>
+                                    <Button disabled={!canConfirmMove} onClick={goToCheckout} variant='secondary'>Confirm move</Button>
                                 </div>
                             </div>
                         </div>
@@ -172,7 +191,7 @@ const DomesticMoveServices = () => {
                 </div>
             </div>
         </div>
-    )
+    </>
 }
 
 export default DomesticMoveServices;

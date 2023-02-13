@@ -2,7 +2,7 @@ import { FC, useContext, useEffect } from "react";
 import { Form, Table } from "react-bootstrap";
 import Select from 'react-select';
 import { addBakkieShuttle } from "src/_actions/added-services.actions";
-import MoveStateContext from "../../_contexts/move.context";
+import CostSummaryStateContext from "../../_contexts/costSummary.context";
 import useNumberInput from "../../_hooks/useNumberInput";
 import { ADJUST_ADDITIONAL_SERVICES, IProduct } from "../../_models/types";
 
@@ -13,10 +13,10 @@ const AddedServices: FC<IProps> = ({ products }) => {
     const { ValueDisplay: BubbleWrapDisplay, Value: BubbleWrapValue } = useNumberInput();
     const { ValueDisplay: LargeBoxesDisplay, Value: LargeBoxesValue } = useNumberInput();
     const { ValueDisplay: MediumBoxesDisplay, Value: MediumBoxesValue } = useNumberInput();
-    const { MoveState, dispatchMove } = useContext(MoveStateContext)
-
+    const { CostSummaryState, dispatchCostSummary } = useContext(CostSummaryStateContext)
+    console.log("added service", products);
     useEffect(() => {
-        dispatchMove({
+        dispatchCostSummary({
             type: ADJUST_ADDITIONAL_SERVICES,
             payload: {
                 bubbleWrap: {
@@ -28,7 +28,7 @@ const AddedServices: FC<IProps> = ({ products }) => {
     }, [BubbleWrapValue])
 
     useEffect(() => {
-        dispatchMove({
+        dispatchCostSummary({
             type: ADJUST_ADDITIONAL_SERVICES,
             payload: {
                 largeBox: {
@@ -40,7 +40,7 @@ const AddedServices: FC<IProps> = ({ products }) => {
     }, [LargeBoxesValue])
 
     useEffect(() => {
-        dispatchMove({
+        dispatchCostSummary({
             type: ADJUST_ADDITIONAL_SERVICES,
             payload: {
                 mediumBox: {
@@ -54,10 +54,10 @@ const AddedServices: FC<IProps> = ({ products }) => {
 
     const selectBakkieShuttle = (selected: any) => {
         const price = products.find(product => product.subtitle === "bakkie-shuttle")?.price || 0;
-        dispatchMove(addBakkieShuttle({
-                    quantity: selected.value === 2 ? 2 : 1,
-                    price: price
-                }));
+        dispatchCostSummary(addBakkieShuttle({
+            quantity: selected.value === 2 ? 2 : 1,
+            price: price
+        }));
     }
 
 
@@ -79,7 +79,7 @@ const AddedServices: FC<IProps> = ({ products }) => {
                                 { value: 0, label: 'Loading Address' },
                                 { value: 1, label: 'Delivery Address' },
                                 { value: 2, label: 'Both Addresses' },
-                            ]} className=''  />
+                            ]} className='' />
                         </div>
                     </td>
                     <td><div>N/A</div></td>
@@ -96,7 +96,7 @@ const AddedServices: FC<IProps> = ({ products }) => {
                         /></div>
                     </td>
                     <td><div className="col-12 center">{BubbleWrapDisplay}</div></td>
-                </tr> }
+                </tr>}
                 <tr>
                     <td> <div className="col-12 center"> Boxes </div></td>
                     <td className="border-elements">
