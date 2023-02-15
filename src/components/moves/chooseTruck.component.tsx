@@ -9,29 +9,26 @@ import CostSummaryStateContext from "../../_contexts/costSummary.context";
 import TruckDisplay from "./truckDisplay.component";
 
 
-    const ChooseTruck = ({ isHoliday, setChooseTruckComplete }: any) => {
-        const api = useAPI();
-        const [trucks, setTrucks] = useState<IProduct[]>([]);
-        const [selectedTruck, setSelectedTruck] = useState<IProduct>();
-        const [activeTruck, setActiveTruck] = useState<IProduct>();
-        const [index, setIndex] = useState(0);
-
-
+const ChooseTruck = ({ isHoliday, setChooseTruckComplete }: any) => {
+    const api = useAPI();
+    const [trucks, setTrucks] = useState<IProduct[]>([]);
+    const [selectedTruck, setSelectedTruck] = useState<IProduct>();
+    const [activeTruck, setActiveTruck] = useState<IProduct>();
+    const [index, setIndex] = useState(0);
 
     const { CostSummaryState, dispatchCostSummary } = useContext(CostSummaryStateContext);
-
 
     const handleSelect = (selectedIndex: number, e: any) => {
         setIndex(selectedIndex);
         setActiveTruck(trucks[selectedIndex]);
     };
 
-        useEffect(() => {
-            (async() => {
-                const trucks = await api.get("/products?category=2", false);
-                setTrucks(trucks.results);
-            })();
-        }, []);
+    useEffect(() => {
+        (async () => {
+            const trucks = await api.get("/products?category=2", false);
+            setTrucks(trucks.results);
+        })();
+    }, []);
     useEffect(() => {
         (async () => {
             const trucks = await api.get("/products?category=2", false);
@@ -40,6 +37,7 @@ import TruckDisplay from "./truckDisplay.component";
     }, []);
 
     useEffect(() => {
+        console.log(selectedTruck);
 
         if (selectedTruck) {
 
@@ -80,10 +78,10 @@ import TruckDisplay from "./truckDisplay.component";
                         <Carousel.Item key={truck.id} className={i == index ? 'active' : undefined}>
                             <div className="row">
                                 <div className="col-6">
-                                    <TruckDisplay truck={truck} onSelect={setSelectedTruck} />
+                                    <TruckDisplay truck={truck} onSelect={setSelectedTruck} isSelected={selectedTruck ? (selectedTruck as IProduct).id === truck.id : false} />
                                 </div>
                                 <div className="col-6">
-                                    <TruckDisplay truck={truck} onSelect={setSelectedTruck} />
+                                    <TruckDisplay truck={truck} onSelect={setSelectedTruck} isSelected={selectedTruck ? (selectedTruck as IProduct).id === truck.id : false} />
                                 </div>
                             </div>
                         </Carousel.Item>

@@ -1,46 +1,29 @@
 import Holidays from 'date-holidays';
 import { useContext, useEffect, useState } from 'react';
-import { Button } from 'react-bootstrap';
-import { BsCartPlus, BsInfoCircle, BsPerson, BsTruck } from 'react-icons/bs';
-import { RxCaretDown } from 'react-icons/rx';
+import { Button, Form, Modal } from 'react-bootstrap';
 import UserAuthStateContext from '../../_contexts/userAuth.context';
 import useAPI from "../../_hooks/useAPI";
-import { AuthView, CostSummary, IProduct } from '../../_models/types';
+import { ADD_PRODUCTS_DATA } from '../../_models/types';
 import { productService } from '../../_services/product.service';
-import AddedServices from '../../components/moves/addedService.component';
-import ChooseTruck from '../../components/moves/chooseTruck.component';
 import MoveCostCard from '../../components/moves/moveCostCard.component';
-import MoveDetails from '../../components/moves/moveDetails.component';
-import PersonalInformation from '../../components/moves/personalInfomation.componnent';
-import AuthModalComponent from '../../components/shared/auth/authModal.component';
 import CallMeBackButton from '../../components/shared/callMeBackButton.component';
 import { CoverImage } from '../../components/ui';
+import { BookingContext } from 'src/_contexts/booking.context';
+import MoveStepper from 'components/moves/move-stepper.component';
 
 const DomesticMoveServices = () => {
     const [moveDate, setMoveDate] = useState<string | Date>(new Date);
-    const [isHoliday, setIsHoliday] = useState(false);
-    const [currentView, setCurrentView] = useState("")
-    const [canConfirmMove, setCanConfirmMove] = useState(true);
+    const [canConfirmMove, setCanConfirmMove] = useState(false);
     const fetchWrapper = useAPI();
-    const [Costs, setCosts] = useState<CostSummary>({} as CostSummary);
-    const [Trucks, setTrucks] = useState<IProduct[]>();
-    const [AdditionalServices, setAdditionalServices] = useState<IProduct[]>();
-    const [ServiceType, setServiceType] = useState<IProduct[]>();
     const { UserAuthState } = useContext(UserAuthStateContext);
-    const [showAuthModal, setShowAuthModal] = useState(false);
-    const [authView, setAuthView] = useState<AuthView>("login");
-
-
-    const [moveDetailsComplete, setMoveDetailsComplete] = useState(false);
-    const [chooseTruckComplete, setChooseTruckComplete] = useState(false);
-    const [personalInformationComplete, setPersonalInformationComplete] = useState(false);
+    const { state: bookingState, dispatch: bookingDispatch } = useContext(BookingContext);
+    const [showSelectorModal, setShowSelectorModal] = useState(false);
+    const [selectedServices, setSelectedServices] = useState([]);
 
     useEffect(() => {
         const getProducts = async () => {
             const products = await productService.getProducts(fetchWrapper);
-            setTrucks(products.results.filter((product: IProduct) => product.category === 2));
-            setAdditionalServices(products.results.filter((product: IProduct) => product.category === 3));
-            setServiceType(products.results.filter((product: IProduct) => product.category === 3))
+            bookingDispatch({ type: ADD_PRODUCTS_DATA, payload: products.results });
         }
         getProducts();
     }, []);
@@ -48,41 +31,83 @@ const DomesticMoveServices = () => {
     useEffect(() => {
         const za_holidays = new Holidays();
         za_holidays.init('ZA');
-        console.log('HOLIDAYS', za_holidays.getHolidays(2023));
-        console.log('za_holidays', za_holidays.isHoliday(moveDate));
     }, [moveDate]);
-
-    useEffect(() => {
-        if (moveDetailsComplete && chooseTruckComplete && personalInformationComplete) {
-            setCanConfirmMove(true);
-        }
-
-    }, [moveDetailsComplete, chooseTruckComplete, personalInformationComplete]);
 
     useEffect(() => {
         goToCheckout();
     }, [UserAuthState]);
 
-    const toggleView = (view: string) => {
-        if (currentView === view) {
-            setCurrentView("");
-            return;
+    const goToCheckout = () => {
+        if (canConfirmMove) {
+            setShowSelectorModal(true);
         }
-        setCurrentView(view);
     }
 
-    const goToCheckout = () => {
-        if (!UserAuthState && canConfirmMove) {
-            setAuthView("login");
-            setShowAuthModal(true);
-        } else {
-            console.log("move to checkout");
-        }
-    }
+    const selectService = (e: any) => { }
 
     return <>
-        <AuthModalComponent showAuthModal={showAuthModal} setShowAuthModal={setShowAuthModal} setAuthView={setAuthView} view={authView} />
         <div className="moves container-fluid">
+            <Modal show={showSelectorModal} onHide={() => setShowSelectorModal(false)}>
+                <Modal.Body>
+                    <div className="col-12 custom-modal">
+                        <div className="custom-modal__header">
+                            <h3>We have additional moving services should you need </h3>
+                            <p>Select one or more of below services and our
+                                sales team will contact you.
+                            </p>
+                        </div>
+                        <div className="col-12 custom-modal__body">
+                            <Form.Check
+                                label="Packing service"
+                                name="packing_service"
+                                type="checkbox"
+                                value="packing_service"
+                                id="packing_service"
+                                className='radioBtn'
+                                onChange={selectService}
+                            />
+                            <Form.Check
+                                label="Packaging material"
+                                name="packaging_material"
+                                type="checkbox"
+                                value="packaging_material"
+                                id="packaging_material"
+                                className='radioBtn'
+                                onChange={selectService}
+                            />
+                            <Form.Check
+                                label="Insurance"
+                                name="insurance"
+                                type="checkbox"
+                                value="insurance"
+                                id="insurance"
+                                className='radioBtn'
+                                onChange={selectService}
+                            />
+                            <Form.Check
+                                label="Specialized moving services"
+                                name="specialized_moving_services"
+                                type="checkbox"
+                                value="specialized_moving_services"
+                                id="specialized_moving_services"
+                                className='radioBtn'
+                                onChange={selectService}
+                            />
+                        </div>
+                        <div className="col-12 auth__bottom-text">
+                            <p> Additional charges and T&Cs apply</p>
+                        </div>
+                        <div className="col-12 custom-modal__footer">
+                            <Button
+                                disabled={!selectedServices}
+                                className="w-100"
+                                variant="secondary">
+                                Continue
+                            </Button>
+                        </div>
+                    </div>
+                </Modal.Body>
+            </Modal>
             <CoverImage
                 size="medium"
                 src="/img/kaleb.png"
@@ -97,81 +122,7 @@ const DomesticMoveServices = () => {
                             Once you are happy with your quote, you will need to log in or create an account to pay</p>
                     </div>
                     <div className="col-6">
-                        <div className="col-12 moves__stepper">
-                            <div className="moves__step col-12 mb-3">
-                                <div className="row">
-                                    <div className="col-12 moves__step__head" onClick={() => toggleView("move")}>
-                                        <div className="row">
-                                            <div className="col-11">
-                                                <p><BsInfoCircle className="me-2" /> Move details</p>
-                                            </div>
-
-                                            <div className="col-1 moves__step__head__curret">
-                                                <RxCaretDown />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    {currentView === "move" && <MoveDetails
-                                    changeMoveDate={setMoveDate}
-                                    setMoveDetailsComplete={setMoveDetailsComplete} />}
-                                </div>
-                            </div>
-                            <div className="moves__step col-12 mb-3">
-                                <div className="row">
-                                    <div className="col-12 moves__step__head" onClick={() => toggleView("truck")}>
-                                        <div className="row">
-                                            <div className="col-11">
-                                                <p><BsTruck className="me-2" /> Choose a truck</p>
-                                            </div>
-
-                                            <div className="col-1 moves__step__head__curret">
-                                                <RxCaretDown />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    {currentView === "truck" && <ChooseTruck
-                                        isHoliday={isHoliday}
-                                        setChooseTruckComplete={setChooseTruckComplete}
-                                    />}
-                                </div>
-                            </div>
-
-                            <div className="moves__step col-12 mb-3">
-                                <div className="row">
-                                    <div className="col-12 moves__step__head" onClick={() => toggleView("added")}>
-                                        <div className="row">
-                                            <div className="col-11">
-                                                <p><BsCartPlus className="me-2" />Added services</p>
-                                            </div>
-
-                                            <div className="col-1 moves__step__head__curret">
-                                                <RxCaretDown />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    {(currentView === "added" && AdditionalServices) && <AddedServices products={AdditionalServices} />}
-                                </div>
-                            </div>
-
-                            <div className="moves__step col-12 mb-3">
-                                <div className="row">
-                                    <div className="col-12 moves__step__head" onClick={() => toggleView("personal")}>
-                                        <div className="row">
-                                            <div className="col-11">
-                                                <p><BsPerson className="me-2" />Personal information</p>
-                                            </div>
-
-                                            <div className="col-1 moves__step__head__curret">
-                                                <RxCaretDown />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    {currentView === "personal" && <PersonalInformation
-                                    setPersonalInformationComplete={setPersonalInformationComplete} />}
-                                </div>
-                            </div>
-
-                        </div>
+                        <MoveStepper />
                     </div>
                     <div className="col-5 offset-1">
                         <MoveCostCard />

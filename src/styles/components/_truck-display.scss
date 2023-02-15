@@ -44,4 +44,7 @@
             color: lighten($secondary, 20);
         }
     }
+    &--selected {
+        border: 1px solid #002E69;
+    }
 }

@@ -6,15 +6,16 @@ import { IProduct } from "src/_models/types";
 interface IProps {
     truck: IProduct;
     onSelect: (product: IProduct) => void;
+    isSelected: boolean;
 }
 
-const TruckDisplay: FC<IProps> = ({ truck, onSelect }) => {
-    return <div className="col-12 truckDisplay">
-    <div className="row">
-        <div className="col-12 truckDisplay__head">
-            <BsTruck />
-        </div>
-        <div className="col-12 truckDisplay__body">
+const TruckDisplay: FC<IProps> = ({ truck, onSelect, isSelected }) => {
+    return <div className={`col-12 truckDisplay truckDisplay${isSelected ? "--selected" : ""}`}>
+        <div className="row">
+            <div className="col-12 truckDisplay__head">
+                <BsTruck />
+            </div>
+            <div className="col-12 truckDisplay__body">
                 <div className="col-12 mb-3">
                     <div className="row">
                         <div className="col-6 truckDisplay__body__item truckDisplay__body__item--left ps-4">
@@ -23,18 +24,24 @@ const TruckDisplay: FC<IProps> = ({ truck, onSelect }) => {
                             <p>Load capacity</p>
                         </div>
                         <div className="col-6 truckDisplay__body__item truckDisplay__body__item--right pe-4">
-                            <p>{ truck.size }{ truck.unit }</p>
-                            <p>{ truck.weight}</p>
-                            <p>{ truck.load_capacity }</p>
+                            <p>{truck.size}{truck.unit}</p>
+                            <p>{truck.weight}</p>
+                            <p>{truck.load_capacity}</p>
                         </div>
                     </div>
                 </div>
-        </div>
-        <div className="col-12 truckDisplay__head">
-            <Button variant="secondary" onClick={ () => onSelect(truck) }>Choose truck</Button>
+            </div>
+            <div className="col-12 truckDisplay__head">
+                <Button
+                    variant="secondary"
+                    onClick={() => onSelect(truck)}
+                    disabled={isSelected}
+                >
+                    Choose truck
+                </Button>
+            </div>
         </div>
     </div>
-</div>
 }
 
 export default TruckDisplay;

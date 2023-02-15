@@ -1,157 +1,72 @@
 import { FC, useContext, useEffect } from "react";
-import { Form, Table } from "react-bootstrap";
+import { Alert, Col, Form, Table } from "react-bootstrap";
+import { FcInfo } from "react-icons/fc";
 import Select from 'react-select';
 import { addBakkieShuttle } from "src/_actions/added-services.actions";
+import { BookingContext } from "src/_contexts/booking.context";
 import CostSummaryStateContext from "../../_contexts/costSummary.context";
 import useNumberInput from "../../_hooks/useNumberInput";
 import { ADJUST_ADDITIONAL_SERVICES, IProduct } from "../../_models/types";
 
 interface IProps {
-    products: IProduct[];
 }
-const AddedServices: FC<IProps> = ({ products }) => {
-    const { ValueDisplay: BubbleWrapDisplay, Value: BubbleWrapValue } = useNumberInput();
-    const { ValueDisplay: LargeBoxesDisplay, Value: LargeBoxesValue } = useNumberInput();
-    const { ValueDisplay: MediumBoxesDisplay, Value: MediumBoxesValue } = useNumberInput();
-    const { CostSummaryState, dispatchCostSummary } = useContext(CostSummaryStateContext)
-    console.log("added service", products);
-    useEffect(() => {
-        dispatchCostSummary({
-            type: ADJUST_ADDITIONAL_SERVICES,
-            payload: {
-                bubbleWrap: {
-                    quantity: BubbleWrapValue,
-                    price: products.find(product => product.subtitle === "bubble-wrap")?.price
-                }
-            }
-        })
-    }, [BubbleWrapValue])
-
-    useEffect(() => {
-        dispatchCostSummary({
-            type: ADJUST_ADDITIONAL_SERVICES,
-            payload: {
-                largeBox: {
-                    quantity: LargeBoxesValue,
-                    price: products.find(product => product.subtitle === "box-large")?.price
-                }
-            }
-        })
-    }, [LargeBoxesValue])
-
-    useEffect(() => {
-        dispatchCostSummary({
-            type: ADJUST_ADDITIONAL_SERVICES,
-            payload: {
-                mediumBox: {
-                    quantity: MediumBoxesValue,
-                    price: products.find(product => product.subtitle === "box-medium")?.price
-                }
-            }
-        })
-    }, [MediumBoxesValue]);
-
+const AddedServices: FC<IProps> = () => {
+    const { CostSummaryState, dispatchCostSummary } = useContext(CostSummaryStateContext);
+    const { state: bookingState, dispatch: bookingsDispatch } = useContext(BookingContext);
 
     const selectBakkieShuttle = (selected: any) => {
-        const price = products.find(product => product.subtitle === "bakkie-shuttle")?.price || 0;
+        const price = bookingState.products.find(product => product.subtitle === "bakkie-shuttle")?.price || 0;
         dispatchCostSummary(addBakkieShuttle({
             quantity: selected.value === 2 ? 2 : 1,
             price: price
         }));
     }
 
-
     return <>
-        <Table borderless>
-            <thead className="moves__step__body__table-head">
-                <tr>
-                    <th><div className="col-12 center">Item description</div></th>
-                    <th className="border-elements"><div className="col-12 center">Select item</div></th>
-                    <th> <div className="col-12 center"> Quantity </div></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td> <div className="col-12 center"> Bakkie Shuttle</div></td>
-                    <td className="border-elements">
-                        <div>
-                            <Select name="residency_type" onChange={selectBakkieShuttle} options={[
-                                { value: 0, label: 'Loading Address' },
-                                { value: 1, label: 'Delivery Address' },
-                                { value: 2, label: 'Both Addresses' },
-                            ]} className='' />
+        <div>
+            <h5 className="my-3">Do you required a bakkie shuttle?</h5>
+            <div>
+                <Form.Check
+                    inline
+                    label="Yes"
+                    name="requires_bakkie_shuttle"
+                    type="radio"
+                    onChange={() => selectBakkieShuttle({ value: "yes" })}
+                    className="pe-5"
+                />
+                <Form.Check
+                    inline
+                    label="No"
+                    name="requires_bakkie_shuttle"
+                    onChange={() => selectBakkieShuttle({ value: "no" })}
+                    type="radio"
+                />
+                <Alert variant="primary" className="mt-3">
+                    <div className="row">
+                        <div className="col-1" style={{ "display": 'grid', "placeItems": "center", fontSize: "2rem" }}>
+                            <FcInfo />
                         </div>
-                    </td>
-                    <td><div>N/A</div></td>
-                </tr>
-                {<tr>
-                    <td><div className="col-12 center">Bubble wrap</div></td>
-                    <td className="border-elements">
-                        <div> <Form.Check
-                            inline
-                            label="2m x 1m bubble wrap"
-                            name="group1"
-                            type="checkbox"
-                            id="bubbleWrap"
-                        /></div>
-                    </td>
-                    <td><div className="col-12 center">{BubbleWrapDisplay}</div></td>
-                </tr>}
-                <tr>
-                    <td> <div className="col-12 center"> Boxes </div></td>
-                    <td className="border-elements">
-                        <div className="col-12 center">
-                            <Form.Check
-                                inline
-                                label="Large box (3m3)"
-                                name="large_box"
-                                type="checkbox"
-                                id="bubbleWrap"
-                            />
-                            <Form.Check
-                                inline
-                                label="Medium box (2m3)"
-                                name="medium_box"
-                                type="checkbox"
-                                id="bubbleWrap"
-                            />
+                        <div className="col-11">
+                            <b>Please note:</b> Only applicable when access for trucks in complexes is restricted, a bakkie is offered at <b>R1,750.00 excl. VAT</b>, to shuttle your items from your house to the truck.
                         </div>
-                    </td>
-                    <td>
-                        <div className="col-12 center">
-                            {LargeBoxesDisplay}
-                            <span className="mb-3">
-                            </span>
-                            {MediumBoxesDisplay}
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td> <div> Move insurance</div></td>
-                    <td className="border-elements">
-                        <div>
-                            <Form.Check
-                                inline
-                                label="Yes"
-                                name="has_move_insurance"
-                                type="radio"
-                            />
-                            <Form.Check
-                                inline
-                                label="No"
-                                name="has_move_insurance"
-                                type="radio"
-                            />
-                        </div>
-                    </td>
-                    <td><div><Form.Control
-                        type="text"
-                        placeholder="Move insurance"
-                        aria-label="Disabled input example"
-                    /></div></td>
-                </tr>
-            </tbody>
-        </Table>
+                    </div>
+                </Alert>
+                <Form.Group as={Col} md="8" controlId="bakkie_address">
+                    <Form.Label>Select address for a bakkie shuttle</Form.Label>
+                    <Select name="to_property_type"
+                        placeholder="Select address"
+                        onChange={(values: any) => {
+
+                        }}
+                        options={[
+                            { value: 0, label: 'Loading address' },
+                            { value: 1, label: 'Delivery address' },
+                            { value: 2, label: 'Both address' }
+                        ]} className='' />
+                </Form.Group>
+            </div>
+        </div>
+
     </>
 }
 

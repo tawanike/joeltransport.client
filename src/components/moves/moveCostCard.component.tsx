@@ -85,7 +85,7 @@ const MoveCostCard = () => {
                                         </div>
                                     </div>
                                 </li>
-                                <li>
+                                {/* <li>
                                     <div className="row">
                                         <div className="col-6 move-cost-card__section__details__title">
                                             <p>Bubble wrap</p>
@@ -101,8 +101,8 @@ const MoveCostCard = () => {
                                             }</p>
                                         </div>
                                     </div>
-                                </li>
-                                <li>
+                                </li> */}
+                                {/* <li>
                                     <div className="row">
                                         <div className="col-6 move-cost-card__section__details__title">
                                             <p>Large boxes</p>
@@ -135,7 +135,7 @@ const MoveCostCard = () => {
                                             }</p>
                                         </div>
                                     </div>
-                                </li>
+                                </li> */}
                             </ul>
                         </div>
                     </div>

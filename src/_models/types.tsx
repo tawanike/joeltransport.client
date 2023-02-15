@@ -5,6 +5,9 @@ export const GET_BOOKING = "GET_BOOKING";
 export const SELECT_TRUCK = "SELECT_TRUCK";
 export const ADD_BAKKIE_SHUTTLE = "ADD_BAKKIE_SHUTTLE";
 export const ADJUST_ADDITIONAL_SERVICES = "ADJUST_ADDITIONAL_SERVICES";
+export const ADD_MOVE_DETAILS = "ADD_MOVE_DETAILS";
+export const ADD_PRODUCTS_DATA = "ADD_ADDITIONAL_PRODUCTS_DATA";
+export const ADD_FORM_VALUES = "ADD_FORM_VALUES";
 
 export enum UserRoles {
     Global = "global",
@@ -64,6 +67,7 @@ export type FetchWrapper = {
     get: (url: string, body?: any) => Promise<any>;
     post: (url: string, body: any) => Promise<any>;
     put: (url: string, body: any) => Promise<any>;
+    patch: (url: string, body: any) => Promise<any>;
     delete: (url: string, body: any) => Promise<any>;
 }
 
@@ -89,8 +93,20 @@ export interface IProduct {
     off_peak_discount: number;
 }
 
+export interface IFormValues {
+    id: string | undefined,
+    from: string,
+    to: string,
+    from_property_type: string,
+    to_property_type: string,
+    move_date: string | undefined,
+    move_time_period: number,
+    submited: boolean
+}
+
 
 export interface IBooking {
     id: string,
-
+    products: IProduct[],
+    formValues: IFormValues,
 }
