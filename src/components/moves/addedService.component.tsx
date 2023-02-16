@@ -1,18 +1,16 @@
-import { FC, useContext, useEffect } from "react";
-import { Alert, Col, Form, Table } from "react-bootstrap";
+import { FC, useContext } from "react";
+import { Alert, Col, Form } from "react-bootstrap";
 import { FcInfo } from "react-icons/fc";
 import Select from 'react-select';
 import { addBakkieShuttle } from "src/_actions/added-services.actions";
 import { BookingContext } from "src/_contexts/booking.context";
 import CostSummaryStateContext from "../../_contexts/costSummary.context";
-import useNumberInput from "../../_hooks/useNumberInput";
-import { ADJUST_ADDITIONAL_SERVICES, IProduct } from "../../_models/types";
 
 interface IProps {
 }
 const AddedServices: FC<IProps> = () => {
     const { CostSummaryState, dispatchCostSummary } = useContext(CostSummaryStateContext);
-    const { state: bookingState, dispatch: bookingsDispatch } = useContext(BookingContext);
+    const { state: bookingState, dispatch: dispatchBookings } = useContext(BookingContext);
 
     const selectBakkieShuttle = (selected: any) => {
         const price = bookingState.products.find(product => product.subtitle === "bakkie-shuttle")?.price || 0;

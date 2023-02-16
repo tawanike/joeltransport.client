@@ -1,29 +1,29 @@
 import Holidays from 'date-holidays';
 import { useContext, useEffect, useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
-import UserAuthStateContext from '../../_contexts/userAuth.context';
 import useAPI from "../../_hooks/useAPI";
-import { ADD_PRODUCTS_DATA } from '../../_models/types';
+import { ADD_PRODUCTS_DATA, EDIT_ADDITIONAL_SERVICES } from '../../_models/types';
 import { productService } from '../../_services/product.service';
 import MoveCostCard from '../../components/moves/moveCostCard.component';
 import CallMeBackButton from '../../components/shared/callMeBackButton.component';
 import { CoverImage } from '../../components/ui';
 import { BookingContext } from 'src/_contexts/booking.context';
 import MoveStepper from 'components/moves/move-stepper.component';
+import { useRouter } from 'next/router';
 
 const DomesticMoveServices = () => {
     const [moveDate, setMoveDate] = useState<string | Date>(new Date);
-    const [canConfirmMove, setCanConfirmMove] = useState(false);
+    const [canConfirmMove, setCanConfirmMove] = useState(true);
     const fetchWrapper = useAPI();
-    const { UserAuthState } = useContext(UserAuthStateContext);
-    const { state: bookingState, dispatch: bookingDispatch } = useContext(BookingContext);
+    const { state: bookingState, dispatch: dispatchBookings } = useContext(BookingContext);
     const [showSelectorModal, setShowSelectorModal] = useState(false);
     const [selectedServices, setSelectedServices] = useState([]);
+    const router = useRouter();
 
     useEffect(() => {
         const getProducts = async () => {
             const products = await productService.getProducts(fetchWrapper);
-            bookingDispatch({ type: ADD_PRODUCTS_DATA, payload: products.results });
+            dispatchBookings({ type: ADD_PRODUCTS_DATA, payload: products.results });
         }
         getProducts();
     }, []);
@@ -34,8 +34,10 @@ const DomesticMoveServices = () => {
     }, [moveDate]);
 
     useEffect(() => {
-        goToCheckout();
-    }, [UserAuthState]);
+        // goToCheckout();
+        console.log(bookingState);
+
+    }, [bookingState]);
 
     const goToCheckout = () => {
         if (canConfirmMove) {
@@ -43,7 +45,13 @@ const DomesticMoveServices = () => {
         }
     }
 
-    const selectService = (e: any) => { }
+    const selectService = (e: any) => {
+        dispatchBookings({ type: EDIT_ADDITIONAL_SERVICES, payload: { [e.target.name]: e.target.checked } });
+    }
+
+    const saveAndContinue = () => {
+        router.push(`/move/checkout`);
+    }
 
     return <>
         <div className="moves container-fluid">
@@ -101,6 +109,7 @@ const DomesticMoveServices = () => {
                             <Button
                                 disabled={!selectedServices}
                                 className="w-100"
+                                onClick={saveAndContinue}
                                 variant="secondary">
                                 Continue
                             </Button>

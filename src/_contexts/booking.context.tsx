@@ -1,5 +1,5 @@
 import React, { Dispatch, createContext, useReducer } from "react";
-import { ADD_FORM_VALUES, ADD_PRODUCTS_DATA, GET_BOOKING, IAction, IBooking } from "src/_models/types";
+import { ADD_FORM_VALUES, ADD_PRODUCTS_DATA, EDIT_ADDITIONAL_SERVICES, GET_BOOKING, IAction, IBooking, IFormValues } from "src/_models/types";
 
 export interface InitContextProps {
     state: IBooking;
@@ -7,7 +7,15 @@ export interface InitContextProps {
 }
 
 const initialState = {
-    formValues: {},
+    id: undefined,
+    products: [],
+    formValues: {} as IFormValues,
+    additionalServices: {
+        packing_service: false,
+        packaging_material: false,
+        insurance: false,
+        specialized_moving_services: false
+    },
 } as IBooking;
 type ContextProviderProps = {
     children: React.ReactNode;
@@ -21,6 +29,8 @@ const reducer = (state: IBooking, action: IAction) => {
             return { ...state, products: action.payload };
         case ADD_FORM_VALUES:
             return { ...state, formValues: { ...state.formValues, ...action.payload } };
+        case EDIT_ADDITIONAL_SERVICES:
+            return { ...state, additionalServices: { ...state.additionalServices, ...action.payload } };
         default:
             return state;
     }

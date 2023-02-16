@@ -8,6 +8,7 @@ export const ADJUST_ADDITIONAL_SERVICES = "ADJUST_ADDITIONAL_SERVICES";
 export const ADD_MOVE_DETAILS = "ADD_MOVE_DETAILS";
 export const ADD_PRODUCTS_DATA = "ADD_ADDITIONAL_PRODUCTS_DATA";
 export const ADD_FORM_VALUES = "ADD_FORM_VALUES";
+export const EDIT_ADDITIONAL_SERVICES = "EDIT_ADDITIONAL_SERVICES";
 
 export enum UserRoles {
     Global = "global",
@@ -106,7 +107,8 @@ export interface IFormValues {
 
 
 export interface IBooking {
-    id: string,
+    id: string | undefined,
     products: IProduct[],
     formValues: IFormValues,
+    additionalServices: { [key: string]: boolean },
 }
