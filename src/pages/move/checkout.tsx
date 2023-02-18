@@ -1,13 +1,38 @@
-import { useContext } from 'react';
-import useAPI from "../../_hooks/useAPI";
-import { BookingContext } from 'src/_contexts/booking.context';
 import MoveStepper from 'components/moves/move-stepper.component';
+import { useContext } from 'react';
 import { Alert, Button } from 'react-bootstrap';
 import { MdWarning } from 'react-icons/md';
+import { usePaystackPayment } from 'react-paystack';
+import { BookingContext } from 'src/_contexts/booking.context';
+import useAPI from "../../_hooks/useAPI";
+
+
 
 const Checkout = () => {
     const fetchWrapper = useAPI();
-    const { state: bookingState, dispatch: dispatchBookings } = useContext(BookingContext);
+
+    const bookingContext = useContext(BookingContext);
+    const paystackConfig = {
+        reference: "cb7dd9e9-2570-4724-848a-0c3ec24777e23",
+        email: "tawanda@mmogomedia.com",
+        amount: 20000,
+        currency: "ZAR",
+        publicKey: 'pk_test_031a560a948c05f7721f754c86ed89d4335d5250',
+    };
+
+    const initializePayment = usePaystackPayment(paystackConfig  as any);
+
+    // you can call this function anything
+    const onSuccess = (reference: any) => {
+      // Implementation for whatever you want to do with reference and after success call.
+      console.log(reference);
+    };
+
+    // you can call this function anything
+    const onClose = () => {
+      // implementation for  whatever you want to do when the Paystack dialog closed.
+      console.log('closed')
+    }
 
     return <>
         <div className="moves container-fluid">
@@ -50,7 +75,11 @@ const Checkout = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <Button variant="success" className='mt-3 p-2'>Pay R0.00</Button>
+
+                                <Button variant="success" className='mt-3 p-2'
+                                onClick={() => {
+                                    initializePayment(onSuccess, onClose)
+                                }}>Pay R0.00</Button>
                             </div>
                         </div>
                         <div className="col-12 moves__checkout__image my-4">
