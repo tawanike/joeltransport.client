@@ -1,26 +1,10 @@
 import { useContext, useEffect } from "react";
 import { BsInfoCircle } from "react-icons/bs";
+import { Calculations } from "src/_helpers/calculations";
 import CostSummaryStateContext from "../../_contexts/costSummary.context";
-import { CostSummary } from "../../_models/types";
 
 const MoveCostCard = () => {
     const { CostSummaryState, dispatchCostSummary } = useContext(CostSummaryStateContext);
-
-    useEffect(() => {
-        console.log("Inside cost card", CostSummaryState);
-    }, [CostSummaryState])
-
-    const getSubTotal = () => {
-        console.log(Object.keys(CostSummaryState))
-        return (Object.keys(CostSummaryState) as Array<keyof CostSummary>)
-            .map((expense) => {
-                if (CostSummaryState && CostSummaryState[expense]) {
-                    return (CostSummaryState[expense]?.quantity || 0) * (CostSummaryState[expense]?.price || 0);
-                }
-                return 0
-            })
-            .reduce((sum, exp) => sum + exp, 0);
-    }
 
     return <>
         <div className="col-12 move-cost-card">
@@ -85,57 +69,6 @@ const MoveCostCard = () => {
                                         </div>
                                     </div>
                                 </li>
-                                {/* <li>
-                                    <div className="row">
-                                        <div className="col-6 move-cost-card__section__details__title">
-                                            <p>Bubble wrap</p>
-                                        </div>
-                                        <div className="col-1 move-cost-card__section__details__title">
-                                            <BsInfoCircle />
-                                        </div>
-                                        <div className="col-5 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
-                                            <p>R{
-                                                CostSummaryState.bubbleWrap ?
-                                                    CostSummaryState.bubbleWrap.price * CostSummaryState.bubbleWrap.quantity :
-                                                    0.00
-                                            }</p>
-                                        </div>
-                                    </div>
-                                </li> */}
-                                {/* <li>
-                                    <div className="row">
-                                        <div className="col-6 move-cost-card__section__details__title">
-                                            <p>Large boxes</p>
-                                        </div>
-                                        <div className="col-1 move-cost-card__section__details__title">
-
-                                        </div>
-                                        <div className="col-5 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
-                                            <p>R{
-                                                CostSummaryState.largeBox ?
-                                                    CostSummaryState.largeBox.price * CostSummaryState.largeBox.quantity :
-                                                    0.00
-                                            }</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div className="row">
-                                        <div className="col-6 move-cost-card__section__details__title">
-                                            <p>Medium boxes</p>
-                                        </div>
-                                        <div className="col-1 move-cost-card__section__details__title">
-
-                                        </div>
-                                        <div className="col-5 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
-                                            <p>R{
-                                                CostSummaryState.mediumBox ?
-                                                    CostSummaryState.mediumBox.price * CostSummaryState.mediumBox.quantity :
-                                                    0.00
-                                            }</p>
-                                        </div>
-                                    </div>
-                                </li> */}
                             </ul>
                         </div>
                     </div>
@@ -150,7 +83,7 @@ const MoveCostCard = () => {
                                             <p>Sub total</p>
                                         </div>
                                         <div className="col-6 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
-                                            <p>R{getSubTotal()}</p>
+                                            <p>R{Calculations.getSubTotal(CostSummaryState)}</p>
                                         </div>
                                     </div>
                                 </li>
@@ -160,7 +93,7 @@ const MoveCostCard = () => {
                                             <p>VAT (15%)</p>
                                         </div>
                                         <div className="col-6 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
-                                            <p>R{getSubTotal() * .15}</p>
+                                            <p>R{Calculations.getSubTotal(CostSummaryState) * .15}</p>
                                         </div>
                                     </div>
                                 </li>
@@ -179,7 +112,7 @@ const MoveCostCard = () => {
                                 <p>Total</p>
                             </div>
                             <div className="col-6 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
-                                <p>R{(getSubTotal() * .15) + getSubTotal()}</p>
+                                <p>R{(Calculations.getSubTotal(CostSummaryState) * .15) + Calculations.getSubTotal(CostSummaryState)}</p>
                             </div>
                         </div>
                     </li>

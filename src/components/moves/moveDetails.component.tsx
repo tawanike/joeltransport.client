@@ -11,28 +11,29 @@ import { bookingsService } from "src/_services/bookings.service";
 const MoveDetails = () => {
     const api = useAPI();
     const { state: bookingState, dispatch: bookingsDispatch } = useContext(BookingContext);
-    const { ValueDisplay: ToFloorsCountDisplay, Value: ToFloorsCountValue } = useNumberInput();
-    const { ValueDisplay: FromFloorsCountDisplay, Value: FromFloorsCountValue } = useNumberInput();
+    const { ValueDisplay: ToFloorsCountDisplay, Value: ToFloorsCountValue } = useNumberInput(bookingState.formValues.to_floors);
+    const { ValueDisplay: FromFloorsCountDisplay, Value: FromFloorsCountValue } = useNumberInput(bookingState.formValues.from_floors);
     const fetchWrapper = useAPI();
 
     useEffect(() => {
+        console.log(bookingState.formValues);
         const submitForm = async () => {
             if (bookingState.formValues.id) {
                 const updatedBooking = await bookingsService.updateBooking(bookingState.formValues, fetchWrapper);
-                console.log(updatedBooking);
             } else {
                 const booking = await bookingsService.createBooking(bookingState.formValues, fetchWrapper);
-                console.log(booking);
             }
         }
-
         if (bookingState.formValues.move_date) {
             submitForm();
         }
     }, [bookingState.formValues]);
 
-    return <div className="col-12 move__step__body">
+    useEffect(() => {
+        bookingsDispatch({ type: ADD_FORM_VALUES, payload: { 'to_floors': ToFloorsCountValue, 'from_floors': FromFloorsCountValue } })
+    }, [ToFloorsCountValue, FromFloorsCountValue]);
 
+    return <div className="col-12 move__step__body">
         <Form noValidate>
             <h5 className="my-5">Please provide loading address</h5>
             <Row className="mb-5">
@@ -51,7 +52,9 @@ const MoveDetails = () => {
             <Row className="mb-5">
                 <Form.Group as={Col} md="6" controlId="from_property_type">
                     <Form.Label>Property type</Form.Label>
-                    <Select name="from_property_type"
+                    <Select
+                        name="from_property_type"
+                        value={bookingState.formValues.from_property_type}
                         onChange={(values: any) => bookingsDispatch({ type: ADD_FORM_VALUES, payload: { 'from_property_type': values } })}
                         options={[
                             { value: 0, label: 'Single Storey' },
@@ -86,6 +89,7 @@ const MoveDetails = () => {
                         onChange={(event: React.ChangeEvent<HTMLInputElement>) => bookingsDispatch({ type: ADD_FORM_VALUES, payload: { 'move_time_period': event.target.value } })}
                         id="morning"
                         value="0"
+                        checked={Number(bookingState.formValues.move_time_period) === 0}
                     />
                     <Form.Check
                         type="radio"
@@ -95,9 +99,9 @@ const MoveDetails = () => {
                         onChange={(event: React.ChangeEvent<HTMLInputElement>) => bookingsDispatch({ type: ADD_FORM_VALUES, payload: { 'move_time_period': event.target.value } })}
                         id="afternoon"
                         value="1"
+                        checked={Number(bookingState.formValues.move_time_period) === 1}
                     />
                 </Form.Group>
-
             </Row>
 
             <h5 className="my-5">Please provide delivery address</h5>
@@ -118,6 +122,7 @@ const MoveDetails = () => {
                 <Form.Group as={Col} md="6" controlId="to_property_type">
                     <Form.Label>Property type</Form.Label>
                     <Select name="to_property_type"
+                        value={bookingState.formValues.to_property_type}
                         onChange={(values: any) => bookingsDispatch({ type: ADD_FORM_VALUES, payload: { 'to_property_type': values } })}
                         options={[
                             { value: 0, label: 'Single Storey' },
