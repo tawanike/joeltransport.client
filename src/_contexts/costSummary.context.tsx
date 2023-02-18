@@ -1,6 +1,5 @@
 import { createContext, Dispatch } from "react";
 import { ADD_BAKKIE_SHUTTLE, ADD_MOVE_DETAILS, ADJUST_ADDITIONAL_SERVICES, CostSummary, IAction, SELECT_TRUCK } from "../_models/types";
-
 const initialCostSummaryState: CostSummary = {} as CostSummary;
 
 const CostSummaryReducer = (state: CostSummary, action: IAction) => {

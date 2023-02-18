@@ -33,12 +33,6 @@ const DomesticMoveServices = () => {
         za_holidays.init('ZA');
     }, [moveDate]);
 
-    useEffect(() => {
-        // goToCheckout();
-        console.log(bookingState);
-
-    }, [bookingState]);
-
     const goToCheckout = () => {
         if (canConfirmMove) {
             setShowSelectorModal(true);

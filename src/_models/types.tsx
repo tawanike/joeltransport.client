@@ -98,11 +98,13 @@ export interface IFormValues {
     id: string | undefined,
     from: string,
     to: string,
-    from_property_type: string,
-    to_property_type: string,
+    from_property_type: { value: number, label: string },
+    to_property_type: { value: number, label: string },
     move_date: string | undefined,
     move_time_period: number,
-    submited: boolean
+    submited: boolean,
+    to_floors: number,
+    from_floors: number,
 }
 
 

@@ -90,6 +90,19 @@ const Checkout = () => {
                                         </div>
                                     </div>
                                 </div>
+                                <div className="col-12 moves__checkout__summary__list mt-3">
+                                    <div className="row">
+                                        <div className="col-6 moves__checkout__summary__list__text">
+                                            <p className='moves__checkout__summary__list__text--bold'>Service breakdown</p>
+                                            <p>Truck</p>
+                                            <p>Bakkie shuttle</p>
+                                        </div>
+                                        <div className="col-6 moves__checkout__summary__list__edit">
+                                            Edit
+                                        </div>
+
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
