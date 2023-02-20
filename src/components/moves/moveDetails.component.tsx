@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
@@ -7,6 +7,8 @@ import { BookingContext } from 'src/_contexts/booking.context';
 import { useAPI, useNumberInput } from "src/_hooks";
 import { ADD_FORM_VALUES } from 'src/_models/types';
 import { bookingsService } from "src/_services/bookings.service";
+import DatePicker from 'react-date-picker/dist/entry.nostyle'
+import { FiCalendar } from 'react-icons/fi';
 
 const MoveDetails = () => {
     const api = useAPI();
@@ -16,7 +18,6 @@ const MoveDetails = () => {
     const fetchWrapper = useAPI();
 
     useEffect(() => {
-        console.log(bookingState.formValues);
         const submitForm = async () => {
             if (bookingState.formValues.id) {
                 const updatedBooking = await bookingsService.updateBooking(bookingState.formValues, fetchWrapper);
@@ -28,6 +29,11 @@ const MoveDetails = () => {
             submitForm();
         }
     }, [bookingState.formValues]);
+
+    const onDateChange = (date: Date) => {
+        bookingsDispatch({ type: ADD_FORM_VALUES, payload: { 'move_date': date } })
+
+    };
 
     useEffect(() => {
         bookingsDispatch({ type: ADD_FORM_VALUES, payload: { 'to_floors': ToFloorsCountValue, 'from_floors': FromFloorsCountValue } })
@@ -61,25 +67,68 @@ const MoveDetails = () => {
                             { value: 1, label: 'Multi Storey' }
                         ]} className='' />
                 </Form.Group>
-                <Form.Group as={Col} md="6" controlId="from_floors">
-                    <Form.Label>How many floors is your house</Form.Label>
-                    {FromFloorsCountDisplay}
-                </Form.Group>
-            </Row>
-
-            <Row className="mb-5">
                 <Form.Group as={Col} md="6" controlId="move_date">
-                    <Form.Label>Date</Form.Label>
-                    <Form.Control
+                    <Form.Label>When would you like to move?</Form.Label>
+                    <DatePicker
+                        onChange={onDateChange}
+                        value={bookingState.formValues.move_date}
+                        calendarIcon={<FiCalendar className="calendar-icon" />}
+                        clearIcon={null}
+                        dayPlaceholder="dd"
+                        monthPlaceholder="mm"
+                        yearPlaceholder="yyyy"
+                        tileDisabled={({ date, view }) => {
+                            view === 'month' && date.getDay() === 0
+                            console.log(view, date.getMonth(), date.getDate(), date.getFullYear());
+
+                            return date.getFullYear() === 2023 && date.getMonth() === 1 && [1, 2, 13, 17, 28].includes(date.getDate());
+                        }}
+                        className="date-picker" />
+                    {/* <Form.Control
                         type="date"
                         name="move_date"
                         value={bookingState.formValues.move_date}
                         placeholder="Choose date"
                         onChange={(event: React.ChangeEvent<HTMLInputElement>) => bookingsDispatch({ type: ADD_FORM_VALUES, payload: { 'move_date': event.target.value } })}
                     />
-                    <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                    <Form.Control.Feedback>Looks good!</Form.Control.Feedback> */}
+                </Form.Group>
+
+            </Row>
+
+            <Row className="mb-5">
+                <Form.Group as={Col} md="6" controlId="from_floors">
+                    <Form.Label>How many floors is your house</Form.Label>
+                    {FromFloorsCountDisplay}
                 </Form.Group>
                 <Form.Group as={Col} md="6" className="">
+                    <Form.Label>Does the house have a working lift?</Form.Label>
+                    <Form.Check
+                        type="radio"
+                        inline
+                        name="from_working_lift"
+                        label="Yes"
+                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => bookingsDispatch({ type: ADD_FORM_VALUES, payload: { 'from_working_lift': event.target.value } })}
+                        id="yes"
+                        value={1}
+                        checked={Number(bookingState.formValues.from_working_lift) === 1}
+                    />
+                    <Form.Check
+                        type="radio"
+                        inline
+                        name="from_working_lift"
+                        label="No"
+                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => bookingsDispatch({ type: ADD_FORM_VALUES, payload: { 'from_working_lift': event.target.value } })}
+                        id="no"
+                        value={0}
+                        checked={Number(bookingState.formValues.from_working_lift) === 0}
+                    />
+                </Form.Group>
+            </Row>
+
+            <Row className="mb-5">
+
+                <Form.Group as={Col} md="12" className="">
                     <Form.Label>What time would you like to move?</Form.Label>
                     <Form.Check
                         type="radio"
@@ -132,6 +181,31 @@ const MoveDetails = () => {
                 <Form.Group as={Col} md="6" controlId="date">
                     <Form.Label>To floors count</Form.Label>
                     {ToFloorsCountDisplay}
+                </Form.Group>
+            </Row>
+            <Row className="mb-5">
+                <Form.Group as={Col} md="6" className="">
+                    <Form.Label>Does the house have a working lift?</Form.Label>
+                    <Form.Check
+                        type="radio"
+                        inline
+                        name="to_working_lift"
+                        label="Yes"
+                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => bookingsDispatch({ type: ADD_FORM_VALUES, payload: { 'to_working_lift': event.target.value } })}
+                        id="yes"
+                        value={1}
+                        checked={Number(bookingState.formValues.to_working_lift) === 1}
+                    />
+                    <Form.Check
+                        type="radio"
+                        inline
+                        name="to_working_lift"
+                        label="No"
+                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => bookingsDispatch({ type: ADD_FORM_VALUES, payload: { 'to_working_lift': event.target.value } })}
+                        id="no"
+                        value={0}
+                        checked={Number(bookingState.formValues.to_working_lift) === 0}
+                    />
                 </Form.Group>
             </Row>
         </Form>
