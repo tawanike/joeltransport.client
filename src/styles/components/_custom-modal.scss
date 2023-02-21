@@ -1,17 +1,13 @@
 .custom-modal {
     padding: 1rem;
     &__header {
-        display: grid;
-        place-items: center;
         h3 {
             font-size: 1.2rem;
             font-weight: 600;
-            text-align: center;
         }
         p {
             margin-bottom: 0;
-            text-align: center;
-            margin-top: 1rem;
+            margin-top: 0.5rem;
         }
     }
     &__body {
@@ -24,5 +20,30 @@
         display: grid;
         place-items: center;
         margin-top: 1rem;
+    }
+    &__search-address {
+        margin-top: 2rem;
+        background: #F7F7F7;
+        border-radius: 8px;
+        &__tab-container {
+            &__tab {
+                display: grid;
+                place-items: center;
+                padding: 1rem;
+                p {
+                    margin-bottom: 0;
+                }
+                &--active {
+                    background: $secondary;
+                    p {
+                        color: $white;
+                        font-weight: 500;
+                    }
+                }
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+        }
     }
 }
