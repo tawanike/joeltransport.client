@@ -107,6 +107,8 @@ export interface IFormValues {
     from_floors: number,
     from_working_lift: boolean,
     to_working_lift: boolean,
+    requires_bakkie_shuttle: boolean,
+    bakkie_address: { value: number, label: string } | null,
 }
 
 

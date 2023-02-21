@@ -4,6 +4,7 @@ import { FcInfo } from "react-icons/fc";
 import Select from 'react-select';
 import { addBakkieShuttle } from "src/_actions/added-services.actions";
 import { BookingContext } from "src/_contexts/booking.context";
+import { ADD_FORM_VALUES } from "src/_models/types";
 import CostSummaryStateContext from "../../_contexts/costSummary.context";
 
 interface IProps {
@@ -20,6 +21,9 @@ const AddedServices: FC<IProps> = () => {
         }));
     }
 
+    console.log(Boolean(bookingState.formValues.requires_bakkie_shuttle));
+
+
     return <>
         <div>
             <h5 className="my-3">Do you required a bakkie shuttle?</h5>
@@ -29,15 +33,19 @@ const AddedServices: FC<IProps> = () => {
                     label="Yes"
                     name="requires_bakkie_shuttle"
                     type="radio"
-                    onChange={() => selectBakkieShuttle({ value: "yes" })}
+                    value={1}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => dispatchBookings({ type: ADD_FORM_VALUES, payload: { 'requires_bakkie_shuttle': Number(event.target.value) } })}
                     className="pe-5"
+                    checked={Number(bookingState.formValues.requires_bakkie_shuttle) === 1}
                 />
                 <Form.Check
                     inline
                     label="No"
+                    value={0}
                     name="requires_bakkie_shuttle"
-                    onChange={() => selectBakkieShuttle({ value: "no" })}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => dispatchBookings({ type: ADD_FORM_VALUES, payload: { 'requires_bakkie_shuttle': Number(event.target.value), 'bakkie_address': null } })}
                     type="radio"
+                    checked={Number(bookingState.formValues.requires_bakkie_shuttle) === 0}
                 />
                 <Alert variant="primary" className="mt-3">
                     <div className="row">
@@ -53,9 +61,9 @@ const AddedServices: FC<IProps> = () => {
                     <Form.Label>Select address for a bakkie shuttle</Form.Label>
                     <Select name="to_property_type"
                         placeholder="Select address"
-                        onChange={(values: any) => {
-
-                        }}
+                        isDisabled={!Boolean(bookingState.formValues.requires_bakkie_shuttle)}
+                        value={bookingState.formValues.bakkie_address}
+                        onChange={(values: any) => dispatchBookings({ type: ADD_FORM_VALUES, payload: { 'bakkie_address': values } })}
                         options={[
                             { value: 0, label: 'Loading address' },
                             { value: 1, label: 'Delivery address' },

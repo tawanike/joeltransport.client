@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
@@ -84,16 +84,7 @@ const MoveDetails = () => {
                             return date.getFullYear() === 2023 && date.getMonth() === 1 && [1, 2, 13, 17, 28].includes(date.getDate());
                         }}
                         className="date-picker" />
-                    {/* <Form.Control
-                        type="date"
-                        name="move_date"
-                        value={bookingState.formValues.move_date}
-                        placeholder="Choose date"
-                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => bookingsDispatch({ type: ADD_FORM_VALUES, payload: { 'move_date': event.target.value } })}
-                    />
-                    <Form.Control.Feedback>Looks good!</Form.Control.Feedback> */}
                 </Form.Group>
-
             </Row>
 
             <Row className="mb-5">
