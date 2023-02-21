@@ -55,6 +55,7 @@ const BookingContextProvider: React.FC<ContextProviderProps> = (props) => {
     const api = useAPI();
     const [state, dispatch] = useReducer(reducer, initialState);
     const { CostSummaryState, dispatchCostSummary } = useContext(CostSummaryStateContext);
+
     useEffect(() => {
         const bookingId = localStorage.getItem('bookingId');
         if (bookingId) {
@@ -63,8 +64,8 @@ const BookingContextProvider: React.FC<ContextProviderProps> = (props) => {
                 dispatch(getBooking(res));
             });
         }
-
     }, []);
+
     return (
         <BookingContext.Provider value={{ state, dispatch }}>
             {props.children}
