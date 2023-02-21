@@ -2,7 +2,9 @@
 import { useContext, useEffect, useState } from "react";
 import { Carousel } from "react-bootstrap";
 import { RxCaretLeft, RxCaretRight } from "react-icons/rx";
+import { getBooking } from "src/_actions/booking.actions";
 import { selectTruck } from "src/_actions/trucks.actions";
+import { BookingContext } from "src/_contexts/booking.context";
 import { useAPI } from 'src/_hooks';
 import { IProduct } from "src/_models/types";
 import CostSummaryStateContext from "../../_contexts/costSummary.context";
@@ -17,6 +19,7 @@ const ChooseTruck = ({ isHoliday, setChooseTruckComplete }: any) => {
     const [index, setIndex] = useState(0);
 
     const { CostSummaryState, dispatchCostSummary } = useContext(CostSummaryStateContext);
+    const bookingContext = useContext(BookingContext);
 
     const handleSelect = (selectedIndex: number, e: any) => {
         setIndex(selectedIndex);
@@ -29,18 +32,9 @@ const ChooseTruck = ({ isHoliday, setChooseTruckComplete }: any) => {
             setTrucks(trucks.results);
         })();
     }, []);
-    useEffect(() => {
-        (async () => {
-            const trucks = await api.get("/products?category=2", false);
-            setTrucks(trucks.results);
-        })();
-    }, []);
 
     useEffect(() => {
-        console.log(selectedTruck);
-
         if (selectedTruck) {
-
             let price = 0, offPeakDiscount: number = 0;
             if (!isHoliday) {
                 price = selectedTruck.price + selectedTruck.off_peak_discount;
@@ -58,6 +52,24 @@ const ChooseTruck = ({ isHoliday, setChooseTruckComplete }: any) => {
         }
 
         // TODO: Save to database
+        if (selectedTruck && bookingContext.state.selected) {
+            api.post(`/bookings/${bookingContext.state.selected.id}/products`, {
+                product: selectedTruck.id,
+                quantity: 1,
+                product_type: 'truck',
+                booking: bookingContext.state.selected.id
+            }).then((res) => {
+                if (!res.error) {
+                    // setChooseTruckComplete(true);
+                    api.get(`/bookings/${bookingContext.state.selected.id}`, false)
+                        .then((res) => {
+                            if (!res.error) {
+                                bookingContext.dispatch(getBooking(res));;
+                            }
+                        });
+                }
+            });;
+        }
     }, [selectedTruck]);
 
 

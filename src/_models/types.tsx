@@ -109,6 +109,7 @@ export interface IFormValues {
 
 
 export interface IBooking {
+    selected: any;
     id: string | undefined,
     products: IProduct[],
     formValues: IFormValues,
