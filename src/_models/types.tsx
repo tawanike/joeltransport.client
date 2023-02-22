@@ -46,27 +46,18 @@ export type AuthView =
   | "verifyEmail";
 
 export type CostSummary = {
-  bubbleWrap: {
-    quantity: number;
-    price: number;
-  } | null;
-  largeBox: {
-    quantity: number;
-    price: number;
-  } | null;
-  mediumBox: {
-    quantity: number;
-    price: number;
-  } | null;
   truck: {
     quantity: number;
     price: number;
-    offPeakDiscount: number;
+    off_peak_discount: number;
   } | null;
   bakkieShuttle: {
     quantity: number;
     price: number;
   } | null;
+  subtotal: number;
+  vat: number;
+  total: number;
 };
 
 export type FetchWrapper = {
@@ -108,7 +99,7 @@ export interface IFormValues {
   to_address: IAddress;
   from_property_type: number;
   to_property_type: number;
-  move_date: string | undefined;
+  move_date: any;
   move_time_period: number;
   submited: boolean;
   to_floors_count: number;
@@ -126,7 +117,6 @@ export interface IFormValues {
 }
 
 export interface IBooking {
-  selected: any;
   id: string | undefined;
   products: IProduct[];
   formValues: IFormValues;

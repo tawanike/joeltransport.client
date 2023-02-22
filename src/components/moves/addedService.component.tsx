@@ -72,7 +72,7 @@ const AddedServices: FC<IProps> = () => {
     })();
   }, []);
 
-  const getBakkieAddressOption = (value: number) => {
+  const getBakkieAddressOption = (value: any) => {
     switch (value) {
       case 1:
         return { value: 1, label: "Loading address" };

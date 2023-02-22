@@ -10,7 +10,6 @@ import {
 const initialCostSummaryState: CostSummary = {} as CostSummary;
 
 const CostSummaryReducer = (state: CostSummary, action: IAction) => {
-  console.log(action);
   switch (action.type) {
     case ADJUST_ADDITIONAL_SERVICES:
       return { ...state, ...action.payload };
