@@ -5,6 +5,7 @@ export const addBakkieShuttle = (bakkieShuttle: any) => {
         type: ADD_BAKKIE_SHUTTLE,
         payload: {
             bakkieShuttle: bakkieShuttle
+
         }
     }
 }
