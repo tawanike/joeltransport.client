@@ -1,101 +1,145 @@
-
 import { useContext, useEffect, useState } from "react";
 import { Carousel } from "react-bootstrap";
 import { RxCaretLeft, RxCaretRight } from "react-icons/rx";
+import { getBooking } from "src/_actions/booking.actions";
 import { selectTruck } from "src/_actions/trucks.actions";
-import { useAPI } from 'src/_hooks';
+import { BookingContext } from "src/_contexts/booking.context";
+import { isHoliday } from "src/_helpers/dateFormat";
+import { useAPI } from "src/_hooks";
 import { IProduct } from "src/_models/types";
 import CostSummaryStateContext from "../../_contexts/costSummary.context";
 import TruckDisplay from "./truckDisplay.component";
 
+const ChooseTruck = ({ setChooseTruckComplete }: any) => {
+  const api = useAPI();
+  const [trucks, setTrucks] = useState<IProduct[]>([]);
+  const [selectedTruck, setSelectedTruck] = useState<IProduct>();
+  const [activeTruck, setActiveTruck] = useState<IProduct>();
+  const [index, setIndex] = useState(0);
 
-const ChooseTruck = ({ isHoliday, setChooseTruckComplete }: any) => {
-    const api = useAPI();
-    const [trucks, setTrucks] = useState<IProduct[]>([]);
-    const [selectedTruck, setSelectedTruck] = useState<IProduct>();
-    const [activeTruck, setActiveTruck] = useState<IProduct>();
-    const [index, setIndex] = useState(0);
+  const { CostSummaryState, dispatchCostSummary } = useContext(
+    CostSummaryStateContext
+  );
+  const bookingContext = useContext(BookingContext);
 
-    const { CostSummaryState, dispatchCostSummary } = useContext(CostSummaryStateContext);
+  const handleSelect = (selectedIndex: number, e: any) => {
+    setIndex(selectedIndex);
+    setActiveTruck(trucks[selectedIndex]);
+  };
 
-    const handleSelect = (selectedIndex: number, e: any) => {
-        setIndex(selectedIndex);
-        setActiveTruck(trucks[selectedIndex]);
-    };
+  useEffect(() => {
+    (async () => {
+      const trucks = await api.get("/products?category=2", false);
+      setTrucks(trucks.results);
+    })();
+  }, []);
 
-    useEffect(() => {
-        (async () => {
-            const trucks = await api.get("/products?category=2", false);
-            setTrucks(trucks.results);
-        })();
-    }, []);
-    useEffect(() => {
-        (async () => {
-            const trucks = await api.get("/products?category=2", false);
-            setTrucks(trucks.results);
-        })();
-    }, []);
+  useEffect(() => {
+    if (selectedTruck) {
+      let price = 0,
+        offPeakDiscount: number = 0;
+      if (isHoliday(bookingContext.state.formValues.move_date)) {
+        price = selectedTruck.price + selectedTruck.off_peak_discount;
+        offPeakDiscount = 0;
+      } else {
+        price = selectedTruck.price;
+        offPeakDiscount = selectedTruck.off_peak_discount;
+      }
 
-    useEffect(() => {
-        console.log(selectedTruck);
+      dispatchCostSummary(
+        selectTruck({
+          quantity: 1,
+          price: price,
+          off_peak_discount: offPeakDiscount,
+        })
+      );
+    }
 
-        if (selectedTruck) {
-
-            let price = 0, offPeakDiscount: number = 0;
-            if (!isHoliday) {
-                price = selectedTruck.price + selectedTruck.off_peak_discount;
-                offPeakDiscount = 0
-            } else {
-                price = selectedTruck.price;
-                offPeakDiscount = selectedTruck.off_peak_discount;
-            }
-
-            dispatchCostSummary(selectTruck({
-                quantity: 1,
-                price: price,
-                offPeakDiscount: offPeakDiscount,
-            }));
-        }
-
-        // TODO: Save to database
-    }, [selectedTruck]);
-
-
-    return <div className="row">
-        <div className="col-1 truckDisplay__indicators" onClick={() => !(index - 1 < 0) && setIndex(index - 1)}>
-            <RxCaretLeft />
-        </div>
-        <div className="col-10">
-            <Carousel
-                activeIndex={index}
-                onSelect={handleSelect}
-                interval={null}
-                indicators={false}
-                controls={false}
-            >
-                {
-                    trucks.map((truck: IProduct, i) => <>
-                        <Carousel.Item key={truck.id} className={i == index ? 'active' : undefined}>
-                            <div className="row">
-                                <div className="col-6">
-                                    <TruckDisplay truck={truck} onSelect={setSelectedTruck} isSelected={selectedTruck ? (selectedTruck as IProduct).id === truck.id : false} />
-                                </div>
-                                <div className="col-6">
-                                    <TruckDisplay truck={truck} onSelect={setSelectedTruck} isSelected={selectedTruck ? (selectedTruck as IProduct).id === truck.id : false} />
-                                </div>
-                            </div>
-                        </Carousel.Item>
-                    </>)
+    if (selectedTruck) {
+      api
+        .post(`/bookings/${bookingContext.state.formValues.id}/products`, {
+          product: selectedTruck.id,
+          quantity: 1,
+          product_type: "truck",
+          booking: bookingContext.state.formValues.id,
+        })
+        .then((res) => {
+          if (!res.error) {
+            // setChooseTruckComplete(true);
+            api
+              .get(`/bookings/${bookingContext.state.formValues.id}`, false)
+              .then((res) => {
+                if (!res.error) {
+                  bookingContext.dispatch(getBooking({ formValues: res }));
                 }
-            </Carousel>
-            <div className="col-12 truckDisplay__truck-summary">
-                <p>{activeTruck && activeTruck.description}</p>
-            </div>
+              });
+          }
+        });
+    }
+  }, [selectedTruck]);
+
+  return (
+    <div className="row">
+      <div
+        className="col-1 truckDisplay__indicators"
+        onClick={() => !(index - 1 < 0) && setIndex(index - 1)}
+      >
+        <RxCaretLeft />
+      </div>
+      <div className="col-10">
+        <Carousel
+          activeIndex={index}
+          onSelect={handleSelect}
+          interval={null}
+          indicators={false}
+          controls={false}
+        >
+          {trucks.map((truck: IProduct, i) => (
+            <>
+              <Carousel.Item
+                key={truck.id}
+                className={i == index ? "active" : undefined}
+              >
+                <div className="row">
+                  <div className="col-6">
+                    <TruckDisplay
+                      truck={truck}
+                      onSelect={setSelectedTruck}
+                      isSelected={
+                        selectedTruck
+                          ? (selectedTruck as IProduct).id === truck.id
+                          : false
+                      }
+                    />
+                  </div>
+                  {/* <div className="col-6">
+                    <TruckDisplay
+                      truck={truck}
+                      onSelect={setSelectedTruck}
+                      isSelected={
+                        selectedTruck
+                          ? (selectedTruck as IProduct).id === truck.id
+                          : false
+                      }
+                    />
+                  </div> */}
+                </div>
+              </Carousel.Item>
+            </>
+          ))}
+        </Carousel>
+        <div className="col-12 truckDisplay__truck-summary">
+          <p>{activeTruck && activeTruck.description}</p>
         </div>
-        <div className="col-1 truckDisplay__indicators" onClick={() => (index + 1 < trucks.length) && setIndex(index + 1)}>
-            <RxCaretRight />
-        </div>
+      </div>
+      <div
+        className="col-1 truckDisplay__indicators"
+        onClick={() => index + 1 < trucks.length && setIndex(index + 1)}
+      >
+        <RxCaretRight />
+      </div>
     </div>
-}
+  );
+};
 
 export default ChooseTruck;
