@@ -3,44 +3,44 @@ import Link from 'next/link';
 
 function Footer() {
     return (
-        <div className="Footer container-fluid">
+        <div className="Footer container-fluid mt-5">
 
             <div className="container">
                 <div className="row">
                     <div className="col">
                         <h5>Services</h5>
                         <ul className="Footer__links">
-                            <li><Link href="">Home movers</Link></li>
-                            <li><Link href="">International Moves</Link></li>
-                            <li><Link href="">Office removals</Link></li>
-                            <li><Link href="">Storage</Link></li>
-                            <li><Link href="">Specialised services</Link></li>
+                            <li><Link href="/services/home-moves">Home movers</Link></li>
+                            <li><Link href="/services/home-moves">International Moves</Link></li>
+                            <li><Link href="/services/office-removals">Office removals</Link></li>
+                            <li><Link href="/services/storage">Storage</Link></li>
+                            <li><Link href="/services/specialized-services">Specialised services</Link></li>
                         </ul>
                     </div>
                     <div className="col">
                         <h5>Resources</h5>
                         <ul className="Footer__links">
-                            <li><Link href="">FAQs</Link></li>
-                            <li><Link href="">Resources & tips</Link></li>
-                            <li><Link href="">Documentation</Link></li>
+                            <li><Link href="/#faqs">FAQs</Link></li>
+                            <li><Link href="/resources">Resources & tips</Link></li>
+                            <li><Link href="/resources">Documentation</Link></li>
                         </ul>
                     </div>
                     <div className="col">
                         <h5>Company</h5>
                         <ul className="Footer__links">
-                            <li><Link href="">Removal Policy</Link></li>
-                            <li><Link href="">Privacy Policy</Link></li>
-                            <li><Link href="">Terms and Conditions</Link></li>
-                            <li><Link href="">Careers</Link></li>
+                            <li><Link href="/legal/removal-policy">Removal Policy</Link></li>
+                            <li><Link href="/legal/privacy-policy">Privacy Policy</Link></li>
+                            <li><Link href="/legal/terms-conditions">Terms and Conditions</Link></li>
+                            <li><Link href="/careers">Careers</Link></li>
                         </ul>
                     </div>
                     <div className="col">
                         <h5>Support</h5>
                         <ul className="Footer__links">
-                            <li><Link href="">Chat to us</Link></li>
-                            <li><Link href="">sales@joeltransport.co.za</Link></li>
-                            <li><Link href="">Phone +27 12 666 9055</Link></li>
-                            <li><Link href="">Fax +27 12 666 9186</Link></li>
+                            <li><Link href="#">Chat to us</Link></li>
+                            <li><Link href="mailto:sales@joeltransport.co.za">sales@joeltransport.co.za</Link></li>
+                            <li><Link href="tel:27 12 666 9055">Phone +27 12 666 9055</Link></li>
+                            <li>Fax +27 12 666 9186</li>
                         </ul>
                     </div>
                     <div className="col">

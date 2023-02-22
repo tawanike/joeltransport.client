@@ -1,0 +1,96 @@
+.moves {
+    &__stepper {
+        border-bottom: 1px solid #D9D9D9;
+    }
+    &__step {
+        border-top: 1px solid #D9D9D9;
+        &__head {
+            padding-top: 1.2rem;
+            padding-bottom: 1.2rem;
+            p {
+                margin-bottom: 0;
+            }
+        }
+        &__body {
+            &__table-head {
+                background-color: #F2F0F4;
+                font-size: 0.8rem;
+                font-weight: 400;
+            }
+        }
+    }
+    .border-elements {
+        border-left: 1px solid #D9D9D9;
+        border-right: 1px solid #D9D9D9;
+    }
+    tr {
+        border-bottom: 1px solid #D9D9D9;
+    }
+    th,
+    td {
+        font-size: 0.8rem;
+        font-weight: 400;
+        padding-top: 1.2rem;
+        padding-bottom: 1.2rem;
+        height: 100%;
+        text-align: center;
+        vertical-align: middle;
+        .center {
+            display: grid;
+            place-items: center;
+            height: 100%;
+            clear: both;
+        }
+    }
+    &__container {
+        &__button-container {
+            border-top: 1px solid #D9D9D9;
+            display: inline-grid;
+            place-items: center end;
+        }
+    }
+    &__checkout {
+        &__summary {
+            background: #FFFFFF;
+            border: 1px solid #E0E0E0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            &__list {
+                font-weight: 400;
+                border-bottom: 1px solid #D9D9D9;
+                padding-bottom: 1rem;
+                &__text {
+                    font-size: 0.9rem;
+                    p {
+                        margin-bottom: 0;
+                    }
+                    &--bold {
+                        font-weight: 600;
+                    }
+                }
+                &__price {
+                    font-size: 0.9rem;
+                    text-align: right;
+                }
+                &__edit {
+                    font-size: 0.9rem;
+                    text-align: right;
+                    color: $secondary;
+                    font-weight: 600;
+                    &:hover {
+                        cursor: pointer;
+                    }
+                }
+                &--bold {
+                    font-weight: 600;
+                }
+            }
+        }
+        &__image {
+            img {
+                width: 100%;
+                height: auto;
+            }
+        }
+    }
+}

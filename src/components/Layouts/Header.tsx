@@ -1,8 +1,10 @@
+import { useRouter } from 'next/router';
 import React from 'react';
 import { Button } from 'react-bootstrap';
 import Navigation from './Navigation';
 
 const Header = () => {
+    const router = useRouter();
     return (
         <div className="container-fluid">
             <div className="row">
@@ -21,7 +23,9 @@ const Header = () => {
                         </div>
                     </div>
                 </div>
-                <Navigation />
+                {
+                    !router.pathname.split('/').includes('checkout') && <Navigation />
+                }
             </div>
         </div>
     )

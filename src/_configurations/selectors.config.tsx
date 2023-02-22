@@ -9,18 +9,18 @@ export type SelectorConfig = {
 export const selectorConfig: SelectorConfig[] = [
     {
         id: 1,
-        title: "Domestic",
-        route: "/move-services",
-        heading: "Looking for moving services? Get an instant quote.",
-        description: "Are you in Gauteng planning to move homes, get free quote online."
+        title: "Home Move",
+        route: "/move/domestic",
+        heading: "Get free quote for your home move",
+        description: "Get free quote for your home move"
     },
-    {
-        id: 2,
-        title: "International",
-        route: "/contact-us",
-        heading: "Looking for long distance moving services?",
-        description: "For long distance & international services, we’ll need to collect your info & one of our specialist will be in touch."
-    },
+    // {
+    //     id: 2,
+    //     title: "International",
+    //     route: "/move/international",
+    //     heading: "Looking for long distance moving services?",
+    //     description: "For long distance & international services, we’ll need to collect your info & one of our specialist will be in touch."
+    // },
     {
         id: 3,
         title: "Storage",

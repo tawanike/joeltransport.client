@@ -1,0 +1,50 @@
+.truckDisplay {
+    border: 1px solid #D9D9D9;
+    border-radius: 8px;
+    flex-direction: row;
+    &--active {
+        border: 1px solid #002E69;
+        border-radius: 8px;
+    }
+    &__head {
+        display: grid;
+        place-items: center;
+        font-size: 4rem;
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+    &__body {
+        &__item {
+            p {
+                margin-bottom: 0;
+                font-size: 0.8rem;
+            }
+            &--left {}
+            &--right {
+                text-align: right;
+            }
+        }
+    }
+    &__truck-summary {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+        p {
+            font-size: 1rem;
+            margin-bottom: 0;
+        }
+    }
+    &__indicators {
+        display: grid;
+        place-items: center;
+        color: $secondary;
+        font-size: 4rem;
+        padding: 0;
+        &:hover {
+            cursor: pointer;
+            color: lighten($secondary, 20);
+        }
+    }
+    &--selected {
+        border: 1px solid #002E69;
+    }
+}

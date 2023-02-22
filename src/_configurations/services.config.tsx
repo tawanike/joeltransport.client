@@ -1,5 +1,7 @@
 import { ReactNode } from "react";
 import { MdOutlineEmojiTransportation } from "react-icons/md";
+import { BiHomeSmile } from "react-icons/bi";
+import { FaLaptopHouse, FaLocationArrow, FaPlaneDeparture, FaWarehouse } from "react-icons/fa";
 
 export type ServiceConfig = {
     id: string,
@@ -14,56 +16,56 @@ export type ServiceConfig = {
 export const servicesConfig: ServiceConfig[] = [
     {
         id: '1',
-        title: 'Service 1',
-        description: 'This is a description',
-        link: 'https://www.ibm.com',
+        title: 'Domestic move',
+        description: 'Planning to relocate your home around Gauteng? Schedule your move online.',
+        link: '/move/domestic',
         image: '',
         bgColor: 'light-blue',
-        icon: <MdOutlineEmojiTransportation />
+        icon: <BiHomeSmile />
     },
     {
         id: '2',
-        title: 'Service 2',
-        description: 'This is a description',
-        link: 'https://www.ibm.com',
+        title: 'Long distance move',
+        description: 'Get in-touch with one of expects to help you plan your international move.',
+        link: '/move/international',
         image: '',
         bgColor: 'orange',
-        icon: <MdOutlineEmojiTransportation />
+        icon: <FaLocationArrow />
     },
     {
         id: '3',
-        title: 'Service 3',
-        description: 'This is a description',
-        link: 'https://www.ibm.com',
+        title: 'International move',
+        description: 'Get in-touch with one of expects to help you with your move',
+        link: '/move/international',
         image: '',
         bgColor: 'brown',
-        icon: <MdOutlineEmojiTransportation />
+        icon: <FaPlaneDeparture />
     },
     {
         id: '4',
-        title: 'Service 2',
-        description: 'This is a description',
-        link: 'https://www.ibm.com',
+        title: 'Office relocation',
+        description: 'Get in-touch with one of expects to help you plan your international move.',
+        link: '/services/office-removals',
         image: '',
         bgColor: 'orange',
         icon: <MdOutlineEmojiTransportation />
     },
     {
         id: '5',
-        title: 'Service 3',
-        description: 'This is a description',
-        link: 'https://www.ibm.com',
+        title: 'Specialized services',
+        description: 'Planning to relocate your piano, art, pet? get in touch with one of our expects to help you with your move or relocation. ',
+        link: '/services/specialized-services',
         image: '',
         bgColor: 'light-blue',
-        icon: <MdOutlineEmojiTransportation />
+        icon: <FaLaptopHouse />
     },
     {
         id: '6',
-        title: 'Service 3',
-        description: 'This is a description',
-        link: 'https://www.ibm.com',
+        title: 'Storage services',
+        description: 'Looking for a shot-term or long term storage? book and schedule your storage online.',
+        link: '/services/storage',
         image: '',
         bgColor: 'orange',
-        icon: <MdOutlineEmojiTransportation />
+        icon: <FaWarehouse />
     }
 ]

@@ -6,7 +6,11 @@ $danger: #da3832;
 $red: $danger;
 $success: #00c247;
 $warning: #ffe16a;
+$alternate-blue: #1D3A7A;
+@import "react-date-picker/dist/DatePicker.css";
+@import 'react-calendar/dist/Calendar.css';
 @import "~bootstrap/scss/bootstrap";
+@import "./bootstrap-overides";
 // Abstract files
 @import "utils/all";
 // Vendor Files
@@ -21,3 +25,4 @@ $warning: #ffe16a;
 @import "sections/all";
 // Pages
 @import "pages/all";
+@import "./moves";

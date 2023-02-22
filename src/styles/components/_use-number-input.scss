@@ -1,0 +1,23 @@
+.custom-number-input {
+    border: 1px solid #D9D9D9;
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+    border-radius: 5px;
+    overflow: hidden;
+    p {
+        margin-bottom: 0;
+    }
+    &__controls {
+        display: grid;
+        place-items: center;
+        font-size: 1.2rem;
+        &:hover {
+            cursor: pointer;
+            color: $secondary;
+        }
+    }
+    &__number {
+        display: grid;
+        place-items: center;
+    }
+}

@@ -3,6 +3,7 @@ import UserAuthStateContext from "../_contexts/userAuth.context";
 import { LOGOUT, RequestOptions } from "../_models/types";
 
 const useAPI = () => {
+    const API_URL = process.env.NEXT_PUBLIC_API_URL;
     const { UserAuthState, dispatchUserAuth } = useContext(UserAuthStateContext);
 
     const request = (method: string) => {
@@ -15,14 +16,14 @@ const useAPI = () => {
                 requestOptions.headers['Content-Type'] = 'application/json';
                 requestOptions.body = JSON.stringify(body);
             }
-            return fetch(url, requestOptions).then(handleResponse);
+            return fetch(API_URL + url, requestOptions).then(handleResponse);
         }
     }
 
     const authHeader = (url: string) => {
         const token = authToken();
         const isLoggedIn = !!token;
-        const isApiUrl = url.startsWith(process.env.REACT_APP_API_URL as string);
+        const isApiUrl = url.startsWith(process.env.NEXT_PUBLIC_API_URL as string);
         if (isLoggedIn && isApiUrl) {
             return { Authorization: `Bearer ${token}` };
         } else {
@@ -53,6 +54,7 @@ const useAPI = () => {
         get: request('GET'),
         post: request('POST'),
         put: request('PUT'),
+        patch: request('PATCH'),
         delete: request('DELETE')
     };
 }
