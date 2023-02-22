@@ -1,14 +1,14 @@
 import { useRouter } from "next/router";
 import { useContext, useState } from "react";
 import { Alert, Button, Col, Form, Modal, Row } from "react-bootstrap";
-import GooglePlacesAutocomplete, {
-  geocodeByPlaceId,
-} from "react-google-places-autocomplete";
+import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 import { FcInfo } from "react-icons/fc";
+import { getBooking } from "src/_actions/booking.actions";
 import { BookingContext } from "src/_contexts/booking.context";
 import { addressUtils } from "src/_helpers/formatAddress";
 import { useAPI } from "src/_hooks";
 import { ADD_FORM_VALUES } from "src/_models/types";
+import { bookingsService } from "src/_services/bookings.service";
 import {
   SelectorConfig,
   selectorConfig,
@@ -21,55 +21,69 @@ const Selector = () => {
   const [selectType, setSelectType] = useState("auto");
   const { state: bookingState, dispatch: bookingsDispatch } =
     useContext(BookingContext);
-  const [whichAddress, setWhichAddress] = useState<"from" | "to">("from");
+  const [whichAddress, setWhichAddress] = useState<
+    "from_address" | "to_address"
+  >("from_address");
   const fetchWrapper = useAPI();
 
   const isNextActive = () => {
-    if (whichAddress === "from") {
+    if (whichAddress === "from_address") {
       return !(
         Object.keys(bookingState.formValues).length &&
-        bookingState.formValues.from &&
-        Object.keys(bookingState.formValues.from).length > 0
+        bookingState.formValues.from_address &&
+        Object.keys(bookingState.formValues.from_address).length > 0
       );
     }
-    if (whichAddress === "to") {
+    if (whichAddress === "to_address") {
       return !(
         Object.keys(bookingState.formValues).length &&
-        bookingState.formValues.to &&
-        Object.keys(bookingState.formValues.to).length > 0
+        bookingState.formValues.to_address &&
+        Object.keys(bookingState.formValues.to_address).length > 0
       );
     }
     return false;
   };
 
   const handleNext = async () => {
-    if (whichAddress === "from") {
-      setWhichAddress("to");
+    if (whichAddress === "from_address") {
+      setWhichAddress("to_address");
       return;
     }
     // compare 2 provinces, if they are the same, then redirect to domestic, else international.
     // save to db, create booking.
     // when you have booking id, redirect to move details page.
-    // const booking = await bookingsService.createBooking(bookingState.formValues, fetchWrapper);
-    // console.log(booking);
+    const booking = await bookingsService.createBooking(
+      bookingState.formValues,
+      fetchWrapper
+    );
 
-    router.push(`/move/domestic`);
+    bookingsDispatch(getBooking(booking));
+    localStorage.setItem("bookingId", booking.id);
+
+    if (
+      bookingState.formValues.from_address?.province === "Gauteng" &&
+      bookingState.formValues.to_address?.province === "Gauteng"
+    ) {
+      router.push(`/move/domestic`);
+    } else {
+      router.push(`/move/international`);
+    }
+
     setShowSelectorModal(false);
   };
 
   const handleAddressChange = async (location: any) => {
-    console.log(location);
-
-    const geoCoded = await geocodeByPlaceId(location.value.place_id);
-    const formatted = addressUtils.formatAddress(location, geoCoded);
-    console.log("FORMATTED", formatted);
-
+    const address = await addressUtils.formatAddress(location);
+    const original_location = [whichAddress] + "_original";
     bookingsDispatch({
       type: ADD_FORM_VALUES,
-      payload: { [whichAddress]: location },
+      payload: { [whichAddress]: address, [original_location]: location },
     });
   };
-
+  const address_types = {
+    from_address: "from",
+    to_address: "to",
+  };
   return (
     <div className="selectorContainer container">
       <Modal
@@ -80,7 +94,7 @@ const Selector = () => {
           <div className="col-12 custom-modal">
             <div className="custom-modal__header">
               <h3>Before we get started please provide info below.</h3>
-              <p>Where are you moving {whichAddress}?</p>
+              <p>Where are you moving {address_types[whichAddress]}?</p>
             </div>
             <div className="col-12 custom-modal__body">
               <div className="custom-modal__search-address col-12 mb-4">
@@ -120,14 +134,15 @@ const Selector = () => {
                 <div className="custom-modal__search-address__auto col-12">
                   <Form.Group as={Col} md="12" controlId="from">
                     <Form.Label>
-                      Search {whichAddress === "from" ? "loading" : "delivery"}{" "}
+                      Search{" "}
+                      {whichAddress === "from_address" ? "loading" : "delivery"}{" "}
                       address
                     </Form.Label>
                     <GooglePlacesAutocomplete
                       apiKey="AIzaSyC_GzK_Vl1Z4sC0-SjAlJd8lzhodDk1coE"
                       minLengthAutocomplete={5}
                       selectProps={{
-                        value: bookingState.formValues.from,
+                        value: "",
                         onChange: (location: any) =>
                           handleAddressChange(location),
                       }}
@@ -166,7 +181,7 @@ const Selector = () => {
                         />
                       </Form.Group>
                       <Form.Group as={Col} md="6">
-                        <Form.Label>Surbub</Form.Label>
+                        <Form.Label>Suburb</Form.Label>
                         <Form.Control
                           type="text"
                           name="surbab"

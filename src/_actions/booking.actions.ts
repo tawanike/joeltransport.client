@@ -1,6 +1,6 @@
-import { GET_BOOKING, IBooking } from 'src/_models/types';
+import { GET_BOOKING } from 'src/_models/types';
 
-export const getBooking = (booking: IBooking) => {
+export const getBooking = (booking: any) => {
     return {
         type: GET_BOOKING,
         payload: booking
