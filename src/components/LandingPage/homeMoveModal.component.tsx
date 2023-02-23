@@ -7,7 +7,7 @@ import { getBooking } from "src/_actions/booking.actions";
 import { BookingContext } from "src/_contexts/booking.context";
 import { addressUtils } from "src/_helpers/formatAddress";
 import { useAPI } from "src/_hooks";
-import { ADD_FORM_VALUES } from "src/_models/types";
+import { ADD_FORM_VALUES, IFormValues } from "src/_models/types";
 import { bookingsService } from "src/_services/bookings.service";
 
 interface IProps {
@@ -139,7 +139,7 @@ const HomeMoveModalComponent: FC<IProps> = ({ showSelectorModal, setShowSelector
                                         apiKey="AIzaSyC_GzK_Vl1Z4sC0-SjAlJd8lzhodDk1coE"
                                         minLengthAutocomplete={5}
                                         selectProps={{
-                                            value: "",
+                                            value: bookingState.formValues[(whichAddress + "_original") as keyof IFormValues],
                                             onChange: (location: any) =>
                                                 handleAddressChange(location),
                                         }}

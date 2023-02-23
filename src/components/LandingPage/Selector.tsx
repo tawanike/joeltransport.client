@@ -37,7 +37,6 @@ const Selector = () => {
                 <div className="col-12 col-md-9 Selector__instructions__text">
                     <div>
                         <h4>{selectedView.heading}</h4>
-                        {/* <p>{selectedView.description}</p> */}
                     </div>
                 </div>
                 <div className="col-12 col-md-3 Selector__instructions__get-started">
