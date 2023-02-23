@@ -89,7 +89,7 @@ const MoveDetails = () => {
         setShowToWorkingLift(true);
       }
     })();
-  }, [ToFloorsCountValue, FromFloorsCountValue]);
+  }, [FromFloorsCountValue, ToFloorsCountValue]);
 
   return (
     <div className="col-12 move__step__body">

@@ -77,7 +77,12 @@ const BookingContextProvider: React.FC<ContextProviderProps> = (props) => {
     const bookingId = localStorage.getItem("bookingId");
     if (bookingId) {
       api.get(`/bookings/${bookingId}`, false).then((res: any) => {
-        dispatch(getBooking(res));
+        if (res.move_date === null) {
+          delete res.move_date;
+          dispatch(getBooking(res));
+        } else {
+          dispatch(getBooking(res));
+        }
 
         if (res.products.length > 0) {
           const truck = res.products.find(

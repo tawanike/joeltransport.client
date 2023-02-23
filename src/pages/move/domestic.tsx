@@ -14,7 +14,6 @@ import CallMeBackButton from "../../components/shared/callMeBackButton.component
 import { CoverImage } from "../../components/ui";
 
 const DomesticMoveServices = () => {
-  const [moveDate, setMoveDate] = useState<string | Date>(new Date());
   const [canConfirmMove, setCanConfirmMove] = useState(true);
   const fetchWrapper = useAPI();
   const { state: bookingState, dispatch: dispatchBookings } =
