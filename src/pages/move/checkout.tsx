@@ -18,13 +18,13 @@ const Checkout = () => {
   const { CostSummaryState, dispatchCostSummary } = useContext(
     CostSummaryStateContext
   );
+
   const paystackConfig = {
     reference: bookingContext.state.formValues.id,
     email: bookingContext.state.formValues.user?.email || "",
-    amount:
-      (Calculations.getSubTotal(CostSummaryState) * 0.15 +
-        Calculations.getSubTotal(CostSummaryState)) *
-      100,
+    amount: parseInt(
+      (Calculations.getSubTotal(CostSummaryState) * 1.15).toFixed(2) * 100
+    ),
     currency: "ZAR",
     publicKey: "pk_test_031a560a948c05f7721f754c86ed89d4335d5250",
   };
@@ -119,8 +119,10 @@ const Checkout = () => {
                       </div>
                       <div className="col-6 moves__checkout__summary__list__price">
                         R
-                        {Calculations.getSubTotal(CostSummaryState) * 0.15 +
-                          Calculations.getSubTotal(CostSummaryState)}
+                        {(
+                          Calculations.getSubTotal(CostSummaryState) * 0.15 +
+                          Calculations.getSubTotal(CostSummaryState)
+                        ).toFixed(2)}
                       </div>
                     </div>
                   </div>
@@ -131,8 +133,10 @@ const Checkout = () => {
                       </div>
                       <div className="col-6 moves__checkout__summary__list__price">
                         R
-                        {Calculations.getSubTotal(CostSummaryState) * 0.15 +
-                          Calculations.getSubTotal(CostSummaryState)}
+                        {(
+                          Calculations.getSubTotal(CostSummaryState) * 0.15 +
+                          Calculations.getSubTotal(CostSummaryState)
+                        ).toFixed(2)}
                       </div>
                     </div>
                   </div>
@@ -145,8 +149,10 @@ const Checkout = () => {
                     }}
                   >
                     Pay R
-                    {Calculations.getSubTotal(CostSummaryState) * 0.15 +
-                      Calculations.getSubTotal(CostSummaryState)}
+                    {(
+                      Calculations.getSubTotal(CostSummaryState) * 0.15 +
+                      Calculations.getSubTotal(CostSummaryState)
+                    ).toFixed(2)}
                   </Button>
                 </div>
               </div>
