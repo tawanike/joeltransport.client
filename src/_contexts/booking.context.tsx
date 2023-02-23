@@ -18,6 +18,7 @@ import {
   IAction,
   IBooking,
   IFormValues,
+  RESET_BOOKING,
 } from "src/_models/types";
 import CostSummaryStateContext from "./costSummary.context";
 
@@ -60,6 +61,11 @@ const reducer = (state: IBooking, action: IAction) => {
       return {
         ...state,
         additionalServices: { ...state.additionalServices, ...action.payload },
+      };
+    case RESET_BOOKING:
+      return {
+        ...state,
+        formValues: { ...state.formValues, ...{} },
       };
     default:
       return state;
