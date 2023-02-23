@@ -1,15 +1,19 @@
 import MoveStepper from "components/moves/move-stepper.component";
-import { useContext } from "react";
-import { Alert, Button } from "react-bootstrap";
+import { useRouter } from "next/router";
+import { useContext, useState } from "react";
+import { Alert, Button, Modal } from "react-bootstrap";
+import { BsCheckCircle } from "react-icons/bs";
 import { MdWarning } from "react-icons/md";
 import { usePaystackPayment } from "react-paystack";
 import { BookingContext } from "src/_contexts/booking.context";
 import CostSummaryStateContext from "src/_contexts/costSummary.context";
+import { Calculations } from "../../_helpers/calculations";
 import useAPI from "../../_hooks/useAPI";
 
 const Checkout = () => {
   const fetchWrapper = useAPI();
-
+  const router = useRouter();
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const bookingContext = useContext(BookingContext);
   const { CostSummaryState, dispatchCostSummary } = useContext(
     CostSummaryStateContext
@@ -17,7 +21,10 @@ const Checkout = () => {
   const paystackConfig = {
     reference: bookingContext.state.formValues.id,
     email: bookingContext.state.formValues.user?.email || "",
-    amount: CostSummaryState.total * 100,
+    amount:
+      (Calculations.getSubTotal(CostSummaryState) * 0.15 +
+        Calculations.getSubTotal(CostSummaryState)) *
+      100,
     currency: "ZAR",
     publicKey: "pk_test_031a560a948c05f7721f754c86ed89d4335d5250",
   };
@@ -28,6 +35,15 @@ const Checkout = () => {
   const onSuccess: any = (reference: any) => {
     // Implementation for whatever you want to do with reference and after success call.
     console.log(reference);
+    setShowSuccessModal(true);
+    localStorage.removeItem("bookingId");
+    router.push("/");
+  };
+
+  const handleDone = () => {
+    setShowSuccessModal(false);
+    dispatchCostSummary({ type: "RESET" });
+    bookingContext.dispatch({ type: "RESET" });
   };
 
   // you can call this function anything
@@ -38,6 +54,35 @@ const Checkout = () => {
 
   return (
     <>
+      <Modal show={showSuccessModal} onHide={() => setShowSuccessModal(false)}>
+        <Modal.Body>
+          <div className="col-12 py-5">
+            <div className="row">
+              <div className="col-12 resources__modal__icon">
+                <BsCheckCircle />
+              </div>
+              <div className="col-12 resources__modal__head mt-4">
+                <h3>Payment successful</h3>
+              </div>
+              <div className="col-8 offset-2 resources__modal__text mt-4">
+                <p>
+                  Your move has been booked, please check your email for further
+                  communications.
+                </p>
+              </div>
+              <div className="col-12 resources__modal__button mt-4">
+                <Button
+                  variant="secondary"
+                  className="col-4"
+                  onClick={handleDone}
+                >
+                  Done
+                </Button>
+              </div>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
       <div className="moves container-fluid">
         <div className="moves__container container mt-5">
           <div className="row">
@@ -73,7 +118,9 @@ const Checkout = () => {
                         <p>5 Items</p>
                       </div>
                       <div className="col-6 moves__checkout__summary__list__price">
-                        R0.00
+                        R
+                        {Calculations.getSubTotal(CostSummaryState) * 0.15 +
+                          Calculations.getSubTotal(CostSummaryState)}
                       </div>
                     </div>
                   </div>
@@ -83,7 +130,9 @@ const Checkout = () => {
                         <p>Total</p>
                       </div>
                       <div className="col-6 moves__checkout__summary__list__price">
-                        R0.00
+                        R
+                        {Calculations.getSubTotal(CostSummaryState) * 0.15 +
+                          Calculations.getSubTotal(CostSummaryState)}
                       </div>
                     </div>
                   </div>
@@ -95,7 +144,9 @@ const Checkout = () => {
                       initializePayment(onSuccess, onClose);
                     }}
                   >
-                    Pay R0.00
+                    Pay R
+                    {Calculations.getSubTotal(CostSummaryState) * 0.15 +
+                      Calculations.getSubTotal(CostSummaryState)}
                   </Button>
                 </div>
               </div>
