@@ -1,6 +1,6 @@
 import { CostSummary } from "src/_models/types";
 
-const getSubTotal = (state: any) => {
+const getSubTotal = (state: any): Number => {
   return (Object.keys(state) as Array<keyof CostSummary>)
     .map((expense) => {
       if (state && state[expense]) {
