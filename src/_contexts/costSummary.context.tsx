@@ -5,6 +5,7 @@ import {
   ADJUST_ADDITIONAL_SERVICES,
   CostSummary,
   IAction,
+  RESET_COST_SUMMARY,
   SELECT_TRUCK,
 } from "../_models/types";
 const initialCostSummaryState: CostSummary = {} as CostSummary;
@@ -19,6 +20,8 @@ const CostSummaryReducer = (state: CostSummary, action: IAction) => {
       return { ...state, ...action.payload };
     case ADD_MOVE_DETAILS:
       return { ...state, ...action.payload };
+    case RESET_COST_SUMMARY:
+      return { ...initialCostSummaryState };
     default:
       return state;
   }

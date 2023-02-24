@@ -65,7 +65,7 @@ const reducer = (state: IBooking, action: IAction) => {
     case RESET_BOOKING:
       return {
         ...state,
-        formValues: { ...state.formValues, ...{} },
+        formValues: { ...initialState },
       };
     default:
       return state;
