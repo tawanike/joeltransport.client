@@ -3,6 +3,8 @@ export const LOGIN = "LOGIN";
 export const LOGOUT = "LOGOUT";
 export const GET_BOOKING = "GET_BOOKING";
 export const SELECT_TRUCK = "SELECT_TRUCK";
+export const RESET_BOOKING = "RESET_BOOKING";
+export const RESET_COST_SUMMARY = "RESET_COST_SUMMARY";
 export const ADD_BAKKIE_SHUTTLE = "ADD_BAKKIE_SHUTTLE";
 export const ADJUST_ADDITIONAL_SERVICES = "ADJUST_ADDITIONAL_SERVICES";
 export const ADD_MOVE_DETAILS = "ADD_MOVE_DETAILS";
@@ -108,6 +110,7 @@ export interface IFormValues {
   to_working_lift: boolean;
   requires_bakkie_shuttle: boolean;
   bakkie_address: number | null;
+  products: IProduct[];
   user: {
     first_name: string;
     last_name: string;

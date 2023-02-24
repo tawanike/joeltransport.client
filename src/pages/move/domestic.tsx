@@ -33,6 +33,14 @@ const DomesticMoveServices = () => {
   const goToCheckout = () => {
     if (canConfirmMove) {
       setShowSelectorModal(true);
+
+      fetchWrapper
+        .post(`/bookings/${bookingState.formValues.id}/invoices`, {
+          booking: bookingState.formValues.id,
+        })
+        .then((res) => {
+          console.log(res);
+        });
     }
   };
 
