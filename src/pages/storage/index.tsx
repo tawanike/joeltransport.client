@@ -1,4 +1,5 @@
 import StorageStepper from 'components/moves/storage-stepper.component';
+import StorageCostCard from 'components/moves/storageCostCard.component';
 import CallMeBackButton from 'components/shared/callMeBackButton.component';
 import { useState } from 'react';
 import { Button } from 'react-bootstrap';
@@ -49,6 +50,7 @@ const Storage = () => {
                         </div>
 
                         <div className="col-5 offset-1">
+                            <StorageCostCard />
                         </div>
                         <div className="col-12 my-5 pt-3 moves__container__button-container">
                             <div className="row w-100">

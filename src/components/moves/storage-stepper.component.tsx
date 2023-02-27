@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { BsInfoCircle, BsPerson } from "react-icons/bs";
 import { RxCaretDown } from "react-icons/rx";
+import AddedServices from "./addedService.component";
 import PersonalInformation from "./personalInfomation.componnent";
+import MoveDetails from "./moveDetails.component";
+import BookStorageUnit from "./bookStorageUnit.component";
 
 const StorageStepper = () => {
     const [currentView, setCurrentView] = useState("")
@@ -27,7 +30,10 @@ const StorageStepper = () => {
                             </div>
                         </div>
                     </div>
-                    {currentView === "arrangements" && <p>Delivery arrangements</p>}
+                    {currentView === "arrangements" && <MoveDetails
+                        hasDelivery={false}
+                        dateLabel="When would you like us to collect?"
+                    />}
                 </div>
             </div>
             <div className="moves__step col-12 mb-3">
@@ -43,7 +49,7 @@ const StorageStepper = () => {
                             </div>
                         </div>
                     </div>
-                    {currentView === "unit" && <p>Book storage unit</p>}
+                    {currentView === "unit" && <BookStorageUnit />}
                 </div>
             </div>
             <div className="moves__step col-12 mb-3">
@@ -59,7 +65,7 @@ const StorageStepper = () => {
                             </div>
                         </div>
                     </div>
-                    {currentView === "bakkie" && <p>Bakkie shuttle</p>}
+                    {currentView === "bakkie" && <AddedServices />}
                 </div>
             </div>
             <div className="moves__step col-12 mb-3">
