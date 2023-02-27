@@ -33,8 +33,8 @@ const StorageCostCard = () => {
                                             <div className="col-4 move-cost-card__section__details__title">
                                                 <p>Storage units</p>
                                             </div>
-                                            <div className="col-4 move-cost-card__section__details__title">
-                                                R0.00
+                                            <div className="col-4 move-cost-card__section__details__title center move-cost-card__section__details__title--cost">
+                                                <p> R0.00</p>
                                             </div>
                                             <div className="col-4 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
                                                 <p>
@@ -59,13 +59,13 @@ const StorageCostCard = () => {
                                 <ul>
                                     <li>
                                         <div className="row">
-                                            <div className="col-6 move-cost-card__section__details__title">
-                                                <p>Truck & crew</p>
+                                            <div className="col-4 move-cost-card__section__details__title">
+                                                <p>Truck & Crew</p>
                                             </div>
-                                            <div className="col-1 move-cost-card__section__details__title">
-                                                <BsInfoCircle />
+                                            <div className="col-4 move-cost-card__section__details__title center move-cost-card__section__details__title--cost">
+                                                <p> R0.00</p>
                                             </div>
-                                            <div className="col-5 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
+                                            <div className="col-4 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
                                                 <p>
                                                     R
                                                     {CostSummaryState.truck
@@ -77,18 +77,36 @@ const StorageCostCard = () => {
                                     </li>
                                     <li>
                                         <div className="row">
-                                            <div className="col-6 move-cost-card__section__details__title">
+                                            <div className="col-4 move-cost-card__section__details__title">
                                                 <p>Off peak discount</p>
                                             </div>
-                                            <div className="col-1 move-cost-card__section__details__title">
-                                                <BsInfoCircle />
+                                            <div className="col-4 move-cost-card__section__details__title center move-cost-card__section__details__title--cost">
+                                                <p> R0.00</p>
                                             </div>
-                                            <div className="col-5 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
+                                            <div className="col-4 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
                                                 <p>
                                                     R
-                                                    {CostSummaryState.truck &&
-                                                        CostSummaryState.truck.off_peak_discount
-                                                        ? CostSummaryState.truck.off_peak_discount
+                                                    {CostSummaryState.truck
+                                                        ? CostSummaryState.truck.price
+                                                        : "0.00"}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div className="row">
+                                            <div className="col-4 move-cost-card__section__details__title">
+                                                <p>Bakkie shuttle</p>
+                                            </div>
+                                            <div className="col-4 move-cost-card__section__details__title center move-cost-card__section__details__title--cost">
+                                                <p> R0.00</p>
+                                            </div>
+                                            <div className="col-4 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
+                                                <p>
+                                                    R
+                                                    {CostSummaryState.bakkieShuttle
+                                                        ? CostSummaryState.bakkieShuttle.price *
+                                                        CostSummaryState.bakkieShuttle.quantity
                                                         : "0.00"}
                                                 </p>
                                             </div>
@@ -107,8 +125,8 @@ const StorageCostCard = () => {
                                             <div className="col-4 move-cost-card__section__details__title">
                                                 <p>Sub total</p>
                                             </div>
-                                            <div className="col-4 move-cost-card__section__details__title">
-                                                <p>Sub total</p>
+                                            <div className="col-4 move-cost-card__section__details__title center">
+                                                <p>R0.00</p>
                                             </div>
                                             <div className="col-4 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
                                                 <p>R{Calculations.getSubTotal(CostSummaryState)}</p>
@@ -117,10 +135,13 @@ const StorageCostCard = () => {
                                     </li>
                                     <li className="mt-4">
                                         <div className="row">
-                                            <div className="col-6 move-cost-card__section__details__title">
+                                            <div className="col-4 move-cost-card__section__details__title">
                                                 <p>VAT (15%)</p>
                                             </div>
-                                            <div className="col-6 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
+                                            <div className="col-4 move-cost-card__section__details__title center">
+                                                <p>R0.00</p>
+                                            </div>
+                                            <div className="col-4 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
                                                 <p>
                                                     R{Calculations.getSubTotal(CostSummaryState) * 0.15}
                                                 </p>
@@ -138,10 +159,13 @@ const StorageCostCard = () => {
                     <ul>
                         <li className="">
                             <div className="row">
-                                <div className="col-6 move-cost-card__section__details__title">
+                                <div className="col-4 move-cost-card__section__details__title">
                                     <p>Total</p>
                                 </div>
-                                <div className="col-6 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
+                                <div className="col-4 move-cost-card__section__details__title center">
+                                    <p>R0.00</p>
+                                </div>
+                                <div className="col-4 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
                                     <p>
                                         R
                                         {Calculations.getSubTotal(CostSummaryState) * 0.15 +

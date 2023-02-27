@@ -9,7 +9,7 @@
         margin-top: 1rem;
         &__head {
             p {
-                font-size: 0.8rem;
+                font-size: 0.9rem;
             }
         }
         &__details {
@@ -49,4 +49,10 @@
             }
         }
     }
+}
+
+.center {
+    display: grid;
+    place-items: center center;
+    text-align: center;
 }
