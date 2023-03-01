@@ -1,9 +1,12 @@
+import Link from "next/link";
+import { useRouter } from "next/router";
 import { Button } from "react-bootstrap";
 import { BsArrowRight, BsListCheck, BsShieldFillCheck } from "react-icons/bs";
 import RelatedArticles from "../../components/Resources/relatedArticles.component";
 import { CoverImage } from "../../components/ui";
 
 export default function Resources() {
+  const router = useRouter();
   return (
     <div className="resources">
       <CoverImage
@@ -28,7 +31,10 @@ export default function Resources() {
                   </div>
                   <div className="resources__product-description__summary__information-button py-3">
                     {
-                      <Button variant="link">
+                      <Button
+                        variant="link"
+                        onClick={() => router.push("/contact-us")}
+                      >
                         Call me back <BsArrowRight />
                       </Button>
                     }
@@ -53,7 +59,9 @@ export default function Resources() {
                           </p>
                         </div>
                         <div className="col-12 resources__downloads__outline__button">
-                          <Button variant="link">Download</Button>
+                          <Link href="https://joeltransport.co.za/wp-content/uploads/2018/05/Inventory_List.xls">
+                            Download
+                          </Link>
                         </div>
                       </div>
                     </li>
@@ -71,7 +79,9 @@ export default function Resources() {
                           <p>We are trusted and compliance with RFA. </p>
                         </div>
                         <div className="col-12 resources__downloads__outline__button">
-                          <Button variant="link">Download</Button>
+                          <Link href="https://joeltransport.co.za/wp-content/uploads/2022/09/Joel-Transport-RFA_Membership_Certificate_2022.pdf">
+                            Download
+                          </Link>
                         </div>
                       </div>
                     </li>
@@ -89,7 +99,9 @@ export default function Resources() {
                           <p>We are trusted and compliant with Amosa. </p>
                         </div>
                         <div className="col-12 resources__downloads__outline__button">
-                          <Button variant="link">Download</Button>
+                          <Link href="https://joeltransport.co.za/wp-content/uploads/2020/09/Joel-Transport-Pty-Ltd-AMOSA_Member_Certificate_2020-.pdf">
+                            Download
+                          </Link>
                         </div>
                       </div>
                     </li>
