@@ -1,16 +1,19 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Alert, Col, Form, Row } from "react-bootstrap";
 import DatePicker from "react-date-picker/dist/entry.nostyle";
 import { FcInfo } from "react-icons/fc";
 import { FiCalendar } from "react-icons/fi";
+import { getBooking } from "src/_actions/booking.actions";
 import { addStorageCount } from "src/_actions/costSummary.actions";
 import { BookingContext } from "src/_contexts/booking.context";
 import CostSummaryStateContext from "src/_contexts/costSummary.context";
 import { formatDate, stringToDateTime } from "src/_helpers/dateFormat";
-import { useNumberInput } from "src/_hooks";
+import { useAPI, useNumberInput } from "src/_hooks";
 import { ADD_FORM_VALUES } from "src/_models/types";
 
 const BookStorageUnit = () => {
+  const api = useAPI();
+  const [moveType, setMoveType] = useState<any>();
   const { CostSummaryState, dispatchCostSummary } = useContext(
     CostSummaryStateContext
   );
@@ -27,19 +30,53 @@ const BookStorageUnit = () => {
   };
 
   useEffect(() => {
-    bookingsDispatch({
-      type: ADD_FORM_VALUES,
-      payload: {
-        storage_units_count: NumberOfUnitsValue,
-      },
-    });
+    (async () => {
+      const moves = await api.get("/products?category=1", false);
+      moves.results.forEach((move: any) => {
+        if (move.slug === "storage") {
+          setMoveType(move);
+        }
+      });
+    })();
+  }, []);
 
-    dispatchCostSummary(
-      addStorageCount({
-        quantity: NumberOfUnitsValue,
-        price: 500,
-      })
-    );
+  useEffect(() => {
+    if (moveType && moveType.id) {
+      bookingsDispatch({
+        type: ADD_FORM_VALUES,
+        payload: {
+          storage_units_count: NumberOfUnitsValue,
+        },
+      });
+
+      dispatchCostSummary(
+        addStorageCount({
+          quantity: NumberOfUnitsValue,
+          price: moveType?.price,
+        })
+      );
+
+      api
+        .post(`/bookings/${bookingState.formValues.id}/products`, {
+          product: moveType.id,
+          quantity: NumberOfUnitsValue,
+          product_type: "storage",
+          booking: bookingState.formValues.id,
+        })
+        .then((res) => {
+          if (!res.error) {
+            // setChooseTruckComplete(true);
+            api
+              .get(`/bookings/${bookingState.formValues.id}`, false)
+              .then((res) => {
+                if (!res.error) {
+                  console.log("BOOKING", res);
+                  bookingsDispatch(getBooking({ formValues: res }));
+                }
+              });
+          }
+        });
+    }
   }, [NumberOfUnitsValue]);
 
   return (

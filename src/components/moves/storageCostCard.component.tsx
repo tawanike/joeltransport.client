@@ -41,16 +41,21 @@ const StorageCostCard = () => {
                         <p>
                           R{" "}
                           {CostSummaryState.storage
-                            ? CostSummaryState.storage.quantity *
-                              CostSummaryState.storage.price
+                            ? (
+                                CostSummaryState.storage.quantity *
+                                CostSummaryState.storage.price
+                              ).toFixed(2)
                             : "0.00"}
                         </p>
                       </div>
                       <div className="col-4 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
                         <p>
                           R
-                          {CostSummaryState.truck
-                            ? CostSummaryState.truck.price
+                          {CostSummaryState.storage
+                            ? (
+                                CostSummaryState.storage.quantity *
+                                CostSummaryState.storage.price
+                              ).toFixed(2)
                             : "0.00"}
                         </p>
                       </div>
@@ -73,15 +78,15 @@ const StorageCostCard = () => {
                         <p>Truck & Crew</p>
                       </div>
                       <div className="col-4 move-cost-card__section__details__title center move-cost-card__section__details__title--cost">
-                        <p> R0.00</p>
-                      </div>
-                      <div className="col-4 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
                         <p>
                           R
                           {CostSummaryState.truck
-                            ? CostSummaryState.truck.price
+                            ? CostSummaryState.truck.price.toFixed(2)
                             : "0.00"}
                         </p>
+                      </div>
+                      <div className="col-4 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
+                        <p> R0.00</p>
                       </div>
                     </div>
                   </li>
@@ -91,15 +96,15 @@ const StorageCostCard = () => {
                         <p>Off peak discount</p>
                       </div>
                       <div className="col-4 move-cost-card__section__details__title center move-cost-card__section__details__title--cost">
-                        <p> R0.00</p>
-                      </div>
-                      <div className="col-4 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
                         <p>
                           R
                           {CostSummaryState.truck
-                            ? CostSummaryState.truck.price
+                            ? CostSummaryState.truck.price.toFixed(2)
                             : "0.00"}
                         </p>
+                      </div>
+                      <div className="col-4 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
+                        <p> R0.00</p>
                       </div>
                     </div>
                   </li>
@@ -112,8 +117,10 @@ const StorageCostCard = () => {
                         <p>
                           R
                           {CostSummaryState.bakkieShuttle
-                            ? CostSummaryState.bakkieShuttle.price *
-                              CostSummaryState.bakkieShuttle.quantity
+                            ? (
+                                CostSummaryState.bakkieShuttle.price *
+                                CostSummaryState.bakkieShuttle.quantity
+                              ).toFixed(2)
                             : "0.00"}
                         </p>
                       </div>
@@ -136,10 +143,23 @@ const StorageCostCard = () => {
                         <p>Sub total</p>
                       </div>
                       <div className="col-4 move-cost-card__section__details__title center">
-                        <p>R0.00</p>
+                        <p>
+                          R
+                          {Calculations.getSubTotal(CostSummaryState).toFixed(
+                            2
+                          )}
+                        </p>
                       </div>
                       <div className="col-4 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
-                        <p>R{Calculations.getSubTotal(CostSummaryState)}</p>
+                        <p>
+                          R
+                          {CostSummaryState.storage
+                            ? (
+                                CostSummaryState.storage.quantity *
+                                CostSummaryState.storage.price
+                              ).toFixed(2)
+                            : "0.00"}
+                        </p>
                       </div>
                     </div>
                   </li>
@@ -150,12 +170,22 @@ const StorageCostCard = () => {
                       </div>
                       <div className="col-4 move-cost-card__section__details__title center">
                         <p>
-                          R{Calculations.getSubTotal(CostSummaryState) * 0.15}
+                          R
+                          {(
+                            Calculations.getSubTotal(CostSummaryState) * 0.15
+                          ).toFixed(2)}
                         </p>
                       </div>
                       <div className="col-4 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
                         <p>
-                          R{Calculations.getSubTotal(CostSummaryState) * 0.15}
+                          R
+                          {CostSummaryState.storage
+                            ? (
+                                CostSummaryState.storage.quantity *
+                                CostSummaryState.storage.price *
+                                0.15
+                              ).toFixed(2)
+                            : "0.00"}
                         </p>
                       </div>
                     </div>
@@ -177,15 +207,22 @@ const StorageCostCard = () => {
                 <div className="col-4 move-cost-card__section__details__title center">
                   <p>
                     R
-                    {Calculations.getSubTotal(CostSummaryState) * 0.15 +
-                      Calculations.getSubTotal(CostSummaryState)}
+                    {(
+                      Calculations.getSubTotal(CostSummaryState) * 0.15 +
+                      Calculations.getSubTotal(CostSummaryState)
+                    ).toFixed(2)}
                   </p>
                 </div>
                 <div className="col-4 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
                   <p>
                     R
-                    {Calculations.getSubTotal(CostSummaryState) * 0.15 +
-                      Calculations.getSubTotal(CostSummaryState)}
+                    {CostSummaryState.storage
+                      ? (
+                          CostSummaryState.storage.quantity *
+                          CostSummaryState.storage.price *
+                          1.15
+                        ).toFixed(2)
+                      : "0.00"}
                   </p>
                 </div>
               </div>
