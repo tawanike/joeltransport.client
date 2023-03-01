@@ -1,7 +1,10 @@
 import { useRouter } from "next/router";
-import { FC, useState } from "react";
+import { FC, useContext, useState } from "react";
 import { Button, Col, Form, Modal, Row } from "react-bootstrap";
 import GooglePlacesAutocomplete from "react-google-places-autocomplete";
+import { BookingContext } from "src/_contexts/booking.context";
+import { addressUtils } from "src/_helpers/formatAddress";
+import { ADD_FORM_VALUES, IFormValues } from "src/_models/types";
 
 interface IProps {
     showStorageModal: boolean;
@@ -10,6 +13,10 @@ interface IProps {
 const StorageModalComponent: FC<IProps> = ({ showStorageModal, setShowStorageModal }) => {
     const [view, setView] = useState<"delivery" | "address">("delivery")
     const [selectType, setSelectType] = useState("auto")
+    const { state: bookingState, dispatch: bookingsDispatch } = useContext(BookingContext);
+    const [whichAddress] = useState<"from_address">("from_address");
+    const [collectionOption, setCollectionOption] = useState<1 | 0 | null>()
+
     const router = useRouter();
     const collectionOptionView = () => {
         return <>
@@ -24,25 +31,32 @@ const StorageModalComponent: FC<IProps> = ({ showStorageModal, setShowStorageMod
                         type="radio"
                         name="from_working_lift"
                         label="Yes - collect my items."
-                        // onChange={(event) => bookingsDispatch({ type: ADD_FORM_VALUES, payload: { 'from_working_lift': event.target.value } })}
+                        onChange={(event) => setCollectionOption(Number(event.target.value) as 0 | 1)}
                         id="yes"
                         value={1}
                         className="my-3"
-                    // checked={Number(bookingState.formValues.from_working_lift) === 1}
                     />
                     <Form.Check
                         type="radio"
                         name="from_working_lift"
                         label="No - I will deliver."
-                        // onChange={(event) => bookingsDispatch({ type: ADD_FORM_VALUES, payload: { 'from_working_lift': event.target.value } })}
+                        onChange={(event) => setCollectionOption(Number(event.target.value) as 0 | 1)}
                         id="no"
                         value={0}
-                    // checked={Number(bookingState.formValues.from_working_lift) === 0}
                     />
                 </Form.Group>
             </div>
         </>
     }
+
+    const handleAddressChange = async (location: any) => {
+        const address = await addressUtils.formatAddress(location);
+        const original_location = [whichAddress] + "_original";
+        bookingsDispatch({
+            type: ADD_FORM_VALUES,
+            payload: { [whichAddress]: address, [original_location]: location },
+        });
+    };
 
     const addressSelectionView = () => {
         return <>
@@ -74,10 +88,11 @@ const StorageModalComponent: FC<IProps> = ({ showStorageModal, setShowStorageMod
                             <GooglePlacesAutocomplete
                                 apiKey="AIzaSyC_GzK_Vl1Z4sC0-SjAlJd8lzhodDk1coE"
                                 minLengthAutocomplete={5}
-                            // selectProps={{
-                            //     value: bookingState.formValues.from,
-                            //     onChange: (location: any) => handleAddressChange(location)
-                            // }}
+                                selectProps={{
+                                    value: bookingState.formValues[`${whichAddress}_original` as keyof IFormValues],
+                                    onChange: (location: any) =>
+                                        handleAddressChange(location),
+                                }}
                             />
                         </Form.Group>
                     </div>
@@ -165,11 +180,13 @@ const StorageModalComponent: FC<IProps> = ({ showStorageModal, setShowStorageMod
     }
 
     const handleNext = async () => {
-        if (view === "delivery") {
-            setView("address");
+        if (collectionOption === 1) {
+            if (view === "delivery")
+                setView("address");
+            else
+                router.push(`/move/domestic`);
             return;
         }
-        router.push(`/storage`);
         setShowStorageModal(false);
     }
 

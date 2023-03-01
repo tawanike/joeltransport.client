@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { FC, useContext, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import { Alert, Button, Col, Form, Modal, Row } from "react-bootstrap";
 import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 import { FcInfo } from "react-icons/fc";
@@ -52,7 +52,6 @@ const HomeMoveModalComponent: FC<IProps> = ({
         // save to db, create booking.
         // when you have booking id, redirect to move details page.
         delete bookingState.formValues.move_date;
-        console.log("bookingState.formValues", bookingState.formValues);
         const booking = await bookingsService.createBooking(
             bookingState.formValues,
             fetchWrapper
@@ -69,7 +68,6 @@ const HomeMoveModalComponent: FC<IProps> = ({
         } else {
             router.push(`/move/international`);
         }
-
         setShowSelectorModal(false);
     };
 
@@ -86,6 +84,12 @@ const HomeMoveModalComponent: FC<IProps> = ({
         from_address: "from",
         to_address: "to",
     };
+
+    useEffect(() => {
+        console.log(bookingState);
+
+    }, [bookingState])
+
 
     return (
         <>
@@ -140,7 +144,7 @@ const HomeMoveModalComponent: FC<IProps> = ({
                                             apiKey="AIzaSyC_GzK_Vl1Z4sC0-SjAlJd8lzhodDk1coE"
                                             minLengthAutocomplete={5}
                                             selectProps={{
-                                                value: bookingState.formValues[(whichAddress + "_original") as keyof IFormValues],
+                                                value: bookingState.formValues[`${whichAddress}_original` as keyof IFormValues],
                                                 onChange: (location: any) =>
                                                     handleAddressChange(location),
                                             }}

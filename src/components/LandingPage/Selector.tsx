@@ -1,4 +1,5 @@
 
+import ContactUsModal from 'components/Contacts/contactUsModal.component';
 import React, { useState } from 'react';
 import { Alert, Button } from 'react-bootstrap';
 import { FcInfo } from 'react-icons/fc';
@@ -10,15 +11,24 @@ const Selector = () => {
     const [selectedView, setSelectedView] = useState(() => selectorConfig[0]);
     const [showSelectorModal, setShowSelectorModal] = useState(false);
     const [showStorageModal, setShowStorageModal] = useState(false);
+    const [showContactUsModal, setShowContactUsModal] = useState(false);
     const [view, setView] = useState<"move" | "storage">("move")
 
     const toggleMoveModal = (state: boolean) => setShowSelectorModal(state)
-    const toggleStorageModal = (state: boolean) => setShowStorageModal(state)
+    const toggleStorageModal = (state: boolean) => {
+        console.log(state);
+
+        setShowStorageModal(state)
+        setShowContactUsModal(!state);
+    }
+
+    const toggleContactUsModal = (state: boolean) => setShowContactUsModal(state);
 
     return (
         <div className="selectorContainer container">
             <HomeMoveModalComponent showSelectorModal={showSelectorModal} setShowSelectorModal={toggleMoveModal} />
-            <StorageModalComponent showStorageModal={showStorageModal} setShowStorageModal={toggleMoveModal} />
+            <StorageModalComponent showStorageModal={showStorageModal} setShowStorageModal={toggleStorageModal} />
+            <ContactUsModal showContactUsModal={showContactUsModal} setShowContactUsModal={toggleContactUsModal} />
             <div className="Selector__options">
                 {
                     selectorConfig.map((selector: SelectorConfig) =>
