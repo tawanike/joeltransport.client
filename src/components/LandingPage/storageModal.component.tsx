@@ -15,7 +15,6 @@ const StorageModalComponent: FC<IProps> = ({ showStorageModal, setShowStorageMod
     const [selectType, setSelectType] = useState("auto")
     const { state: bookingState, dispatch: bookingsDispatch } = useContext(BookingContext);
     const [whichAddress] = useState<"from_address">("from_address");
-    const [collectionOption, setCollectionOption] = useState<1 | 0 | null>()
 
     const router = useRouter();
     const collectionOptionView = () => {
@@ -31,7 +30,10 @@ const StorageModalComponent: FC<IProps> = ({ showStorageModal, setShowStorageMod
                         type="radio"
                         name="from_working_lift"
                         label="Yes - collect my items."
-                        onChange={(event) => setCollectionOption(Number(event.target.value) as 0 | 1)}
+                        onChange={(event) => bookingsDispatch({
+                            type: ADD_FORM_VALUES,
+                            payload: { deliver_to_storage: Boolean(Number(event.target.value) as 0 | 1) }
+                        })}
                         id="yes"
                         value={1}
                         className="my-3"
@@ -40,7 +42,10 @@ const StorageModalComponent: FC<IProps> = ({ showStorageModal, setShowStorageMod
                         type="radio"
                         name="from_working_lift"
                         label="No - I will deliver."
-                        onChange={(event) => setCollectionOption(Number(event.target.value) as 0 | 1)}
+                        onChange={(event) => bookingsDispatch({
+                            type: ADD_FORM_VALUES,
+                            payload: { deliver_to_storage: Boolean(Number(event.target.value) as 0 | 1) }
+                        })}
                         id="no"
                         value={0}
                     />
@@ -180,14 +185,12 @@ const StorageModalComponent: FC<IProps> = ({ showStorageModal, setShowStorageMod
     }
 
     const handleNext = async () => {
-        if (collectionOption === 1) {
-            if (view === "delivery")
-                setView("address");
-            else
-                router.push(`/move/domestic`);
-            return;
-        }
-        setShowStorageModal(false);
+
+        if (view === "delivery")
+            setView("address");
+        else
+            router.push(`/storage`);
+        return;
     }
 
     return <>

@@ -89,160 +89,204 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
     return (
         <div className="col-12 move__step__body">
             <Form noValidate>
-                <h5 className="my-5">Please provide loading address</h5>
-                <Row className="mb-5">
-                    <Form.Group as={Col} md="12" controlId="from">
-                        <Form.Label>Search loading address</Form.Label>
-                        <GooglePlacesAutocomplete
-                            apiKey="AIzaSyC_GzK_Vl1Z4sC0-SjAlJd8lzhodDk1coE"
-                            minLengthAutocomplete={5}
-                            selectProps={{
-                                value: {
-                                    value: bookingState.formValues.from_address.place_id,
-                                    label: bookingState.formValues.from_address.formatted_address,
-                                },
-                                onChange: (location: any) =>
-                                    bookingsDispatch({
-                                        type: ADD_FORM_VALUES,
-                                        payload: {
-                                            from_address: addressUtils.formatAddress(location),
-                                        },
-                                    }),
-                            }}
-                        />
-                    </Form.Group>
-                </Row>
-                <Row className="mb-5">
-                    <Form.Group as={Col} md="6" controlId="move_date">
-                        <Form.Label>{dateLabel}</Form.Label>
-                        <DatePicker
-                            onChange={onDateChange}
-                            value={
-                                bookingState.formValues.move_date &&
-                                stringToDateTime(bookingState.formValues.move_date)
-                            }
-                            calendarIcon={<FiCalendar className="calendar-icon" />}
-                            clearIcon={null}
-                            dayPlaceholder="dd"
-                            monthPlaceholder="mm"
-                            yearPlaceholder="yyyy"
-                            tileDisabled={({ date, view }) => {
-                                view === "month" && date.getDay() === 0;
-                                return (
-                                    date.getFullYear() === 2023 &&
-                                    date.getMonth() === 1 &&
-                                    [1, 2, 13, 17, 28].includes(date.getDate())
-                                );
-                            }}
-                            className="date-picker"
-                        />
-                    </Form.Group>
-                    <Form.Group as={Col} md="6" controlId="from_property_type">
-                        <Form.Label>Property type</Form.Label>
-                        <Select
-                            name="from_property_type"
-                            onChange={(values: any) =>
-                                bookingsDispatch({
-                                    type: ADD_FORM_VALUES,
-                                    payload: { from_property_type: values.value },
-                                })
-                            }
-                            defaultValue={getPropertyTypeOption(
-                                bookingState.formValues.from_property_type
-                            )}
-                            options={[
-                                { value: 0, label: "Single Storey" },
-                                { value: 1, label: "Multi Storey" },
-                            ]}
-                            className=""
-                        />
-                    </Form.Group>
-                </Row>
-                <Row className="mb-5">
-                    <Form.Group as={Col} md="6" controlId="date">
-                        <Form.Label>How many floors does your house have?</Form.Label>
-                        {FromFloorsCountDisplay}
-                    </Form.Group>
-                    <Form.Group as={Col} md="6" className="">
-                        <Form.Label>Does your house have a working lift?</Form.Label>
-                        <Form.Check
-                            type="radio"
-                            inline
-                            name="from_working_lift"
-                            label="Yes"
-                            disabled={bookingState.formValues.from_floors_count === 0}
-                            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                                bookingsDispatch({
-                                    type: ADD_FORM_VALUES,
-                                    payload: {
-                                        from_working_lift: event.target.value,
-                                    },
-                                })
-                            }
-                            id="yes"
-                            value={1}
-                            checked={
-                                Number(bookingState.formValues.from_working_lift) === 1
-                            }
-                        />
-                        <Form.Check
-                            type="radio"
-                            inline
-                            name="from_working_lift"
-                            label="No"
-                            disabled={bookingState.formValues.from_floors_count === 0}
-                            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                                bookingsDispatch(
-                                    addFormValues("from_working_lift", event.target.value)
-                                )
-                            }
-                            id="no"
-                            value={0}
-                            checked={
-                                Number(bookingState.formValues.from_working_lift) === 0
-                            }
-                        />
-                    </Form.Group>
-                </Row>
                 <Row className="mb-5">
                     <Form.Group as={Col} md="12" className="">
-                        <Form.Label>What time would you like to move?</Form.Label>
+                        <Form.Label className="col-12">Would you prefer we collect and pack your goods for you?</Form.Label>
                         <Form.Check
                             type="radio"
-                            required
-                            name="move_time_period"
-                            label="Morning between (7am to 12pm)"
+                            inline
+                            name="deliver_to_storage"
+                            label="Yes - collect"
                             onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
                                 bookingsDispatch({
                                     type: ADD_FORM_VALUES,
                                     payload: {
-                                        move_time_period: event.target.value,
+                                        deliver_to_storage: Boolean(Number(event.target.value)),
                                     },
                                 })
                             }
-                            id="morning"
-                            value="0"
-                            checked={Number(bookingState.formValues.move_time_period) === 0}
+                            id="deliver_to_storage"
+                            value={1}
+                            checked={Number(bookingState.formValues.deliver_to_storage) === 1}
                         />
                         <Form.Check
                             type="radio"
-                            required
-                            name="move_time_period"
-                            label="Afternoon between (12pm to 4pm)"
+                            inline
+                            name="deliver_to_storage"
+                            label="No - I will deliver"
                             onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
                                 bookingsDispatch({
                                     type: ADD_FORM_VALUES,
                                     payload: {
-                                        move_time_period: event.target.value,
+                                        deliver_to_storage: Boolean(Number(event.target.value)),
                                     },
                                 })
                             }
-                            id="afternoon"
-                            value="1"
-                            checked={Number(bookingState.formValues.move_time_period) === 1}
+                            id="deliver_to_storage"
+                            value={0}
+                            checked={Number(bookingState.formValues.deliver_to_storage) === 0}
                         />
                     </Form.Group>
                 </Row>
+                {
+                    bookingState.formValues.deliver_to_storage &&
+                    <>
+                        <h5 className="my-5">Please provide loading address</h5>
+                        <Row className="mb-5">
+                            <Form.Group as={Col} md="12" controlId="from">
+                                <Form.Label>Search loading address</Form.Label>
+                                <GooglePlacesAutocomplete
+                                    apiKey="AIzaSyC_GzK_Vl1Z4sC0-SjAlJd8lzhodDk1coE"
+                                    minLengthAutocomplete={5}
+                                    selectProps={{
+                                        value: {
+                                            value: bookingState.formValues.from_address.place_id,
+                                            label: bookingState.formValues.from_address.formatted_address,
+                                        },
+                                        onChange: (location: any) =>
+                                            bookingsDispatch({
+                                                type: ADD_FORM_VALUES,
+                                                payload: {
+                                                    from_address: addressUtils.formatAddress(location),
+                                                },
+                                            }),
+                                    }}
+                                />
+                            </Form.Group>
+                        </Row>
+                        <Row className="mb-5">
+                            <Form.Group as={Col} md="6" controlId="move_date">
+                                <Form.Label>{dateLabel}</Form.Label>
+                                <DatePicker
+                                    onChange={onDateChange}
+                                    value={
+                                        bookingState.formValues.move_date &&
+                                        stringToDateTime(bookingState.formValues.move_date)
+                                    }
+                                    calendarIcon={<FiCalendar className="calendar-icon" />}
+                                    clearIcon={null}
+                                    dayPlaceholder="dd"
+                                    monthPlaceholder="mm"
+                                    yearPlaceholder="yyyy"
+                                    tileDisabled={({ date, view }) => {
+                                        view === "month" && date.getDay() === 0;
+                                        return (
+                                            date.getFullYear() === 2023 &&
+                                            date.getMonth() === 1 &&
+                                            [1, 2, 13, 17, 28].includes(date.getDate())
+                                        );
+                                    }}
+                                    className="date-picker"
+                                />
+                            </Form.Group>
+                            <Form.Group as={Col} md="6" controlId="from_property_type">
+                                <Form.Label>Property type</Form.Label>
+                                <Select
+                                    name="from_property_type"
+                                    onChange={(values: any) =>
+                                        bookingsDispatch({
+                                            type: ADD_FORM_VALUES,
+                                            payload: { from_property_type: values.value },
+                                        })
+                                    }
+                                    defaultValue={getPropertyTypeOption(
+                                        bookingState.formValues.from_property_type
+                                    )}
+                                    options={[
+                                        { value: 0, label: "Single Storey" },
+                                        { value: 1, label: "Multi Storey" },
+                                    ]}
+                                    className=""
+                                />
+                            </Form.Group>
+                        </Row>
+                        <Row className="mb-5">
+                            <Form.Group as={Col} md="6" controlId="date">
+                                <Form.Label>How many floors does your house have?</Form.Label>
+                                {FromFloorsCountDisplay}
+                            </Form.Group>
+                            <Form.Group as={Col} md="6" className="">
+                                <Form.Label>Does your house have a working lift?</Form.Label>
+                                <Form.Check
+                                    type="radio"
+                                    inline
+                                    name="from_working_lift"
+                                    label="Yes"
+                                    disabled={bookingState.formValues.from_floors_count === 0}
+                                    onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                                        bookingsDispatch({
+                                            type: ADD_FORM_VALUES,
+                                            payload: {
+                                                from_working_lift: event.target.value,
+                                            },
+                                        })
+                                    }
+                                    id="yes"
+                                    value={1}
+                                    checked={
+                                        Number(bookingState.formValues.from_working_lift) === 1
+                                    }
+                                />
+                                <Form.Check
+                                    type="radio"
+                                    inline
+                                    name="from_working_lift"
+                                    label="No"
+                                    disabled={bookingState.formValues.from_floors_count === 0}
+                                    onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                                        bookingsDispatch(
+                                            addFormValues("from_working_lift", event.target.value)
+                                        )
+                                    }
+                                    id="no"
+                                    value={0}
+                                    checked={
+                                        Number(bookingState.formValues.from_working_lift) === 0
+                                    }
+                                />
+                            </Form.Group>
+                        </Row>
+                        <Row className="mb-5">
+                            <Form.Group as={Col} md="12" className="">
+                                <Form.Label>What time would you like to move?</Form.Label>
+                                <Form.Check
+                                    type="radio"
+                                    required
+                                    name="move_time_period"
+                                    label="Morning between (7am to 12pm)"
+                                    onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                                        bookingsDispatch({
+                                            type: ADD_FORM_VALUES,
+                                            payload: {
+                                                move_time_period: event.target.value,
+                                            },
+                                        })
+                                    }
+                                    id="morning"
+                                    value="0"
+                                    checked={Number(bookingState.formValues.move_time_period) === 0}
+                                />
+                                <Form.Check
+                                    type="radio"
+                                    required
+                                    name="move_time_period"
+                                    label="Afternoon between (12pm to 4pm)"
+                                    onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                                        bookingsDispatch({
+                                            type: ADD_FORM_VALUES,
+                                            payload: {
+                                                move_time_period: event.target.value,
+                                            },
+                                        })
+                                    }
+                                    id="afternoon"
+                                    value="1"
+                                    checked={Number(bookingState.formValues.move_time_period) === 1}
+                                />
+                            </Form.Group>
+                        </Row>
+                    </>
+                }
 
                 {
                     hasDelivery && <>

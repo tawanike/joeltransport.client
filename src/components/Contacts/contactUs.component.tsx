@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
 import { useState } from 'react';
-import { Button, Col, Form as BSForm, Modal, Row } from 'react-bootstrap';
+import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
 import { CoverImage, Uploader } from '../ui';
 import { BsCheckCircle } from 'react-icons/bs';
-import { Formik, Field, Form, FormikProps, ErrorMessage } from 'formik';
+import { Formik, Field, FormikProps, ErrorMessage } from 'formik';
 import * as yup from 'yup';
 import PhoneInput, { parsePhoneNumber } from 'react-phone-number-input';
 import useAPI from '../../_hooks/useAPI';
@@ -134,9 +134,9 @@ const ContactUsComponent: FC<IProps> = ({ isModal = false }) => {
                             validationSchema={validationSchema}
                         >
                             {(props: FormikProps<any>) => (
-                                <BSForm noValidate validated={validated} encType="multipart/form-data" onSubmit={props.handleSubmit}>
+                                <Form noValidate validated={validated} encType="multipart/form-data" onSubmit={props.handleSubmit}>
                                     <Row className="mb-5">
-                                        <BSForm.Group as={Col} md="6" controlId="first_name">
+                                        <Form.Group as={Col} md="6" controlId="first_name">
                                             <ErrorMessage name="first_name" />
                                             <Field
                                                 type="text"
@@ -145,8 +145,8 @@ const ContactUsComponent: FC<IProps> = ({ isModal = false }) => {
                                                 onChange={props.handleChange}
                                                 className="form-control"
                                             />
-                                        </BSForm.Group>
-                                        <BSForm.Group as={Col} md="6" controlId="last_name">
+                                        </Form.Group>
+                                        <Form.Group as={Col} md="6" controlId="last_name">
                                             <ErrorMessage name="last_name" />
                                             <Field
                                                 type="text"
@@ -155,10 +155,10 @@ const ContactUsComponent: FC<IProps> = ({ isModal = false }) => {
                                                 onChange={props.handleChange}
                                                 className="form-control"
                                             />
-                                        </BSForm.Group>
+                                        </Form.Group>
                                     </Row>
                                     <Row className="mb-5">
-                                        <BSForm.Group as={Col} md="12" controlId="email">
+                                        <Form.Group as={Col} md="12" controlId="email">
                                             <ErrorMessage name="email" className='text-success' />
                                             <Field
                                                 type="email"
@@ -167,10 +167,10 @@ const ContactUsComponent: FC<IProps> = ({ isModal = false }) => {
                                                 onChange={props.handleChange}
                                                 className="form-control"
                                             />
-                                        </BSForm.Group>
+                                        </Form.Group>
                                     </Row>
                                     <Row className="mb-5">
-                                        <BSForm.Group as={Col} md="12" controlId="emailAdd">
+                                        <Form.Group as={Col} md="12" controlId="emailAdd">
                                             <ErrorMessage name="phone_number" />
                                             <PhoneInput
                                                 defaultCountry='ZA'
@@ -178,10 +178,10 @@ const ContactUsComponent: FC<IProps> = ({ isModal = false }) => {
                                                 value={props.values.phone_number}
                                                 onChange={(value) => props.setFieldValue("phone_number", value)}
                                             />
-                                        </BSForm.Group>
+                                        </Form.Group>
                                     </Row>
                                     <Row className="mb-5">
-                                        <BSForm.Group as={Col} md="12" controlId="message">
+                                        <Form.Group as={Col} md="12" controlId="message">
                                             <ErrorMessage name="message" />
                                             <Field
                                                 placeholder="Message*"
@@ -191,35 +191,35 @@ const ContactUsComponent: FC<IProps> = ({ isModal = false }) => {
                                                 onChange={props.handleChange}
                                                 className="form-control"
                                             />
-                                        </BSForm.Group>
+                                        </Form.Group>
                                     </Row>
                                     <Row className="mb-5">
-                                        <BSForm.Group as={Col} md="12" controlId="category">
+                                        <Form.Group as={Col} md="12" controlId="category">
                                             <ErrorMessage name="category" />
-                                            <BSForm.Select
+                                            <Form.Select
                                                 onChange={props.handleChange}>
                                                 <option value="0" disabled selected>Need assistance with?*</option>
                                                 <option value="1">Schedule a move</option>
                                                 <option value="2">Schedule a survey</option>
                                                 <option value="3">General enquiry</option>
-                                            </BSForm.Select>
-                                        </BSForm.Group>
+                                            </Form.Select>
+                                        </Form.Group>
                                     </Row>
                                     <h5 className='mb-5'>Service options*</h5>
                                     <ErrorMessage name="service_options" />
                                     <Row >
-                                        <BSForm.Group as={Col} md="4" className="mb-5">
-                                            <BSForm.Label>
+                                        <Form.Group as={Col} md="4" className="mb-5">
+                                            <Form.Label>
                                                 <Field
                                                     type="checkbox"
                                                     name="service_options"
                                                     value="0"
                                                     className="m-1"
                                                 />
-                                                Home move</BSForm.Label>
-                                        </BSForm.Group>
-                                        <BSForm.Group as={Col} md="4" className="mb-5">
-                                            <BSForm.Label>
+                                                Home move</Form.Label>
+                                        </Form.Group>
+                                        <Form.Group as={Col} md="4" className="mb-5">
+                                            <Form.Label>
                                                 <Field
                                                     type="checkbox"
                                                     label="Office move"
@@ -227,10 +227,10 @@ const ContactUsComponent: FC<IProps> = ({ isModal = false }) => {
                                                     value="1"
                                                     className="m-1"
                                                 />
-                                                Office move</BSForm.Label>
-                                        </BSForm.Group>
-                                        <BSForm.Group as={Col} md="4" className="mb-5">
-                                            <BSForm.Label>
+                                                Office move</Form.Label>
+                                        </Form.Group>
+                                        <Form.Group as={Col} md="4" className="mb-5">
+                                            <Form.Label>
                                                 <Field
                                                     type="checkbox"
                                                     label="Specialized move"
@@ -238,10 +238,10 @@ const ContactUsComponent: FC<IProps> = ({ isModal = false }) => {
                                                     value="2"
                                                     className="m-1"
                                                 />
-                                                Specialized move</BSForm.Label>
-                                        </BSForm.Group>
-                                        <BSForm.Group as={Col} md="4" className="mb-5">
-                                            <BSForm.Label>
+                                                Specialized move</Form.Label>
+                                        </Form.Group>
+                                        <Form.Group as={Col} md="4" className="mb-5">
+                                            <Form.Label>
                                                 <Field
                                                     type="checkbox"
                                                     label="Storage"
@@ -249,10 +249,10 @@ const ContactUsComponent: FC<IProps> = ({ isModal = false }) => {
                                                     value="3"
                                                     className="m-1"
                                                 />
-                                                Storage</BSForm.Label>
-                                        </BSForm.Group>
-                                        <BSForm.Group as={Col} md="6" className="mb-5">
-                                            <BSForm.Label>
+                                                Storage</Form.Label>
+                                        </Form.Group>
+                                        <Form.Group as={Col} md="6" className="mb-5">
+                                            <Form.Label>
                                                 <Field
                                                     type="checkbox"
                                                     label="Please call me back"
@@ -260,8 +260,8 @@ const ContactUsComponent: FC<IProps> = ({ isModal = false }) => {
                                                     value="4"
                                                     className="m-1"
                                                 />
-                                                Please call me back</BSForm.Label>
-                                        </BSForm.Group>
+                                                Please call me back</Form.Label>
+                                        </Form.Group>
                                     </Row>
 
                                     <Row className="mb-5">
@@ -269,7 +269,7 @@ const ContactUsComponent: FC<IProps> = ({ isModal = false }) => {
                                     </Row>
                                     {isModal && map()}
                                     <Button variant="secondary" className='p-3 col-12' type="submit">Send</Button>
-                                </BSForm>
+                                </Form>
                             )}
                         </Formik>
                     </div>

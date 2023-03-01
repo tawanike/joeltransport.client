@@ -1,13 +1,15 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { BsInfoCircle, BsPerson } from "react-icons/bs";
 import { RxCaretDown } from "react-icons/rx";
 import AddedServices from "./addedService.component";
 import PersonalInformation from "./personalInfomation.componnent";
 import MoveDetails from "./moveDetails.component";
 import BookStorageUnit from "./bookStorageUnit.component";
+import { BookingContext } from "src/_contexts/booking.context";
 
 const StorageStepper = () => {
     const [currentView, setCurrentView] = useState("")
+    const { state: bookingState } = useContext(BookingContext);
     const toggleView = (view: string) => {
         if (currentView === view) {
             setCurrentView("");
@@ -52,22 +54,25 @@ const StorageStepper = () => {
                     {currentView === "unit" && <BookStorageUnit />}
                 </div>
             </div>
-            <div className="moves__step col-12 mb-3">
-                <div className="row">
-                    <div className="col-12 moves__step__head" onClick={() => toggleView("bakkie")}>
-                        <div className="row">
-                            <div className="col-11">
-                                <p><BsInfoCircle className="me-2" /> Bakkie shuttle</p>
-                            </div>
+            {
+                bookingState.formValues.deliver_to_storage &&
+                <div className="moves__step col-12 mb-3">
+                    <div className="row">
+                        <div className="col-12 moves__step__head" onClick={() => toggleView("bakkie")}>
+                            <div className="row">
+                                <div className="col-11">
+                                    <p><BsInfoCircle className="me-2" /> Bakkie shuttle</p>
+                                </div>
 
-                            <div className="col-1 moves__step__head__curret">
-                                <RxCaretDown />
+                                <div className="col-1 moves__step__head__curret">
+                                    <RxCaretDown />
+                                </div>
                             </div>
                         </div>
+                        {currentView === "bakkie" && <AddedServices />}
                     </div>
-                    {currentView === "bakkie" && <AddedServices />}
                 </div>
-            </div>
+            }
             <div className="moves__step col-12 mb-3">
                 <div className="row">
                     <div className="col-12 moves__step__head" onClick={() => toggleView("personal")}>
