@@ -1,4 +1,6 @@
+import HomeMoveModalComponent from "components/LandingPage/homeMoveModal.component";
 import { useRouter } from "next/router";
+import { useState } from "react";
 import { Breadcrumb } from "react-bootstrap";
 import OfficeRemovalsComponent from "../../components/Resources/OfficeRemovalsView.component";
 import SpecialisedServicesComponent from "../../components/Resources/SpecialisedServices.component";
@@ -9,15 +11,16 @@ import { CoverImage } from "../../components/ui";
 const Resources = () => {
   const router = useRouter();
   const { slug } = router.query;
+  const [show, setShow] = useState(false);
 
   const loadView = (slug: string) => {
     switch (slug) {
       case "home-moves":
-        return <HomeMoversView />;
+        return <HomeMoversView getQuote={setShow} />;
       case "office-removals":
         return <OfficeRemovalsComponent />;
       case "storage":
-        return <StorageComponent />;
+        return <StorageComponent getQuote={setShow} />;
       case "specialized-services":
         return <SpecialisedServicesComponent />;
       default:
@@ -27,6 +30,10 @@ const Resources = () => {
 
   return (
     <div className="resources container-fluid">
+      <HomeMoveModalComponent
+        showSelectorModal={show}
+        setShowSelectorModal={setShow}
+      />
       <CoverImage
         size="medium"
         src="/img/services/home_moves_banner_image.png"
