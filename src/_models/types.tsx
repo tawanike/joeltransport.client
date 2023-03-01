@@ -58,6 +58,10 @@ export type CostSummary = {
     quantity: number;
     price: number;
   } | null;
+  storage: {
+    quantity: number;
+    price: number;
+  };
   subtotal: number;
   vat: number;
   total: number;

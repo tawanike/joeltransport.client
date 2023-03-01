@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { Modal } from 'react-bootstrap'
-import ContactUsComponent from './Form'
+import ContactUsComponent from './contactUs.component'
 
 interface IProps {
     showContactUsModal: boolean;

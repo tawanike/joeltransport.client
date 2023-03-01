@@ -1,4 +1,4 @@
-import ContactUsComponent from 'components/Contacts/Form';
+import ContactUsComponent from 'components/Contacts/contactUs.component';
 
 const ContactUs = () => {
     return <ContactUsComponent />

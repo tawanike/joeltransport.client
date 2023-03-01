@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { useState } from 'react';
 import { Button, Col, Form as BSForm, Modal, Row } from 'react-bootstrap';
-import { CoverImage, Uploader } from '../../components/ui';
+import { CoverImage, Uploader } from '../ui';
 import { BsCheckCircle } from 'react-icons/bs';
 import { Formik, Field, Form, FormikProps, ErrorMessage } from 'formik';
 import * as yup from 'yup';
@@ -101,6 +101,8 @@ const ContactUsComponent: FC<IProps> = ({ isModal = false }) => {
                                 attachment: ""
                             }}
                             onSubmit={async (values: any, actions) => {
+                                console.log(values);
+
                                 const formData = new FormData();
                                 formData.append('attachment', values.attachment);
                                 formData.append('first_name', values.first_name);
@@ -123,8 +125,11 @@ const ContactUsComponent: FC<IProps> = ({ isModal = false }) => {
                                     body: formData
                                 });
 
-                                if (results.status === 201) setShow(true);
-                                // Handle errors
+                                console.log(results);
+
+                                if (results.status === 201) {
+                                    setShow(true);
+                                }
                             }}
                             validationSchema={validationSchema}
                         >
