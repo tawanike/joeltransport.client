@@ -11,7 +11,7 @@ import { ADD_FORM_VALUES, IProduct } from "src/_models/types";
 import CostSummaryStateContext from "../../_contexts/costSummary.context";
 
 interface IProps {}
-const AddedServices: FC<IProps> = () => {
+const BakkieShuttle: FC<IProps> = () => {
   const api = useAPI();
   const { CostSummaryState, dispatchCostSummary } = useContext(
     CostSummaryStateContext
@@ -171,4 +171,4 @@ const AddedServices: FC<IProps> = () => {
   );
 };
 
-export default AddedServices;
+export default BakkieShuttle;
