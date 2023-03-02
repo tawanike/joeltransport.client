@@ -6,9 +6,10 @@ import useNumberInput from "../../_hooks/useNumberInput";
 
 type Props = {
   item: any;
+  setRoomCounts: any;
 };
 
-function InventoryItem({ item }: Props) {
+function InventoryItem({ item, setRoomCounts }: Props) {
   const api = useAPI();
   const [selected, setSelected] = useState(false);
   const bookingContext = useContext(BookingContext);
@@ -30,6 +31,13 @@ function InventoryItem({ item }: Props) {
 
         const response = await api.post("/inventory/booking-items", data);
         console.log(response);
+
+        setRoomCounts((prev: any) => {
+          return {
+            ...prev,
+            [item.target.id]: itemCountValue,
+          };
+        });
       } else {
       }
     }

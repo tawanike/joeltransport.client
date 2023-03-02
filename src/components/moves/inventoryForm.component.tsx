@@ -59,6 +59,7 @@ function InventoryForm({}: Props) {
                     <InventoryItem
                       key={roomInventoryItem.id}
                       item={roomInventoryItem}
+                      setRoomCounts={setRoomCounts}
                     />
                   ))}
                 </div>
