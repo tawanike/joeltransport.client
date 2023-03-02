@@ -17,6 +17,7 @@ const StorageComponent = ({ getQuote }: any) => {
     <>
       <RightImageSection
         {...(storageSections.storageLocally as RightImageSectionConfig)}
+        getQuote={getQuote}
       />
       <BlueSection {...(storageSections.benefits as BlueSectionConfig)} />
       <div className="resources__pricing col-12">

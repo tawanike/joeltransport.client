@@ -1,4 +1,4 @@
-import AddedServices from "components/moves/addedService.component";
+import AddedServices from "components/moves/addedServices.component";
 import InventoryForm from "components/moves/inventoryForm.component";
 import MoveDetails from "components/moves/moveDetails.component";
 import PersonalInformation from "components/moves/personalInfomation.componnent";

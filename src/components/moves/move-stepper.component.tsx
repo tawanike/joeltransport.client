@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { BsCartPlus, BsInfoCircle, BsPerson, BsTruck } from "react-icons/bs";
 import { RxCaretDown } from "react-icons/rx";
-import AddedServices from "./addedService.component";
+import AddedServices from "./bakkieShuttle.component";
 import ChooseTruck from "./chooseTruck.component";
 import MoveDetails from "./moveDetails.component";
 import PersonalInformation from "./personalInfomation.componnent";
