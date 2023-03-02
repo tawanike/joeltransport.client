@@ -1,10 +1,11 @@
 import HomeMoveModalComponent from "components/LandingPage/homeMoveModal.component";
+import StorageComponent from "components/Resources/StorageView.component";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { Breadcrumb } from "react-bootstrap";
+import StorageModalComponent from "src/components/LandingPage/storageModal.component";
 import OfficeRemovalsComponent from "../../components/Resources/OfficeRemovalsView.component";
 import SpecialisedServicesComponent from "../../components/Resources/SpecialisedServices.component";
-import StorageComponent from "../../components/Resources/StorageView.component";
 import HomeMoversView from "../../components/Resources/homeMoversView.component";
 import { CoverImage } from "../../components/ui";
 
@@ -12,6 +13,7 @@ const Resources = () => {
   const router = useRouter();
   const { slug } = router.query;
   const [show, setShow] = useState(false);
+  const [showStorageModal, setShowStorageModal] = useState(false);
 
   const loadView = (slug: string) => {
     switch (slug) {
@@ -20,7 +22,7 @@ const Resources = () => {
       case "office-removals":
         return <OfficeRemovalsComponent />;
       case "storage":
-        return <StorageComponent getQuote={setShow} />;
+        return <StorageComponent getQuote={setShowStorageModal} />;
       case "specialized-services":
         return <SpecialisedServicesComponent />;
       default:
@@ -33,6 +35,10 @@ const Resources = () => {
       <HomeMoveModalComponent
         showSelectorModal={show}
         setShowSelectorModal={setShow}
+      />
+      <StorageModalComponent
+        showStorageModal={showStorageModal}
+        setShowStorageModal={setShowStorageModal}
       />
       <CoverImage
         size="medium"
