@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import React, { FC } from "react";
 import { useContext, useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
@@ -29,6 +30,7 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
     const fetchWrapper = useAPI();
     const [showFromWorkingLift, setShowFromWorkingLift] = useState(false);
     const [showToWorkingLift, setShowToWorkingLift] = useState(false);
+    const router = useRouter()
 
     useEffect(() => {
         const submitForm = async () => {
@@ -48,6 +50,8 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
             submitForm();
         }
         submitForm();
+        console.log(router, ["/move/domestic"].includes(router.pathname));
+
     }, [bookingState.formValues]);
 
     const onDateChange = (date: Date) => {
@@ -89,47 +93,50 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
     return (
         <div className="col-12 move__step__body">
             <Form noValidate>
-                <Row className="mb-5">
-                    <Form.Group as={Col} md="12" className="">
-                        <Form.Label className="col-12">Would you prefer we collect and pack your goods for you?</Form.Label>
-                        <Form.Check
-                            type="radio"
-                            inline
-                            name="deliver_to_storage"
-                            label="Yes - collect"
-                            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                                bookingsDispatch({
-                                    type: ADD_FORM_VALUES,
-                                    payload: {
-                                        deliver_to_storage: Boolean(Number(event.target.value)),
-                                    },
-                                })
-                            }
-                            id="deliver_to_storage"
-                            value={1}
-                            checked={Number(bookingState.formValues.deliver_to_storage) === 1}
-                        />
-                        <Form.Check
-                            type="radio"
-                            inline
-                            name="deliver_to_storage"
-                            label="No - I will deliver"
-                            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                                bookingsDispatch({
-                                    type: ADD_FORM_VALUES,
-                                    payload: {
-                                        deliver_to_storage: Boolean(Number(event.target.value)),
-                                    },
-                                })
-                            }
-                            id="deliver_to_storage"
-                            value={0}
-                            checked={Number(bookingState.formValues.deliver_to_storage) === 0}
-                        />
-                    </Form.Group>
-                </Row>
                 {
-                    bookingState.formValues.deliver_to_storage &&
+                    ["/storage"].includes(router.pathname) &&
+                    <Row className="mb-5">
+                        <Form.Group as={Col} md="12" className="">
+                            <Form.Label className="col-12">Would you prefer we collect and pack your goods for you?</Form.Label>
+                            <Form.Check
+                                type="radio"
+                                inline
+                                name="deliver_to_storage"
+                                label="Yes - collect"
+                                onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                                    bookingsDispatch({
+                                        type: ADD_FORM_VALUES,
+                                        payload: {
+                                            deliver_to_storage: Boolean(Number(event.target.value)),
+                                        },
+                                    })
+                                }
+                                id="deliver_to_storage"
+                                value={1}
+                                checked={Number(bookingState.formValues.deliver_to_storage) === 1}
+                            />
+                            <Form.Check
+                                type="radio"
+                                inline
+                                name="deliver_to_storage"
+                                label="No - I will deliver"
+                                onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                                    bookingsDispatch({
+                                        type: ADD_FORM_VALUES,
+                                        payload: {
+                                            deliver_to_storage: Boolean(Number(event.target.value)),
+                                        },
+                                    })
+                                }
+                                id="deliver_to_storage"
+                                value={0}
+                                checked={Number(bookingState.formValues.deliver_to_storage) === 0}
+                            />
+                        </Form.Group>
+                    </Row>
+                }
+                {
+                    (["/move/domestic"].includes(router.pathname) || bookingState.formValues.deliver_to_storage) &&
                     <>
                         <h5 className="my-5">Please provide loading address</h5>
                         <Row className="mb-5">

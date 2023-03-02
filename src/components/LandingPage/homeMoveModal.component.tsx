@@ -76,6 +76,8 @@ const HomeMoveModalComponent: FC<IProps> = ({
     };
 
     const handleAddressChange = async (location: any) => {
+        console.log(location);
+
         const address = await addressUtils.formatAddress(location);
         const original_location = [whichAddress] + "_original";
         bookingsDispatch({
@@ -100,6 +102,12 @@ const HomeMoveModalComponent: FC<IProps> = ({
             setShowSelectorModal(false);
         }
     };
+
+    useEffect(() => {
+        console.log(bookingState);
+
+    }, [bookingState])
+
 
     return (
         <>
@@ -161,12 +169,13 @@ const HomeMoveModalComponent: FC<IProps> = ({
                                                 address
                                             </Form.Label>
                                             <GooglePlacesAutocomplete
-                                                apiKey="AIzaSyC_GzK_Vl1Z4sC0-SjAlJd8lzhodDk1coE"
+                                                apiKey="AIzaSyBZfdpoBUniKbSIq_5YWdykaoOnADrsPjs"
                                                 minLengthAutocomplete={5}
                                                 selectProps={{
                                                     value: bookingState.formValues[`${whichAddress}_original` as keyof IFormValues],
-                                                    onChange: (location: any) =>
-                                                        handleAddressChange(location),
+                                                    onChange: (location: any) => {
+                                                        handleAddressChange(location)
+                                                    },
                                                 }}
                                             />
                                         </Form.Group>
