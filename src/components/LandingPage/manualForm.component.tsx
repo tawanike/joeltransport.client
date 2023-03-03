@@ -1,8 +1,9 @@
 import { useRouter } from "next/router";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Alert, Button, Col, Form, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { FcInfo } from "react-icons/fc";
+import Select from "react-select";
 import { BookingContext } from "src/_contexts/booking.context";
 import { useAPI } from "src/_hooks";
 import { ADD_FORM_VALUES } from "src/_models/types";
@@ -25,6 +26,19 @@ function AddressManualForm({
   const { state: bookingState, dispatch: bookingsDispatch } =
     useContext(BookingContext);
   const router = useRouter();
+  const [countries, setCountries] = useState<any[]>([]);
+
+  useEffect(() => {
+    const getCountries = async () => {
+      const countries = await fetchWrapper.get(
+        "/locations/countries",
+        undefined
+      );
+      setCountries(countries.results);
+    };
+
+    getCountries();
+  }, []);
 
   const onSubmit = (data: any) => {
     console.log(data);
@@ -121,7 +135,16 @@ function AddressManualForm({
         </Form.Group>
         <Form.Group as={Col} md="6">
           <Form.Label>Country</Form.Label>
-          <Form.Control {...register("country")} placeholder="Country" />
+          <Select
+            name="country"
+            placeholder="Country"
+            options={countries.map((c) => {
+              return {
+                label: c.title,
+                value: c.id,
+              };
+            })}
+          />
         </Form.Group>
       </Row>
 
