@@ -83,7 +83,7 @@ const BookingContextProvider: React.FC<ContextProviderProps> = (props) => {
         .get(`/bookings/${bookingId}`, false)
         .then((res: any) => {
           setRetrievedBooking(res);
-          console.log((res as IFormValues).from_address);
+          console.log("PANO", (res as IFormValues).from_address);
           if (res.move_date === null) {
             delete res.move_date;
             dispatch(getBooking(res));
@@ -147,11 +147,8 @@ const BookingContextProvider: React.FC<ContextProviderProps> = (props) => {
           return res;
         })
         .then(async (res) => {
-          console.log(res.from_address.place_id);
-
           const from = await geocodeByPlaceId(res.from_address.place_id);
           const to = await geocodeByPlaceId(res.to_address.place_id);
-          console.log(from[0], to[0]);
           dispatch({
             type: ADD_FORM_VALUES,
             payload: {

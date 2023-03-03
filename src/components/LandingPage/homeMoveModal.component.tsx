@@ -74,8 +74,6 @@ const HomeMoveModalComponent: FC<IProps> = ({
   };
 
   const handleAddressChange = async (location: any) => {
-    console.log(location);
-
     const address = await addressUtils.formatAddress(location);
     const original_location = [whichAddress] + "_original";
     bookingsDispatch({
