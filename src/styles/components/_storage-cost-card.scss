@@ -1,0 +1,28 @@
+.storage-cost-card {
+    background-color: #F4F6F8;
+    padding: 2rem;
+    p {
+        margin-bottom: 0;
+        font-weight: 500;
+    }
+    &__head {
+        p {
+            font-size: 1rem;
+            font-weight: 800;
+        }
+        &--start {
+            display: grid;
+            place-items: center start;
+        }
+        &--end {
+            display: grid;
+            place-items: center end;
+            text-align: right;
+        }
+        &--center {
+            display: grid;
+            place-items: center center;
+            text-align: center;
+        }
+    }
+}

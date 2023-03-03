@@ -59,17 +59,6 @@ const MoveCostCard = () => {
                       </div>
                     </div>
                   </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div className="col-12 move-cost-card__section">
-            <div className="row">
-              <div className="col-12 move-cost-card__section__head">
-                <p>Added services</p>
-              </div>
-              <div className="col-12 move-cost-card__section__details">
-                <ul>
                   <li>
                     <div className="row">
                       <div className="col-6 move-cost-card__section__details__title">
@@ -93,6 +82,7 @@ const MoveCostCard = () => {
               </div>
             </div>
           </div>
+
           <div className="col-12 move-cost-card__section move-cost-card__section--total mt-5">
             <div className="row">
               <div className="col-12 move-cost-card__section__details">

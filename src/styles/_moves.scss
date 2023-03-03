@@ -48,6 +48,25 @@
             display: inline-grid;
             place-items: center end;
         }
+        &__thumbnail {
+            overflow: hidden;
+            img {
+                border-radius: 20px;
+                width: 100%;
+                height: auto;
+            }
+        }
+        &__summary {
+            display: grid;
+            place-items: center start;
+            .price {
+                font-size: 1.6rem;
+                font-weight: 300;
+                span {
+                    font-weight: 600;
+                }
+            }
+        }
     }
     &__checkout {
         &__summary {

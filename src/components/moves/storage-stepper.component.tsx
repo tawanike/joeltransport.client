@@ -1,13 +1,15 @@
-import { useState } from "react";
-import { BsCartPlus, BsInfoCircle, BsPerson, BsTruck } from "react-icons/bs";
+import { useContext, useState } from "react";
+import { BsInfoCircle, BsPerson } from "react-icons/bs";
 import { RxCaretDown } from "react-icons/rx";
+import { BookingContext } from "src/_contexts/booking.context";
 import AddedServices from "./bakkieShuttle.component";
-import ChooseTruck from "./chooseTruck.component";
+import BookStorageUnit from "./bookStorageUnit.component";
 import MoveDetails from "./moveDetails.component";
 import PersonalInformation from "./personalInfomation.componnent";
 
-const MoveStepper = () => {
+const StorageStepper = () => {
   const [currentView, setCurrentView] = useState("");
+  const { state: bookingState } = useContext(BookingContext);
   const toggleView = (view: string) => {
     if (currentView === view) {
       setCurrentView("");
@@ -22,12 +24,12 @@ const MoveStepper = () => {
           <div className="row">
             <div
               className="col-12 moves__step__head"
-              onClick={() => toggleView("move")}
+              onClick={() => toggleView("arrangements")}
             >
               <div className="row">
                 <div className="col-11">
                   <p>
-                    <BsInfoCircle className="me-2" /> Move details
+                    <BsInfoCircle className="me-2" /> Delivery arrangements
                   </p>
                 </div>
 
@@ -36,10 +38,10 @@ const MoveStepper = () => {
                 </div>
               </div>
             </div>
-            {currentView === "move" && (
+            {currentView === "arrangements" && (
               <MoveDetails
-                hasDelivery={true}
-                dateLabel="When would you like to move?"
+                hasDelivery={false}
+                dateLabel="When would you like us to collect?"
               />
             )}
           </div>
@@ -48,12 +50,12 @@ const MoveStepper = () => {
           <div className="row">
             <div
               className="col-12 moves__step__head"
-              onClick={() => toggleView("truck")}
+              onClick={() => toggleView("unit")}
             >
               <div className="row">
                 <div className="col-11">
                   <p>
-                    <BsTruck className="me-2" /> Choose a truck
+                    <BsInfoCircle className="me-2" /> Book storage unit
                   </p>
                 </div>
 
@@ -62,33 +64,32 @@ const MoveStepper = () => {
                 </div>
               </div>
             </div>
-            {currentView === "truck" && <ChooseTruck />}
+            {currentView === "unit" && <BookStorageUnit />}
           </div>
         </div>
+        {bookingState.formValues.deliver_to_storage && (
+          <div className="moves__step col-12 mb-3">
+            <div className="row">
+              <div
+                className="col-12 moves__step__head"
+                onClick={() => toggleView("bakkie")}
+              >
+                <div className="row">
+                  <div className="col-11">
+                    <p>
+                      <BsInfoCircle className="me-2" /> Bakkie shuttle
+                    </p>
+                  </div>
 
-        <div className="moves__step col-12 mb-3">
-          <div className="row">
-            <div
-              className="col-12 moves__step__head"
-              onClick={() => toggleView("added")}
-            >
-              <div className="row">
-                <div className="col-11">
-                  <p>
-                    <BsCartPlus className="me-2" />
-                    Bukkie Shuttle
-                  </p>
-                </div>
-
-                <div className="col-1 moves__step__head__curret">
-                  <RxCaretDown />
+                  <div className="col-1 moves__step__head__curret">
+                    <RxCaretDown />
+                  </div>
                 </div>
               </div>
+              {currentView === "bakkie" && <AddedServices />}
             </div>
-            {currentView === "added" && <AddedServices />}
           </div>
-        </div>
-
+        )}
         <div className="moves__step col-12 mb-3">
           <div className="row">
             <div
@@ -116,4 +117,4 @@ const MoveStepper = () => {
   );
 };
 
-export default MoveStepper;
+export default StorageStepper;

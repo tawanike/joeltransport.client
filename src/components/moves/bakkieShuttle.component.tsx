@@ -11,16 +11,13 @@ import { ADD_FORM_VALUES, IProduct } from "src/_models/types";
 import CostSummaryStateContext from "../../_contexts/costSummary.context";
 
 interface IProps {}
-const AddedServices: FC<IProps> = () => {
+const BakkieShuttle: FC<IProps> = () => {
   const api = useAPI();
   const { CostSummaryState, dispatchCostSummary } = useContext(
     CostSummaryStateContext
   );
   const { state: bookingState, dispatch: dispatchBookings } =
     useContext(BookingContext);
-
-  console.log("bookingState.formValues", bookingState.formValues);
-
   const [bakkieShuttle, setBakkieShuttle] = useState<IProduct | null>(null);
 
   const handleBakkieShuttleAddress = (values: any) => {
@@ -34,7 +31,7 @@ const AddedServices: FC<IProps> = () => {
       dispatchCostSummary(
         addBakkieShuttle({
           requires_bakkie_shuttle: 1,
-          quantity: values.value === 2 ? 1.75 : 1,
+          quantity: values.value === 3 ? 1.75 : 1,
           price: price,
         })
       );
@@ -174,4 +171,4 @@ const AddedServices: FC<IProps> = () => {
   );
 };
 
-export default AddedServices;
+export default BakkieShuttle;
