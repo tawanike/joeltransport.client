@@ -4,7 +4,9 @@ import React, {
   useContext,
   useEffect,
   useReducer,
+  useState,
 } from "react";
+import { geocodeByPlaceId } from "react-google-places-autocomplete";
 import { addBakkieShuttle } from "src/_actions/added-services.actions";
 import { getBooking } from "src/_actions/booking.actions";
 import { selectTruck } from "src/_actions/trucks.actions";
@@ -21,12 +23,10 @@ import {
   RESET_BOOKING,
 } from "src/_models/types";
 import CostSummaryStateContext from "./costSummary.context";
-
 export interface InitContextProps {
   state: IBooking;
   dispatch: Dispatch<IAction>;
 }
-
 const initialState = {
   id: undefined,
   products: [],
@@ -41,9 +41,7 @@ const initialState = {
 type ContextProviderProps = {
   children: React.ReactNode;
 };
-
 const reducer = (state: IBooking, action: IAction) => {
-  console.log("action", action);
   switch (action.type) {
     case GET_BOOKING:
       return {
@@ -53,7 +51,6 @@ const reducer = (state: IBooking, action: IAction) => {
     case ADD_PRODUCTS_DATA:
       return { ...state, products: action.payload };
     case ADD_FORM_VALUES:
-      console.log(state);
       return {
         ...state,
         formValues: { ...state.formValues, ...action.payload },
@@ -72,79 +69,97 @@ const reducer = (state: IBooking, action: IAction) => {
       return state;
   }
 };
-
 export const BookingContext = createContext({} as InitContextProps);
-
 const BookingContextProvider: React.FC<ContextProviderProps> = (props) => {
   const api = useAPI();
   const [state, dispatch] = useReducer(reducer, initialState);
   const costSummaryContext = useContext(CostSummaryStateContext);
+  const [retrievedBooking, setRetrievedBooking] = useState();
 
   useEffect(() => {
     const bookingId = localStorage.getItem("bookingId");
     if (bookingId) {
-      api.get(`/bookings/${bookingId}`, false).then((res: any) => {
-        if (res.move_date === null) {
-          delete res.move_date;
-          dispatch(getBooking(res));
-        } else {
-          dispatch(getBooking(res));
-        }
+      api
+        .get(`/bookings/${bookingId}`, false)
+        .then((res: any) => {
+          setRetrievedBooking(res);
+          console.log((res as IFormValues).from_address);
+          if (res.move_date === null) {
+            delete res.move_date;
+            dispatch(getBooking(res));
+          } else {
+            dispatch(getBooking(res));
+          }
 
-        if (res.products.length > 0) {
-          const truck = res.products.find(
-            (product: any) => product.category === "trucks"
-          );
-          const bakkieShuttle = res.products.find(
-            (product: any) => product.slug === "bakkie-shuttle"
-          );
-
-          if (bakkieShuttle) {
-            costSummaryContext.dispatchCostSummary(
-              addBakkieShuttle({
-                quantity: 1,
-                price: bakkieShuttle.price,
-                requires_bakkie_shuttle: Number(1),
-              })
+          if (res.products.length > 0) {
+            const truck = res.products.find(
+              (product: any) => product.category === "trucks"
+            );
+            const bakkieShuttle = res.products.find(
+              (product: any) => product.slug === "bakkie-shuttle"
             );
 
-            dispatch({
-              type: ADD_FORM_VALUES,
-              payload: {
-                requires_bakkie_shuttle: 1,
-                bakkie_address: Number(bakkieShuttle.address),
-              },
-            });
-          }
-          if (
-            res.products.find((product: any) => product.category === "trucks")
-          ) {
-            if (isHoliday(res.move_date)) {
-              const price = truck.price + truck.off_peak_discount;
-              const offPeakDiscount = 0;
-
+            if (bakkieShuttle) {
               costSummaryContext.dispatchCostSummary(
-                selectTruck({
+                addBakkieShuttle({
                   quantity: 1,
-                  price: price,
-                  off_peak_discount: offPeakDiscount,
+                  price: bakkieShuttle.price,
+                  requires_bakkie_shuttle: Number(1),
                 })
               );
-            } else {
-              const price = truck.price;
-              const offPeakDiscount = truck.off_peak_discount;
 
-              costSummaryContext.dispatchCostSummary(
-                selectTruck({
-                  quantity: 1,
-                  price: price,
-                  off_peak_discount: offPeakDiscount,
-                })
-              );
+              dispatch({
+                type: ADD_FORM_VALUES,
+                payload: {
+                  requires_bakkie_shuttle: 1,
+                  bakkie_address: Number(bakkieShuttle.address),
+                },
+              });
+            }
+            if (
+              res.products.find((product: any) => product.category === "trucks")
+            ) {
+              if (isHoliday(res.move_date)) {
+                const price = truck.price + truck.off_peak_discount;
+                const offPeakDiscount = 0;
+
+                costSummaryContext.dispatchCostSummary(
+                  selectTruck({
+                    quantity: 1,
+                    price: price,
+                    off_peak_discount: offPeakDiscount,
+                  })
+                );
+              } else {
+                const price = truck.price;
+                const offPeakDiscount = truck.off_peak_discount;
+
+                costSummaryContext.dispatchCostSummary(
+                  selectTruck({
+                    quantity: 1,
+                    price: price,
+                    off_peak_discount: offPeakDiscount,
+                  })
+                );
+              }
             }
           }
-        }
-      });
+          return res;
+        })
+        .then(async (res) => {
+          console.log(res.from_address.place_id);
+
+          const from = await geocodeByPlaceId(res.from_address.place_id);
+          const to = await geocodeByPlaceId(res.to_address.place_id);
+          console.log(from[0], to[0]);
+          dispatch({
+            type: ADD_FORM_VALUES,
+            payload: {
+              from_address_original: from[0],
+              to_address_original: to[0],
+            },
+          });
+        });
     }
   }, []);
 
@@ -154,5 +169,4 @@ const BookingContextProvider: React.FC<ContextProviderProps> = (props) => {
     </BookingContext.Provider>
   );
 };
-
 export default BookingContextProvider;

@@ -104,6 +104,8 @@ export interface IFormValues {
     id: string | undefined;
     from_address: IAddress;
     to_address: IAddress;
+    from_address_original: any;
+    to_address_original: any;
     from_property_type: number;
     to_property_type: number;
     move_date: any;
