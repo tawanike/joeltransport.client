@@ -105,8 +105,11 @@ const HomeMoveModalComponent: FC<IProps> = ({
 
     useEffect(() => {
         console.log(bookingState);
+        console.log(whichAddress);
 
-    }, [bookingState])
+        console.log(bookingState.formValues[whichAddress as keyof IFormValues]);
+
+    }, [])
 
 
     return (
@@ -172,7 +175,10 @@ const HomeMoveModalComponent: FC<IProps> = ({
                                                 apiKey="AIzaSyBZfdpoBUniKbSIq_5YWdykaoOnADrsPjs"
                                                 minLengthAutocomplete={5}
                                                 selectProps={{
-                                                    value: bookingState.formValues[`${whichAddress}_original` as keyof IFormValues],
+                                                    value: {
+                                                        value: bookingState.formValues[whichAddress] ? bookingState.formValues[whichAddress].place_id : null,
+                                                        label: bookingState.formValues[whichAddress] ? bookingState.formValues[whichAddress].formatted_address : null,
+                                                    },
                                                     onChange: (location: any) => {
                                                         handleAddressChange(location)
                                                     },

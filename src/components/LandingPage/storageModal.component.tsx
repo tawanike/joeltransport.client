@@ -91,12 +91,16 @@ const StorageModalComponent: FC<IProps> = ({ showStorageModal, setShowStorageMod
                         <Form.Group as={Col} md="12" controlId="from">
                             <Form.Label>Search loading address</Form.Label>
                             <GooglePlacesAutocomplete
-                                apiKey="AIzaSyC_GzK_Vl1Z4sC0-SjAlJd8lzhodDk1coE"
+                                apiKey="AIzaSyBZfdpoBUniKbSIq_5YWdykaoOnADrsPjs"
                                 minLengthAutocomplete={5}
                                 selectProps={{
-                                    value: bookingState.formValues[`${whichAddress}_original` as keyof IFormValues],
-                                    onChange: (location: any) =>
-                                        handleAddressChange(location),
+                                    value: {
+                                        value: bookingState.formValues[whichAddress] ? bookingState.formValues[whichAddress].place_id : null,
+                                        label: bookingState.formValues[whichAddress] ? bookingState.formValues[whichAddress].formatted_address : null,
+                                    },
+                                    onChange: (location: any) => {
+                                        handleAddressChange(location)
+                                    },
                                 }}
                             />
                         </Form.Group>
@@ -185,11 +189,15 @@ const StorageModalComponent: FC<IProps> = ({ showStorageModal, setShowStorageMod
     }
 
     const handleNext = async () => {
-
         if (view === "delivery")
             setView("address");
-        else
+        else {
+            if (!["Gauteng"].includes(bookingState.formValues[whichAddress].province)) {
+                router.push('/contact-us');
+                return;
+            }
             router.push(`/storage`);
+        }
         return;
     }
 
