@@ -29,6 +29,7 @@ const HomeMoveModalComponent: FC<IProps> = ({
     "from_address" | "to_address"
   >("from_address");
   const fetchWrapper = useAPI();
+
   const isNextActive = () => {
     if (whichAddress === "from_address") {
       return !(
@@ -100,8 +101,12 @@ const HomeMoveModalComponent: FC<IProps> = ({
   };
 
   useEffect(() => {
+    bookingsDispatch({
+      type: ADD_FORM_VALUES,
+      payload: { move_type: 0 } as IFormValues,
+    });
     console.log(bookingState);
-  }, [bookingState]);
+  }, []);
 
   return (
     <>

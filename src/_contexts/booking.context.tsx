@@ -42,6 +42,7 @@ type ContextProviderProps = {
   children: React.ReactNode;
 };
 const reducer = (state: IBooking, action: IAction) => {
+  console.log("PANO", action);
   switch (action.type) {
     case GET_BOOKING:
       return {

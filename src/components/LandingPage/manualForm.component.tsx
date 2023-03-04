@@ -69,7 +69,6 @@ function AddressManualForm({
               move_type: 0,
             })
             .then((res) => {
-              console.log("res", res);
               // Save booking id to local storage
               localStorage.setItem("bookingId", res.id);
               router.push(`/move/domestic`);
