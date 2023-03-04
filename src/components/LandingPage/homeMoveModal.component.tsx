@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { FC, useContext, useEffect, useState } from "react";
-import { Alert, Button, Col, Form, Modal, Row } from "react-bootstrap";
+import { Alert, Button, Col, Form, Modal } from "react-bootstrap";
 import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 import { FcInfo } from "react-icons/fc";
 import { getBooking } from "src/_actions/booking.actions";
@@ -9,6 +9,7 @@ import { addressUtils } from "src/_helpers/formatAddress";
 import { useAPI } from "src/_hooks";
 import { ADD_FORM_VALUES, IFormValues } from "src/_models/types";
 import { bookingsService } from "src/_services/bookings.service";
+import AddressManualForm from "./manualForm.component";
 
 interface IProps {
     showSelectorModal: boolean;
@@ -28,7 +29,6 @@ const HomeMoveModalComponent: FC<IProps> = ({
         "from_address" | "to_address"
     >("from_address");
     const fetchWrapper = useAPI();
-
     const isNextActive = () => {
         if (whichAddress === "from_address") {
             return !(
@@ -60,10 +60,8 @@ const HomeMoveModalComponent: FC<IProps> = ({
             bookingState.formValues,
             fetchWrapper
         );
-
         bookingsDispatch(getBooking(booking));
         localStorage.setItem("bookingId", booking.id);
-
         if (
             bookingState.formValues.from_address?.province === "Gauteng" &&
             bookingState.formValues.to_address?.province === "Gauteng"
@@ -76,8 +74,6 @@ const HomeMoveModalComponent: FC<IProps> = ({
     };
 
     const handleAddressChange = async (location: any) => {
-        console.log(location);
-
         const address = await addressUtils.formatAddress(location);
         const original_location = [whichAddress] + "_original";
         bookingsDispatch({
@@ -105,12 +101,7 @@ const HomeMoveModalComponent: FC<IProps> = ({
 
     useEffect(() => {
         console.log(bookingState);
-        console.log(whichAddress);
-
-        console.log(bookingState.formValues[whichAddress as keyof IFormValues]);
-
-    }, [])
-
+    }, [bookingState]);
 
     return (
         <>
@@ -162,145 +153,78 @@ const HomeMoveModalComponent: FC<IProps> = ({
                                 </div>
 
                                 {selectType === "auto" && (
-                                    <div className="custom-modal__search-address__auto col-12">
-                                        <Form.Group as={Col} md="12" controlId="from">
-                                            <Form.Label>
-                                                Search{" "}
-                                                {whichAddress === "from_address"
-                                                    ? "loading"
-                                                    : "delivery"}{" "}
-                                                address
-                                            </Form.Label>
-                                            <GooglePlacesAutocomplete
-                                                apiKey="AIzaSyBZfdpoBUniKbSIq_5YWdykaoOnADrsPjs"
-                                                minLengthAutocomplete={5}
-                                                selectProps={{
-                                                    value: {
-                                                        value: bookingState.formValues[whichAddress] ? bookingState.formValues[whichAddress].place_id : null,
-                                                        label: bookingState.formValues[whichAddress] ? bookingState.formValues[whichAddress].formatted_address : null,
-                                                    },
-                                                    onChange: (location: any) => {
-                                                        handleAddressChange(location)
-                                                    },
-                                                }}
-                                            />
-                                        </Form.Group>
-                                    </div>
+                                    <>
+                                        <div className="custom-modal__search-address__auto col-12">
+                                            <Form.Group as={Col} md="12" controlId="from">
+                                                <Form.Label>
+                                                    Search{" "}
+                                                    {whichAddress === "from_address"
+                                                        ? "loading"
+                                                        : "delivery"}{" "}
+                                                    address
+                                                </Form.Label>
+                                                <GooglePlacesAutocomplete
+                                                    apiKey="AIzaSyBZfdpoBUniKbSIq_5YWdykaoOnADrsPjs"
+                                                    minLengthAutocomplete={5}
+                                                    selectProps={{
+                                                        value: {
+                                                            value: bookingState.formValues[whichAddress] ? bookingState.formValues[whichAddress].place_id : null,
+                                                            label: bookingState.formValues[whichAddress] ? bookingState.formValues[whichAddress].formatted_address : null,
+                                                        },
+                                                        onChange: (location: any) => {
+                                                            handleAddressChange(location)
+                                                        },
+                                                    }}
+                                                />
+                                            </Form.Group>
+                                        </div>
+                                        <Alert variant="primary" className="mt-3">
+                                            <div className="row">
+                                                <div className="col-12 Selector__instructions__get-started">
+                                                    <div className="row">
+                                                        <div
+                                                            className="col-1"
+                                                            style={{
+                                                                display: "grid",
+                                                                placeItems: "center",
+                                                                fontSize: "2rem",
+                                                            }}
+                                                        >
+                                                            <FcInfo />
+                                                        </div>
+                                                        <div className="col-11">
+                                                            <b>Please note:</b> Please note: For relocations
+                                                            or storage outside of Gauteng Province,
+                                                            information will be collected and someone will
+                                                            contact you to provide you with a quote.
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </Alert>
+
+                                        <div className="col-12 custom-modal__footer">
+                                            <Button
+                                                onClick={handleNext}
+                                                disabled={isNextActive()}
+                                                className="w-100"
+                                                variant="secondary"
+                                            >
+                                                Next
+                                            </Button>
+                                        </div>
+                                    </>
                                 )}
                                 {selectType === "manual" && (
                                     <div className="custom-modal__search-address__manual col-12">
-                                        <Form noValidate>
-                                            <Row className="mt-5">
-                                                <Form.Group as={Col} md="6">
-                                                    <Form.Label>Unit number</Form.Label>
-                                                    <Form.Control
-                                                        type="text"
-                                                        name="unit_number"
-                                                        placeholder="Unit number"
-                                                    />
-                                                </Form.Group>
-                                                <Form.Group as={Col} md="6">
-                                                    <Form.Label>Complex name</Form.Label>
-                                                    <Form.Control
-                                                        type="text"
-                                                        name="complex_name"
-                                                        placeholder="Complex name"
-                                                    />
-                                                </Form.Group>
-                                            </Row>
-                                            <Row className="mt-5">
-                                                <Form.Group as={Col} md="6">
-                                                    <Form.Label>Street address</Form.Label>
-                                                    <Form.Control
-                                                        type="text"
-                                                        name="street_address"
-                                                        placeholder="Street address"
-                                                    />
-                                                </Form.Group>
-                                                <Form.Group as={Col} md="6">
-                                                    <Form.Label>Suburb</Form.Label>
-                                                    <Form.Control
-                                                        type="text"
-                                                        name="surbab"
-                                                        placeholder="Surbab"
-                                                    />
-                                                </Form.Group>
-                                            </Row>
-                                            <Row className="mt-5">
-                                                <Form.Group as={Col} md="6">
-                                                    <Form.Label>City</Form.Label>
-                                                    <Form.Control
-                                                        type="text"
-                                                        name="city"
-                                                        placeholder="City"
-                                                    />
-                                                </Form.Group>
-                                                <Form.Group as={Col} md="6">
-                                                    <Form.Label>Postal code</Form.Label>
-                                                    <Form.Control
-                                                        type="text"
-                                                        name="postal_code"
-                                                        placeholder="Postal code"
-                                                    />
-                                                </Form.Group>
-                                            </Row>
-                                            <Row className="mt-5">
-                                                <Form.Group as={Col} md="6">
-                                                    <Form.Label>Province</Form.Label>
-                                                    <Form.Control
-                                                        type="text"
-                                                        name="province"
-                                                        placeholder="Province"
-                                                    />
-                                                </Form.Group>
-                                                <Form.Group as={Col} md="6">
-                                                    <Form.Label>Country</Form.Label>
-                                                    <Form.Control
-                                                        type="text"
-                                                        name="country"
-                                                        placeholder="Country"
-                                                    />
-                                                </Form.Group>
-                                            </Row>
-                                        </Form>
+                                        <AddressManualForm
+                                            setWhichAddress={setWhichAddress}
+                                            whichAddress={whichAddress}
+                                            setShowSelectorModal={setShowSelectorModal}
+                                            setInternationalMove={setInternationalMove}
+                                        />
                                     </div>
                                 )}
-                            </div>
-
-                            <Alert variant="primary" className="mt-3">
-                                <div className="row">
-                                    <div className="col-12 Selector__instructions__get-started">
-                                        <div className="row">
-                                            <div
-                                                className="col-1"
-                                                style={{
-                                                    display: "grid",
-                                                    placeItems: "center",
-                                                    fontSize: "2rem",
-                                                }}
-                                            >
-                                                <FcInfo />
-                                            </div>
-                                            <div className="col-11">
-                                                <b>Please note:</b> Please note: For relocations or
-                                                storage outside of Gauteng Province, information will be
-                                                collected and someone will contact you to provide you
-                                                with a quote.
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </Alert>
-
-                            <div className="col-12 custom-modal__footer">
-                                <Button
-                                    onClick={handleNext}
-                                    disabled={isNextActive()}
-                                    className="w-100"
-                                    variant="secondary"
-                                >
-                                    Next
-                                </Button>
                             </div>
                         </div>
                     </Modal.Body>

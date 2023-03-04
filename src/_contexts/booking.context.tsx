@@ -23,12 +23,10 @@ import {
     RESET_BOOKING,
 } from "src/_models/types";
 import CostSummaryStateContext from "./costSummary.context";
-
 export interface InitContextProps {
     state: IBooking;
     dispatch: Dispatch<IAction>;
 }
-
 const initialState = {
     id: undefined,
     products: [],
@@ -43,7 +41,6 @@ const initialState = {
 type ContextProviderProps = {
     children: React.ReactNode;
 };
-
 const reducer = (state: IBooking, action: IAction) => {
     switch (action.type) {
         case GET_BOOKING:
@@ -72,14 +69,12 @@ const reducer = (state: IBooking, action: IAction) => {
             return state;
     }
 };
-
 export const BookingContext = createContext({} as InitContextProps);
-
 const BookingContextProvider: React.FC<ContextProviderProps> = (props) => {
     const api = useAPI();
     const [state, dispatch] = useReducer(reducer, initialState);
     const costSummaryContext = useContext(CostSummaryStateContext);
-    const [retrievedBooking, setRetrievedBooking] = useState()
+    const [retrievedBooking, setRetrievedBooking] = useState();
 
     useEffect(() => {
         const bookingId = localStorage.getItem("bookingId");
@@ -88,7 +83,6 @@ const BookingContextProvider: React.FC<ContextProviderProps> = (props) => {
                 .get(`/bookings/${bookingId}`, false)
                 .then((res: any) => {
                     setRetrievedBooking(res);
-                    console.log((res as IFormValues).from_address);
                     if (res.move_date === null) {
                         delete res.move_date;
                         dispatch(getBooking(res));
@@ -150,14 +144,15 @@ const BookingContextProvider: React.FC<ContextProviderProps> = (props) => {
                         }
                     }
                     return res;
-                }).then(async (res) => {
+                })
+                .then(async (res) => {
                     const from = await geocodeByPlaceId(res.from_address.place_id);
                     const to = await geocodeByPlaceId(res.to_address.place_id);
                     dispatch({
                         type: ADD_FORM_VALUES,
                         payload: {
                             from_address_original: from[0],
-                            to_address_original: to[0]
+                            to_address_original: to[0],
                         },
                     });
                 });
@@ -170,5 +165,4 @@ const BookingContextProvider: React.FC<ContextProviderProps> = (props) => {
         </BookingContext.Provider>
     );
 };
-
 export default BookingContextProvider;

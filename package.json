@@ -30,6 +30,7 @@
         "react-dom": "18.2.0",
         "react-dropzone": "^14.2.3",
         "react-google-places-autocomplete": "^3.4.0",
+        "react-hook-form": "^7.43.3",
         "react-icons": "^4.7.1",
         "react-paystack": "^4.0.2",
         "react-phone-number-input": "^3.2.18",
