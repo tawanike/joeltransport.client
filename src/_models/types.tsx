@@ -83,6 +83,7 @@ export interface IAction {
 }
 
 export interface IProduct {
+  storage_units_recommendations: any;
   id: string;
   title: string;
   slug: string;

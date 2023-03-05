@@ -1,11 +1,14 @@
 import { useRouter } from "next/router";
-import { FC, useContext, useEffect, useState } from "react";
-import { Button, Col, Form, Modal, Row } from "react-bootstrap";
+import { FC, useContext, useState } from "react";
+import { Button, Col, Form, Modal } from "react-bootstrap";
 import GooglePlacesAutocomplete from "react-google-places-autocomplete";
+import { getBooking } from "src/_actions/booking.actions";
 import { BookingContext } from "src/_contexts/booking.context";
 import { addressUtils } from "src/_helpers/formatAddress";
-import { ADD_FORM_VALUES, IFormValues } from "src/_models/types";
-
+import { useAPI } from "src/_hooks";
+import { ADD_FORM_VALUES } from "src/_models/types";
+import { bookingsService } from "src/_services/bookings.service";
+import AddressManualForm from "./manualForm.component";
 interface IProps {
   showStorageModal: boolean;
   setShowStorageModal: (state: boolean) => void;
@@ -20,15 +23,8 @@ const StorageModalComponent: FC<IProps> = ({
     useContext(BookingContext);
   const [whichAddress] = useState<"from_address">("from_address");
 
-  useEffect(() => {
-    bookingsDispatch({
-      type: ADD_FORM_VALUES,
-      payload: { move_type: 1 } as IFormValues,
-    });
-    console.log(bookingState);
-  }, []);
-
   const router = useRouter();
+  const fetchWrapper = useAPI();
   const collectionOptionView = () => {
     return (
       <>
@@ -81,11 +77,24 @@ const StorageModalComponent: FC<IProps> = ({
   };
 
   const handleAddressChange = async (location: any) => {
+    console.log("handleAddressChange", location);
     const address = await addressUtils.formatAddress(location);
-    const original_location = [whichAddress] + "_original";
+    const to_address = {
+      street_address: "10 Von Tonder Street",
+      suburb: "Sunderland Ridge",
+      city: "Centurion",
+      province: "Gauteng",
+      postalcode: "0157",
+      country: "South Africa",
+    };
     bookingsDispatch({
       type: ADD_FORM_VALUES,
-      payload: { [whichAddress]: address, [original_location]: location },
+      payload: {
+        to_address: to_address,
+        from_address: address,
+        to_address_original: to_address,
+        from_address_original: location,
+      },
     });
   };
 
@@ -134,14 +143,21 @@ const StorageModalComponent: FC<IProps> = ({
               <Form.Group as={Col} md="12" controlId="from">
                 <Form.Label>Search loading address</Form.Label>
                 <GooglePlacesAutocomplete
-                  apiKey="AIzaSyC_GzK_Vl1Z4sC0-SjAlJd8lzhodDk1coE"
+                  apiKey="AIzaSyBZfdpoBUniKbSIq_5YWdykaoOnADrsPjs"
                   minLengthAutocomplete={5}
                   selectProps={{
-                    value:
-                      bookingState.formValues[
-                        `${whichAddress}_original` as keyof IFormValues
-                      ],
-                    onChange: (location: any) => handleAddressChange(location),
+                    value: {
+                      value: bookingState.formValues[whichAddress]
+                        ? bookingState.formValues[whichAddress].place_id
+                        : "",
+                      label: bookingState.formValues[whichAddress]
+                        ? bookingState.formValues[whichAddress]
+                            .formatted_address
+                        : null,
+                    },
+                    onChange: (location: any) => {
+                      handleAddressChange(location);
+                    },
                   }}
                 />
               </Form.Group>
@@ -149,76 +165,13 @@ const StorageModalComponent: FC<IProps> = ({
           )}
           {selectType === "manual" && (
             <div className="custom-modal__search-address__manual col-12">
-              <Form noValidate>
-                <Row className="mt-5">
-                  <Form.Group as={Col} md="6">
-                    <Form.Label>Unit number</Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="unit_number"
-                      placeholder="Unit number"
-                    />
-                  </Form.Group>
-                  <Form.Group as={Col} md="6">
-                    <Form.Label>Complex name</Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="complex_name"
-                      placeholder="Complex name"
-                    />
-                  </Form.Group>
-                </Row>
-                <Row className="mt-5">
-                  <Form.Group as={Col} md="6">
-                    <Form.Label>Street address</Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="street_address"
-                      placeholder="Street address"
-                    />
-                  </Form.Group>
-                  <Form.Group as={Col} md="6">
-                    <Form.Label>Surbub</Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="surbab"
-                      placeholder="Surbab"
-                    />
-                  </Form.Group>
-                </Row>
-                <Row className="mt-5">
-                  <Form.Group as={Col} md="6">
-                    <Form.Label>City</Form.Label>
-                    <Form.Control type="text" name="city" placeholder="City" />
-                  </Form.Group>
-                  <Form.Group as={Col} md="6">
-                    <Form.Label>Postal code</Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="postal_code"
-                      placeholder="Postal code"
-                    />
-                  </Form.Group>
-                </Row>
-                <Row className="mt-5">
-                  <Form.Group as={Col} md="6">
-                    <Form.Label>Province</Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="province"
-                      placeholder="Province"
-                    />
-                  </Form.Group>
-                  <Form.Group as={Col} md="6">
-                    <Form.Label>Country</Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="country"
-                      placeholder="Country"
-                    />
-                  </Form.Group>
-                </Row>
-              </Form>
+              <AddressManualForm
+                moveType="storage"
+                setWhichAddress={() => false}
+                whichAddress={whichAddress}
+                setShowSelectorModal={() => false}
+                setInternationalMove={() => false}
+              />
             </div>
           )}
         </div>
@@ -228,7 +181,23 @@ const StorageModalComponent: FC<IProps> = ({
 
   const handleNext = async () => {
     if (view === "delivery") setView("address");
-    else router.push(`/storage`);
+    else {
+      if (
+        !["Gauteng"].includes(bookingState.formValues[whichAddress].province)
+      ) {
+        router.push("/contact-us");
+        return;
+      }
+
+      delete bookingState.formValues.move_date;
+      const booking = await bookingsService.createBooking(
+        bookingState.formValues,
+        fetchWrapper
+      );
+      bookingsDispatch(getBooking(booking));
+      localStorage.setItem("bookingId", booking.id);
+      router.push(`/storage`);
+    }
     return;
   };
 
@@ -256,5 +225,4 @@ const StorageModalComponent: FC<IProps> = ({
     </>
   );
 };
-
 export default StorageModalComponent;

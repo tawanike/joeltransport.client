@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { FC, useContext, useEffect, useState } from "react";
+import { FC, useContext, useState } from "react";
 import { Alert, Button, Col, Form, Modal } from "react-bootstrap";
 import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 import { FcInfo } from "react-icons/fc";
@@ -7,7 +7,7 @@ import { getBooking } from "src/_actions/booking.actions";
 import { BookingContext } from "src/_contexts/booking.context";
 import { addressUtils } from "src/_helpers/formatAddress";
 import { useAPI } from "src/_hooks";
-import { ADD_FORM_VALUES, IFormValues } from "src/_models/types";
+import { ADD_FORM_VALUES } from "src/_models/types";
 import { bookingsService } from "src/_services/bookings.service";
 import AddressManualForm from "./manualForm.component";
 
@@ -100,14 +100,6 @@ const HomeMoveModalComponent: FC<IProps> = ({
     }
   };
 
-  useEffect(() => {
-    bookingsDispatch({
-      type: ADD_FORM_VALUES,
-      payload: { move_type: 0 } as IFormValues,
-    });
-    console.log(bookingState);
-  }, []);
-
   return (
     <>
       <Modal
@@ -174,10 +166,15 @@ const HomeMoveModalComponent: FC<IProps> = ({
                           apiKey="AIzaSyBZfdpoBUniKbSIq_5YWdykaoOnADrsPjs"
                           minLengthAutocomplete={5}
                           selectProps={{
-                            value:
-                              bookingState.formValues[
-                                `${whichAddress}_original` as keyof IFormValues
-                              ],
+                            value: {
+                              value: bookingState.formValues[whichAddress]
+                                ? bookingState.formValues[whichAddress].place_id
+                                : "",
+                              label: bookingState.formValues[whichAddress]
+                                ? bookingState.formValues[whichAddress]
+                                    .formatted_address
+                                : null,
+                            },
                             onChange: (location: any) => {
                               handleAddressChange(location);
                             },
@@ -225,6 +222,7 @@ const HomeMoveModalComponent: FC<IProps> = ({
                 {selectType === "manual" && (
                   <div className="custom-modal__search-address__manual col-12">
                     <AddressManualForm
+                      moveType="home"
                       setWhichAddress={setWhichAddress}
                       whichAddress={whichAddress}
                       setShowSelectorModal={setShowSelectorModal}

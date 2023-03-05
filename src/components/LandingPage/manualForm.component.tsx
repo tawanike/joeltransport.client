@@ -9,6 +9,7 @@ import { useAPI } from "src/_hooks";
 import { ADD_FORM_VALUES } from "src/_models/types";
 
 type Props = {
+  moveType: "storage" | "home";
   setWhichAddress: (whichAddress: "to_address" | "from_address") => void;
   whichAddress: "to_address" | "from_address";
   setInternationalMove: (isInternationalMove: boolean) => void;
@@ -20,6 +21,7 @@ function AddressManualForm({
   whichAddress,
   setShowSelectorModal,
   setInternationalMove,
+  moveType,
 }: Props) {
   const fetchWrapper = useAPI();
   const { register, reset, handleSubmit } = useForm();
@@ -42,47 +44,56 @@ function AddressManualForm({
 
   const onSubmit = (data: any) => {
     console.log(data);
-    if (whichAddress === "from_address") {
-      setWhichAddress("to_address");
-    }
-    // dispatch action to update to_address
-    bookingsDispatch({
-      type: ADD_FORM_VALUES,
-      payload: { [whichAddress]: data },
-    });
-
-    if (whichAddress === "to_address") {
+    if (moveType === "storage") {
+      bookingsDispatch({
+        type: ADD_FORM_VALUES,
+        payload: { move_type: 1 },
+      });
       console.log("bookingState.formValues", bookingState.formValues);
-      if (
-        bookingState.formValues.from_address &&
-        bookingState.formValues.to_address
-      ) {
-        if (
-          bookingState.formValues.from_address.province === "Gauteng" &&
-          bookingState.formValues.to_address?.province === "Gauteng"
-        ) {
-          // Create booking
-          fetchWrapper
-            .post("/bookings", {
-              from_address: bookingState.formValues.from_address,
-              to_address: bookingState.formValues.to_address,
-              move_type: 0,
-            })
-            .then((res) => {
-              // Save booking id to local storage
-              localStorage.setItem("bookingId", res.id);
-              router.push(`/move/domestic`);
-              setShowSelectorModal(false);
-            });
-          // Save booking id to local storage
-          router.push(`/move/domestic`);
-          setShowSelectorModal(false);
-        } else {
-          setInternationalMove(true);
-        }
-      }
+      console.log(data);
     } else {
-      reset();
+      if (whichAddress === "from_address") {
+        setWhichAddress("to_address");
+      }
+      // dispatch action to update to_address
+      bookingsDispatch({
+        type: ADD_FORM_VALUES,
+        payload: { [whichAddress]: data },
+      });
+
+      if (whichAddress === "to_address") {
+        console.log("bookingState.formValues", bookingState.formValues);
+        if (
+          bookingState.formValues.from_address &&
+          bookingState.formValues.to_address
+        ) {
+          if (
+            bookingState.formValues.from_address.province === "Gauteng" &&
+            bookingState.formValues.to_address?.province === "Gauteng"
+          ) {
+            // Create booking
+            fetchWrapper
+              .post("/bookings", {
+                from_address: bookingState.formValues.from_address,
+                to_address: bookingState.formValues.to_address,
+                move_type: 0,
+              })
+              .then((res) => {
+                // Save booking id to local storage
+                localStorage.setItem("bookingId", res.id);
+                router.push(`/move/domestic`);
+                setShowSelectorModal(false);
+              });
+            // Save booking id to local storage
+            router.push(`/move/domestic`);
+            setShowSelectorModal(false);
+          } else {
+            setInternationalMove(true);
+          }
+        }
+      } else {
+        reset();
+      }
     }
   };
 
