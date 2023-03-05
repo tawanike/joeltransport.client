@@ -13,7 +13,7 @@ export const ADD_PRODUCTS_DATA = "ADD_ADDITIONAL_PRODUCTS_DATA";
 export const ADD_FORM_VALUES = "ADD_FORM_VALUES";
 export const EDIT_ADDITIONAL_SERVICES = "EDIT_ADDITIONAL_SERVICES";
 export const ADD_INVENTORY_ITEM = "ADD_INVENTORY_ITEM";
-
+export const ADD_STORAGE_ADDITIONAL_SERVICES = "ADD_STORAGE_ADDITIONAL_SERVICES";
 export enum UserRoles {
     Global = "global",
     Manager = "manager",
@@ -84,6 +84,7 @@ export interface IAction {
 }
 
 export interface IProduct {
+    storage_units_recommendations: any;
     id: string;
     title: string;
     slug: string;
@@ -111,6 +112,7 @@ export interface IFormValues {
     to_property_type: number;
     move_date: any;
     move_time_period: number;
+    move_type: number;
     submited: boolean;
     to_floors_count: number;
     from_floors_count: number;
@@ -121,6 +123,16 @@ export interface IFormValues {
     storage_units_count: number;
     deliver_to_storage: boolean;
     products: IProduct[];
+
+    moving_survey: boolean;
+    packing_material: boolean;
+    packing_service: boolean;
+    insurance: boolean;
+    storage: boolean;
+    bakkie_shuttle: boolean;
+    crating: boolean;
+    gauteng_removal: boolean;
+    international_moving_services: boolean;
     user: {
         first_name: string;
         last_name: string;

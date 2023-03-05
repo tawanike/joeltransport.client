@@ -41,7 +41,7 @@ function AddressForm({ address }: Props) {
         <Form noValidate onSubmit={handleSubmit(onSubmit)}>
           <Row>
             <Col md={11} style={{ overflow: "hidden" }}>
-              {address.formatted_address}
+              {address?.formatted_address}
             </Col>
             <Col md={1} onClick={() => setEditMode(false)}>
               close
@@ -120,7 +120,7 @@ function AddressForm({ address }: Props) {
         </Form>
       ) : (
         <Row>
-          <Col md={11}>{address.formatted_address}</Col>
+          <Col md={11}>{address?.formatted_address}</Col>
           <Col md={1} onClick={() => setEditMode(true)}>
             Edit
           </Col>

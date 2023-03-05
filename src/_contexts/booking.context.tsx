@@ -9,6 +9,7 @@ import React, {
 import { geocodeByPlaceId } from "react-google-places-autocomplete";
 import { addBakkieShuttle } from "src/_actions/added-services.actions";
 import { getBooking } from "src/_actions/booking.actions";
+import { addStorageCount } from "src/_actions/costSummary.actions";
 import { selectTruck } from "src/_actions/trucks.actions";
 import { isHoliday } from "src/_helpers/dateFormat";
 import { useAPI } from "src/_hooks";
@@ -94,12 +95,25 @@ const BookingContextProvider: React.FC<ContextProviderProps> = (props) => {
                         dispatch(getBooking(res));
                     }
 
+                    if (res.move_type == 1) {
+                        dispatch({
+                            type: ADD_FORM_VALUES,
+                            payload: {
+                                deliver_to_storage: Boolean(Number(res.self_delivery) as 0 | 1),
+                            },
+                        });
+                    }
+
                     if (res.products.length > 0) {
                         const truck = res.products.find(
                             (product: any) => product.category === "trucks"
                         );
                         const bakkieShuttle = res.products.find(
                             (product: any) => product.slug === "bakkie-shuttle"
+                        );
+
+                        const storage = res.products.find(
+                            (product: any) => product.slug === "storage"
                         );
 
                         if (bakkieShuttle) {
@@ -119,9 +133,7 @@ const BookingContextProvider: React.FC<ContextProviderProps> = (props) => {
                                 },
                             });
                         }
-                        if (
-                            res.products.find((product: any) => product.category === "trucks")
-                        ) {
+                        if (truck) {
                             if (isHoliday(res.move_date)) {
                                 const price = truck.price + truck.off_peak_discount;
                                 const offPeakDiscount = 0;
@@ -146,19 +158,33 @@ const BookingContextProvider: React.FC<ContextProviderProps> = (props) => {
                                 );
                             }
                         }
+
+                        if (storage) {
+                            const price = storage.price;
+                            const quantity = storage.quantity;
+
+                            costSummaryContext.dispatchCostSummary(
+                                addStorageCount({
+                                    quantity: quantity,
+                                    price: price,
+                                })
+                            );
+                        }
                     }
                     return res;
                 })
                 .then(async (res) => {
-                    const from = await geocodeByPlaceId(res.from_address.place_id);
-                    const to = await geocodeByPlaceId(res.to_address.place_id);
-                    dispatch({
-                        type: ADD_FORM_VALUES,
-                        payload: {
-                            from_address_original: from[0],
-                            to_address_original: to[0],
-                        },
-                    });
+                    if (res.from_address && res.from_address.place_id) {
+                        const from = await geocodeByPlaceId(res.from_address.place_id);
+                        const to = await geocodeByPlaceId(res.to_address.place_id);
+                        dispatch({
+                            type: ADD_FORM_VALUES,
+                            payload: {
+                                from_address_original: from[0],
+                                to_address_original: to[0],
+                            },
+                        });
+                    }
                 });
         }
     }, []);
