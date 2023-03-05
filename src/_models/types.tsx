@@ -12,6 +12,7 @@ export const ADD_MOVE_DETAILS = "ADD_MOVE_DETAILS";
 export const ADD_PRODUCTS_DATA = "ADD_ADDITIONAL_PRODUCTS_DATA";
 export const ADD_FORM_VALUES = "ADD_FORM_VALUES";
 export const EDIT_ADDITIONAL_SERVICES = "EDIT_ADDITIONAL_SERVICES";
+export const ADD_INVENTORY_ITEM = "ADD_INVENTORY_ITEM";
 
 export enum UserRoles {
     Global = "global",
@@ -128,11 +129,19 @@ export interface IFormValues {
     };
 }
 
+export interface IInventoryListItem {
+    item: string;
+    quantity: number;
+    booking: string;
+    room: number;
+}
+
 export interface IBooking {
     id: string | undefined;
     products: IProduct[];
     formValues: IFormValues;
     additionalServices: { [key: string]: boolean };
+    inventoryList: IInventoryListItem[];
 }
 
 export interface IAddress {
@@ -143,4 +152,21 @@ export interface IAddress {
     suburb: string;
     province: string;
     country: string;
+}
+
+export interface IRoom {
+    id: string;
+    title: string;
+    image: string;
+    cover: string;
+}
+
+export interface IInventoryItem {
+    id: string;
+    category: number;
+    created_at: string;
+    description: string;
+    title: string;
+    updated_at: string;
+    weight: string;
 }

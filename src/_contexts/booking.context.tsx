@@ -14,6 +14,7 @@ import { isHoliday } from "src/_helpers/dateFormat";
 import { useAPI } from "src/_hooks";
 import {
     ADD_FORM_VALUES,
+    ADD_INVENTORY_ITEM,
     ADD_PRODUCTS_DATA,
     EDIT_ADDITIONAL_SERVICES,
     GET_BOOKING,
@@ -31,6 +32,7 @@ const initialState = {
     id: undefined,
     products: [],
     formValues: {} as IFormValues,
+    inventoryList: [],
     additionalServices: {
         packing_service: false,
         packaging_material: false,
@@ -55,6 +57,8 @@ const reducer = (state: IBooking, action: IAction) => {
                 ...state,
                 formValues: { ...state.formValues, ...action.payload },
             };
+        case ADD_INVENTORY_ITEM:
+            return { ...state, inventoryList: [...state.inventoryList.filter(item => item.item !== action.payload.item), action.payload] };
         case EDIT_ADDITIONAL_SERVICES:
             return {
                 ...state,
