@@ -5,14 +5,21 @@ import { FcInfo } from "react-icons/fc";
 import { FiCalendar } from "react-icons/fi";
 import { getBooking } from "src/_actions/booking.actions";
 import { addStorageCount } from "src/_actions/costSummary.actions";
+import { selectTruck } from "src/_actions/trucks.actions";
 import { BookingContext } from "src/_contexts/booking.context";
 import CostSummaryStateContext from "src/_contexts/costSummary.context";
-import { formatDate, stringToDateTime } from "src/_helpers/dateFormat";
+import {
+  formatDate,
+  isHoliday,
+  stringToDateTime,
+} from "src/_helpers/dateFormat";
 import { useAPI, useNumberInput } from "src/_hooks";
-import { ADD_FORM_VALUES } from "src/_models/types";
+import { ADD_FORM_VALUES, IProduct } from "src/_models/types";
 
 const BookStorageUnit = () => {
   const api = useAPI();
+  const [trucks, setTrucks] = useState<IProduct[]>([]);
+  const [recommendedTruck, setRecommendedTruck] = useState<IProduct>({});
   const [moveType, setMoveType] = useState<any>();
   const { CostSummaryState, dispatchCostSummary } = useContext(
     CostSummaryStateContext
@@ -31,6 +38,10 @@ const BookStorageUnit = () => {
 
   useEffect(() => {
     (async () => {
+      const trucks = await api.get("/products?category=2", false);
+      setTrucks(trucks.results);
+      setRecommendedTruck(trucks[0]);
+
       const moves = await api.get("/products?category=1", false);
       moves.results.forEach((move: any) => {
         if (move.slug === "storage") {
@@ -42,6 +53,13 @@ const BookStorageUnit = () => {
 
   useEffect(() => {
     if (moveType && moveType.id) {
+      trucks.map((truck) => {
+        if (truck.storage_units_recommendations.min == NumberOfUnitsValue) {
+          console.log("TRUCK DETAILS", truck);
+          setRecommendedTruck(truck);
+        }
+      });
+
       bookingsDispatch({
         type: ADD_FORM_VALUES,
         payload: {
@@ -56,6 +74,26 @@ const BookStorageUnit = () => {
         })
       );
 
+      if (recommendedTruck) {
+        let price = 0,
+          offPeakDiscount: number = 0;
+        if (isHoliday(bookingState.formValues.move_date)) {
+          price = recommendedTruck.price + recommendedTruck.off_peak_discount;
+          offPeakDiscount = 0;
+        } else {
+          price = recommendedTruck.price;
+          offPeakDiscount = recommendedTruck.off_peak_discount;
+        }
+        console.log("TRUCK PRICE", price);
+        dispatchCostSummary(
+          selectTruck({
+            quantity: 1,
+            price: price,
+            off_peak_discount: offPeakDiscount,
+          })
+        );
+      }
+
       api
         .post(`/bookings/${bookingState.formValues.id}/products`, {
           product: moveType.id,
@@ -64,6 +102,12 @@ const BookStorageUnit = () => {
           booking: bookingState.formValues.id,
         })
         .then((res) => {
+          api.post(`/bookings/${bookingState.formValues.id}/products`, {
+            product: recommendedTruck?.id,
+            quantity: 1,
+            product_type: "truck",
+            booking: bookingState.formValues.id,
+          });
           if (!res.error) {
             // setChooseTruckComplete(true);
             api
@@ -128,35 +172,33 @@ const BookStorageUnit = () => {
           {NumberOfUnitsDisplay}
         </Form.Group>
       </Row>
-      <Alert variant="primary" className="mt-3">
-        <div className="row">
-          <div className="col-7">
-            <p style={{ fontSize: "1rem" }}>
-              <b>Recommended 4 Ton truck</b>
-            </p>
-            <p
-              style={{
-                fontSize: "1rem",
-                fontWeight: "600",
-              }}
+      {recommendedTruck && (
+        <Alert variant="primary" className="mt-3">
+          <div className="row">
+            <div className="col-7">
+              <p style={{ fontSize: "1rem" }}>
+                <b>Recommended {recommendedTruck.title}</b>
+              </p>
+              <p
+                style={{
+                  fontSize: "1rem",
+                  fontWeight: "600",
+                }}
+              >
+                {" "}
+                Loads: standard 2 bedroom house
+              </p>
+              <p>{recommendedTruck.description}</p>
+            </div>
+            <div
+              className="col-5"
+              style={{ display: "grid", placeItems: "start end" }}
             >
-              {" "}
-              Loads: standard 2 bedroom house
-            </p>
-            <p>
-              There is enough space in this vehicle to fit an average double
-              bed, two-seater couch, washing machine, double-door refrigerator,
-              and a few other items.
-            </p>
+              <img src="/img/storage_4ton.png" alt="storage" />
+            </div>
           </div>
-          <div
-            className="col-5"
-            style={{ display: "grid", placeItems: "start end" }}
-          >
-            <img src="/img/storage_4ton.png" alt="storage" />
-          </div>
-        </div>
-      </Alert>
+        </Alert>
+      )}
     </>
   );
 };
