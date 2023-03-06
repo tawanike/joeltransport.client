@@ -8,9 +8,18 @@ export type RightImageSectionConfig = {
   image: string;
   secondaryButton?: { title: string; action?: string };
   primaryButton?: { title: string; action?: string };
-  getQuote: any;
+  getQuote?: any;
 };
 
 export interface ResourcesPageSectionConfig {
-  [key: string]: RightImageSectionConfig | BlueSectionConfig;
+  planToMove: RightImageSectionConfig | BlueSectionConfig;
+  hustleFreeMove: RightImageSectionConfig | BlueSectionConfig;
+  relocateLocally: RightImageSectionConfig | BlueSectionConfig;
+  benefits: RightImageSectionConfig | BlueSectionConfig;
+  internationally: RightImageSectionConfig | BlueSectionConfig;
+  storageLocally: RightImageSectionConfig | BlueSectionConfig;
+  pet: RightImageSectionConfig | BlueSectionConfig;
+  art: RightImageSectionConfig | BlueSectionConfig;
+  vehicle: RightImageSectionConfig | BlueSectionConfig;
+  danger: RightImageSectionConfig | BlueSectionConfig;
 }
