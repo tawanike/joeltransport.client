@@ -19,7 +19,7 @@ import { ADD_FORM_VALUES, IProduct } from "src/_models/types";
 const BookStorageUnit = () => {
   const api = useAPI();
   const [trucks, setTrucks] = useState<IProduct[]>([]);
-  const [recommendedTruck, setRecommendedTruck] = useState<IProduct>({});
+  const [recommendedTruck, setRecommendedTruck] = useState<IProduct>();
   const [moveType, setMoveType] = useState<any>();
   const { CostSummaryState, dispatchCostSummary } = useContext(
     CostSummaryStateContext
