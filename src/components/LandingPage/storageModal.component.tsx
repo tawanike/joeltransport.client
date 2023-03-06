@@ -95,6 +95,8 @@ const StorageModalComponent: FC<IProps> = ({
         from_address_original: location,
       },
     });
+
+    console.log("bookingState.formValues", bookingState.formValues);
   };
 
   const addressSelectionView = () => {
@@ -179,6 +181,7 @@ const StorageModalComponent: FC<IProps> = ({
   };
 
   const handleNext = async () => {
+    console.log("bookingState.formValues", bookingState.formValues);
     if (view === "delivery") setView("address");
     else {
       if (
@@ -193,6 +196,7 @@ const StorageModalComponent: FC<IProps> = ({
         bookingState.formValues,
         fetchWrapper
       );
+      console.log("booking", booking);
       bookingsDispatch(getBooking(booking));
       localStorage.setItem("bookingId", booking.id);
       router.push(`/storage`);
