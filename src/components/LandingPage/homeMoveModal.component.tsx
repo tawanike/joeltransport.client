@@ -57,6 +57,7 @@ const HomeMoveModalComponent: FC<IProps> = ({
     // save to db, create booking.
     // when you have booking id, redirect to move details page.
     delete bookingState.formValues.move_date;
+    localStorage.removeItem("bookingId");
     const booking = await bookingsService.createBooking(
       bookingState.formValues,
       fetchWrapper
