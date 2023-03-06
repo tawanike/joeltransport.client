@@ -77,7 +77,6 @@ const StorageModalComponent: FC<IProps> = ({
   };
 
   const handleAddressChange = async (location: any) => {
-    console.log("handleAddressChange", location);
     const address = await addressUtils.formatAddress(location);
     const to_address = {
       street_address: "10 Von Tonder Street",
