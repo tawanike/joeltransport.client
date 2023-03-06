@@ -211,13 +211,13 @@ export default function PrivacyPolicy({}: Props) {
         <Accordion.Item eventKey="12">
           <Accordion.Header>13. Our rights to sell the goods.</Accordion.Header>
           <Accordion.Body>
-            On giving you 28 days' notice we are entitled to require you to move
-            your goods from our custody and to pay all money due to us. If you
-            fail to pay all outstanding debts due to us, we are entitled to sell
-            or dispose of some or all of the goods to defray expenses. The cost
-            of the sale or disposal will be charged to you. The net proceeds
-            will be credited to your account and any eventual surplus will be
-            paid to you without interest.
+            On giving you 28 {"days'"} notice we are entitled to require you to
+            move your goods from our custody and to pay all money due to us. If
+            you fail to pay all outstanding debts due to us, we are entitled to
+            sell or dispose of some or all of the goods to defray expenses. The
+            cost of the sale or disposal will be charged to you. The net
+            proceeds will be credited to your account and any eventual surplus
+            will be paid to you without interest.
           </Accordion.Body>
         </Accordion.Item>
         <Accordion.Item eventKey="13">
@@ -283,7 +283,7 @@ export default function PrivacyPolicy({}: Props) {
           <Accordion.Header>20. Revision of storage charges.</Accordion.Header>
           <Accordion.Body>
             We review our storage charges periodically. You will be given 28
-            days' notice of any increases.
+            {"days'"} notice of any increases.
           </Accordion.Body>
         </Accordion.Item>
 
@@ -304,7 +304,7 @@ export default function PrivacyPolicy({}: Props) {
           </Accordion.Header>
           <Accordion.Body>
             If your payments are up to date, we will not end this contract,
-            except giving at least three months' notice.
+            except giving at least three {"months'"} notice.
           </Accordion.Body>
         </Accordion.Item>
 
