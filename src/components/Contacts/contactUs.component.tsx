@@ -132,9 +132,8 @@ const ContactUsComponent: FC<IProps> = ({ isModal = false }) => {
                   formData.append("service_options", values.service_options);
                   formData.append("phone_number", values.phone_number);
 
-                  //("https://api.joeltransport.wddng.co/v1/contacts");
                   const results: any = await fetch(
-                    "http://localhost:8001/v1/contacts",
+                    "https://api.joeltransport.wddng.co/v1/contacts",
                     {
                       method: "POST",
                       body: formData,
