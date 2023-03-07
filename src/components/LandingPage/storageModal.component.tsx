@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { FC, useContext, useState } from "react";
-import { Button, Col, Form, Modal } from "react-bootstrap";
+import { Col, Form, Modal } from "react-bootstrap";
 import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 import { getBooking } from "src/_actions/booking.actions";
 import { BookingContext } from "src/_contexts/booking.context";
@@ -212,16 +212,6 @@ const StorageModalComponent: FC<IProps> = ({
             {view === "delivery"
               ? collectionOptionView()
               : addressSelectionView()}
-            <div className="col-12 custom-modal__footer">
-              <Button
-                onClick={handleNext}
-                // disabled={isNextActive()}
-                className="w-100"
-                variant="secondary"
-              >
-                Next
-              </Button>
-            </div>
           </div>
         </Modal.Body>
       </Modal>
