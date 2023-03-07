@@ -15,6 +15,7 @@ import CallMeBackButton from "../../components/shared/callMeBackButton.component
 import { CoverImage } from "../../components/ui";
 
 const DomesticMoveServices = () => {
+  const [optionalServices, setOptionalServices] = useState<any[]>([]);
   const [canConfirmMove, setCanConfirmMove] = useState(true);
   const fetchWrapper = useAPI();
   const { state: bookingState, dispatch: dispatchBookings } =
@@ -29,33 +30,46 @@ const DomesticMoveServices = () => {
       dispatchBookings({ type: ADD_PRODUCTS_DATA, payload: products.results });
     };
 
+    const getOptionalServices = async () => {
+      const optionalServices = await fetchWrapper.get(
+        "/products/optional-services",
+        false
+      );
+      setOptionalServices(optionalServices.results);
+    };
+
     dispatchBookings({
       type: ADD_FORM_VALUES,
       payload: { move_type: 0 },
     });
 
     getProducts();
+    getOptionalServices();
   }, []);
 
   const goToCheckout = () => {
     if (canConfirmMove) {
       setShowSelectorModal(true);
-
-      fetchWrapper
-        .post(`/bookings/${bookingState.formValues.id}/invoices`, {
-          booking: bookingState.formValues.id,
-        })
-        .then((res) => {
-          console.log(res);
-        });
     }
   };
 
-  const selectService = (e: any) => {
+  const selectService = async (e: any) => {
     dispatchBookings({
       type: EDIT_ADDITIONAL_SERVICES,
       payload: { [e.target.name]: e.target.checked },
     });
+
+    const response = await fetchWrapper.post(
+      `/bookings/${bookingState.formValues.id}/products/addons`,
+      {
+        booking: bookingState.formValues.id,
+        product: e.target.value,
+        category: 0,
+        selected: e.target.checked,
+      }
+    );
+
+    console.log("response", response);
   };
 
   const saveAndContinue = () => {
@@ -79,42 +93,18 @@ const DomesticMoveServices = () => {
                 </p>
               </div>
               <div className="col-12 custom-modal__body">
-                <Form.Check
-                  label="Packing service"
-                  name="packing_service"
-                  type="checkbox"
-                  value="packing_service"
-                  id="packing_service"
-                  className="radioBtn"
-                  onChange={selectService}
-                />
-                <Form.Check
-                  label="Packaging material"
-                  name="packaging_material"
-                  type="checkbox"
-                  value="packaging_material"
-                  id="packaging_material"
-                  className="radioBtn"
-                  onChange={selectService}
-                />
-                <Form.Check
-                  label="Insurance"
-                  name="insurance"
-                  type="checkbox"
-                  value="insurance"
-                  id="insurance"
-                  className="radioBtn"
-                  onChange={selectService}
-                />
-                <Form.Check
-                  label="Specialized moving services"
-                  name="specialized_moving_services"
-                  type="checkbox"
-                  value="specialized_moving_services"
-                  id="specialized_moving_services"
-                  className="radioBtn"
-                  onChange={selectService}
-                />
+                {optionalServices.map((service) => (
+                  <Form.Check
+                    key={service.id}
+                    label={service.title}
+                    name={service.slug}
+                    type="checkbox"
+                    value={service.id}
+                    id={service.id}
+                    className="radioBtn"
+                    onChange={selectService}
+                  />
+                ))}
               </div>
               <div className="col-12 auth__bottom-text">
                 <p> Additional charges and T&Cs apply</p>
