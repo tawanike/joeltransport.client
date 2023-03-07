@@ -37,13 +37,13 @@ const Checkout = () => {
     // Implementation for whatever you want to do with reference and after success call.
     setShowSuccessModal(true);
     localStorage.removeItem("bookingId");
-    router.push("/");
   };
 
   const handleDone = () => {
     setShowSuccessModal(false);
     dispatchCostSummary({ type: "RESET_BOOKING" });
     bookingContext.dispatch({ type: "RESET_COST_SUMMARY" });
+    window.location.href = "/";
   };
 
   // you can call this function anything

@@ -55,7 +55,6 @@ const BookStorageUnit = () => {
     if (moveType && moveType.id) {
       trucks.map((truck) => {
         if (truck.storage_units_recommendations.min == NumberOfUnitsValue) {
-          console.log("TRUCK DETAILS", truck);
           setRecommendedTruck(truck);
         }
       });

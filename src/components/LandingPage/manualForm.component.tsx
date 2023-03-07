@@ -43,14 +43,11 @@ function AddressManualForm({
   }, []);
 
   const onSubmit = (data: any) => {
-    console.log(data);
     if (moveType === "storage") {
       bookingsDispatch({
         type: ADD_FORM_VALUES,
         payload: { move_type: 1 },
       });
-      console.log("bookingState.formValues", bookingState.formValues);
-      console.log(data);
     } else {
       if (whichAddress === "from_address") {
         setWhichAddress("to_address");
@@ -62,7 +59,6 @@ function AddressManualForm({
       });
 
       if (whichAddress === "to_address") {
-        console.log("bookingState.formValues", bookingState.formValues);
         if (
           bookingState.formValues.from_address &&
           bookingState.formValues.to_address
