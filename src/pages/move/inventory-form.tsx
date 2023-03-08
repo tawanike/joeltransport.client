@@ -70,7 +70,7 @@ const InternationalMoveServices = () => {
   useEffect(() => {
     const getOptionalServices = async () => {
       const optionalServices = await fetchWrapper.get(
-        "/products/optional-services",
+        "/products/specialized-services",
         false
       );
       setOptionalServices(optionalServices.results);
