@@ -32,7 +32,6 @@ const DisplayInvemtorySection: FC<IProps> = ({ room, inventoryItems }) => {
             <p>{room.title}</p>
           </div>
           <div className="col-4 InventoryForm__display__count">
-            {console.log("state.inventoryList", state.inventoryList)}
             <p>
               {" "}
               Items count(
