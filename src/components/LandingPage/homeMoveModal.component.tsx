@@ -223,7 +223,7 @@ const HomeMoveModalComponent: FC<IProps> = ({
                 {selectType === "manual" && (
                   <div className="custom-modal__search-address__manual col-12">
                     <AddressManualForm
-                      moveType="home"
+                      moveType={0}
                       setWhichAddress={setWhichAddress}
                       whichAddress={whichAddress}
                       setShowSelectorModal={setShowSelectorModal}

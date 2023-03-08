@@ -2,7 +2,7 @@ import { ErrorMessage, Field, Formik, FormikProps } from "formik";
 import { FC, useState } from "react";
 import { Button, Col, Form, Modal, Row } from "react-bootstrap";
 import { BsCheckCircle } from "react-icons/bs";
-import PhoneInput, { parsePhoneNumber } from "react-phone-number-input";
+import PhoneInput from "react-phone-number-input";
 import * as yup from "yup";
 import useAPI from "../../_hooks/useAPI";
 import { CoverImage, Uploader } from "../ui";
@@ -121,7 +121,6 @@ const ContactUsComponent: FC<IProps> = ({ isModal = false }) => {
                     "service_options",
                     "Please select at least one option"
                   );
-                  console.log("PANO");
                 } else {
                   const formData = new FormData();
                   formData.append("attachment", values.attachment);
@@ -131,22 +130,8 @@ const ContactUsComponent: FC<IProps> = ({ isModal = false }) => {
                   formData.append("message", values.message);
                   formData.append("category", values.category);
                   formData.append("service_options", values.service_options);
+                  formData.append("phone_number", values.phone_number);
 
-                  if (
-                    parsePhoneNumber &&
-                    parsePhoneNumber(values.phone_number)
-                  ) {
-                    const phoneNumber: any = parsePhoneNumber(
-                      values.phone_number
-                    );
-                    if (phoneNumber.country) {
-                      formData.append(
-                        "phone_code",
-                        phoneNumber.countryCallingCode
-                      );
-                      formData.append("phone_number", phoneNumber.phone_number);
-                    }
-                  }
                   const results: any = await fetch(
                     "https://api.joeltransport.wddng.co/v1/contacts",
                     {
