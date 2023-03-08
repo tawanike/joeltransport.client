@@ -11,17 +11,29 @@ const AddedServices: FC<IProps> = ({}) => {
     useContext(BookingContext);
 
   const handleSelect = async (item: any) => {
-    const response = await api.post(
-      `/bookings/${bookingState.formValues.id}/products/addons`,
-      {
-        booking: bookingState.formValues.id,
-        product: item.target.value,
-        category: 0,
-        selected: item.target.checked,
+    const currentAddons = bookingState.formValues.addOns || [];
+    if (currentAddons.includes(item.target.value)) {
+      const index = currentAddons.indexOf(item.target.value);
+      if (index > -1) {
+        currentAddons.splice(index, 1);
       }
-    );
+    } else {
+      currentAddons.push(item.target.value);
+    }
 
-    console.log("response", response);
+    bookingDispatch({
+      type: "ADD_FORM_VALUES",
+      payload: {
+        addOns: currentAddons,
+      },
+    });
+
+    await api.post(`/bookings/${bookingState.formValues.id}/products/addons`, {
+      booking: bookingState.formValues.id,
+      product: item.target.value,
+      category: 0,
+      selected: item.target.checked,
+    });
   };
 
   useEffect(() => {
@@ -47,6 +59,7 @@ const AddedServices: FC<IProps> = ({}) => {
                 id={String(item.id)}
                 value={item.id}
                 onChange={handleSelect}
+                checked={bookingState.formValues?.addOns?.includes(item.id)}
               />
             </Col>
           ))}

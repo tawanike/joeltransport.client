@@ -50,7 +50,7 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
       submitForm();
     }
     // submitForm();
-    console.log('bookingState.formValues.from_address', bookingState.formValues.from_address)
+    console.log("bookingState.formValues", bookingState);
   }, [bookingState.formValues]);
 
   const onDateChange = (date: Date) => {
@@ -170,7 +170,10 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
                     }}
                   />
                 ) : (
-                  <AddressForm address={bookingState.formValues.from_address} />
+                  <AddressForm
+                    address={bookingState.formValues.from_address}
+                    booking={bookingState.formValues.id}
+                  />
                 )}
               </Form.Group>
             </Row>
@@ -339,7 +342,10 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
                     }}
                   />
                 ) : (
-                  <AddressForm address={bookingState.formValues.to_address} />
+                  <AddressForm
+                    address={bookingState.formValues.to_address}
+                    booking={bookingState.formValues.id}
+                  />
                 )}
               </Form.Group>
             </Row>
