@@ -1,5 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 import { useContext } from "react";
+import { BookingContext } from "src/_contexts/booking.context";
 import { Calculations } from "src/_helpers/calculations";
 import CostSummaryStateContext from "../../_contexts/costSummary.context";
 
@@ -7,6 +8,7 @@ const StorageCostCard = () => {
   const { CostSummaryState, dispatchCostSummary } = useContext(
     CostSummaryStateContext
   );
+  const bookingContext = useContext(BookingContext);
 
   return (
     <>
@@ -65,74 +67,76 @@ const StorageCostCard = () => {
               </div>
             </div>
           </div>
-          <div className="col-12 move-cost-card__section">
-            <div className="row">
-              <div className="col-12 move-cost-card__section__head">
-                <p>Moving charge</p>
-              </div>
-              <div className="col-12 move-cost-card__section__details">
-                <ul>
-                  <li>
-                    <div className="row">
-                      <div className="col-4 move-cost-card__section__details__title">
-                        <p>Truck & Crew</p>
+          {bookingContext.state.formValues.collection && (
+            <div className="col-12 move-cost-card__section">
+              <div className="row">
+                <div className="col-12 move-cost-card__section__head">
+                  <p>Moving charge</p>
+                </div>
+                <div className="col-12 move-cost-card__section__details">
+                  <ul>
+                    <li>
+                      <div className="row">
+                        <div className="col-4 move-cost-card__section__details__title">
+                          <p>Truck & Crew</p>
+                        </div>
+                        <div className="col-4 move-cost-card__section__details__title center move-cost-card__section__details__title--cost">
+                          <p>
+                            R
+                            {CostSummaryState.truck
+                              ? CostSummaryState.truck.price.toFixed(2)
+                              : "0.00"}
+                          </p>
+                        </div>
+                        <div className="col-4 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
+                          <p> R0.00</p>
+                        </div>
                       </div>
-                      <div className="col-4 move-cost-card__section__details__title center move-cost-card__section__details__title--cost">
-                        <p>
-                          R
-                          {CostSummaryState.truck
-                            ? CostSummaryState.truck.price.toFixed(2)
-                            : "0.00"}
-                        </p>
+                    </li>
+                    <li>
+                      <div className="row">
+                        <div className="col-4 move-cost-card__section__details__title">
+                          <p>Off peak discount</p>
+                        </div>
+                        <div className="col-4 move-cost-card__section__details__title center move-cost-card__section__details__title--cost">
+                          <p>
+                            R
+                            {CostSummaryState.truck
+                              ? CostSummaryState.truck.price.toFixed(2)
+                              : "0.00"}
+                          </p>
+                        </div>
+                        <div className="col-4 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
+                          <p> R0.00</p>
+                        </div>
                       </div>
-                      <div className="col-4 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
-                        <p> R0.00</p>
+                    </li>
+                    <li>
+                      <div className="row">
+                        <div className="col-4 move-cost-card__section__details__title">
+                          <p>Bakkie shuttle</p>
+                        </div>
+                        <div className="col-4 move-cost-card__section__details__title center move-cost-card__section__details__title--cost">
+                          <p>
+                            R
+                            {CostSummaryState.bakkieShuttle
+                              ? (
+                                  CostSummaryState.bakkieShuttle.price *
+                                  CostSummaryState.bakkieShuttle.quantity
+                                ).toFixed(2)
+                              : "0.00"}
+                          </p>
+                        </div>
+                        <div className="col-4 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
+                          <p> R0.00</p>
+                        </div>
                       </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div className="row">
-                      <div className="col-4 move-cost-card__section__details__title">
-                        <p>Off peak discount</p>
-                      </div>
-                      <div className="col-4 move-cost-card__section__details__title center move-cost-card__section__details__title--cost">
-                        <p>
-                          R
-                          {CostSummaryState.truck
-                            ? CostSummaryState.truck.price.toFixed(2)
-                            : "0.00"}
-                        </p>
-                      </div>
-                      <div className="col-4 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
-                        <p> R0.00</p>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div className="row">
-                      <div className="col-4 move-cost-card__section__details__title">
-                        <p>Bakkie shuttle</p>
-                      </div>
-                      <div className="col-4 move-cost-card__section__details__title center move-cost-card__section__details__title--cost">
-                        <p>
-                          R
-                          {CostSummaryState.bakkieShuttle
-                            ? (
-                                CostSummaryState.bakkieShuttle.price *
-                                CostSummaryState.bakkieShuttle.quantity
-                              ).toFixed(2)
-                            : "0.00"}
-                        </p>
-                      </div>
-                      <div className="col-4 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
-                        <p> R0.00</p>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
-          </div>
+          )}
           <div className="col-12 move-cost-card__section move-cost-card__section--total mt-5">
             <div className="row">
               <div className="col-12 move-cost-card__section__details">
