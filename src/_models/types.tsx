@@ -136,6 +136,8 @@ export interface IFormValues {
   international_moving_services: boolean;
 
   addOns: any[];
+  inventoryList: IInventoryListItem[];
+  collection: boolean;
 
   user: {
     first_name: string;
@@ -146,7 +148,7 @@ export interface IFormValues {
 }
 
 export interface IInventoryListItem {
-  item: string;
+  inventory_item: string;
   quantity: number;
   booking: string;
   room: number;

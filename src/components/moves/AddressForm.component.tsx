@@ -6,9 +6,10 @@ import { useAPI } from "src/_hooks";
 
 type Props = {
   address: any;
+  booking: any;
 };
 
-function AddressForm({ address }: Props) {
+function AddressForm({ address, booking }: Props) {
   const api = useAPI();
   const [countries, setCountries] = useState<any[]>([]);
   const [editMode, setEditMode] = useState(false);
@@ -26,7 +27,6 @@ function AddressForm({ address }: Props) {
   }, []);
 
   const onSubmit = (data: any) => {
-    console.log("data", data)
     const address_id = data.id;
     delete data.id;
     delete data.created_at;

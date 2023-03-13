@@ -9,11 +9,20 @@ import { useAPI } from "src/_hooks";
 import { ADD_FORM_VALUES } from "src/_models/types";
 
 type Props = {
-  moveType: "storage" | "home";
+  moveType: 0 | 1;
   setWhichAddress: (whichAddress: "to_address" | "from_address") => void;
   whichAddress: "to_address" | "from_address";
   setInternationalMove: (isInternationalMove: boolean) => void;
   setShowSelectorModal: (showSelectorModal: boolean) => void;
+};
+
+const joelTransportAddress = {
+  street_address: "10 Von Tonder Street",
+  suburb: "Sunderland Ridge",
+  city: "Centurion",
+  country: 1,
+  province: "Gauteng",
+  postal_code: "0157",
 };
 
 function AddressManualForm({
@@ -23,11 +32,12 @@ function AddressManualForm({
   setInternationalMove,
   moveType,
 }: Props) {
+  const router = useRouter();
   const fetchWrapper = useAPI();
   const { register, reset, handleSubmit } = useForm();
   const { state: bookingState, dispatch: bookingsDispatch } =
     useContext(BookingContext);
-  const router = useRouter();
+  const [country, setCountry] = useState<any>(null);
   const [countries, setCountries] = useState<any[]>([]);
 
   useEffect(() => {
@@ -43,53 +53,46 @@ function AddressManualForm({
   }, []);
 
   const onSubmit = (data: any) => {
-    if (moveType === "storage") {
-      bookingsDispatch({
-        type: ADD_FORM_VALUES,
-        payload: { move_type: 1 },
-      });
-    } else {
+    console.log(moveType);
+    data.country = country?.value;
+    if (moveType === 0) {
       if (whichAddress === "from_address") {
         setWhichAddress("to_address");
       }
-      // dispatch action to update to_address
+    } else {
       bookingsDispatch({
         type: ADD_FORM_VALUES,
-        payload: { [whichAddress]: data },
+        payload: {
+          to_address: joelTransportAddress,
+          from_address: data,
+          to_address_original: joelTransportAddress,
+          from_address_original: data,
+        },
       });
+      setShowSelectorModal(false);
+    }
 
-      if (whichAddress === "to_address") {
-        if (
-          bookingState.formValues.from_address &&
-          bookingState.formValues.to_address
-        ) {
-          if (
-            bookingState.formValues.from_address.province === "Gauteng" &&
-            bookingState.formValues.to_address?.province === "Gauteng"
-          ) {
-            // Create booking
-            fetchWrapper
-              .post("/bookings", {
-                from_address: bookingState.formValues.from_address,
-                to_address: bookingState.formValues.to_address,
-                move_type: 0,
-              })
-              .then((res) => {
-                // Save booking id to local storage
-                localStorage.setItem("bookingId", res.id);
-                router.push(`/move/domestic`);
-                setShowSelectorModal(false);
-              });
-            // Save booking id to local storage
-            router.push(`/move/domestic`);
-            setShowSelectorModal(false);
-          } else {
-            setInternationalMove(true);
-          }
-        }
-      } else {
-        reset();
-      }
+    if (
+      bookingState.formValues.from_address.province === "Gauteng" &&
+      bookingState.formValues.to_address?.province === "Gauteng"
+    ) {
+      // Create booking
+      fetchWrapper
+        .post("/bookings", {
+          from_address: bookingState.formValues.from_address,
+          to_address: bookingState.formValues.to_address,
+          move_type: moveType,
+        })
+        .then((res) => {
+          // Save booking id to local storage
+          localStorage.setItem("bookingId", res.id);
+          if (moveType === 0) router.push(`/move/domestic`);
+          else router.push(`/storage`);
+          setShowSelectorModal(false);
+        });
+    } else {
+      if (moveType === 0) setInternationalMove(true);
+      else router.push(`/contact-us`);
     }
   };
 
@@ -150,6 +153,9 @@ function AddressManualForm({
                 value: c.id,
               };
             })}
+            onChange={(value) => {
+              setCountry(value);
+            }}
           />
         </Form.Group>
       </Row>

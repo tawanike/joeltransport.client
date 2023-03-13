@@ -43,9 +43,7 @@ const StorageModalComponent: FC<IProps> = ({
                 bookingsDispatch({
                   type: ADD_FORM_VALUES,
                   payload: {
-                    deliver_to_storage: Boolean(
-                      Number(event.target.value) as 0 | 1
-                    ),
+                    collection: Boolean(Number(event.target.value) as 0 | 1),
                   },
                 })
               }
@@ -61,9 +59,7 @@ const StorageModalComponent: FC<IProps> = ({
                 bookingsDispatch({
                   type: ADD_FORM_VALUES,
                   payload: {
-                    deliver_to_storage: Boolean(
-                      Number(event.target.value) as 0 | 1
-                    ),
+                    collection: Boolean(Number(event.target.value) as 0 | 1),
                   },
                 })
               }
@@ -71,6 +67,16 @@ const StorageModalComponent: FC<IProps> = ({
               value={0}
             />
           </Form.Group>
+          <div className="col-12 custom-modal__footer">
+            <Button
+              onClick={handleNext}
+              // disabled={isNextActive()}
+              className="w-100"
+              variant="secondary"
+            >
+              Next
+            </Button>
+          </div>
         </div>
       </>
     );
@@ -95,8 +101,6 @@ const StorageModalComponent: FC<IProps> = ({
         from_address_original: location,
       },
     });
-
-    console.log("bookingState.formValues", bookingState.formValues);
   };
 
   const addressSelectionView = () => {
@@ -162,12 +166,23 @@ const StorageModalComponent: FC<IProps> = ({
                   }}
                 />
               </Form.Group>
+              <div className="col-12 custom-modal__footer">
+                <Button
+                  onClick={handleNext}
+                  // disabled={isNextActive()}
+                  className="w-100"
+                  variant="secondary"
+                >
+                  Next
+                </Button>
+              </div>
             </div>
           )}
+
           {selectType === "manual" && (
             <div className="custom-modal__search-address__manual col-12">
               <AddressManualForm
-                moveType="storage"
+                moveType={1}
                 setWhichAddress={() => false}
                 whichAddress={whichAddress}
                 setShowSelectorModal={() => false}
@@ -181,7 +196,6 @@ const StorageModalComponent: FC<IProps> = ({
   };
 
   const handleNext = async () => {
-    console.log("bookingState.formValues", bookingState.formValues);
     if (view === "delivery") setView("address");
     else {
       if (
@@ -196,7 +210,7 @@ const StorageModalComponent: FC<IProps> = ({
         bookingState.formValues,
         fetchWrapper
       );
-      console.log("booking", booking);
+
       bookingsDispatch(getBooking(booking));
       localStorage.setItem("bookingId", booking.id);
       router.push(`/storage`);
@@ -212,16 +226,6 @@ const StorageModalComponent: FC<IProps> = ({
             {view === "delivery"
               ? collectionOptionView()
               : addressSelectionView()}
-            <div className="col-12 custom-modal__footer">
-              <Button
-                onClick={handleNext}
-                // disabled={isNextActive()}
-                className="w-100"
-                variant="secondary"
-              >
-                Next
-              </Button>
-            </div>
           </div>
         </Modal.Body>
       </Modal>

@@ -99,40 +99,36 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
                             <Form.Check
                                 type="radio"
                                 inline
-                                name="deliver_to_storage"
+                                name="collection"
                                 label="Yes - collect"
                                 onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
                                     bookingsDispatch({
                                         type: ADD_FORM_VALUES,
                                         payload: {
-                                            deliver_to_storage: Boolean(Number(event.target.value)),
+                                            collection: Boolean(Number(event.target.value)),
                                         },
                                     })
                                 }
-                                id="deliver_to_storage"
+                                id="collection"
                                 value={1}
-                                checked={
-                                    Number(bookingState.formValues.deliver_to_storage) === 1
-                                }
+                                checked={Number(bookingState.formValues.collection) === 1}
                             />
                             <Form.Check
                                 type="radio"
                                 inline
-                                name="deliver_to_storage"
+                                name="collection"
                                 label="No - I will deliver"
                                 onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
                                     bookingsDispatch({
                                         type: ADD_FORM_VALUES,
                                         payload: {
-                                            deliver_to_storage: Boolean(Number(event.target.value)),
+                                            collection: Boolean(Number(event.target.value)),
                                         },
                                     })
                                 }
-                                id="deliver_to_storage"
+                                id="collection"
                                 value={0}
-                                checked={
-                                    Number(bookingState.formValues.deliver_to_storage) === 0
-                                }
+                                checked={Number(bookingState.formValues.collection) === 0}
                             />
                         </Form.Group>
                     </Row>
@@ -140,7 +136,7 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
                 {(["/move/domestic", "/move/inventory-form"].includes(
                     router.pathname
                 ) ||
-                    bookingState.formValues.deliver_to_storage) && (
+                    bookingState.formValues.collection) && (
                         <>
                             <h5 className="my-5">Please provide loading address</h5>
                             <Row className="mb-5">
@@ -168,7 +164,10 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
                                             }}
                                         />
                                     ) : (
-                                        <AddressForm address={bookingState.formValues.from_address} />
+                                        <AddressForm
+                                            address={bookingState.formValues.from_address}
+                                            booking={bookingState.formValues.id}
+                                        />
                                     )}
                                 </Form.Group>
                             </Row>
@@ -337,7 +336,10 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
                                         }}
                                     />
                                 ) : (
-                                    <AddressForm address={bookingState.formValues.to_address} />
+                                    <AddressForm
+                                        address={bookingState.formValues.to_address}
+                                        booking={bookingState.formValues.id}
+                                    />
                                 )}
                             </Form.Group>
                         </Row>

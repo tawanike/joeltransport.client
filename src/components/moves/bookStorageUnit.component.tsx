@@ -38,10 +38,11 @@ const BookStorageUnit = () => {
 
   useEffect(() => {
     (async () => {
-      const trucks = await api.get("/products?category=2", false);
-      setTrucks(trucks.results);
-      setRecommendedTruck(trucks[0]);
-
+      if (bookingState.formValues.collection) {
+        const trucks = await api.get("/products?category=2", false);
+        setTrucks(trucks.results);
+        setRecommendedTruck(trucks[0]);
+      }
       const moves = await api.get("/products?category=1", false);
       moves.results.forEach((move: any) => {
         if (move.slug === "storage") {
@@ -53,8 +54,12 @@ const BookStorageUnit = () => {
 
   useEffect(() => {
     if (moveType && moveType.id) {
+      console.log("PANO", NumberOfUnitsValue);
       trucks.map((truck) => {
-        if (truck.storage_units_recommendations.min == NumberOfUnitsValue) {
+        if (
+          truck.storage_units_recommendations.min == NumberOfUnitsValue &&
+          bookingState.formValues.collection
+        ) {
           setRecommendedTruck(truck);
         }
       });
@@ -73,7 +78,7 @@ const BookStorageUnit = () => {
         })
       );
 
-      if (recommendedTruck) {
+      if (recommendedTruck && bookingState.formValues.collection) {
         let price = 0,
           offPeakDiscount: number = 0;
         if (isHoliday(bookingState.formValues.move_date)) {
@@ -83,7 +88,7 @@ const BookStorageUnit = () => {
           price = recommendedTruck.price;
           offPeakDiscount = recommendedTruck.off_peak_discount;
         }
-        console.log("TRUCK PRICE", price);
+
         dispatchCostSummary(
           selectTruck({
             quantity: 1,
@@ -101,19 +106,21 @@ const BookStorageUnit = () => {
           booking: bookingState.formValues.id,
         })
         .then((res) => {
-          api.post(`/bookings/${bookingState.formValues.id}/products`, {
-            product: recommendedTruck?.id,
-            quantity: 1,
-            product_type: "truck",
-            booking: bookingState.formValues.id,
-          });
+          if (bookingState.formValues.collection) {
+            api.post(`/bookings/${bookingState.formValues.id}/products`, {
+              product: recommendedTruck?.id,
+              quantity: 1,
+              product_type: "truck",
+              booking: bookingState.formValues.id,
+            });
+          }
+
           if (!res.error) {
             // setChooseTruckComplete(true);
             api
               .get(`/bookings/${bookingState.formValues.id}`, false)
               .then((res) => {
                 if (!res.error) {
-                  console.log("BOOKING", res);
                   bookingsDispatch(getBooking({ formValues: res }));
                 }
               });

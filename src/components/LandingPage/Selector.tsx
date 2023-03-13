@@ -58,7 +58,7 @@ const Selector = () => {
                                 ? toggleMoveModal(true)
                                 : toggleStorageModal(true);
                             selectedView.title === "Home Move"
-                                ? bookingsDispatch(updateBooking({ move_type: 0 }))
+                                ? bookingsDispatch(updateBooking({ move_type: 0, self_delivery: 0 }))
                                 : bookingsDispatch(updateBooking({ move_type: 1 }));
                         }}
                     >
