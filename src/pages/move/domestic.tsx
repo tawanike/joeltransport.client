@@ -74,6 +74,18 @@ const DomesticMoveServices = () => {
         router.push(`/move/checkout`);
     };
 
+    useEffect(() => {
+        const canConfirmMove = Object.values(bookingState.formValues).every(
+            (value) => {
+                console.log(value);
+
+                return value !== null && value !== ""
+            }
+        );
+        setCanConfirmMove(canConfirmMove);
+    }, [bookingState.formValues])
+
+
     return (
         <>
             <div className="moves container-fluid">
