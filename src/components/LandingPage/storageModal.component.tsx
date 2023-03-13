@@ -77,7 +77,6 @@ const StorageModalComponent: FC<IProps> = ({
   };
 
   const handleAddressChange = async (location: any) => {
-    console.log("handleAddressChange", location);
     const address = await addressUtils.formatAddress(location);
     const to_address = {
       street_address: "10 Von Tonder Street",
@@ -96,6 +95,8 @@ const StorageModalComponent: FC<IProps> = ({
         from_address_original: location,
       },
     });
+
+    console.log("bookingState.formValues", bookingState.formValues);
   };
 
   const addressSelectionView = () => {
@@ -180,6 +181,7 @@ const StorageModalComponent: FC<IProps> = ({
   };
 
   const handleNext = async () => {
+    console.log("bookingState.formValues", bookingState.formValues);
     if (view === "delivery") setView("address");
     else {
       if (
@@ -194,6 +196,7 @@ const StorageModalComponent: FC<IProps> = ({
         bookingState.formValues,
         fetchWrapper
       );
+      console.log("booking", booking);
       bookingsDispatch(getBooking(booking));
       localStorage.setItem("bookingId", booking.id);
       router.push(`/storage`);

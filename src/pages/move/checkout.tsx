@@ -1,4 +1,5 @@
 import MoveStepper from "components/moves/move-stepper.component";
+import StorageStepper from "components/moves/storage-stepper.component";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import { Alert, Button, Modal } from "react-bootstrap";
@@ -36,13 +37,13 @@ const Checkout = () => {
     // Implementation for whatever you want to do with reference and after success call.
     setShowSuccessModal(true);
     localStorage.removeItem("bookingId");
-    router.push("/");
   };
 
   const handleDone = () => {
     setShowSuccessModal(false);
     dispatchCostSummary({ type: "RESET_BOOKING" });
     bookingContext.dispatch({ type: "RESET_COST_SUMMARY" });
+    window.location.href = "/";
   };
 
   // you can call this function anything
@@ -105,11 +106,19 @@ const Checkout = () => {
                   </div>
                 </div>
               </Alert>
-              <MoveStepper />
+              {bookingContext.state.formValues.move_type === 0 ? (
+                <MoveStepper />
+              ) : (
+                <StorageStepper />
+              )}
             </div>
             <div className="col-3 offset-1 moves__checkout">
               <div className="col-12 moves__checkout__summary">
-                <h5>Move summary</h5>
+                {bookingContext.state.formValues.move_type === 0 ? (
+                  <h5>Move summary</h5>
+                ) : (
+                  <h5>Storage summary</h5>
+                )}
                 <div className="row">
                   <div className="col-12 moves__checkout__summary__list mt-3">
                     <div className="row">
@@ -159,7 +168,11 @@ const Checkout = () => {
                 <img src="/img/pay.png" alt="Checkout" />
               </div>
               <div className="col-12 moves__checkout__summary">
-                <h5>Move review</h5>
+                {bookingContext.state.formValues.move_type === 0 ? (
+                  <h5>Move review</h5>
+                ) : (
+                  <h5>Storage review</h5>
+                )}
                 <div className="row">
                   <div className="col-12 moves__checkout__summary__list mt-3">
                     <div className="row">
@@ -179,7 +192,7 @@ const Checkout = () => {
                           Move details
                         </p>
                         <p>
-                          {bookingContext.state.formValues?.user?.first_name}
+                          {bookingContext.state.formValues?.user?.first_name}{" "}
                           {bookingContext.state.formValues?.user?.last_name}
                         </p>
                       </div>
@@ -197,17 +210,19 @@ const Checkout = () => {
                           }
                         </p>
                       </div>
-                      <div className="col-12 moves__checkout__summary__list__text mt-3">
-                        <p className="moves__checkout__summary__list__text--bold">
-                          Moving to
-                        </p>
-                        <p>
-                          {
-                            bookingContext.state.formValues?.to_address
-                              ?.formatted_address
-                          }
-                        </p>
-                      </div>
+                      {bookingContext.state.formValues.move_type === 0 && (
+                        <div className="col-12 moves__checkout__summary__list__text mt-3">
+                          <p className="moves__checkout__summary__list__text--bold">
+                            Moving to
+                          </p>
+                          <p>
+                            {
+                              bookingContext.state.formValues?.to_address
+                                ?.formatted_address
+                            }
+                          </p>
+                        </div>
+                      )}
                     </div>
                   </div>
                   <div className="col-12 moves__checkout__summary__list mt-3">

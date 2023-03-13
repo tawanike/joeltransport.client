@@ -57,7 +57,7 @@ function Footer() {
                 <Link href="/legal/terms-conditions">Terms and Conditions</Link>
               </li>
               <li>
-                <Link href="/careers">Careers</Link>
+                <Link href="/resources/careers">Careers</Link>
               </li>
             </ul>
           </div>

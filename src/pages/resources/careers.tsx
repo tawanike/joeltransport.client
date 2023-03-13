@@ -23,10 +23,7 @@ const CareerPage = () => {
                   <h2 className="mb-3">Open positions</h2>
                   <p>We are looking for smart motivated people</p>
                 </div>
-                <div
-                  className="col-12 resources__careerEntry mt-5"
-                  onClick={() => setOpps(!opps)}
-                >
+                <div className="col-12 resources__careerEntry mt-5">
                   <div className="col-12">
                     <div className="row p-4">
                       <div className="col-12 resources__careerEntry__head mb-4">
@@ -48,7 +45,15 @@ const CareerPage = () => {
                         </p>
                       </div>
                       <div className="col-3 resources__careerEntry__apply">
-                        <Button variant="link">Apply now</Button>
+                        <Button
+                          variant="link"
+                          onClick={() => {
+                            const win: Window = window;
+                            win.location = "https://www.joeltransport.co.za";
+                          }}
+                        >
+                          Apply now
+                        </Button>
                       </div>
                     </div>
                   </div>
@@ -76,7 +81,15 @@ const CareerPage = () => {
                         </p>
                       </div>
                       <div className="col-3 resources__careerEntry__apply">
-                        <Button variant="link">Apply now</Button>
+                        <Button
+                          variant="link"
+                          onClick={() => {
+                            const win: Window = window;
+                            win.location = "https://www.joeltransport.co.za";
+                          }}
+                        >
+                          Apply now
+                        </Button>
                       </div>
                     </div>
                   </div>

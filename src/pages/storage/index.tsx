@@ -1,16 +1,18 @@
 import StorageStepper from "components/moves/storage-stepper.component";
 import StorageCostCard from "components/moves/storageCostCard.component";
 import CallMeBackButton from "components/shared/callMeBackButton.component";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { Button } from "react-bootstrap";
 import { CoverImage } from "../../components/ui";
 
 const Storage = () => {
+  const router = useRouter();
   const [canConfirmMove, setCanConfirmMove] = useState(true);
-  const [showSelectorModal, setShowSelectorModal] = useState(false);
+
   const goToCheckout = () => {
     if (canConfirmMove) {
-      setShowSelectorModal(true);
+      router.push("/move/checkout");
     }
   };
   return (
