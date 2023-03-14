@@ -1,7 +1,8 @@
 import { useRouter } from "next/router";
 import { FC, useContext, useState } from "react";
-import { Button, Col, Form, Modal } from "react-bootstrap";
+import { Alert, Button, Col, Form, Modal } from "react-bootstrap";
 import GooglePlacesAutocomplete from "react-google-places-autocomplete";
+import { FcInfo } from "react-icons/fc";
 import { getBooking } from "src/_actions/booking.actions";
 import { BookingContext } from "src/_contexts/booking.context";
 import { addressUtils } from "src/_helpers/formatAddress";
@@ -68,6 +69,30 @@ const StorageModalComponent: FC<IProps> = ({
             />
           </Form.Group>
           <div className="col-12 custom-modal__footer">
+            <Alert variant="primary" className="mt-3">
+              <div className="row">
+                <div className="col-12 Selector__instructions__get-started">
+                  <div className="row">
+                    <div
+                      className="col-1"
+                      style={{
+                        display: "grid",
+                        placeItems: "center",
+                        fontSize: "2rem",
+                      }}
+                    >
+                      <FcInfo />
+                    </div>
+                    <div className="col-11">
+                      <b>Please note:</b> Please note: For relocations or
+                      storage outside of Gauteng Province, information will be
+                      collected and someone will contact you to provide you with
+                      a quote.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Alert>
             <Button
               onClick={handleNext}
               // disabled={isNextActive()}

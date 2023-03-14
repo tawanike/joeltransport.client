@@ -1,11 +1,29 @@
-import { FC, useContext, useEffect, useState } from "react";
-import { Col, Form, Row } from "react-bootstrap";
+import { FC, useContext, useEffect, useRef, useState } from "react";
+import { Col, Form, Overlay, Row, Tooltip } from "react-bootstrap";
+import { BsInfoCircle } from "react-icons/bs";
 import { BookingContext } from "src/_contexts/booking.context";
 import { useAPI } from "src/_hooks";
 interface IProps {}
 
 const AddedServices: FC<IProps> = ({}) => {
   const api = useAPI();
+  const targets: any = {
+    "bakkie-shuttle": useRef(null),
+    "fine-art": useRef(null),
+    insurance: useRef(null),
+    "packing-service": useRef(null),
+    "packing-material": useRef(null),
+    "vehicle-transportation": useRef(null),
+    "pet-relocation-services": useRef(null),
+    "international-moving-services": useRef(null),
+    "moving-survey": useRef(null),
+    "free-gauteng-removal-of-unused-furniture-appliances-clothing-linen":
+      useRef(null),
+    "piano-moving-services": useRef(null),
+    crating: useRef(null),
+    storage: useRef(null),
+  };
+  const [show, setShow] = useState(false);
   const [addons, setAddons] = useState<any[]>([]);
   const { state: bookingState, dispatch: bookingDispatch } =
     useContext(BookingContext);
@@ -52,16 +70,36 @@ const AddedServices: FC<IProps> = ({}) => {
       <Row className="InventoryItem mb-4">
         {addons &&
           addons.map((item) => (
-            <Col key={item.id} sm={12} className="mt-3">
-              <Form.Check
-                type="checkbox"
-                label={item.title}
-                id={String(item.id)}
-                value={item.id}
-                onChange={handleSelect}
-                checked={bookingState.formValues?.addOns?.includes(item.id)}
-              />
-            </Col>
+            <Row key={item.id}>
+              <Col sm={9} md={10} className="mt-3">
+                <Form.Check
+                  type="checkbox"
+                  label={item.title}
+                  id={String(item.id)}
+                  value={item.id}
+                  onChange={handleSelect}
+                  checked={bookingState.formValues?.addOns?.includes(item.id)}
+                />
+              </Col>
+              <Col sm={3} md={2} className="mt-3" ref={targets[item.slug]}>
+                <BsInfoCircle
+                  onClick={() => {
+                    setShow(item.id);
+                  }}
+                />
+                <Overlay
+                  target={targets[item.slug]?.current}
+                  show={show === item.id}
+                  placement="right"
+                >
+                  {(props) => (
+                    <Tooltip id={item.id} {...props}>
+                      {item.description}
+                    </Tooltip>
+                  )}
+                </Overlay>
+              </Col>
+            </Row>
           ))}
       </Row>
     </>
