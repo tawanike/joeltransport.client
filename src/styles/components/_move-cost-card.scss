@@ -1,5 +1,6 @@
 .move-cost-card {
-    background-color: #F4F6F8;
+    border-radius: 0.6rem 0.6rem 0 0;
+    border: 1px solid black;
     padding: 2rem;
     p {
         margin-bottom: 0;
@@ -9,13 +10,14 @@
         margin-top: 1rem;
         &__head {
             p {
-                font-size: 0.9rem;
+                font-size: 1rem;
+                font-weight: 600;
             }
         }
         &__details {
             &__title {
                 p {
-                    font-size: 0.8rem;
+                    font-size: 1rem;
                 }
                 &--cost {
                     display: grid;
@@ -32,7 +34,7 @@
             }
         }
         &--payable {
-            background-color: $alternate-blue;
+            background-color: #000000;
             margin-top: 0;
             padding: 1.5rem 2rem;
             border-radius: 0 0 0.6rem 0.6rem;
@@ -43,10 +45,16 @@
                 p {
                     margin-bottom: 0;
                     color: #ffffff;
-                    font-size: 0.8rem;
+                    font-size: 1rem;
                     font-weight: 600;
                 }
             }
+        }
+    }
+    &__head {
+        p {
+            font-size: 1.3rem;
+            font-weight: 600;
         }
     }
 }

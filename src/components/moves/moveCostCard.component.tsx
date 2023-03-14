@@ -14,6 +14,7 @@ const MoveCostCard = () => {
   const target = useRef(null);
   const discountTooltipTarget = useRef(null);
   const bukkieShuttleTooltipTarget = useRef(null);
+
   const { CostSummaryState, dispatchCostSummary } = useContext(
     CostSummaryStateContext
   );
@@ -134,7 +135,11 @@ const MoveCostCard = () => {
                         >
                           {(props) => (
                             <Tooltip id="bukkie-shuttle" {...props}>
-                              My Tooltip
+                              Used where a home or office estate, complex or
+                              location cannot be accessed using our removals
+                              trucks, or due to restrictions in an estate or
+                              complex for large-sized trucks. Our bakkie
+                              shuttles customer belongings to our removal truck.
                             </Tooltip>
                           )}
                         </Overlay>
