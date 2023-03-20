@@ -1,7 +1,7 @@
 import MoveStepper from "components/moves/move-stepper.component";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
-import { Button, Form, Modal } from "react-bootstrap";
+import { Alert, Button, Form, Modal } from "react-bootstrap";
 import { BookingContext } from "src/_contexts/booking.context";
 import useAPI from "../../_hooks/useAPI";
 import {
@@ -13,6 +13,7 @@ import { productService } from "../../_services/product.service";
 import MoveCostCard from "../../components/moves/moveCostCard.component";
 import CallMeBackButton from "../../components/shared/callMeBackButton.component";
 import { CoverImage } from "../../components/ui";
+import { FcInfo } from "react-icons/fc";
 
 const DomesticMoveServices = () => {
     const [optionalServices, setOptionalServices] = useState<any[]>([]);
@@ -120,9 +121,9 @@ const DomesticMoveServices = () => {
                                     />
                                 ))}
                             </div>
-                            <div className="col-12 auth__bottom-text">
+                            {/* <div className="col-12 auth__bottom-text">
                                 <p> Additional charges and T&Cs apply</p>
-                            </div>
+                            </div> */}
                             <div className="col-12 custom-modal__footer">
                                 <Button
                                     disabled={!selectedServices}
@@ -133,6 +134,23 @@ const DomesticMoveServices = () => {
                                     Continue
                                 </Button>
                             </div>
+                            <Alert variant="primary" className="mt-3">
+                                <div className="row">
+                                    <div
+                                        className="col-1"
+                                        style={{
+                                            display: "grid",
+                                            placeItems: "center",
+                                            fontSize: "2rem",
+                                        }}
+                                    >
+                                        <FcInfo />
+                                    </div>
+                                    <div className="col-11">
+                                        Please note: additional charges and T&Cs apply.
+                                    </div>
+                                </div>
+                            </Alert>
                         </div>
                     </Modal.Body>
                 </Modal>
