@@ -12,6 +12,12 @@ function InventoryForm({ }: Props) {
     const [inventoryItems, setInventoryItems] = useState<IInventoryItem[]>([]);
 
     useEffect(() => {
+        console.log(localStorage.getItem("bookingId"));
+
+    }, [])
+
+
+    useEffect(() => {
         (async () => {
             const roomsResponse = await api.get(
                 "/categories/4/subcategories",

@@ -7,85 +7,81 @@ import { Button } from "react-bootstrap";
 import { CoverImage } from "../../components/ui";
 
 const Storage = () => {
-  const router = useRouter();
-  const [canConfirmMove, setCanConfirmMove] = useState(true);
+    const router = useRouter();
+    const [canConfirmMove, setCanConfirmMove] = useState(true);
 
-  const goToCheckout = () => {
-    if (canConfirmMove) {
-      router.push("/move/checkout");
-    }
-  };
-  return (
-    <div className="Resources container-fluid">
-      <CoverImage
-        size="medium"
-        src="/img/storage.png"
-        pageTitle="Storage unit"
-        description="We offer secure storage facilities for our customers, that suit specific requirements."
-      />
+    const goToCheckout = () => {
+        if (canConfirmMove) {
+            router.push("/move/checkout");
+        }
+    };
+    return (
+        <div className="Resources container-fluid">
+            <CoverImage
+                size="medium"
+                src="/img/storage.png"
+                pageTitle="Storage unit"
+                description="We offer secure storage facilities for our customers, that suit specific requirements."
+            />
 
-      <div className="Resources__documents">
-        <div className="moves__container container mt-5">
-          <div className="row">
-            <div className="col-12 mb-5">
-              <h2>Get a storage unit for your items</h2>
-            </div>
-            <div className="col-6">
-              <div className="row">
-                <div className="col-6 moves__container__thumbnail">
-                  <img src="/img/storage_thumb.png" alt="storage" />
-                </div>
-                <div className="col-6 moves__container__summary">
-                  <div>
-                    <p>
-                      <b>Storage type: wooden crate unit </b>
-                    </p>
-                    <p>
-                      <b>Storage units size: 6 m2</b>
-                    </p>
-                    <p className="price">
-                      <span>R350 pm</span> excl.VAT
-                    </p>
-                    <p>
-                      Each storage unit can fit items in a one-bedroom bachelor
-                      apartment.
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="row mt-5">
-                <div className="col-12">
-                  <StorageStepper />
-                </div>
-              </div>
-            </div>
+            <div className="Resources__documents">
+                <div className="moves__container container mt-5">
+                    <div className="row">
+                        <div className="col-12 mb-5">
+                            <h2>Get a storage unit for your items</h2>
+                        </div>
+                        <div className="col-12 col-lg-6">
+                            <div className="row">
+                                <div className="col-6 moves__container__thumbnail">
+                                    <img src="/img/storage_thumb.png" alt="storage" />
+                                </div>
+                                <div className="col-6 moves__container__summary">
+                                    <div>
+                                        <p>
+                                            <b>Storage type: wooden crate unit </b>
+                                        </p>
+                                        <p>
+                                            <b>Storage units size: 6 m2</b>
+                                        </p>
+                                        <p className="price">
+                                            <span>R350 pm</span> excl.VAT
+                                        </p>
+                                        <p>
+                                            Each storage unit can fit items in a one-bedroom bachelor
+                                            apartment.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row mt-5">
+                                <div className="col-12">
+                                    <StorageStepper />
+                                </div>
+                            </div>
+                        </div>
 
-            <div className="col-5 offset-1">
-              <StorageCostCard />
-            </div>
-            <div className="col-12 my-5 pt-3 moves__container__button-container">
-              <div className="row w-100">
-                <div className="col-2 offset-8">
-                  <CallMeBackButton title="Call me back" />
+                        <div className="col-12 col-lg-5 offset-lg-1">
+                            <StorageCostCard />
+                        </div>
+                        <div className="col-12 my-5 pt-3 moves__container__button-container">
+                            <div className="row w-100">
+                                <div className="col-12 d-flex justify-content-end">
+                                    <CallMeBackButton title="Call me back" />
+                                    <Button
+                                        disabled={!canConfirmMove}
+                                        onClick={goToCheckout}
+                                        variant="secondary"
+                                    >
+                                        Confirm move
+                                    </Button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div className="col-2">
-                  <div className="col-12">
-                    <Button
-                      disabled={!canConfirmMove}
-                      onClick={goToCheckout}
-                      variant="secondary"
-                    >
-                      Confirm move
-                    </Button>
-                  </div>
-                </div>
-              </div>
             </div>
-          </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default Storage;

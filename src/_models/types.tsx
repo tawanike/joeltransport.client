@@ -14,177 +14,179 @@ export const ADD_FORM_VALUES = "ADD_FORM_VALUES";
 export const EDIT_ADDITIONAL_SERVICES = "EDIT_ADDITIONAL_SERVICES";
 export const ADD_INVENTORY_ITEM = "ADD_INVENTORY_ITEM";
 export const ADD_STORAGE_ADDITIONAL_SERVICES =
-  "ADD_STORAGE_ADDITIONAL_SERVICES";
+    "ADD_STORAGE_ADDITIONAL_SERVICES";
+export const CHANGE_OPEN_SECTION = "CHANGE_OPEN_SECTION";
 export enum UserRoles {
-  Global = "global",
-  Manager = "manager",
-  Trafficker = "trafficker",
+    Global = "global",
+    Manager = "manager",
+    Trafficker = "trafficker",
 }
 
 export type User = {
-  username?: string;
-  user_id: string;
-  token: string;
-  role?: UserRoles;
+    username?: string;
+    user_id: string;
+    token: string;
+    role?: UserRoles;
 } | null;
 
 export type RequestOptions = {
-  method: string;
-  headers: {
-    "Content-Type"?: string;
-    Authorization: string;
-  };
-  body: any;
-  mode?: "cors" | "no-cors" | "same-origin";
+    method: string;
+    headers: {
+        "Content-Type"?: string;
+        Authorization: string;
+    };
+    body: any;
+    mode?: "cors" | "no-cors" | "same-origin";
 };
 
 export type RequestDetails = {
-  method: string;
-  token?: string;
+    method: string;
+    token?: string;
 };
 
 export type AuthView =
-  | "login"
-  | "register"
-  | "forgotPassword"
-  | "resetPassword"
-  | "verifyEmail";
+    | "login"
+    | "register"
+    | "forgotPassword"
+    | "resetPassword"
+    | "verifyEmail";
 
 export type CostSummary = {
-  truck: {
-    quantity: number;
-    price: number;
-    off_peak_discount: number;
-  } | null;
-  bakkieShuttle: {
-    quantity: number;
-    price: number;
-  } | null;
-  storage: {
-    quantity: number;
-    price: number;
-  };
-  subtotal: number;
-  vat: number;
-  total: number;
+    truck: {
+        quantity: number;
+        price: number;
+        off_peak_discount: number;
+    } | null;
+    bakkieShuttle: {
+        quantity: number;
+        price: number;
+    } | null;
+    storage: {
+        quantity: number;
+        price: number;
+    };
+    subtotal: number;
+    vat: number;
+    total: number;
 };
 
 export type FetchWrapper = {
-  get: (url: string, body?: any) => Promise<any>;
-  post: (url: string, body: any) => Promise<any>;
-  put: (url: string, body: any) => Promise<any>;
-  patch: (url: string, body: any) => Promise<any>;
-  delete: (url: string, body: any) => Promise<any>;
+    get: (url: string, body?: any) => Promise<any>;
+    post: (url: string, body: any) => Promise<any>;
+    put: (url: string, body: any) => Promise<any>;
+    patch: (url: string, body: any) => Promise<any>;
+    delete: (url: string, body: any) => Promise<any>;
 };
 
 export type LoginDetails = { username: string; password: string };
 
 export interface IAction {
-  type: string;
-  payload?: any;
+    type: string;
+    payload?: any;
 }
 
 export interface IProduct {
-  storage_units_recommendations: any;
-  id: string;
-  title: string;
-  slug: string;
-  subtitle: string;
-  description: string;
-  image: string | null;
-  category: number;
-  ordering: number;
-  published: boolean;
-  size: string;
-  unit: string;
-  price: number;
-  weight: number | null;
-  load_capacity: number | null;
-  off_peak_discount: number;
+    storage_units_recommendations: any;
+    id: string;
+    title: string;
+    slug: string;
+    subtitle: string;
+    description: string;
+    image: string | null;
+    category: number;
+    ordering: number;
+    published: boolean;
+    size: string;
+    unit: string;
+    price: number;
+    weight: number | null;
+    load_capacity: number | null;
+    off_peak_discount: number;
 }
 
 export interface IFormValues {
-  id: string | undefined;
-  from_address: IAddress;
-  to_address: IAddress;
-  from_address_original: any;
-  to_address_original: any;
-  from_property_type: number;
-  to_property_type: number;
-  move_date: any;
-  move_time_period: number;
-  move_type: number;
-  submited: boolean;
-  to_floors_count: number;
-  from_floors_count: number;
-  from_working_lift: boolean;
-  to_working_lift: boolean;
-  requires_bakkie_shuttle: boolean;
-  bakkie_address: number | null;
-  storage_units_count: number;
-  deliver_to_storage: boolean;
-  products: IProduct[];
+    id: string | undefined;
+    from_address: IAddress;
+    to_address: IAddress;
+    from_address_original: any;
+    to_address_original: any;
+    from_property_type: number;
+    to_property_type: number;
+    move_date: any;
+    move_time_period: number;
+    move_type: number;
+    submited: boolean;
+    to_floors_count: number;
+    from_floors_count: number;
+    from_working_lift: boolean;
+    to_working_lift: boolean;
+    requires_bakkie_shuttle: boolean;
+    bakkie_address: number | null;
+    storage_units_count: number;
+    deliver_to_storage: boolean;
+    products: IProduct[];
 
-  moving_survey: boolean;
-  packing_material: boolean;
-  packing_service: boolean;
-  insurance: boolean;
-  storage: boolean;
-  bakkie_shuttle: boolean;
-  crating: boolean;
-  gauteng_removal: boolean;
-  international_moving_services: boolean;
+    moving_survey: boolean;
+    packing_material: boolean;
+    packing_service: boolean;
+    insurance: boolean;
+    storage: boolean;
+    bakkie_shuttle: boolean;
+    crating: boolean;
+    gauteng_removal: boolean;
+    international_moving_services: boolean;
 
-  addOns: any[];
-  inventoryList: IInventoryListItem[];
-  collection: boolean;
+    addOns: any[];
+    inventoryList: IInventoryListItem[];
+    collection: boolean;
 
-  user: {
-    first_name: string;
-    last_name: string;
-    email: string;
-    phone_number: string;
-  };
+    user: {
+        first_name: string;
+        last_name: string;
+        email: string;
+        phone_number: string;
+    };
 }
 
 export interface IInventoryListItem {
-  inventory_item: string;
-  quantity: number;
-  booking: string;
-  room: number;
+    inventory_item: string;
+    quantity: number;
+    booking: string;
+    room: number;
 }
 
 export interface IBooking {
-  id: string | undefined;
-  products: IProduct[];
-  formValues: IFormValues;
-  additionalServices: { [key: string]: boolean };
-  inventoryList: IInventoryListItem[];
+    id: string | undefined;
+    products: IProduct[];
+    formValues: IFormValues;
+    openSection: "move_details" | "additional_services" | "inventory" | "truck" | "bakkie_shuttle" | "storage" | "personal";
+    additionalServices: { [key: string]: boolean };
+    inventoryList: IInventoryListItem[];
 }
 
 export interface IAddress {
-  place_id: string;
-  formatted_address: string;
-  street_address: string;
-  city: string;
-  suburb: string;
-  province: string;
-  country: string;
+    place_id: string;
+    formatted_address: string;
+    street_address: string;
+    city: string;
+    suburb: string;
+    province: string;
+    country: string;
 }
 
 export interface IRoom {
-  id: string;
-  title: string;
-  image: string;
-  cover: string;
+    id: string;
+    title: string;
+    image: string;
+    cover: string;
 }
 
 export interface IInventoryItem {
-  id: string;
-  category: number;
-  created_at: string;
-  description: string;
-  title: string;
-  updated_at: string;
-  weight: string;
+    id: string;
+    category: number;
+    created_at: string;
+    description: string;
+    title: string;
+    updated_at: string;
+    weight: string;
 }
