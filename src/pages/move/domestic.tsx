@@ -48,7 +48,7 @@ const DomesticMoveServices = () => {
     }, []);
 
     const goToCheckout = () => {
-        if (canConfirmMove) {
+        if (!canConfirmMove) {
             setShowSelectorModal(true);
         }
     };
@@ -59,7 +59,7 @@ const DomesticMoveServices = () => {
             payload: { [e.target.name]: e.target.checked },
         });
 
-        const response = await fetchWrapper.post(
+        await fetchWrapper.post(
             `/bookings/${bookingState.formValues.id}/products/addons`,
             {
                 booking: bookingState.formValues.id,
@@ -75,14 +75,18 @@ const DomesticMoveServices = () => {
     };
 
     useEffect(() => {
-        const canConfirmMove = Object.values(bookingState.formValues).every(
-            (value) => {
-                console.log(value);
-
-                return value !== null && value !== ""
+        const canConfirmMove = Object.entries(bookingState.formValues).map(
+            ([key, value]) => {
+                if (["move_date"].includes(key)) {
+                    return value === null || value === "" || value === false || value === 0 || (value.length === 0);
+                }
+                if (key === "user") {
+                    return Object.keys(value).some(x => value[x] === null || value[x] === "");
+                }
+                return false;
             }
         );
-        setCanConfirmMove(canConfirmMove);
+        setCanConfirmMove(canConfirmMove.filter(Boolean).length > 0);
     }, [bookingState.formValues])
 
 
@@ -142,34 +146,24 @@ const DomesticMoveServices = () => {
                     <div className="row">
                         <div className="col-12 mb-5">
                             <h2>Book a home move</h2>
-                            {/* <p>
-                                To provide you with the best quote, we need some information
-                                about you Once you are happy with your quote, you will need to
-                                log in or create an account to pay
-                            </p> */}
                         </div>
-                        <div className="col-7">
+                        <div className="col-12 col-md-7">
                             <MoveStepper />
                         </div>
-                        <div className="col-4 offset-1">
+                        <div className="col-12 col-md-4 offset-md-1">
                             <MoveCostCard />
                         </div>
                         <div className="col-12 my-5 pt-3 moves__container__button-container">
                             <div className="row w-100">
-                                <div className="col-1 offset-7">
-
-                                </div>
-                                <div className="col-4">
-                                    <div className="col-8 offset-4">
-                                        <CallMeBackButton title="Call me back" />
-                                        <Button
-                                            disabled={!canConfirmMove}
-                                            onClick={goToCheckout}
-                                            variant="secondary"
-                                        >
-                                            Confirm move
-                                        </Button>
-                                    </div>
+                                <div className="col-12 d-flex justify-content-end">
+                                    <CallMeBackButton title="Call me back" />
+                                    <Button
+                                        disabled={canConfirmMove}
+                                        onClick={goToCheckout}
+                                        variant="secondary"
+                                    >
+                                        Confirm move
+                                    </Button>
                                 </div>
                             </div>
                         </div>
