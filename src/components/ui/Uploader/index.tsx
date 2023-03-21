@@ -64,6 +64,7 @@ function Uploader({ onChange }: Props) {
     >
       <div style={thumbInner}>
         <img
+          alt=""
           src={file.preview}
           style={img}
           // Revoke data uri after image is loaded

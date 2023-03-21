@@ -90,12 +90,14 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
         return "react-datepicker__day--highlighted";
       }
     }
+    return "";
   }
 
   function tileDisabled({ date, view }: any) {
     if (view === "month") {
       return bookedDates.includes(date.getDate());
     }
+    return false;
   }
 
   function onActiveStartDateChange({ activeStartDate }: any) {
