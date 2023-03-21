@@ -1,10 +1,13 @@
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { FC, useContext, useEffect, useState } from "react";
-import { Col, Row } from "react-bootstrap";
+import { Alert, Col, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import DatePicker from "react-date-picker/dist/entry.nostyle";
 import GooglePlacesAutocomplete from "react-google-places-autocomplete";
+import { FcInfo } from "react-icons/fc";
 import { FiCalendar } from "react-icons/fi";
+import { MdWarning } from "react-icons/md";
 import Select from "react-select";
 import { addFormValues } from "src/_actions/form.actions";
 import { BookingContext } from "src/_contexts/booking.context";
@@ -35,43 +38,69 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
   const [showFromWorkingLift, setShowFromWorkingLift] = useState(false);
   const [showToWorkingLift, setShowToWorkingLift] = useState(false);
   const router = useRouter();
+  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
+  const [bookedDates, setBookedDates] = useState<any[]>([]);
 
-  const getBookedDates = (currentMonth: number) => {
+  useEffect(() => {
     let booked: any[] = [];
-    // TODO: Get booked dates from API and save to state so that we don't have to fetch every time
-    // fetchWrapper
-    //   .get(`/bookings/unavailable?month=${currentMonth}`, false)
-    //   .then((res) => {
-    //     res.forEach((date: any) => {
-    //       const d = new Date(date.date);
-    //       console.log(d);
-    //       if (currentMonth === d.getMonth()) {
-    //         booked.push(d.getDate());
-    //       }
-    //     });
-    //   });
-    return booked;
-  };
+    fetchWrapper
+      .get(
+        `/bookings/unavailable?month=${
+          currentMonth + 1
+        }&year=${new Date().getFullYear()}`,
+        false
+      )
+      .then((res) => {
+        if (res.length === 0) {
+          setBookedDates([]);
+          return;
+        }
+
+        res.forEach((date: any) => {
+          const d = new Date(date.date);
+          if (
+            currentMonth === d.getMonth() &&
+            d.getDate() !== bookingState.formValues.move_date
+          ) {
+            booked.push(d.getDate());
+            setBookedDates([...booked]);
+          }
+        });
+      });
+    console.log("bookedDates", bookedDates);
+  }, [currentMonth]);
 
   function tileClassName({ date, view }: any) {
-    console.log(date);
     // Add class to tiles in month view only
     if (view === "month") {
-      // Check if a date React-Calendar wants to check is on the list of dates to add class to
       // TODO: Get holidays by month and highlight them
-      const holidayDates = holidays().map((date) => new Date(date.date));
-      console.log(holidays().map((date) => new Date(date.date).getDate()));
+      const holidayDatesForThisMonth = holidays().filter((thisDate) => {
+        if (new Date(thisDate.date).getMonth() === date.getMonth()) {
+          return new Date(thisDate.date);
+        }
+      });
+
       if (
-        holidays()
+        holidayDatesForThisMonth
           .map((date) => new Date(date.date).getDate())
           .includes(date.getDate()) &&
-        holidays()
+        holidayDatesForThisMonth
           .map((date) => new Date(date.date).getMonth())
           .includes(date.getMonth())
       ) {
         return "react-datepicker__day--highlighted";
       }
     }
+  }
+
+  function tileDisabled({ date, view }: any) {
+    if (view === "month") {
+      return bookedDates.includes(date.getDate());
+    }
+  }
+
+  function onActiveStartDateChange({ activeStartDate }: any) {
+    setCurrentMonth(activeStartDate.getMonth());
   }
 
   useEffect(() => {
@@ -131,6 +160,24 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
 
   return (
     <div className="col-12 move__step__body">
+      <Alert variant="primary">
+        <div className="row">
+          <div
+            className="col-1"
+            style={{
+              display: "grid",
+              placeItems: "center",
+              fontSize: "2rem",
+            }}
+          >
+            <FcInfo />
+          </div>
+          <div className="col-11">
+            <b>Please note:</b> Additional charges apply for weekends & public
+            holidays.
+          </div>
+        </div>
+      </Alert>
       <Form noValidate>
         {["/storage"].includes(router.pathname) && (
           <Row className="mb-5">
@@ -228,16 +275,32 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
                   monthPlaceholder="mm"
                   yearPlaceholder="yyyy"
                   minDate={new Date()}
-                  tileDisabled={({ date, view }) => {
-                    return getBookedDates(date.getMonth()).includes(
-                      date.getDate()
-                    );
-                  }}
+                  tileDisabled={tileDisabled}
                   tileClassName={tileClassName}
                   className="date-picker"
-                >
-                  Some warning message goes here!
-                </DatePicker>
+                  onActiveStartDateChange={onActiveStartDateChange}
+                />
+                <Alert variant="warning" className="mt-3">
+                  <div className="row">
+                    <div
+                      className="col-2"
+                      style={{
+                        display: "grid",
+                        placeItems: "center",
+                        fontSize: "2rem",
+                        color: "#fa551e",
+                      }}
+                    >
+                      <MdWarning />
+                    </div>
+                    <div className="col-10">
+                      <b>Please note:</b> If the dates you are looking for are
+                      not available, get in touch with us or provide your
+                      contact details for other solutions.
+                      <Link href="/contact-us">Click here</Link>
+                    </div>
+                  </div>
+                </Alert>
               </Form.Group>
               <Form.Group as={Col} md="6" controlId="from_property_type">
                 <Form.Label>Property type</Form.Label>
