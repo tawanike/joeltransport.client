@@ -67,7 +67,6 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
           }
         });
       });
-    console.log("bookedDates", bookedDates);
   }, [currentMonth]);
 
   function tileClassName({ date, view }: any) {
