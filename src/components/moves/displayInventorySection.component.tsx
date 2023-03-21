@@ -24,6 +24,9 @@ const DisplayInvemtorySection: FC<IProps> = ({ room, inventoryItems }) => {
         return prev + curr;
     };
 
+    console.log(state.inventoryList);
+
+
     return (
         <Accordion.Item eventKey={room.id}>
             <Accordion.Header className="InventoryForm__display col-12">
@@ -34,8 +37,8 @@ const DisplayInvemtorySection: FC<IProps> = ({ room, inventoryItems }) => {
                     <div className="col-4 InventoryForm__display__count">
                         <p>
                             Items count(
-                            {state.inventoryList
-                                .filter((x) => x.room === Number(room.id))
+                            {state?.inventoryList
+                                .filter((x) => Number(x.room) === Number(room.id))
                                 .map((x) => x.quantity)
                                 .reduce(getTotals, 0)}
                             )

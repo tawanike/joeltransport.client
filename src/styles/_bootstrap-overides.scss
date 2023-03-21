@@ -25,4 +25,11 @@
 .btn.disabled,
 fieldset:disabled .btn {
     color: white;
+    background-color: #c2c2c2;
+    border: none;
+    outline: none;
+}
+
+.btn-secondary {
+    color: white;
 }

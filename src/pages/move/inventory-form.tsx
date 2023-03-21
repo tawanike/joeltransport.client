@@ -274,19 +274,15 @@ const InternationalMoveServices = () => {
             </div>
             <div className="col-12 my-5 pt-3 moves__container__button-container">
                 <div className="row w-100">
-                    <div className="col-2 offset-8">
+                    <div className="col-12 d-flex justify-content-end">
                         <CallMeBackButton title="Call me back" />
-                    </div>
-                    <div className="col-2">
-                        <div className="col-12">
-                            <Button
-                                disabled={!canConfirmMove}
-                                onClick={goToCheckout}
-                                variant="secondary"
-                            >
-                                Confirm move
-                            </Button>
-                        </div>
+                        <Button
+                            disabled={!canConfirmMove}
+                            onClick={goToCheckout}
+                            variant="secondary"
+                        >
+                            Confirm move
+                        </Button>
                     </div>
                 </div>
             </div>

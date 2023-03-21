@@ -13,6 +13,7 @@ export const ADD_PRODUCTS_DATA = "ADD_ADDITIONAL_PRODUCTS_DATA";
 export const ADD_FORM_VALUES = "ADD_FORM_VALUES";
 export const EDIT_ADDITIONAL_SERVICES = "EDIT_ADDITIONAL_SERVICES";
 export const ADD_INVENTORY_ITEM = "ADD_INVENTORY_ITEM";
+export const DELETE_INVENTORY_ITEM = "DELETE_INVENTORY_ITEM";
 export const ADD_STORAGE_ADDITIONAL_SERVICES =
     "ADD_STORAGE_ADDITIONAL_SERVICES";
 export const CHANGE_OPEN_SECTION = "CHANGE_OPEN_SECTION";
@@ -153,6 +154,7 @@ export interface IInventoryListItem {
     quantity: number;
     booking: string;
     room: number;
+    category: number | string;
 }
 
 export interface IBooking {
