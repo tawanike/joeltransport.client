@@ -33,128 +33,136 @@ const MoveCostCard = () => {
               </div>
               <div className="col-12 move-cost-card__section__details">
                 <ul>
-                  <li>
-                    <div className="row">
-                      <div className="col-6 move-cost-card__section__details__title">
-                        <p>Truck & crew</p>
-                      </div>
-                      <div
-                        className="col-1 move-cost-card__section__details__title"
-                        ref={target}
-                      >
-                        <BsInfoCircle
-                          onClick={() => {
-                            setShow(!show);
-                            setShowDiscountTooltip(false);
-                            setShowBukkieShuttleTooltip(false);
-                          }}
-                        />
-                        <Overlay
-                          target={target.current}
-                          show={show}
-                          placement="right"
+                  {CostSummaryState.truck && (
+                    <li>
+                      <div className="row">
+                        <div className="col-6 move-cost-card__section__details__title">
+                          <p>Truck & crew</p>
+                        </div>
+                        <div
+                          className="col-1 move-cost-card__section__details__title"
+                          ref={target}
                         >
-                          {(props) => (
-                            <Tooltip id="truck-crew" {...props}>
-                              My Tooltip
-                            </Tooltip>
-                          )}
-                        </Overlay>
+                          <BsInfoCircle
+                            onClick={() => {
+                              setShow(!show);
+                              setShowDiscountTooltip(false);
+                              setShowBukkieShuttleTooltip(false);
+                            }}
+                          />
+                          <Overlay
+                            target={target.current}
+                            show={show}
+                            placement="right"
+                          >
+                            {(props) => (
+                              <Tooltip id="truck-crew" {...props}>
+                                My Tooltip
+                              </Tooltip>
+                            )}
+                          </Overlay>
+                        </div>
+                        <div className="col-5 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
+                          <p>
+                            R
+                            {CostSummaryState.truck
+                              ? CostSummaryState.truck.price
+                              : "0.00"}
+                          </p>
+                        </div>
                       </div>
-                      <div className="col-5 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
-                        <p>
-                          R
-                          {CostSummaryState.truck
-                            ? CostSummaryState.truck.price
-                            : "0.00"}
-                        </p>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div className="row">
-                      <div className="col-6 move-cost-card__section__details__title">
-                        <p>Off peak discount</p>
-                      </div>
-                      <div
-                        className="col-1 move-cost-card__section__details__title"
-                        ref={discountTooltipTarget}
-                      >
-                        <BsInfoCircle
-                          onClick={() => {
-                            setShowDiscountTooltip(!showDiscountTooltip);
-                            setShow(false);
-                            setShowBukkieShuttleTooltip(false);
-                          }}
-                        />
-                        <Overlay
-                          target={discountTooltipTarget.current}
-                          show={showDiscountTooltip}
-                          placement="right"
+                    </li>
+                  )}
+                  {CostSummaryState.truck &&
+                    CostSummaryState.truck.off_peak_discount > 0 && (
+                      <li>
+                        <div className="row">
+                          <div className="col-6 move-cost-card__section__details__title">
+                            <p>Off peak discount</p>
+                          </div>
+                          <div
+                            className="col-1 move-cost-card__section__details__title"
+                            ref={discountTooltipTarget}
+                          >
+                            <BsInfoCircle
+                              onClick={() => {
+                                setShowDiscountTooltip(!showDiscountTooltip);
+                                setShow(false);
+                                setShowBukkieShuttleTooltip(false);
+                              }}
+                            />
+                            <Overlay
+                              target={discountTooltipTarget.current}
+                              show={showDiscountTooltip}
+                              placement="right"
+                            >
+                              {(props) => (
+                                <Tooltip id="truck-crew" {...props}>
+                                  My Tooltip
+                                </Tooltip>
+                              )}
+                            </Overlay>
+                          </div>
+                          <div className="col-5 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
+                            <p>
+                              R
+                              {CostSummaryState.truck &&
+                              CostSummaryState.truck.off_peak_discount
+                                ? CostSummaryState.truck.off_peak_discount
+                                : "0.00"}
+                            </p>
+                          </div>
+                        </div>
+                      </li>
+                    )}
+                  {CostSummaryState.bakkieShuttle && (
+                    <li>
+                      <div className="row">
+                        <div className="col-6 move-cost-card__section__details__title">
+                          <p>Bakkie shuttle</p>
+                        </div>
+                        <div
+                          className="col-1 move-cost-card__section__details__title"
+                          ref={bukkieShuttleTooltipTarget}
                         >
-                          {(props) => (
-                            <Tooltip id="truck-crew" {...props}>
-                              My Tooltip
-                            </Tooltip>
-                          )}
-                        </Overlay>
+                          <BsInfoCircle
+                            onClick={() => {
+                              setShowBukkieShuttleTooltip(
+                                !showBukkieShuttleTooltip
+                              );
+                              setShow(false);
+                              setShowDiscountTooltip(false);
+                            }}
+                          />
+                          <Overlay
+                            target={bukkieShuttleTooltipTarget.current}
+                            show={showBukkieShuttleTooltip}
+                            placement="right"
+                          >
+                            {(props) => (
+                              <Tooltip id="bukkie-shuttle" {...props}>
+                                Used where a home or office estate, complex or
+                                location cannot be accessed using our removals
+                                trucks, or due to restrictions in an estate or
+                                complex for large-sized trucks. Our bakkie
+                                shuttles customer belongings to our removal
+                                truck.
+                              </Tooltip>
+                            )}
+                          </Overlay>
+                        </div>
+                        <div className="col-5 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
+                          <p>
+                            R
+                            {CostSummaryState.bakkieShuttle
+                              ? CostSummaryState.bakkieShuttle.price *
+                                CostSummaryState.bakkieShuttle.quantity
+                              : "0.00"}
+                          </p>
+                        </div>
                       </div>
-                      <div className="col-5 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
-                        <p>
-                          R
-                          {CostSummaryState.truck &&
-                          CostSummaryState.truck.off_peak_discount
-                            ? CostSummaryState.truck.off_peak_discount
-                            : "0.00"}
-                        </p>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div className="row">
-                      <div className="col-6 move-cost-card__section__details__title">
-                        <p>Bakkie shuttle</p>
-                      </div>
-                      <div
-                        className="col-1 move-cost-card__section__details__title"
-                        ref={bukkieShuttleTooltipTarget}
-                      >
-                        <BsInfoCircle
-                          onClick={() => {
-                            setShowBukkieShuttleTooltip(
-                              !showBukkieShuttleTooltip
-                            );
-                            setShow(false);
-                            setShowDiscountTooltip(false);
-                          }}
-                        />
-                        <Overlay
-                          target={bukkieShuttleTooltipTarget.current}
-                          show={showBukkieShuttleTooltip}
-                          placement="right"
-                        >
-                          {(props) => (
-                            <Tooltip id="bukkie-shuttle" {...props}>
-                              Used where a home or office estate, complex or
-                              location cannot be accessed using our removals
-                              trucks, or due to restrictions in an estate or
-                              complex for large-sized trucks. Our bakkie
-                              shuttles customer belongings to our removal truck.
-                            </Tooltip>
-                          )}
-                        </Overlay>
-                      </div>
-                      <div className="col-5 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
-                        <p>
-                          R
-                          {CostSummaryState.bakkieShuttle
-                            ? CostSummaryState.bakkieShuttle.price *
-                              CostSummaryState.bakkieShuttle.quantity
-                            : "0.00"}
-                        </p>
-                      </div>
-                    </div>
-                  </li>
+                    </li>
+                  )}
                 </ul>
               </div>
             </div>
