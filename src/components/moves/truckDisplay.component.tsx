@@ -10,7 +10,7 @@ interface IProps {
 }
 
 const TruckDisplay: FC<IProps> = ({ truck, onSelect, isSelected }) => {
-    return <div className={`col-6 offset-3 truckDisplay truckDisplay${isSelected ? "--selected" : ""}`}>
+    return <div className={`col-12 truckDisplay truckDisplay${isSelected ? "--selected" : ""}`}>
         <div className="row">
             <div className="col-12 truckDisplay__head">
                 <img src="/img/trucks/1.png" alt="" />

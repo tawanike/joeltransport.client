@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
-import { Carousel } from "react-bootstrap";
 import { RxCaretLeft, RxCaretRight } from "react-icons/rx";
 import { getBooking } from "src/_actions/booking.actions";
+import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
 import { selectTruck } from "src/_actions/trucks.actions";
 import { BookingContext } from "src/_contexts/booking.context";
 import { isHoliday } from "src/_helpers/dateFormat";
@@ -9,6 +9,7 @@ import { useAPI } from "src/_hooks";
 import { IProduct } from "src/_models/types";
 import CostSummaryStateContext from "../../_contexts/costSummary.context";
 import TruckDisplay from "./truckDisplay.component";
+import { Navigation } from "swiper";
 
 const ChooseTruck = ({ setChooseTruckComplete }: any) => {
     const api = useAPI();
@@ -16,6 +17,7 @@ const ChooseTruck = ({ setChooseTruckComplete }: any) => {
     const [selectedTruck, setSelectedTruck] = useState<IProduct>();
     const [activeTruck, setActiveTruck] = useState<IProduct>();
     const [index, setIndex] = useState(0);
+    const swiper = useSwiper();
 
     const { CostSummaryState, dispatchCostSummary } = useContext(
         CostSummaryStateContext
@@ -83,8 +85,6 @@ const ChooseTruck = ({ setChooseTruckComplete }: any) => {
 
         if (truckInContext && truckInContext.length) {
             const truck = trucks.find((t) => t.slug === truckInContext[0].slug);
-            console.log(truck, truckInContext);
-
             if (truck) {
                 setSelectedTruck(truck);
             }
@@ -95,53 +95,46 @@ const ChooseTruck = ({ setChooseTruckComplete }: any) => {
 
     return (
         <div className="row">
-            <div
+            {/* <div
                 className="col-1 truckDisplay__indicators"
                 onClick={() => !(index - 1 < 0) && setIndex(index - 1)}
             >
                 <RxCaretLeft />
-            </div>
-            <div className="col-10">
-                <Carousel
-                    activeIndex={index}
-                    onSelect={handleSelect}
-                    interval={null}
-                    indicators={false}
-                    controls={false}
+            </div> */}
+            <div className="col-12">
+                <Swiper
+                    navigation={true}
+                    modules={[Navigation]}
+                    spaceBetween={20}
+                    slidesPerView={2}
                 >
                     {trucks.map((truck: IProduct, i) => (
-                        <>
-                            <Carousel.Item
-                                key={truck.id}
-                                className={i == index ? "active" : undefined}
-                            >
-                                <div className="row">
-                                    <div className="col-12">
-                                        <TruckDisplay
-                                            truck={truck}
-                                            onSelect={setSelectedTruck}
-                                            isSelected={
-                                                selectedTruck
-                                                    ? (selectedTruck as IProduct).id === truck.id
-                                                    : false
-                                            }
-                                        />
-                                    </div>
-                                </div>
-                            </Carousel.Item>
-                        </>
+                        <SwiperSlide
+                            key={truck.id}
+                        >
+                            <TruckDisplay
+                                truck={truck}
+                                onSelect={setSelectedTruck}
+                                isSelected={
+                                    selectedTruck
+                                        ? (selectedTruck as IProduct).id === truck.id
+                                        : false
+                                }
+                            />
+                        </SwiperSlide>
                     ))}
-                </Carousel>
+                </Swiper>
                 <div className="col-12 truckDisplay__truck-summary">
                     <p>{selectedTruck && selectedTruck.description}</p>
                 </div>
             </div>
-            <div
+            {/* <div
                 className="col-1 truckDisplay__indicators"
-                onClick={() => index + 1 < trucks.length && setIndex(index + 1)}
+                // onClick={() => index + 1 < trucks.length && setIndex(index + 1)}
+                onClick={() => swiper.slideNext()}
             >
                 <RxCaretRight />
-            </div>
+            </div> */}
         </div>
     );
 };

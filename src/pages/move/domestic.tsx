@@ -121,9 +121,6 @@ const DomesticMoveServices = () => {
                                     />
                                 ))}
                             </div>
-                            {/* <div className="col-12 auth__bottom-text">
-                                <p> Additional charges and T&Cs apply</p>
-                            </div> */}
                             <div className="col-12 custom-modal__footer">
                                 <Button
                                     disabled={!selectedServices}
