@@ -161,7 +161,7 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
 
   return (
     <div className="col-12 move__step__body">
-      <Alert variant="primary">
+      <Alert variant="info">
         <div className="row">
           <div
             className="col-1"
@@ -173,7 +173,7 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
           >
             <FcInfo />
           </div>
-          <div className="col-11">
+          <div className="col-11" style={{ fontSize: 12 }}>
             <b>Please note:</b> Additional charges apply for weekends & public
             holidays.
           </div>

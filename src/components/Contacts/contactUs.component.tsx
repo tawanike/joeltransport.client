@@ -115,8 +115,6 @@ const ContactUsComponent: FC<IProps> = ({ isModal = false }) => {
                 attachment: "",
               }}
               onSubmit={async (values: any, actions) => {
-                console.log(values);
-
                 if (values.service_options.length == 0) {
                   actions.setFieldError(
                     "service_options",
