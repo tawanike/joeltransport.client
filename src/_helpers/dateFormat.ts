@@ -23,3 +23,9 @@ export const isHoliday = (date: any) => {
     }
     return false;
 }
+
+export const holidays = () => {
+    const za_holidays = new Holidays();
+    za_holidays.init('ZA');
+    return za_holidays.getHolidays(new Date().getFullYear());
+}

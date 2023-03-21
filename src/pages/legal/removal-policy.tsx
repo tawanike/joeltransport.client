@@ -39,20 +39,21 @@ export default function PrivacyPolicy({}: Props) {
         <Accordion.Item eventKey="0">
           <Accordion.Header>1. Our quotation.</Accordion.Header>
           <Accordion.Body>
-            is valid for 7 days and does not include packing, insurance, customs
-            duties or any other fees paid to third parties, we may change the
-            quotation if: (a)The work has not been completed within three (3)
-            months if you have caused the delay. (b) Our costs go up because of
-            changes in the official rate of exchange between the currency of
-            South Africa and a foreign currency (c) taxation or freight charges
-            outside of our control are levied (d) Extra goods are removed or
-            stored (e) We have to collect or deliver above a second floor unless
-            we have agreed to do so in writing. (f) We supply extra services at
-            your request. (g) There are delays outside of our control. (h) The
-            stairs, lifts or doorways are inadequate for easy delivery; or the
-            road or approach are unsuitable for our vehicles; unless you told us
-            in writing of these problems before we prepared the quotation. In
-            all these circumstances you agree to pay the extra charges.
+            is valid for 31 days and does not include packing, insurance,
+            customs duties or any other fees paid to third parties, we may
+            change the quotation if: (a)The work has not been completed within
+            three (3) months if you have caused the delay. (b) Our costs go up
+            because of changes in the official rate of exchange between the
+            currency of South Africa and a foreign currency (c) taxation or
+            freight charges outside of our control are levied (d) Extra goods
+            are removed or stored (e) We have to collect or deliver above a
+            second floor unless we have agreed to do so in writing. (f) We
+            supply extra services at your request. (g) There are delays outside
+            of our control. (h) The stairs, lifts or doorways are inadequate for
+            easy delivery; or the road or approach are unsuitable for our
+            vehicles; unless you told us in writing of these problems before we
+            prepared the quotation. In all these circumstances you agree to pay
+            the extra charges.
           </Accordion.Body>
         </Accordion.Item>
         <Accordion.Item eventKey="1">
@@ -315,9 +316,9 @@ export default function PrivacyPolicy({}: Props) {
           <Accordion.Body>
             Account: Joel Transport
             <br />
-            Bankers: FNB
-            <br /> Branch: Centurion
-            <br /> Account Number: 55291136544
+            Bankers: ABSA
+            <br /> Branch code: 632005
+            <br /> Account Number: 4095365029
             <br />
             Funds paid to any other banking account will not be accepted as
             payment by us.

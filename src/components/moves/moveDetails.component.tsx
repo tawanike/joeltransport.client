@@ -8,7 +8,11 @@ import { FiCalendar } from "react-icons/fi";
 import Select from "react-select";
 import { addFormValues } from "src/_actions/form.actions";
 import { BookingContext } from "src/_contexts/booking.context";
-import { formatDate, stringToDateTime } from "src/_helpers/dateFormat";
+import {
+  formatDate,
+  holidays,
+  stringToDateTime,
+} from "src/_helpers/dateFormat";
 import { addressUtils } from "src/_helpers/formatAddress";
 import { useAPI, useNumberInput } from "src/_hooks";
 import { ADD_FORM_VALUES } from "src/_models/types";
@@ -31,22 +35,44 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
   const [showFromWorkingLift, setShowFromWorkingLift] = useState(false);
   const [showToWorkingLift, setShowToWorkingLift] = useState(false);
   const router = useRouter();
-  const bookedDates = [
-    {
-      date: "2023-03-20",
-      trucks: ["c85147ca-5d63-4f93-befa-9eefba0e8866"],
-    },
-    {
-      date: "2023-05-11",
-      trucks: ["fe753308-08a6-4d03-a56d-2d69bb5910d2"],
-    },
-    {
-      date: "2023-04-19",
-      trucks: ["a830653d-5533-4c9f-bfcf-86501601f0cb"],
-    },
-  ];
 
-  console.log();
+  const getBookedDates = (currentMonth: number) => {
+    let booked: any[] = [];
+    // TODO: Get booked dates from API and save to state so that we don't have to fetch every time
+    // fetchWrapper
+    //   .get(`/bookings/unavailable?month=${currentMonth}`, false)
+    //   .then((res) => {
+    //     res.forEach((date: any) => {
+    //       const d = new Date(date.date);
+    //       console.log(d);
+    //       if (currentMonth === d.getMonth()) {
+    //         booked.push(d.getDate());
+    //       }
+    //     });
+    //   });
+    return booked;
+  };
+
+  function tileClassName({ date, view }: any) {
+    console.log(date);
+    // Add class to tiles in month view only
+    if (view === "month") {
+      // Check if a date React-Calendar wants to check is on the list of dates to add class to
+      // TODO: Get holidays by month and highlight them
+      const holidayDates = holidays().map((date) => new Date(date.date));
+      console.log(holidays().map((date) => new Date(date.date).getDate()));
+      if (
+        holidays()
+          .map((date) => new Date(date.date).getDate())
+          .includes(date.getDate()) &&
+        holidays()
+          .map((date) => new Date(date.date).getMonth())
+          .includes(date.getMonth())
+      ) {
+        return "react-datepicker__day--highlighted";
+      }
+    }
+  }
 
   useEffect(() => {
     const submitForm = async () => {
@@ -202,19 +228,16 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
                   monthPlaceholder="mm"
                   yearPlaceholder="yyyy"
                   minDate={new Date()}
-                  excludeDates={[
-                    new Date("20-03-2023"),
-                    new Date("2023-05-11"),
-                    new Date("2023-05-19"),
-                  ]}
-                  //   tileDisabled={({ date, view }) => {
-                  //     view === "month" && date.getDay() === 0;
-                  //     return bookedDates
-                  //       .map((date) => parseInt(date.date.split("-")[2]))
-                  //       .includes(date.getDate());
-                  //   }}
+                  tileDisabled={({ date, view }) => {
+                    return getBookedDates(date.getMonth()).includes(
+                      date.getDate()
+                    );
+                  }}
+                  tileClassName={tileClassName}
                   className="date-picker"
-                />
+                >
+                  Some warning message goes here!
+                </DatePicker>
               </Form.Group>
               <Form.Group as={Col} md="6" controlId="from_property_type">
                 <Form.Label>Property type</Form.Label>
