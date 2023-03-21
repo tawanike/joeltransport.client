@@ -160,7 +160,7 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
 
     return (
         <div className="col-12 move__step__body">
-            <Alert variant="primary">
+            <Alert variant="info">
                 <div className="row">
                     <div
                         className="col-1"

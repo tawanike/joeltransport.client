@@ -115,7 +115,7 @@ const Checkout = () => {
                   <div className="col-12 moves__checkout__summary__list mt-3">
                     <div className="row">
                       <div className="col-6 moves__checkout__summary__list__text">
-                        <p>5 Items</p>
+                        <p>Items</p>
                       </div>
                       <div className="col-6 moves__checkout__summary__list__price">
                         R

@@ -98,7 +98,7 @@ function AddressManualForm({
 
   return (
     <Form noValidate onSubmit={handleSubmit(onSubmit)}>
-      <Row className="mt-5">
+      <Row className="mt-3">
         <Form.Group as={Col} md="6">
           <Form.Label>Unit number</Form.Label>
           <Form.Control
@@ -114,7 +114,7 @@ function AddressManualForm({
           />
         </Form.Group>
       </Row>
-      <Row className="mt-5">
+      <Row className="mt-3">
         <Form.Group as={Col} md="6">
           <Form.Label>Street address</Form.Label>
           <Form.Control
@@ -127,7 +127,7 @@ function AddressManualForm({
           <Form.Control {...register("suburb")} placeholder="Suburb" />
         </Form.Group>
       </Row>
-      <Row className="mt-5">
+      <Row className="mt-3">
         <Form.Group as={Col} md="6">
           <Form.Label>City</Form.Label>
           <Form.Control {...register("city")} placeholder="City" />
@@ -137,7 +137,7 @@ function AddressManualForm({
           <Form.Control {...register("postcode")} placeholder="Postal code" />
         </Form.Group>
       </Row>
-      <Row className="mt-5">
+      <Row className="mt-3">
         <Form.Group as={Col} md="6">
           <Form.Label>Province</Form.Label>
           <Form.Control {...register("province")} placeholder="Province" />
@@ -160,7 +160,38 @@ function AddressManualForm({
         </Form.Group>
       </Row>
 
-      <Alert variant="primary" className="mt-3">
+      <div className="row mt-4">
+        <div className="col-9 d-flex justify-content-end"></div>
+        <div className="col-3">
+          <Button type="submit" className="w-100" variant="secondary">
+            Continue
+          </Button>
+        </div>
+        <div
+          className="col-12 pb-4 mt-4 mb-4 d-flex justify-content-center"
+          style={{ borderBottom: "1px solid #ccc" }}
+        >
+          <div
+            style={{
+              height: 4,
+              width: 32,
+              backgroundColor: "#FA551E",
+              borderRadius: 4,
+              marginRight: 4,
+            }}
+          ></div>
+          <div
+            style={{
+              height: 4,
+              width: 24,
+              backgroundColor: "#979797",
+              borderRadius: 4,
+            }}
+          ></div>
+        </div>
+      </div>
+
+      <Alert variant="info" className="mt-3">
         <div className="row">
           <div className="col-12 Selector__instructions__get-started">
             <div className="row">
@@ -169,23 +200,20 @@ function AddressManualForm({
                 style={{
                   display: "grid",
                   placeItems: "center",
-                  fontSize: "2rem",
+                  fontSize: "1.5rem",
                 }}
               >
                 <FcInfo />
               </div>
-              <div className="col-11">
-                <b>Please note:</b> Please note: For relocations or storage
-                outside of Gauteng Province, information will be collected and
-                someone will contact you to provide you with a quote.
+              <div className="col-11" style={{ fontSize: 12 }}>
+                <b>Please note:</b> If {"you're"} outside of Gauteng Province,{" "}
+                {"we'll"} draw up a quote for you based on your location.{" "}
+                {"We'll"} be in touch!
               </div>
             </div>
           </div>
         </div>
       </Alert>
-      <Button type="submit" className="w-100" variant="secondary">
-        Next
-      </Button>
     </Form>
   );
 }
