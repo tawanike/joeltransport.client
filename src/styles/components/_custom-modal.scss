@@ -1,49 +1,53 @@
 .custom-modal {
-    padding: 1rem;
-    &__header {
-        h3 {
-            font-size: 1.2rem;
-            font-weight: 600;
-        }
-        p {
-            margin-bottom: 0;
-            margin-top: 0.5rem;
-        }
+  padding: 1rem;
+  &__header {
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 600;
     }
-    &__body {
-        font-size: 0.9rem;
-        .radioBtn {
-            margin-top: 2rem;
-        }
+    p {
+      margin-bottom: 0;
+      margin-top: 0.5rem;
     }
-    &__footer {
+  }
+  &__body {
+    font-size: 0.9rem;
+    .radioBtn {
+      margin-top: 1rem;
+    }
+  }
+  &__footer {
+    display: grid;
+    place-items: center;
+    margin-top: 1rem;
+  }
+  &__search-address {
+    margin-top: 1rem;
+    background: #f7f7f7;
+    border-radius: 8px;
+    padding: 8px;
+
+    &__tab-container {
+      &__tab {
         display: grid;
         place-items: center;
-        margin-top: 1rem;
-    }
-    &__search-address {
-        margin-top: 2rem;
-        background: #F7F7F7;
+        padding: 0.5rem;
         border-radius: 8px;
-        &__tab-container {
-            &__tab {
-                display: grid;
-                place-items: center;
-                padding: 1rem;
-                p {
-                    margin-bottom: 0;
-                }
-                &--active {
-                    background: $secondary;
-                    p {
-                        color: $white;
-                        font-weight: 500;
-                    }
-                }
-                &:hover {
-                    cursor: pointer;
-                }
-            }
+
+        p {
+          margin-bottom: 0;
         }
+        &--active {
+          background: $secondary;
+          p {
+            color: $white;
+            font-weight: 500;
+          }
+        }
+        &:hover {
+          cursor: pointer;
+        }
+      }
     }
+  }
 }

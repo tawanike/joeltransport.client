@@ -131,7 +131,7 @@ const BookStorageUnit = () => {
 
   return (
     <>
-      <Alert variant="primary" className="mt-3">
+      <Alert variant="info" className="mt-3">
         <div className="row">
           <div
             className="col-1"

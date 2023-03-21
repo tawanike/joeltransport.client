@@ -17,6 +17,7 @@ const ContactUsComponent: FC<IProps> = ({ isModal = false }) => {
   const { post } = useAPI();
   const [show, setShow] = useState(false);
   const [validated, setValidated] = useState(false);
+  const [files, setFiles] = useState<any[]>([]);
 
   const validationSchema = yup.object().shape({
     first_name: yup
@@ -114,8 +115,6 @@ const ContactUsComponent: FC<IProps> = ({ isModal = false }) => {
                 attachment: "",
               }}
               onSubmit={async (values: any, actions) => {
-                console.log(values);
-
                 if (values.service_options.length == 0) {
                   actions.setFieldError(
                     "service_options",
@@ -133,8 +132,7 @@ const ContactUsComponent: FC<IProps> = ({ isModal = false }) => {
                   formData.append("phone_number", values.phone_number);
 
                   const results: any = await fetch(
-                    // "https://api.joeltransport.wddng.co/v1/contacts",
-                    "http://localhost:8001/v1/contacts",
+                    "https://api.joeltransport.wddng.co/v1/contacts",
                     {
                       method: "POST",
                       body: formData,
@@ -293,10 +291,27 @@ const ContactUsComponent: FC<IProps> = ({ isModal = false }) => {
 
                   <Row className="mb-5">
                     <Uploader
-                      onChange={(files) =>
-                        props.setFieldValue("attachment", files[0])
-                      }
+                      onChange={(files) => {
+                        props.setFieldValue("attachment", files[0]);
+                        setFiles(files);
+                      }}
                     />
+                    <div>
+                      {files.map((upload) => (
+                        <Row key={upload.name}>
+                          <Col sm={11}>{upload.name}</Col>
+                          <Col
+                            className="text-right"
+                            onClick={() => {
+                              props.setFieldValue("attachment", "");
+                              setFiles([]);
+                            }}
+                          >
+                            X
+                          </Col>
+                        </Row>
+                      ))}
+                    </div>
                   </Row>
                   {isModal && map()}
                   <Button
