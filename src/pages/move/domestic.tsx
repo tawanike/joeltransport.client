@@ -1,7 +1,17 @@
 import MoveStepper from "components/moves/move-stepper.component";
 import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
-import { Alert, Button, Form, Modal } from "react-bootstrap";
+import { useContext, useEffect, useRef, useState } from "react";
+import {
+  Alert,
+  Button,
+  Col,
+  Form,
+  Modal,
+  Overlay,
+  Row,
+  Tooltip,
+} from "react-bootstrap";
+import { BsInfoCircle } from "react-icons/bs";
 import { FcInfo } from "react-icons/fc";
 import { BookingContext } from "src/_contexts/booking.context";
 import useAPI from "../../_hooks/useAPI";
@@ -16,6 +26,13 @@ import CallMeBackButton from "../../components/shared/callMeBackButton.component
 import { CoverImage } from "../../components/ui";
 
 const DomesticMoveServices = () => {
+  const targets: any = {
+    insurance: useRef(null),
+    "packing-service": useRef(null),
+    "packing-material": useRef(null),
+    "specialised-moving-services": useRef(null),
+  };
+  const [show, setShow] = useState(false);
   const [optionalServices, setOptionalServices] = useState<any[]>([]);
   const [canConfirmMove, setCanConfirmMove] = useState(true);
   const fetchWrapper = useAPI();
@@ -122,16 +139,42 @@ const DomesticMoveServices = () => {
                 style={{ padding: 12 }}
               >
                 {optionalServices.map((service) => (
-                  <Form.Check
-                    key={service.id}
-                    label={service.title}
-                    name={service.slug}
-                    type="checkbox"
-                    value={service.id}
-                    id={service.id}
-                    className="radioBtn"
-                    onChange={selectService}
-                  />
+                  <Row key={service.id}>
+                    <Col sm={9} md={10} className="mt-3">
+                      <Form.Check
+                        label={service.title}
+                        name={service.slug}
+                        type="checkbox"
+                        value={service.id}
+                        id={service.id}
+                        className="radioBtn"
+                        onChange={selectService}
+                      />
+                    </Col>
+                    <Col
+                      sm={3}
+                      md={2}
+                      className="mt-3"
+                      ref={targets[service.slug]}
+                    >
+                      <BsInfoCircle
+                        onClick={() => {
+                          setShow(service.id);
+                        }}
+                      />
+                      <Overlay
+                        target={targets[service.slug]?.current}
+                        show={show === service.id}
+                        placement="right"
+                      >
+                        {(props) => (
+                          <Tooltip id={service.id} {...props}>
+                            {service.description}
+                          </Tooltip>
+                        )}
+                      </Overlay>
+                    </Col>
+                  </Row>
                 ))}
               </div>
 
@@ -175,8 +218,9 @@ const DomesticMoveServices = () => {
         <CoverImage
           size="medium"
           src="/img/kaleb.png"
-          pageTitle="Move Services"
-          description="Meet the experts in moving and storage"
+          pageTitle="Moving services"
+          subtitle="Are you ready for a change?"
+          description={`Let's make it happen!`}
         />
         <div className="moves__container container mt-5">
           <div className="row">
