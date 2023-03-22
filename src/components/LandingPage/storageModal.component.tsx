@@ -6,6 +6,7 @@ import { FcInfo } from "react-icons/fc";
 import { MdClose } from "react-icons/md";
 import { getBooking } from "src/_actions/booking.actions";
 import { BookingContext } from "src/_contexts/booking.context";
+import { addressUtils } from "src/_helpers/formatAddress";
 import { useAPI } from "src/_hooks";
 import { ADD_FORM_VALUES } from "src/_models/types";
 import { bookingsService } from "src/_services/bookings.service";
