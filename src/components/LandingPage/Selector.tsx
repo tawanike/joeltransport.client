@@ -35,7 +35,7 @@ const Selector = () => {
                 {selectorConfig.map((selector: SelectorConfig) => (
                     <Button
                         key={selector.id}
-                        variant={`${selectedView.id === selector.id ? "primary" : "outline-primary"
+                        variant={`${selectedView.id === selector.id ? "secondary" : "outline-primary"
                             }`}
                         className="Selector__button"
                         onClick={() => setSelectedView(selector)}

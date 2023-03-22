@@ -19,10 +19,10 @@ const Header = () => {
                             <span className="agent me-3">Are you an agent?</span>
                             <ul className="Header__icons d-flex justify-content-between">
                                 <li className="icon">
-                                    <BsFacebook onClick={() => window.open('https://facebook.com', '_blank')} />
+                                    <BsFacebook onClick={() => window.open('https://facebook.com/Joel.Transport1965/', '_blank')} />
                                 </li>
                                 <li className="icon">
-                                    <BsInstagram onClick={() => window.open('https://instagram.com', '_blank')} />
+                                    <BsInstagram onClick={() => window.open('https://instagram.com/ptyltd.joeltransport/', '_blank')} />
                                 </li>
                                 <li className="icon">
                                     <BsLinkedin onClick={() => window.open('https://linkedin.com', '_blank')} />

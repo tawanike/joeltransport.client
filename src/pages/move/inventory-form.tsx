@@ -207,7 +207,7 @@ const InternationalMoveServices = () => {
                             create an account to pay
                         </p>
                     </div>
-                    <div className="col-6">
+                    <div className="col-12 col-md-8">
                         <div className="col-12 moves__stepper">
                             <div className="moves__step col-12 mb-3">
                                 <div className="row">
@@ -293,18 +293,19 @@ const InternationalMoveServices = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-12 my-5 pt-3 moves__container__button-container">
-                            <div className="row w-100">
-                                <div className="col-12 d-flex justify-content-end">
-                                    <CallMeBackButton title="Call me back" />
-                                    <Button
-                                        disabled={!canConfirmMove}
-                                        onClick={goToCheckout}
-                                        variant="secondary"
-                                    >
-                                        Confirm move
-                                    </Button>
-                                </div>
+
+                    </div>
+                    <div className="col-12 my-5 pt-3 moves__container__button-container">
+                        <div className="row w-100">
+                            <div className="col-12 d-flex justify-content-end">
+                                <CallMeBackButton title="Call me back" />
+                                <Button
+                                    disabled={!canConfirmMove}
+                                    onClick={goToCheckout}
+                                    variant="secondary"
+                                >
+                                    Confirm move
+                                </Button>
                             </div>
                         </div>
                     </div>
