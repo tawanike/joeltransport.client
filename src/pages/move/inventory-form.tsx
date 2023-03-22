@@ -11,14 +11,14 @@ import { FcInfo } from "react-icons/fc";
 import { RxCaretDown } from "react-icons/rx";
 import { BookingContext } from "src/_contexts/booking.context";
 import { useAPI } from "src/_hooks";
-import { EDIT_ADDITIONAL_SERVICES } from "src/_models/types";
+import { EDIT_ADDITIONAL_SERVICES, IBooking } from "src/_models/types";
 
 const InternationalMoveServices = () => {
     const fetchWrapper = useAPI();
     const [show, setShow] = useState(false);
     const [currentView, setCurrentView] = useState("");
     const [showSelectorModal, setShowSelectorModal] = useState(false);
-    const [canConfirmMove, setCanConfirmMove] = useState(true);
+    // const [canConfirmMove, setCanConfirmMove] = useState(true);
     const [optionalServices, setOptionalServices] = useState<any[]>([]);
     const [selectedServices, setSelectedServices] = useState([]);
     const { state: bookingState, dispatch: dispatchBookings } =
@@ -33,9 +33,7 @@ const InternationalMoveServices = () => {
     };
 
     const goToCheckout = () => {
-        if (canConfirmMove) {
-            setShowSelectorModal(true);
-        }
+        setShowSelectorModal(true);
     };
 
     const selectService = async (e: any) => {
@@ -70,6 +68,23 @@ const InternationalMoveServices = () => {
         };
         getOptionalServices();
     }, []);
+
+    const isDisabled = (state: IBooking) => {
+        const objKeys = Object.keys(state.formValues);
+        let userVals = true;
+        const formVals = ['move_date'].some(x => {
+            const xVal = state.formValues[x as keyof typeof state.formValues];
+            return xVal === null || xVal === "" || xVal === false || xVal === 0 || xVal?.length === 0 || xVal === undefined;
+        });
+        if (state.formValues.user) {
+            userVals = ['first_name', 'last_name', 'email', 'phone_number'].some(x => {
+                const xVal = state.formValues.user[x as keyof typeof state.formValues.user];
+                return xVal === null || xVal === "" || xVal?.length === 0 || xVal === undefined;
+            });
+        }
+        const invVals = state.inventoryList.length > 0;
+        return formVals || userVals || !invVals;
+    }
 
     return (
         <div className="moves container-fluid">
@@ -300,7 +315,7 @@ const InternationalMoveServices = () => {
                             <div className="col-12 d-flex justify-content-end">
                                 <CallMeBackButton title="Call me back" />
                                 <Button
-                                    disabled={!canConfirmMove}
+                                    disabled={isDisabled(bookingState)}
                                     onClick={goToCheckout}
                                     variant="secondary"
                                 >

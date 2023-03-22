@@ -61,7 +61,7 @@ const StorageStepper = () => {
                         {bookingContext.state.openSection === "storage" && <BookStorageUnit />}
                     </div>
                 </div>
-                {bookingState.formValues.deliver_to_storage && (
+                {bookingState.formValues.collection && (
                     <div className="moves__step col-12 mb-3">
                         <div className="row">
                             <div

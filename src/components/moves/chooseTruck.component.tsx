@@ -81,7 +81,7 @@ const ChooseTruck = ({ setChooseTruckComplete }: any) => {
     }, [selectedTruck]);
 
     useEffect(() => {
-        const truckInContext = bookingContext.state.formValues?.products.filter((p: any) => p.category === "trucks");
+        const truckInContext = bookingContext.state.formValues?.products?.filter((p: any) => p.category === "trucks");
 
         if (truckInContext && truckInContext.length) {
             const truck = trucks.find((t) => t.slug === truckInContext[0].slug);

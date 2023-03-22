@@ -2,19 +2,36 @@ import StorageStepper from "components/moves/storage-stepper.component";
 import StorageCostCard from "components/moves/storageCostCard.component";
 import CallMeBackButton from "components/shared/callMeBackButton.component";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Button } from "react-bootstrap";
+import { BookingContext } from "src/_contexts/booking.context";
+import { IBooking } from "src/_models/types";
 import { CoverImage } from "../../components/ui";
 
 const Storage = () => {
     const router = useRouter();
-    const [canConfirmMove, setCanConfirmMove] = useState(true);
+    const { state: bookingState, dispatch: dispatchBookings } =
+        useContext(BookingContext);
 
     const goToCheckout = () => {
-        if (canConfirmMove) {
-            router.push("/move/checkout");
-        }
+        router.push("/move/checkout");
     };
+
+    const isDisabled = (state: IBooking) => {
+        const objKeys = Object.keys(state.formValues);
+        let userVals = true;
+        const formVals = ['move_date'].some(x => {
+            const xVal = state.formValues[x as keyof typeof state.formValues];
+            return xVal === null || xVal === "" || xVal === false || xVal === 0 || xVal?.length === 0 || xVal === undefined;
+        });
+        if (state.formValues.user) {
+            userVals = ['first_name', 'last_name', 'email', 'phone_number'].some(x => {
+                const xVal = state.formValues.user[x as keyof typeof state.formValues.user];
+                return xVal === null || xVal === "" || xVal?.length === 0 || xVal === undefined;
+            });
+        }
+        return formVals || userVals;
+    }
     return (
         <div className="Resources container-fluid">
             <CoverImage
@@ -68,7 +85,7 @@ const Storage = () => {
                                 <div className="col-12 d-flex justify-content-end">
                                     <CallMeBackButton title="Call me back" />
                                     <Button
-                                        disabled={!canConfirmMove}
+                                        disabled={isDisabled(bookingState)}
                                         onClick={goToCheckout}
                                         variant="secondary"
                                     >
