@@ -52,9 +52,39 @@ function AddressManualForm({
     getCountries();
   }, []);
 
+  const createBooking = async (data: any) => {
+    const booking = await fetchWrapper.post("/bookings", {
+      from_address: bookingState.formValues.from_address,
+      to_address: bookingState.formValues.to_address,
+      move_type: moveType,
+    });
+
+    if (
+      bookingState.formValues.from_address.province === "Gauteng" &&
+      bookingState.formValues.to_address?.province === "Gauteng"
+    ) {
+      // Save booking id to local storage
+      localStorage.setItem("bookingId", booking.id);
+      if (moveType === 0) router.push(`/move/domestic`);
+      else router.push(`/storage`);
+      setShowSelectorModal(false);
+    } else {
+      if (moveType === 0) setInternationalMove(true);
+      else router.push(`/contact-us`);
+    }
+  };
+
   const onSubmit = (data: any) => {
-    console.log(moveType);
     data.country = country?.value;
+    const whichAddress_original = whichAddress + "_original";
+    bookingsDispatch({
+      type: ADD_FORM_VALUES,
+      payload: {
+        [whichAddress]: data,
+        [whichAddress_original]: data,
+      },
+    });
+
     if (moveType === 0) {
       if (whichAddress === "from_address") {
         setWhichAddress("to_address");
@@ -73,28 +103,24 @@ function AddressManualForm({
     }
 
     if (
-      bookingState.formValues.from_address.province === "Gauteng" &&
-      bookingState.formValues.to_address?.province === "Gauteng"
+      bookingState.formValues.from_address &&
+      bookingState.formValues.to_address
     ) {
       // Create booking
-      fetchWrapper
-        .post("/bookings", {
-          from_address: bookingState.formValues.from_address,
-          to_address: bookingState.formValues.to_address,
-          move_type: moveType,
-        })
-        .then((res) => {
-          // Save booking id to local storage
-          localStorage.setItem("bookingId", res.id);
-          if (moveType === 0) router.push(`/move/domestic`);
-          else router.push(`/storage`);
-          setShowSelectorModal(false);
-        });
     } else {
-      if (moveType === 0) setInternationalMove(true);
-      else router.push(`/contact-us`);
+      if (whichAddress === "from_address") {
+        reset();
+      } else {
+        if (moveType === 0) router.push(`/move/domestic`);
+        else router.push(`/storage`);
+        setShowSelectorModal(false);
+      }
     }
   };
+
+  useEffect(() => {
+    createBooking(bookingState.formValues);
+  }, [bookingState.formValues.to_address]);
 
   return (
     <Form noValidate onSubmit={handleSubmit(onSubmit)}>
