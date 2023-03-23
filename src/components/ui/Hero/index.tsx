@@ -8,7 +8,7 @@ function Hero() {
             <div className="hero__overlay">
                 <div className="container d-flex justify-contents-start">
                     <div className="row">
-                        <div className="col-6 justify-contents-start">
+                        <div className="col-12 col-md-6 justify-contents-start">
                             <h1 className="col-12">Get your free quote now
                                 for your move if you are
                                 within Gauteng</h1>
