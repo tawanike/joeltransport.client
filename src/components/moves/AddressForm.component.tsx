@@ -1,21 +1,27 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { MdClose } from "react-icons/md";
 import Select from "react-select";
+import { BookingContext } from "src/_contexts/booking.context";
 import { useAPI } from "src/_hooks";
+import { ADD_FORM_VALUES } from "src/_models/types";
 
 type Props = {
   address: any;
+  address_type: string;
 };
 
-function AddressForm({ address }: Props) {
+function AddressForm({ address, address_type }: Props) {
   const api = useAPI();
   const [countries, setCountries] = useState<any[]>([]);
   const [editMode, setEditMode] = useState(false);
   const { register, handleSubmit, reset } = useForm({
     defaultValues: { ...address },
   });
+
+  const { state: bookingState, dispatch: bookingsDispatch } =
+    useContext(BookingContext);
 
   useEffect(() => {
     const getCountries = async () => {
@@ -26,17 +32,36 @@ function AddressForm({ address }: Props) {
     getCountries();
   }, []);
 
+  useEffect(() => {}, [editMode]);
+
   useEffect(() => {
     reset(address);
   }, [address]);
 
   const onSubmit = (data: any) => {
-    console.log("ONSUBMIT", data);
     delete data.id;
     delete data.created_at;
     delete data.updated_at;
 
-    api.put(`/addresses/${address.id}`, data);
+    api.put(`/addresses/${address.id}`, data).then((res) => {
+      if (address_type === "from_address") {
+        bookingsDispatch({
+          type: ADD_FORM_VALUES,
+          payload: {
+            from_address: res,
+            from_address_original: res,
+          },
+        });
+      } else {
+        bookingsDispatch({
+          type: ADD_FORM_VALUES,
+          payload: {
+            to_address: res,
+            to_address_original: res,
+          },
+        });
+      }
+    });
     setEditMode(false);
   };
 

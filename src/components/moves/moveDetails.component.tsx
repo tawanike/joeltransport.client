@@ -254,7 +254,10 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
                     }}
                   />
                 ) : (
-                  <AddressForm address={bookingState.formValues.from_address} />
+                  <AddressForm
+                    address={bookingState.formValues.from_address}
+                    address_type="from_address"
+                  />
                 )}
               </Form.Group>
             </Row>
@@ -442,7 +445,10 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
                     }}
                   />
                 ) : (
-                  <AddressForm address={bookingState.formValues.to_address} />
+                  <AddressForm
+                    address={bookingState.formValues.to_address}
+                    address_type="to_address"
+                  />
                 )}
               </Form.Group>
             </Row>
