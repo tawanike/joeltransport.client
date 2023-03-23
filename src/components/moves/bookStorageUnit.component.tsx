@@ -162,14 +162,7 @@ const BookStorageUnit = () => {
             dayPlaceholder="dd"
             monthPlaceholder="mm"
             yearPlaceholder="yyyy"
-            tileDisabled={({ date, view }) => {
-              view === "month" && date.getDay() === 0;
-              return (
-                date.getFullYear() === 2023 &&
-                date.getMonth() === 1 &&
-                [1, 2, 13, 17, 28].includes(date.getDate())
-              );
-            }}
+            minDate={new Date()}
             className="date-picker"
           />
         </Form.Group>
@@ -178,7 +171,7 @@ const BookStorageUnit = () => {
           {NumberOfUnitsDisplay}
         </Form.Group>
       </Row>
-      {recommendedTruck && (
+      {/* {recommendedTruck && (
         <Alert variant="primary" className="mt-3">
           <div className="row">
             <div className="col-7">
@@ -204,7 +197,7 @@ const BookStorageUnit = () => {
             </div>
           </div>
         </Alert>
-      )}
+      )} */}
     </>
   );
 };

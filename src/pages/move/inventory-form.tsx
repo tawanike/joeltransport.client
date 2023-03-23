@@ -210,6 +210,7 @@ const InternationalMoveServices = () => {
                 src="/img/kaleb.png"
                 pageTitle="Move Services"
                 description="Meet the experts in moving and storage"
+                variant="--domestic"
             />
 
             <div className="moves__container container mt-5">

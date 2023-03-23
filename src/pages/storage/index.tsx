@@ -106,6 +106,14 @@ const Storage = () => {
 
   return (
     <div className="Resources container-fluid">
+      <CoverImage
+        size="medium"
+        src="/img/storage.png"
+        pageTitle="Storage unit"
+        variant="--storage"
+        description="We offer secure storage facilities for our customers, that suit specific requirements."
+      />
+
       <Modal
         show={showSelectorModal}
         onHide={() => setShowSelectorModal(false)}
@@ -200,12 +208,6 @@ const Storage = () => {
           </div>
         </Modal.Body>
       </Modal>
-      <CoverImage
-        size="medium"
-        src="/img/storage.png"
-        pageTitle="Storage unit"
-        description="We offer secure storage facilities for our customers, that suit specific requirements."
-      />
 
       <div className="Resources__documents">
         <div className="moves__container container mt-5">

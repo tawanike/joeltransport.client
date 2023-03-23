@@ -5,7 +5,7 @@ import { CoverImage } from '../../components/ui';
 export default function About() {
     return (
         <div className='About'>
-            <CoverImage size="medium" src="/img/kaleb.png" pageTitle={``} description={``} />
+            <CoverImage size="medium" src="/img/kaleb.png" pageTitle={``} description={``} variant="--domestic" />
             <div className="About__our-story container">
                 <div className="row">
                     <div className="About__our-story--text col-12 col-md-7 p-4">
