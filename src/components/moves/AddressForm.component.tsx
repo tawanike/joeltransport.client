@@ -166,11 +166,11 @@ function AddressForm({ address }: Props) {
 
 const formattedAddress = (address: any, countries: any[]) => {
   if (address)
-    return `${address.unit_number} ${address.complex_name} ${
-      address.street_address
-    } ${address.suburb} ${address.city} ${address.postcode} ${
-      address.province
-    } ${
+    return `${address.unit_number == null ? "" : address.unit_number} ${
+      address.complex_name == null ? "" : address.complex_name
+    } ${address.street_address} ${address.suburb} ${address.city} ${
+      address.postcode
+    } ${address.province} ${
       countries &&
       countries.find((country: any) => country.id == address.country)?.title
     }`;
