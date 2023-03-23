@@ -213,6 +213,7 @@ const DomesticMoveServices = () => {
                     pageTitle="Moving services"
                     subtitle="Are you ready for a change?"
                     description={`Let's make it happen!`}
+                    variant="--domestic"
                 />
                 <div className="moves__container container mt-5">
                     <div className="row">

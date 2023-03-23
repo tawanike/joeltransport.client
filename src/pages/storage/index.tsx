@@ -38,6 +38,7 @@ const Storage = () => {
                 size="medium"
                 src="/img/storage.png"
                 pageTitle="Storage unit"
+                variant="--storage"
                 description="We offer secure storage facilities for our customers, that suit specific requirements."
             />
 
