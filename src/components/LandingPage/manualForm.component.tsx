@@ -59,10 +59,29 @@ function AddressManualForm({
       move_type: moveType,
     });
 
+    bookingsDispatch({
+      type: ADD_FORM_VALUES,
+      payload: {
+        to_address: booking.to_address,
+        to_address_original: booking.to_address,
+      },
+    });
+
+    bookingsDispatch({
+      type: ADD_FORM_VALUES,
+      payload: {
+        from_address: booking.from_address,
+        from_address_original: booking.from_address,
+      },
+    });
+
+    console.log("Booking created: ", booking);
+
     if (
       bookingState.formValues.from_address.province === "Gauteng" &&
-      bookingState.formValues.to_address?.province === "Gauteng"
+      bookingState.formValues.to_address.province === "Gauteng"
     ) {
+      console.log("Booking created: ", booking);
       // Save booking id to local storage
       localStorage.setItem("bookingId", booking.id);
       if (moveType === 0) router.push(`/move/domestic`);
@@ -102,24 +121,17 @@ function AddressManualForm({
       setShowSelectorModal(false);
     }
 
-    if (
-      bookingState.formValues.from_address &&
-      bookingState.formValues.to_address
-    ) {
-      // Create booking
-    } else {
-      if (whichAddress === "from_address") {
-        reset();
-      } else {
-        if (moveType === 0) router.push(`/move/domestic`);
-        else router.push(`/storage`);
-        setShowSelectorModal(false);
-      }
+    if (whichAddress === "from_address") {
+      reset();
     }
   };
 
   useEffect(() => {
-    createBooking(bookingState.formValues);
+    if (
+      bookingState.formValues.to_address &&
+      bookingState.formValues.from_address
+    )
+      createBooking(bookingState.formValues);
   }, [bookingState.formValues.to_address]);
 
   return (

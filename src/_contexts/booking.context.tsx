@@ -2,16 +2,9 @@ import React, {
   Dispatch,
   createContext,
   useContext,
-  useEffect,
   useReducer,
   useState,
 } from "react";
-import { geocodeByPlaceId } from "react-google-places-autocomplete";
-import { addBakkieShuttle } from "src/_actions/added-services.actions";
-import { getBooking } from "src/_actions/booking.actions";
-import { addStorageCount } from "src/_actions/costSummary.actions";
-import { selectTruck } from "src/_actions/trucks.actions";
-import { isHoliday } from "src/_helpers/dateFormat";
 import { useAPI } from "src/_hooks";
 import {
   ADD_FORM_VALUES,
@@ -106,132 +99,132 @@ const BookingContextProvider: React.FC<ContextProviderProps> = (props) => {
   const costSummaryContext = useContext(CostSummaryStateContext);
   const [retrievedBooking, setRetrievedBooking] = useState();
 
-  useEffect(() => {
-    const bookingId = localStorage.getItem("bookingId");
-    if (bookingId) {
-      api
-        .get(`/bookings/${bookingId}`, false)
-        .then((res: any) => {
-          setRetrievedBooking(res);
-          if (res.move_date === null) {
-            delete res.move_date;
-            dispatch(getBooking(res));
-          } else {
-            dispatch(getBooking(res));
-          }
+  // useEffect(() => {
+  //   const bookingId = localStorage.getItem("bookingId");
+  //   if (bookingId) {
+  //     api
+  //       .get(`/bookings/${bookingId}`, false)
+  //       .then((res: any) => {
+  //         setRetrievedBooking(res);
+  //         if (res.move_date === null) {
+  //           delete res.move_date;
+  //           dispatch(getBooking(res));
+  //         } else {
+  //           dispatch(getBooking(res));
+  //         }
 
-          if (res.move_type == 1) {
-            dispatch({
-              type: ADD_FORM_VALUES,
-              payload: {
-                deliver_to_storage: Boolean(Number(res.self_delivery) as 0 | 1),
-              },
-            });
-          }
+  //         if (res.move_type == 1) {
+  //           dispatch({
+  //             type: ADD_FORM_VALUES,
+  //             payload: {
+  //               deliver_to_storage: Boolean(Number(res.self_delivery) as 0 | 1),
+  //             },
+  //           });
+  //         }
 
-          if (res.addons?.length > 0) {
-            dispatch({
-              type: "ADD_FORM_VALUES",
-              payload: {
-                addOns: res.addons.map((addon: any) => addon.product),
-              },
-            });
-          }
+  //         if (res.addons?.length > 0) {
+  //           dispatch({
+  //             type: "ADD_FORM_VALUES",
+  //             payload: {
+  //               addOns: res.addons.map((addon: any) => addon.product),
+  //             },
+  //           });
+  //         }
 
-          if (res.inventory?.length > 0) {
-            res.inventory.forEach((item: any) => {
-              dispatch({
-                type: ADD_INVENTORY_ITEM,
-                payload: item,
-              });
-            });
-          }
+  //         if (res.inventory?.length > 0) {
+  //           res.inventory.forEach((item: any) => {
+  //             dispatch({
+  //               type: ADD_INVENTORY_ITEM,
+  //               payload: item,
+  //             });
+  //           });
+  //         }
 
-          if (res.products.length > 0) {
-            const truck = res.products.find(
-              (product: any) => product.category === "trucks"
-            );
-            const bakkieShuttle = res.products.find(
-              (product: any) => product.slug === "bakkie-shuttle"
-            );
+  //         if (res.products.length > 0) {
+  //           const truck = res.products.find(
+  //             (product: any) => product.category === "trucks"
+  //           );
+  //           const bakkieShuttle = res.products.find(
+  //             (product: any) => product.slug === "bakkie-shuttle"
+  //           );
 
-            const storage = res.products.find(
-              (product: any) => product.slug === "storage"
-            );
+  //           const storage = res.products.find(
+  //             (product: any) => product.slug === "storage"
+  //           );
 
-            if (bakkieShuttle) {
-              costSummaryContext.dispatchCostSummary(
-                addBakkieShuttle({
-                  quantity: 1,
-                  price: bakkieShuttle.price,
-                  requires_bakkie_shuttle: Number(1),
-                })
-              );
+  //           if (bakkieShuttle) {
+  //             costSummaryContext.dispatchCostSummary(
+  //               addBakkieShuttle({
+  //                 quantity: 1,
+  //                 price: bakkieShuttle.price,
+  //                 requires_bakkie_shuttle: Number(1),
+  //               })
+  //             );
 
-              dispatch({
-                type: ADD_FORM_VALUES,
-                payload: {
-                  requires_bakkie_shuttle: 1,
-                  bakkie_address: Number(bakkieShuttle.address),
-                },
-              });
-            }
-            if (truck) {
-              if (isHoliday(res.move_date)) {
-                const price = truck.price + truck.off_peak_discount;
-                const offPeakDiscount = 0;
+  //             dispatch({
+  //               type: ADD_FORM_VALUES,
+  //               payload: {
+  //                 requires_bakkie_shuttle: 1,
+  //                 bakkie_address: Number(bakkieShuttle.address),
+  //               },
+  //             });
+  //           }
+  //           if (truck) {
+  //             if (isHoliday(res.move_date)) {
+  //               const price = truck.price + truck.off_peak_discount;
+  //               const offPeakDiscount = 0;
 
-                costSummaryContext.dispatchCostSummary(
-                  selectTruck({
-                    quantity: 1,
-                    price: price,
-                    off_peak_discount: offPeakDiscount,
-                  })
-                );
-              } else {
-                const price = truck.price;
-                const offPeakDiscount = truck.off_peak_discount;
+  //               costSummaryContext.dispatchCostSummary(
+  //                 selectTruck({
+  //                   quantity: 1,
+  //                   price: price,
+  //                   off_peak_discount: offPeakDiscount,
+  //                 })
+  //               );
+  //             } else {
+  //               const price = truck.price;
+  //               const offPeakDiscount = truck.off_peak_discount;
 
-                costSummaryContext.dispatchCostSummary(
-                  selectTruck({
-                    quantity: 1,
-                    price: price,
-                    off_peak_discount: offPeakDiscount,
-                  })
-                );
-              }
-            }
+  //               costSummaryContext.dispatchCostSummary(
+  //                 selectTruck({
+  //                   quantity: 1,
+  //                   price: price,
+  //                   off_peak_discount: offPeakDiscount,
+  //                 })
+  //               );
+  //             }
+  //           }
 
-            if (storage) {
-              const price = storage.price;
-              const quantity = storage.quantity;
+  //           if (storage) {
+  //             const price = storage.price;
+  //             const quantity = storage.quantity;
 
-              costSummaryContext.dispatchCostSummary(
-                addStorageCount({
-                  quantity: quantity,
-                  price: price,
-                })
-              );
-            }
-          }
+  //             costSummaryContext.dispatchCostSummary(
+  //               addStorageCount({
+  //                 quantity: quantity,
+  //                 price: price,
+  //               })
+  //             );
+  //           }
+  //         }
 
-          return res;
-        })
-        .then(async (res) => {
-          if (res.from_address && res.from_address.place_id) {
-            const from = await geocodeByPlaceId(res.from_address.place_id);
-            const to = await geocodeByPlaceId(res.to_address.place_id);
-            dispatch({
-              type: ADD_FORM_VALUES,
-              payload: {
-                from_address_original: from[0],
-                to_address_original: to[0],
-              },
-            });
-          }
-        });
-    }
-  }, []);
+  //         return res;
+  //       })
+  //       .then(async (res) => {
+  //         if (res.from_address && res.from_address.place_id) {
+  //           const from = await geocodeByPlaceId(res.from_address.place_id);
+  //           const to = await geocodeByPlaceId(res.to_address.place_id);
+  //           dispatch({
+  //             type: ADD_FORM_VALUES,
+  //             payload: {
+  //               from_address_original: from[0],
+  //               to_address_original: to[0],
+  //             },
+  //           });
+  //         }
+  //       });
+  //   }
+  // }, []);
 
   return (
     <BookingContext.Provider value={{ state, dispatch }}>
