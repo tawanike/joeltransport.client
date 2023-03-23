@@ -133,8 +133,7 @@ const HomeMoveModalComponent: FC<IProps> = ({
                   <MdClose />
                 </button>
                 <h3>Help us get started by filling in your details below.</h3>
-                {/* <p>Where are you moving {address_types[whichAddress]}?</p> */}
-                <p>Where are you based?</p>
+                <p>Where are you moving {address_types[whichAddress]}?</p>
               </div>
               <div className="col-12 custom-modal__body">
                 <div className="col-12 mb-4">
