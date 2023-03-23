@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
+import { MdClose } from "react-icons/md";
 import Select from "react-select";
 import { useAPI } from "src/_hooks";
 
 type Props = {
   address: any;
-  booking: any;
 };
 
-function AddressForm({ address, booking }: Props) {
+function AddressForm({ address }: Props) {
   const api = useAPI();
   const [countries, setCountries] = useState<any[]>([]);
   const [editMode, setEditMode] = useState(false);
-  const { register, handleSubmit, setValue } = useForm({
+  const { register, handleSubmit, reset } = useForm({
     defaultValues: { ...address },
   });
 
@@ -26,13 +26,17 @@ function AddressForm({ address, booking }: Props) {
     getCountries();
   }, []);
 
+  useEffect(() => {
+    reset(address);
+  }, [address]);
+
   const onSubmit = (data: any) => {
-    const address_id = data.id;
+    console.log("ONSUBMIT", data);
     delete data.id;
     delete data.created_at;
     delete data.updated_at;
 
-    api.put(`/addresses/${address_id}`, data);
+    api.put(`/addresses/${address.id}`, data);
     setEditMode(false);
   };
 
@@ -42,10 +46,15 @@ function AddressForm({ address, booking }: Props) {
         <Form noValidate onSubmit={handleSubmit(onSubmit)}>
           <Row>
             <Col md={11} style={{ overflow: "hidden" }}>
-              {address?.formatted_address}
+              {formattedAddress(address, countries)}
             </Col>
-            <Col md={1} onClick={() => setEditMode(false)}>
-              close
+            <Col md={1}>
+              <button
+                onClick={() => setEditMode(false)}
+                style={{ border: 0, backgroundColor: "#fff" }}
+              >
+                <MdClose color="red" />
+              </button>
             </Col>
           </Row>
           <Row className="mt-5">
@@ -54,6 +63,7 @@ function AddressForm({ address, booking }: Props) {
               <Form.Control
                 {...register("unit_number")}
                 placeholder="Unit number"
+                id="unit_number"
               />
             </Form.Group>
             <Form.Group as={Col} md="6">
@@ -100,6 +110,18 @@ function AddressForm({ address, booking }: Props) {
               <Select
                 name="country"
                 placeholder="Country"
+                defaultValue={{
+                  label:
+                    countries &&
+                    countries.find(
+                      (country: any) => country.id == address.country
+                    )?.title,
+                  value:
+                    countries &&
+                    countries.find(
+                      (country: any) => country.id == address.country
+                    )?.id,
+                }}
                 options={countries.map((c) => {
                   return {
                     label: c.title,
@@ -109,26 +131,49 @@ function AddressForm({ address, booking }: Props) {
               />
             </Form.Group>
           </Row>
-
-          <Button
-            type="button"
-            className="w-100"
-            variant="secondary"
-            onClick={handleSubmit(onSubmit)}
-          >
-            Save
-          </Button>
+          <Row className="mt-4">
+            <Col className="d-flex align-items-end justify-content-end">
+              <Button
+                type="button"
+                className=""
+                variant="secondary"
+                onClick={handleSubmit(onSubmit)}
+              >
+                Save
+              </Button>
+            </Col>
+          </Row>
         </Form>
       ) : (
-        <Row>
-          <Col md={11}>{address?.formatted_address}</Col>
-          <Col md={1} onClick={() => setEditMode(true)}>
-            Edit
-          </Col>
-        </Row>
+        <div className="row form-control" style={{ padding: 0 }}>
+          <Row style={{ padding: 8 }}>
+            <Col md={11} className="d-flex align-items-center">
+              {formattedAddress(address, countries)}
+            </Col>
+            <Col
+              className="text-right btn btn-secondary d-flex align-items-center justify-content-center"
+              md={1}
+              onClick={() => setEditMode(true)}
+            >
+              Edit
+            </Col>
+          </Row>
+        </div>
       )}
     </>
   );
 }
+
+const formattedAddress = (address: any, countries: any[]) => {
+  if (address)
+    return `${address.unit_number} ${address.complex_name} ${
+      address.street_address
+    } ${address.suburb} ${address.city} ${address.postcode} ${
+      address.province
+    } ${
+      countries &&
+      countries.find((country: any) => country.id == address.country)?.title
+    }`;
+};
 
 export default AddressForm;
