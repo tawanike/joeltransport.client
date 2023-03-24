@@ -20,7 +20,7 @@ const joelTransportAddress = {
   street_address: "10 Von Tonder Street",
   suburb: "Sunderland Ridge",
   city: "Centurion",
-  country: 1,
+  country: "South Africa",
   province: "Gauteng",
   postal_code: "0157",
 };
