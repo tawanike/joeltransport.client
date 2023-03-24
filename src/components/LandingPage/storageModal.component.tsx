@@ -99,7 +99,7 @@ const StorageModalComponent: FC<IProps> = ({
       city: "Centurion",
       province: "Gauteng",
       postalcode: "0157",
-      country: "South Africa",
+      country: 594,
     };
     bookingsDispatch({
       type: ADD_FORM_VALUES,
