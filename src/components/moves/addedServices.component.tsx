@@ -10,9 +10,9 @@ const AddedServices: FC<IProps> = ({}) => {
   const targets: any = {
     "bakkie-shuttle": useRef(null),
     "fine-art": useRef(null),
-    insurance: useRef(null),
-    "packing-service": useRef(null),
-    "packing-material": useRef(null),
+    insurances: useRef(null),
+    "packing-services": useRef(null),
+    "packing-materials": useRef(null),
     "vehicle-transportation": useRef(null),
     "pet-relocation-services": useRef(null),
     "international-moving-services": useRef(null),
@@ -22,8 +22,10 @@ const AddedServices: FC<IProps> = ({}) => {
     "piano-moving-services": useRef(null),
     crating: useRef(null),
     storage: useRef(null),
+    other: useRef(null),
   };
   const [show, setShow] = useState(false);
+  const [showOtherForm, setShowOtherForm] = useState(false);
   const [addons, setAddons] = useState<any[]>([]);
   const { state: bookingState, dispatch: bookingDispatch } =
     useContext(BookingContext);
@@ -51,6 +53,23 @@ const AddedServices: FC<IProps> = ({}) => {
       product: item.target.value,
       category: 0,
       selected: item.target.checked,
+    });
+  };
+
+  const handleOnBlur = async (item: any) => {
+    bookingDispatch({
+      type: "ADD_FORM_VALUES",
+      payload: {
+        addOnOther: item.target.value,
+      },
+    });
+
+    await api.post(`/bookings/${bookingState.formValues.id}/products/addons`, {
+      booking: bookingState.formValues.id,
+      product: "6cf92a0b-2af6-4419-8bf0-f2c84db43e46",
+      category: 0,
+      description: item.target.value,
+      selected: true,
     });
   };
 
@@ -101,6 +120,41 @@ const AddedServices: FC<IProps> = ({}) => {
               </Col>
             </Row>
           ))}
+        <Row key="other">
+          <Col sm={9} md={10} className="mt-3">
+            <Form.Check
+              type="checkbox"
+              label="Other"
+              id="6cf92a0b-2af6-4419-8bf0-f2c84db43e46"
+              value="6cf92a0b-2af6-4419-8bf0-f2c84db43e46"
+              onChange={() => setShowOtherForm(!showOtherForm)}
+              checked={showOtherForm}
+            />
+          </Col>
+          <Col sm={3} md={2} className="mt-3" ref={targets["other"]}>
+            <BsInfoCircle
+              onClick={() => {
+                setShow("6cf92a0b-2af6-4419-8bf0-f2c84db43e46");
+              }}
+            />
+            <Overlay
+              target={targets["other"]?.current}
+              show={show === "6cf92a0b-2af6-4419-8bf0-f2c84db43e46"}
+              placement="right"
+            >
+              {(props) => (
+                <Tooltip id="6cf92a0b-2af6-4419-8bf0-f2c84db43e46" {...props}>
+                  Tool tip for other
+                </Tooltip>
+              )}
+            </Overlay>
+          </Col>
+          <Col sm={11} className="mt-3">
+            {showOtherForm && (
+              <textarea className="form-control" onBlurCapture={handleOnBlur} />
+            )}
+          </Col>
+        </Row>
       </Row>
     </>
   );

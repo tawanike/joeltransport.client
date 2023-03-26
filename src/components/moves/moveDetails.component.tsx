@@ -56,16 +56,16 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
           return;
         }
 
-        res.forEach((date: any) => {
-          const d = new Date(date.date);
-          if (
-            currentMonth === d.getMonth() &&
-            d.getDate() !== bookingState.formValues.move_date
-          ) {
-            booked.push(d.getDate());
-            setBookedDates([...booked]);
-          }
-        });
+        //   res.forEach((date: any) => {
+        //     const d = new Date(date.date);
+        //     if (
+        //       currentMonth === d.getMonth() &&
+        //       d.getDate() !== bookingState.formValues.move_date
+        //     ) {
+        //       booked.push(d.getDate());
+        //       setBookedDates([...booked]);
+        //     }
+        //   });
       });
   }, [currentMonth]);
 
@@ -276,7 +276,7 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
                   monthPlaceholder="mm"
                   yearPlaceholder="yyyy"
                   minDate={new Date()}
-                  tileDisabled={tileDisabled}
+                  // tileDisabled={tileDisabled}
                   tileClassName={tileClassName}
                   className="date-picker"
                   onActiveStartDateChange={onActiveStartDateChange}

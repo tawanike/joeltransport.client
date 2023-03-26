@@ -159,8 +159,7 @@ const PersonalInformation = () => {
               placeholder="Email"
               value={values.email}
               onChange={handleOnChanged}
-              onBlur={handleOnBlur}
-              onFocus={handleOnBlur}
+              onBlurCapture={handleOnBlur}
               isValid={touched.email && !errors.email}
             />
             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>

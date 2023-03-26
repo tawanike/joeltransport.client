@@ -24,6 +24,9 @@ function AddressForm({ address, address_type }: Props) {
     useContext(BookingContext);
 
   useEffect(() => {
+    // if (!bookingState.formValues.id) {
+    //   window.location.href = "/";
+    // }
     const getCountries = async () => {
       const countries = await api.get("/locations/countries", undefined);
       setCountries(countries.results);
@@ -62,6 +65,7 @@ function AddressForm({ address, address_type }: Props) {
         });
       }
     });
+
     setEditMode(false);
   };
 
@@ -138,11 +142,17 @@ function AddressForm({ address, address_type }: Props) {
                 defaultValue={{
                   label:
                     countries &&
+                    countries.length > 0 &&
+                    address &&
+                    address.country &&
                     countries.find(
                       (country: any) => country.id == address.country
                     )?.title,
                   value:
                     countries &&
+                    countries.length > 0 &&
+                    address &&
+                    address.country &&
                     countries.find(
                       (country: any) => country.id == address.country
                     )?.id,
@@ -197,6 +207,9 @@ const formattedAddress = (address: any, countries: any[]) => {
       address.postcode
     } ${address.province} ${
       countries &&
+      countries.length > 0 &&
+      address &&
+      address.country &&
       countries.find((country: any) => country.id == address.country)?.title
     }`;
 };
