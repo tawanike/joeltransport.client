@@ -18,6 +18,7 @@ const ContactUsComponent: FC<IProps> = ({ isModal = false }) => {
     const [show, setShow] = useState(false);
     const [validated, setValidated] = useState(false);
     const [files, setFiles] = useState<any[]>([]);
+    const [CanSend, setCanSend] = useState(false)
 
     const validationSchema = yup.object().shape({
         first_name: yup
@@ -146,184 +147,196 @@ const ContactUsComponent: FC<IProps> = ({ isModal = false }) => {
                                 }
                             }}
                         >
-                            {(props: FormikProps<any>) => (
-                                <Form
-                                    noValidate
-                                    validated={validated}
-                                    encType="multipart/form-data"
-                                    onSubmit={props.handleSubmit}
-                                >
-                                    <Row className="mb-5">
-                                        <Form.Group as={Col} md="6" controlId="first_name">
-                                            <ErrorMessage name="first_name" />
-                                            <Field
-                                                type="text"
-                                                placeholder="First name*"
-                                                name="first_name"
-                                                onChange={props.handleChange}
-                                                className="form-control"
-                                            />
-                                        </Form.Group>
-                                        <Form.Group as={Col} md="6" controlId="last_name">
-                                            <ErrorMessage name="last_name" />
-                                            <Field
-                                                type="text"
-                                                placeholder="Last name*"
-                                                name="last_name"
-                                                onChange={props.handleChange}
-                                                className="form-control"
-                                            />
-                                        </Form.Group>
-                                    </Row>
-                                    <Row className="mb-5">
-                                        <Form.Group as={Col} md="12" controlId="email">
-                                            <ErrorMessage name="email" className="text-success" />
-                                            <Field
-                                                type="email"
-                                                placeholder="Email*"
-                                                name="email"
-                                                onChange={props.handleChange}
-                                                className="form-control"
-                                            />
-                                        </Form.Group>
-                                    </Row>
-                                    <Row className="mb-5">
-                                        <Form.Group as={Col} md="12" controlId="emailAdd">
-                                            <ErrorMessage name="phone_number" />
-                                            <PhoneInput
-                                                defaultCountry="ZA"
-                                                placeholder="Enter phone number*"
-                                                value={props.values.phone_number}
-                                                onChange={(value) =>
-                                                    props.setFieldValue("phone_number", value)
-                                                }
-                                            />
-                                        </Form.Group>
-                                    </Row>
-                                    <Row className="mb-5">
-                                        <Form.Group as={Col} md="12" controlId="message">
-                                            <ErrorMessage name="message" />
-                                            <Field
-                                                placeholder="Message*"
-                                                as="textarea"
-                                                rows={6}
-                                                name="message"
-                                                onChange={props.handleChange}
-                                                className="form-control"
-                                            />
-                                        </Form.Group>
-                                    </Row>
-                                    <Row className="mb-5">
-                                        <Form.Group as={Col} md="12" controlId="category">
-                                            <ErrorMessage name="category" />
-                                            <Form.Select onChange={props.handleChange}>
-                                                <option value="0" disabled selected>
-                                                    Need assistance with?*
-                                                </option>
-                                                <option value="1">Schedule a move</option>
-                                                <option value="2">Schedule a survey</option>
-                                                <option value="3">General enquiry</option>
-                                            </Form.Select>
-                                        </Form.Group>
-                                    </Row>
-                                    <h5 className="mb-5">Service options*</h5>
-                                    <ErrorMessage name="service_options" />
-                                    <Row>
-                                        <Form.Group as={Col} md="4" className="mb-5">
-                                            <Form.Label>
-                                                <Field
-                                                    type="checkbox"
-                                                    name="service_options"
-                                                    value="0"
-                                                    className="m-1"
-                                                />
-                                                Home move
-                                            </Form.Label>
-                                        </Form.Group>
-                                        <Form.Group as={Col} md="4" className="mb-5">
-                                            <Form.Label>
-                                                <Field
-                                                    type="checkbox"
-                                                    label="Office move"
-                                                    name="service_options"
-                                                    value="1"
-                                                    className="m-1"
-                                                />
-                                                Office move
-                                            </Form.Label>
-                                        </Form.Group>
-                                        <Form.Group as={Col} md="4" className="mb-5">
-                                            <Form.Label>
-                                                <Field
-                                                    type="checkbox"
-                                                    label="Specialized move"
-                                                    name="service_options"
-                                                    value="2"
-                                                    className="m-1"
-                                                />
-                                                Specialized move
-                                            </Form.Label>
-                                        </Form.Group>
-                                        <Form.Group as={Col} md="4" className="mb-5">
-                                            <Form.Label>
-                                                <Field
-                                                    type="checkbox"
-                                                    label="Storage"
-                                                    name="service_options"
-                                                    value="3"
-                                                    className="m-1"
-                                                />
-                                                Storage
-                                            </Form.Label>
-                                        </Form.Group>
-                                        <Form.Group as={Col} md="6" className="mb-5">
-                                            <Form.Label>
-                                                <Field
-                                                    type="checkbox"
-                                                    label="Please call me back"
-                                                    name="service_options"
-                                                    value="4"
-                                                    className="m-1"
-                                                />
-                                                Please call me back
-                                            </Form.Label>
-                                        </Form.Group>
-                                    </Row>
-
-                                    <Row className="mb-5">
-                                        <Uploader
-                                            onChange={(files) => {
-                                                props.setFieldValue("attachment", files[0]);
-                                                setFiles(files);
-                                            }}
-                                        />
-                                        <div>
-                                            {files.map((upload) => (
-                                                <Row key={upload.name}>
-                                                    <Col sm={11}>{upload.name}</Col>
-                                                    <Col
-                                                        className="text-right"
-                                                        onClick={() => {
-                                                            props.setFieldValue("attachment", "");
-                                                            setFiles([]);
-                                                        }}
-                                                    >
-                                                        X
-                                                    </Col>
-                                                </Row>
-                                            ))}
-                                        </div>
-                                    </Row>
-                                    {isModal && map()}
-                                    <Button
-                                        variant="secondary"
-                                        className="p-3 col-12"
-                                        type="submit"
+                            {(props: FormikProps<any>) => {
+                                setCanSend(
+                                    props.values.first_name && props.values.first_name !== "" &&
+                                    props.values.last_name && props.values.last_name !== "" &&
+                                    props.values.email && props.values.email !== "" &&
+                                    props.values.phone_number && props.values.phone_number !== "" &&
+                                    props.values.message && props.values.message !== "" &&
+                                    props.values.category && props.values.category !== "" &&
+                                    props.values.service_options && props.values.service_options !== "" && props.values.service_options.length > 0
+                                )
+                                return (
+                                    <Form
+                                        noValidate
+                                        validated={validated}
+                                        encType="multipart/form-data"
+                                        onSubmit={props.handleSubmit}
                                     >
-                                        Send
-                                    </Button>
-                                </Form>
-                            )}
+                                        <Row className="mb-5">
+                                            <Form.Group as={Col} md="6" controlId="first_name">
+                                                <ErrorMessage name="first_name" />
+                                                <Field
+                                                    type="text"
+                                                    placeholder="First name*"
+                                                    name="first_name"
+                                                    onChange={props.handleChange}
+                                                    className="form-control"
+                                                />
+                                            </Form.Group>
+                                            <Form.Group as={Col} md="6" controlId="last_name">
+                                                <ErrorMessage name="last_name" />
+                                                <Field
+                                                    type="text"
+                                                    placeholder="Last name*"
+                                                    name="last_name"
+                                                    onChange={props.handleChange}
+                                                    className="form-control"
+                                                />
+                                            </Form.Group>
+                                        </Row>
+                                        <Row className="mb-5">
+                                            <Form.Group as={Col} md="12" controlId="email">
+                                                <ErrorMessage name="email" className="text-success" />
+                                                <Field
+                                                    type="email"
+                                                    placeholder="Email*"
+                                                    name="email"
+                                                    onChange={props.handleChange}
+                                                    className="form-control"
+                                                />
+                                            </Form.Group>
+                                        </Row>
+                                        <Row className="mb-5">
+                                            <Form.Group as={Col} md="12" controlId="emailAdd">
+                                                <ErrorMessage name="phone_number" />
+                                                <PhoneInput
+                                                    defaultCountry="ZA"
+                                                    placeholder="Enter phone number*"
+                                                    value={props.values.phone_number}
+                                                    onChange={(value) =>
+                                                        props.setFieldValue("phone_number", value)
+                                                    }
+                                                />
+                                            </Form.Group>
+                                        </Row>
+                                        <Row className="mb-5">
+                                            <Form.Group as={Col} md="12" controlId="message">
+                                                <ErrorMessage name="message" />
+                                                <Field
+                                                    placeholder="Message*"
+                                                    as="textarea"
+                                                    rows={6}
+                                                    name="message"
+                                                    onChange={props.handleChange}
+                                                    className="form-control"
+                                                />
+                                            </Form.Group>
+                                        </Row>
+                                        <Row className="mb-5">
+                                            <Form.Group as={Col} md="12" controlId="category">
+                                                <ErrorMessage name="category" />
+                                                <Form.Select onChange={props.handleChange}>
+                                                    <option value="0" disabled selected>
+                                                        Need assistance with?*
+                                                    </option>
+                                                    <option value="1">Schedule a move</option>
+                                                    <option value="2">Schedule a survey</option>
+                                                    <option value="3">General enquiry</option>
+                                                </Form.Select>
+                                            </Form.Group>
+                                        </Row>
+                                        <h5 className="mb-5">Service options*</h5>
+                                        <ErrorMessage name="service_options" />
+                                        <Row>
+                                            <Form.Group as={Col} md="4" className="mb-5">
+                                                <Form.Label>
+                                                    <Field
+                                                        type="checkbox"
+                                                        name="service_options"
+                                                        value="0"
+                                                        className="m-1"
+                                                    />
+                                                    Home move
+                                                </Form.Label>
+                                            </Form.Group>
+                                            <Form.Group as={Col} md="4" className="mb-5">
+                                                <Form.Label>
+                                                    <Field
+                                                        type="checkbox"
+                                                        label="Office move"
+                                                        name="service_options"
+                                                        value="1"
+                                                        className="m-1"
+                                                    />
+                                                    Office move
+                                                </Form.Label>
+                                            </Form.Group>
+                                            <Form.Group as={Col} md="4" className="mb-5">
+                                                <Form.Label>
+                                                    <Field
+                                                        type="checkbox"
+                                                        label="Specialized move"
+                                                        name="service_options"
+                                                        value="2"
+                                                        className="m-1"
+                                                    />
+                                                    Specialized move
+                                                </Form.Label>
+                                            </Form.Group>
+                                            <Form.Group as={Col} md="4" className="mb-5">
+                                                <Form.Label>
+                                                    <Field
+                                                        type="checkbox"
+                                                        label="Storage"
+                                                        name="service_options"
+                                                        value="3"
+                                                        className="m-1"
+                                                    />
+                                                    Storage
+                                                </Form.Label>
+                                            </Form.Group>
+                                            <Form.Group as={Col} md="6" className="mb-5">
+                                                <Form.Label>
+                                                    <Field
+                                                        type="checkbox"
+                                                        label="Please call me back"
+                                                        name="service_options"
+                                                        value="4"
+                                                        className="m-1"
+                                                    />
+                                                    Please call me back
+                                                </Form.Label>
+                                            </Form.Group>
+                                        </Row>
+
+                                        <Row className="mb-5">
+                                            <Uploader
+                                                onChange={(files) => {
+                                                    props.setFieldValue("attachment", files[0]);
+                                                    setFiles(files);
+                                                }}
+                                            />
+                                            <div>
+                                                {files.map((upload) => (
+                                                    <Row key={upload.name}>
+                                                        <Col sm={11}>{upload.name}</Col>
+                                                        <Col
+                                                            className="text-right"
+                                                            onClick={() => {
+                                                                props.setFieldValue("attachment", "");
+                                                                setFiles([]);
+                                                            }}
+                                                        >
+                                                            X
+                                                        </Col>
+                                                    </Row>
+                                                ))}
+                                            </div>
+                                        </Row>
+                                        {isModal && map()}
+                                        <Button
+                                            disabled={!CanSend}
+                                            variant="secondary"
+                                            className="p-3 col-12"
+                                            type="submit"
+                                        >
+                                            Send
+                                        </Button>
+                                    </Form>
+                                )
+                            }}
                         </Formik>
                     </div>
                     {!isModal && map()}

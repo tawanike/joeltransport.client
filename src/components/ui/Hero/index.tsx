@@ -4,7 +4,6 @@ import { Button } from "react-bootstrap";
 function Hero() {
     return (
         <div className="hero">
-            {/* <img src="/img/landing_overlay.png" alt="" /> */}
             <div className="hero__overlay">
                 <div className="container d-flex justify-contents-start">
                     <div className="row">
