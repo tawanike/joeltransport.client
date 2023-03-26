@@ -4,8 +4,9 @@ import MoveDetails from "components/moves/moveDetails.component";
 import PersonalInformation from "components/moves/personalInfomation.componnent";
 import CallMeBackButton from "components/shared/callMeBackButton.component";
 import { CoverImage } from "components/ui";
+import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
-import { Alert, Button, Form, Modal } from "react-bootstrap";
+import { Alert, Breadcrumb, Button, Form, Modal } from "react-bootstrap";
 import { BsCheckCircle } from "react-icons/bs";
 import { FcInfo } from "react-icons/fc";
 import { RxCaretDown } from "react-icons/rx";
@@ -14,13 +15,13 @@ import { useAPI } from "src/_hooks";
 import { EDIT_ADDITIONAL_SERVICES, IBooking } from "src/_models/types";
 
 const InternationalMoveServices = () => {
+    const router = useRouter();
     const fetchWrapper = useAPI();
     const [show, setShow] = useState(false);
     const [currentView, setCurrentView] = useState("");
     const [showSelectorModal, setShowSelectorModal] = useState(false);
-    // const [canConfirmMove, setCanConfirmMove] = useState(true);
     const [optionalServices, setOptionalServices] = useState<any[]>([]);
-    const [selectedServices, setSelectedServices] = useState([]);
+    const [selectedServices] = useState([]);
     const { state: bookingState, dispatch: dispatchBookings } =
         useContext(BookingContext);
 
@@ -209,19 +210,22 @@ const InternationalMoveServices = () => {
                 size="medium"
                 src="/img/kaleb.png"
                 pageTitle="Move Services"
-                description="Meet the experts in moving and storage"
+                description="Are you looking to relocate your home? You can schedule your move online."
                 variant="--domestic"
             />
 
             <div className="moves__container container mt-5">
                 <div className="row">
+                    <div className="col-12 my-5">
+                        <Breadcrumb>
+                            <Breadcrumb.Item onClick={() => router.push("/")}>Home</Breadcrumb.Item>
+                            <Breadcrumb.Item active>
+                                Home move
+                            </Breadcrumb.Item>
+                        </Breadcrumb>
+                    </div>
                     <div className="col-12 mb-5">
-                        <h2>Make an international move</h2>
-                        <p>
-                            To provide you with the best quote, we need some information about
-                            you Once you are happy with your quote, you will need to log in or
-                            create an account to pay
-                        </p>
+                        <h2>Book a home move</h2>
                     </div>
                     <div className="col-12 col-md-8">
                         <div className="col-12 moves__stepper">
