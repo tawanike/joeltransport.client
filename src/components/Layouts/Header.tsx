@@ -1,5 +1,4 @@
 import { useRouter } from "next/router";
-import { AiFillInstagram, AiFillTwitterCircle } from "react-icons/ai";
 import { BsFacebook, BsInstagram, BsLinkedin } from "react-icons/bs";
 import Navigation from "./Navigation";
 
