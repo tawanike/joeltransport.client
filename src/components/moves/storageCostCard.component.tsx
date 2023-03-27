@@ -178,54 +178,55 @@ const StorageCostCard = () => {
                           </div>
                         </li>
                       )}
-                    {CostSummaryState.bakkieShuttle?.quantity > 0 && (
-                      <li>
-                        <div className="row">
-                          <div className="col-4 move-cost-card__section__details__title">
-                            <p>Bakkie shuttle</p>
-                          </div>
-                          <div
-                            className="col-1 move-cost-card__section__details__title csTablecenter"
-                            ref={bukkieShuttleTooltipTarget}
-                          >
-                            <BsInfoCircle
-                              onClick={() => {
-                                setShowBukkieShuttleTooltip(
-                                  !showBukkieShuttleTooltip
-                                );
-                                setShow(false);
-                                setShowDiscountTooltip(false);
-                              }}
-                            />
-                            <Overlay
-                              target={bukkieShuttleTooltipTarget.current}
-                              show={showBukkieShuttleTooltip}
-                              placement="right"
+                    {CostSummaryState.bakkieShuttle &&
+                      CostSummaryState.bakkieShuttle.quantity > 0 && (
+                        <li>
+                          <div className="row">
+                            <div className="col-4 move-cost-card__section__details__title">
+                              <p>Bakkie shuttle</p>
+                            </div>
+                            <div
+                              className="col-1 move-cost-card__section__details__title csTablecenter"
+                              ref={bukkieShuttleTooltipTarget}
                             >
-                              {(props) => (
-                                <Tooltip id="bukkie-shuttle" {...props}>
-                                  My Tooltip
-                                </Tooltip>
-                              )}
-                            </Overlay>
+                              <BsInfoCircle
+                                onClick={() => {
+                                  setShowBukkieShuttleTooltip(
+                                    !showBukkieShuttleTooltip
+                                  );
+                                  setShow(false);
+                                  setShowDiscountTooltip(false);
+                                }}
+                              />
+                              <Overlay
+                                target={bukkieShuttleTooltipTarget.current}
+                                show={showBukkieShuttleTooltip}
+                                placement="right"
+                              >
+                                {(props) => (
+                                  <Tooltip id="bukkie-shuttle" {...props}>
+                                    My Tooltip
+                                  </Tooltip>
+                                )}
+                              </Overlay>
+                            </div>
+                            <div className="col-3 move-cost-card__section__details__title center move-cost-card__section__details__title--cost">
+                              <p>
+                                R
+                                {CostSummaryState.bakkieShuttle
+                                  ? (
+                                      CostSummaryState.bakkieShuttle.price *
+                                      CostSummaryState.bakkieShuttle.quantity
+                                    ).toFixed(2)
+                                  : "0.00"}
+                              </p>
+                            </div>
+                            <div className="col-4 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
+                              <p> R0.00</p>
+                            </div>
                           </div>
-                          <div className="col-3 move-cost-card__section__details__title center move-cost-card__section__details__title--cost">
-                            <p>
-                              R
-                              {CostSummaryState.bakkieShuttle
-                                ? (
-                                    CostSummaryState.bakkieShuttle.price *
-                                    CostSummaryState.bakkieShuttle.quantity
-                                  ).toFixed(2)
-                                : "0.00"}
-                            </p>
-                          </div>
-                          <div className="col-4 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
-                            <p> R0.00</p>
-                          </div>
-                        </div>
-                      </li>
-                    )}
+                        </li>
+                      )}
                   </ul>
                 </div>
               </div>
