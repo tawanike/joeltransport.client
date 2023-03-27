@@ -38,3 +38,19 @@ fieldset:disabled .btn {
 .swiper-button-prev {
     color: #fa551e !important;
 }
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+    font-size: 30px !important;
+    font-weight: 800 !important;
+}
+
+.breadcrumb-item {
+    a {
+        color: black;
+        text-decoration: none;
+    }
+    &.active {
+        color: #fa551e !important;
+    }
+}
