@@ -188,6 +188,7 @@ function AddressForm({ address, address_type }: Props) {
             <Col
               className="text-right btn btn-secondary d-flex align-items-center justify-content-center"
               md={1}
+              sm={1}
               onClick={() => setEditMode(true)}
             >
               Edit
