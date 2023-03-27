@@ -20,6 +20,7 @@ const AddedServices: FC<IProps> = ({}) => {
     "free-gauteng-removal-of-unused-furniture-appliances-clothing-linen":
       useRef(null),
     "piano-moving-services": useRef(null),
+    "moving-installations": useRef(null),
     crating: useRef(null),
     storage: useRef(null),
     other: useRef(null),
