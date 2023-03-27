@@ -245,11 +245,13 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
                             .formatted_address,
                       },
                       onChange: (location: any) =>
-                        bookingsDispatch({
-                          type: ADD_FORM_VALUES,
-                          payload: {
-                            from_address: addressUtils.formatAddress(location),
-                          },
+                        addressUtils.formatAddress(location).then((address) => {
+                          bookingsDispatch({
+                            type: ADD_FORM_VALUES,
+                            payload: {
+                              from_address: address,
+                            },
+                          });
                         }),
                     }}
                   />
@@ -436,11 +438,13 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
                           bookingState.formValues.to_address.formatted_address,
                       },
                       onChange: (location: string) =>
-                        bookingsDispatch({
-                          type: ADD_FORM_VALUES,
-                          payload: {
-                            to_address: addressUtils.formatAddress(location),
-                          },
+                        addressUtils.formatAddress(location).then((address) => {
+                          bookingsDispatch({
+                            type: ADD_FORM_VALUES,
+                            payload: {
+                              to_address: address,
+                            },
+                          });
                         }),
                     }}
                   />

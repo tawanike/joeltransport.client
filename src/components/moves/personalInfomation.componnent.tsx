@@ -119,8 +119,7 @@ const PersonalInformation = () => {
               placeholder="Name"
               value={values.first_name}
               onChange={handleOnChanged}
-              onBlur={handleOnBlur}
-              onFocus={handleOnBlur}
+              onBlurCapture={handleOnBlur}
               isValid={touched.first_name && !errors.first_name}
             />
             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
@@ -131,8 +130,7 @@ const PersonalInformation = () => {
               placeholder="Last name"
               value={values.last_name}
               onChange={handleOnChanged}
-              onBlur={handleOnBlur}
-              onFocus={handleOnBlur}
+              onBlurCapture={handleOnBlur}
               isValid={touched.last_name && !errors.last_name}
             />
             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
@@ -145,8 +143,7 @@ const PersonalInformation = () => {
               placeholder="Phone number"
               value={values.phone_number}
               onChange={handleOnChanged}
-              onBlur={handleOnBlur}
-              onFocus={handleOnBlur}
+              onBlurCapture={handleOnBlur}
               isValid={touched.phone_number && !errors.phone_number}
             />
             {touched.phone_number && !errors.phone_number && (

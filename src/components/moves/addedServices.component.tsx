@@ -20,6 +20,7 @@ const AddedServices: FC<IProps> = ({}) => {
     "free-gauteng-removal-of-unused-furniture-appliances-clothing-linen":
       useRef(null),
     "piano-moving-services": useRef(null),
+    "moving-installations": useRef(null),
     crating: useRef(null),
     storage: useRef(null),
     other: useRef(null),
@@ -66,7 +67,7 @@ const AddedServices: FC<IProps> = ({}) => {
 
     await api.post(`/bookings/${bookingState.formValues.id}/products/addons`, {
       booking: bookingState.formValues.id,
-      product: "6cf92a0b-2af6-4419-8bf0-f2c84db43e46",
+      product: "db764aaf-3175-42cf-adfe-2b18f4c39b0a",
       category: 0,
       description: item.target.value,
       selected: true,
@@ -125,8 +126,8 @@ const AddedServices: FC<IProps> = ({}) => {
             <Form.Check
               type="checkbox"
               label="Other"
-              id="6cf92a0b-2af6-4419-8bf0-f2c84db43e46"
-              value="6cf92a0b-2af6-4419-8bf0-f2c84db43e46"
+              id="db764aaf-3175-42cf-adfe-2b18f4c39b0a"
+              value="db764aaf-3175-42cf-adfe-2b18f4c39b0a"
               onChange={() => setShowOtherForm(!showOtherForm)}
               checked={showOtherForm}
             />
@@ -134,16 +135,16 @@ const AddedServices: FC<IProps> = ({}) => {
           <Col sm={3} md={2} className="mt-3" ref={targets["other"]}>
             <BsInfoCircle
               onClick={() => {
-                setShow("6cf92a0b-2af6-4419-8bf0-f2c84db43e46");
+                setShow(true);
               }}
             />
             <Overlay
               target={targets["other"]?.current}
-              show={show === "6cf92a0b-2af6-4419-8bf0-f2c84db43e46"}
+              show={show}
               placement="right"
             >
               {(props) => (
-                <Tooltip id="6cf92a0b-2af6-4419-8bf0-f2c84db43e46" {...props}>
+                <Tooltip id="db764aaf-3175-42cf-adfe-2b18f4c39b0a" {...props}>
                   Tool tip for other
                 </Tooltip>
               )}
