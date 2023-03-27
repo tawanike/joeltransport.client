@@ -72,8 +72,7 @@ const ContactUsComponent: FC<IProps> = ({ isModal = false }) => {
                             </div>
                             <div className="col-8 offset-2 resources__modal__text mt-4">
                                 <p>
-                                    Your call me back, request has been sent successfully will be
-                                    in-touch soon!
+                                    Your request has been sent successfully! We’ll pop you an email to confirm.
                                 </p>
                             </div>
                             <div className="col-12 resources__modal__button mt-4">
@@ -95,7 +94,7 @@ const ContactUsComponent: FC<IProps> = ({ isModal = false }) => {
                     size="medium"
                     src="/img/services/resources_banner.png"
                     pageTitle="Contact us"
-                    description="Looking for an expect for your move or storage? "
+                    description="You’ve come to the right place!"
                     variant="--resources"
                 />
             )}
@@ -169,7 +168,7 @@ const ContactUsComponent: FC<IProps> = ({ isModal = false }) => {
                                                 <ErrorMessage name="first_name" />
                                                 <Field
                                                     type="text"
-                                                    placeholder="First name*"
+                                                    placeholder="Name*"
                                                     name="first_name"
                                                     onChange={props.handleChange}
                                                     className="form-control"
@@ -229,7 +228,7 @@ const ContactUsComponent: FC<IProps> = ({ isModal = false }) => {
                                                 <ErrorMessage name="category" />
                                                 <Form.Select onChange={props.handleChange}>
                                                     <option value="0" disabled selected>
-                                                        Need assistance with?*
+                                                        I’d like to *
                                                     </option>
                                                     <option value="1">Schedule a move</option>
                                                     <option value="2">Schedule a survey</option>
@@ -237,7 +236,7 @@ const ContactUsComponent: FC<IProps> = ({ isModal = false }) => {
                                                 </Form.Select>
                                             </Form.Group>
                                         </Row>
-                                        <h5 className="mb-5">Service options*</h5>
+                                        <h5 className="mb-5">How can we help? *</h5>
                                         <ErrorMessage name="service_options" />
                                         <Row>
                                             <Form.Group as={Col} md="4" className="mb-5">
@@ -272,7 +271,7 @@ const ContactUsComponent: FC<IProps> = ({ isModal = false }) => {
                                                         value="2"
                                                         className="m-1"
                                                     />
-                                                    Specialized move
+                                                    Specialised move
                                                 </Form.Label>
                                             </Form.Group>
                                             <Form.Group as={Col} md="4" className="mb-5">
