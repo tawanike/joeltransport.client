@@ -13,12 +13,9 @@ function InventoryForm({}: Props) {
   const bookingContext = useContext(BookingContext);
   const [rooms, setRooms] = useState<IRoom[]>([]);
   const [inventoryItems, setInventoryItems] = useState<IInventoryItem[]>([]);
-  const [values, setValues] = useState<any>({
-    description: bookingContext.state.formValues.inventoryList?.description,
-  });
+  const [values, setValues] = useState<any>({ description: "" });
 
   const handleOnBlur = async (e: any) => {
-    console.log("handleOnBlur", e.target.value);
     const data: any = {
       inventory_item: "79c6d32c-645e-4d87-a74d-43aeea3633fb",
       quantity: 0,
