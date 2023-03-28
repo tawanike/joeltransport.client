@@ -75,21 +75,22 @@ export const officeMoveSections: any = {
     description: (
       <>
         <p>
-          We are the experts when planning and executing office furniture
-          removals. Our team leaders are well trained and well equipped to
-          supervise an office removal process.
+          We are experts in planning and executing office furniture removals!
+          Our team leaders are well trained and equipped to supervise these
+          process.
           <br />
           <br />
-          To move an office requires furniture and locations labelling,
-          dismantling, reassembling, packing, and unpacking of files, removals
-          of safes, bulk fillers handling and the safe and secure removals of
-          computer equipment.
+          Moving an office requires furniture and locations labelling,
+          dismantling, reassembling, packing and unpacking of files, removals of
+          safes, bulk fillers handling and safe and secure removal of computer
+          equipment.
           <br />
           <br />
           Through our highly trained team leaders we can co-ordinate these
-          processes with ease. No matter what type of move you’re making Joel
-          Transport is here for you, our services are tailored according to your
-          needs.
+          processes with ease. No matter what type of move you’re making, Joel
+          Transport is here for you! Our services are customised to your needs.
+          When it comes to the safety and protection of your goods – we make
+          sure all the necessary steps have been fulfilled.
         </p>
       </>
     ),
@@ -98,29 +99,33 @@ export const officeMoveSections: any = {
   },
   benefits: {
     ...homeMoversConfig,
-    title: "Benefits of relocating your office with us.",
+    title: "Benefits of our relocation services.",
   },
   internationally: {
     id: 3,
-    title: "Do you plan to relocate your office Internationally?",
+    title: "Plan to relocate your office internationally?",
     description: (
       <>
         <p>
-          We offers the full range of international moving services, from
-          packing, crating, shipping to customs clearance and storage. To ensure
-          that your move is smooth and seamless, we assign you a personal move
-          assistant to guide you through every step.
-          <br />
-          <br />
-          The services and benefits we offer under international moves are:
-          Lower Container Load Service is used where cargo is collected crated,
-          consolidated, and dispatched in a 30-day period. This is a
-          cost-effective solution for our clients with smaller volumes. Full
-          Container Load Service are used for larger loads, either 6 or 12-meter
-          containers are used. This is faster and the most efficient shipping
-          method for larger loads. Air Freight Service is the most preferred
-          method by most customers, it is fast and safe.
+          We offer the full range of international moving services: from
+          packing, crating, and shipping to customs clearance and storage. To
+          ensure that your move is smooth , we assign you a personal move
+          assistant to guide you through every step!
         </p>
+        <p>The services and benefits we offer under international moves are:</p>
+        <ul style={{ listStyle: "none" }}>
+          <li>
+            - Lower Container Load Service is used where cargo is collected
+            crated, consolidated, and dispatched in a 30-day period. This is a
+            cost-effective solution for our clients with smaller volumes.{" "}
+          </li>
+          <li>
+            - Full Container Load Service is used for larger loads, either 6 or
+            12-meter containers are used. This is faster and the most efficient
+            shipping method for larger loads. Air Freight Service is the most
+            preferred method by most customers, it is fast and safe.
+          </li>
+        </ul>
       </>
     ),
     image: "/img/services/office_move.png",
