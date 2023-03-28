@@ -125,10 +125,10 @@ const Storage = () => {
               className="custom-modal__header"
               style={{ padding: 12, position: "relative" }}
             >
-              <h3>Wait – there's more!</h3>
+              <h3>{`Wait - there's more!`}</h3>
               <p>
-                Choose your preferred additional service option and we’ll get in
-                touch. Explore our additional moving services.
+                {`Choose your preferred additional service option and we'll get in
+                touch. Explore our additional moving services.`}
               </p>
               <p>Select one or more. Our team will be in touch.</p>
             </div>
