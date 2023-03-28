@@ -18,7 +18,10 @@ function Uploader({ onChange }: Props) {
             {isDragActive ? (
               <p>Drop the files here ...</p>
             ) : (
-              <p>Drag and drop files here, or click to select files</p>
+              <p className="text-center">
+                Drag and drop files here. <br />
+                The file size of your attachment should not exceed 10MB.
+              </p>
             )}
           </div>
         </section>

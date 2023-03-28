@@ -307,7 +307,7 @@ const HomeMoveModalComponent: FC<IProps> = ({
           <Modal.Body>
             <div className="col-12 custom-modal">
               <div className="custom-modal__header mb-5">
-                <h3>{"Let's help you book a home move."}</h3>
+                <h3>Change is not as scary as it seems</h3>
                 <p>How would you like to proceed?</p>
               </div>
               <div className="col-12 custom-modal__body">
@@ -317,7 +317,7 @@ const HomeMoveModalComponent: FC<IProps> = ({
                       name="moveOption"
                       value="chat"
                       type="radio"
-                      label="Chat to us now to book your long distance home move"
+                      label="Book your long-distance home move with our help."
                       id=""
                       onChange={handleMoveOptionChange}
                     />
@@ -337,7 +337,7 @@ const HomeMoveModalComponent: FC<IProps> = ({
                       name="moveOption"
                       value="form"
                       type="radio"
-                      label="Fill in an online inventory form"
+                      label="Fill in an online inventory form to book your home move."
                       id=""
                       onChange={handleMoveOptionChange}
                     />
