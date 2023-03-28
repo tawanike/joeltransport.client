@@ -8,6 +8,7 @@ import {
     IAction,
     RESET_COST_SUMMARY,
     SELECT_TRUCK,
+    ZERO_TRUCK_QUANTITY,
 } from "../_models/types";
 const initialCostSummaryState: CostSummary = {} as CostSummary;
 
@@ -21,6 +22,8 @@ const CostSummaryReducer = (state: CostSummary, action: IAction) => {
             return { ...state, ...action.payload };
         case ADD_MOVE_DETAILS:
             return { ...state, ...action.payload };
+        case ZERO_TRUCK_QUANTITY:
+            return { ...state, truck: null };
         case RESET_COST_SUMMARY:
             return { ...initialCostSummaryState };
         case ADD_STORAGE_COUNT:

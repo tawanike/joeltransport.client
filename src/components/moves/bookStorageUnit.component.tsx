@@ -15,12 +15,12 @@ import {
     stringToDateTime,
 } from "src/_helpers/dateFormat";
 import { useAPI, useNumberInput } from "src/_hooks";
-import { ADD_FORM_VALUES, IProduct } from "src/_models/types";
+import { ADD_FORM_VALUES, IProduct, ZERO_TRUCK_QUANTITY } from "src/_models/types";
 
 const BookStorageUnit = () => {
     const api = useAPI();
     const [trucks, setTrucks] = useState<IProduct[]>([]);
-    const [recommendedTruck, setRecommendedTruck] = useState<IProduct>();
+    const [recommendedTruck, setRecommendedTruck] = useState<IProduct | null>();
     const [moveType, setMoveType] = useState<any>();
     const { CostSummaryState, dispatchCostSummary } = useContext(
         CostSummaryStateContext
@@ -55,14 +55,17 @@ const BookStorageUnit = () => {
 
     useEffect(() => {
         if (moveType && moveType.id) {
-            trucks.map((truck) => {
-                if (
-                    truck.storage_units_recommendations.min == NumberOfUnitsValue &&
+
+            if (NumberOfUnitsValue === 0) {
+                setRecommendedTruck(null);
+            } else {
+                setRecommendedTruck(trucks.find((truck) => (
+                    Number(truck.storage_units_recommendations.min) <= NumberOfUnitsValue &&
+                    Number(truck.storage_units_recommendations.max) >= NumberOfUnitsValue &&
                     bookingState.formValues.collection
-                ) {
-                    setRecommendedTruck(truck);
-                }
-            });
+                )
+                ));
+            }
 
             bookingsDispatch({
                 type: ADD_FORM_VALUES,
@@ -170,7 +173,11 @@ const BookStorageUnit = () => {
                     {NumberOfUnitsDisplay}
                 </Form.Group>
                 <Form.Group as={Col} md="1" controlId="delete" className="d-flex align-items-end pb-3 storage-delete">
-                    <BsTrash onClick={() => setAValue(0)} />
+                    <BsTrash onClick={() => {
+                        setAValue(0);
+                        setRecommendedTruck(null);
+                        dispatchCostSummary({ type: ZERO_TRUCK_QUANTITY });
+                    }} />
                 </Form.Group>
             </Row>
 
