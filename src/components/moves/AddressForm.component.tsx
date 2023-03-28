@@ -204,9 +204,11 @@ const formattedAddress = (address: any, countries: any[]) => {
   if (address)
     return `${address.unit_number == null ? "" : address.unit_number} ${
       address.complex_name == null ? "" : address.complex_name
-    } ${address.street_address} ${address.suburb} ${address.city} ${
-      address.postcode
-    } ${address.province} ${
+    } ${address.street_address == null ? "" : address.street_address} ${
+      address.suburb == null ? "" : address.suburb
+    } ${address.city == null ? "" : address.city} ${
+      address.postcode == null ? "" : address.postcode
+    } ${address.province == null ? "" : address.province} ${
       countries &&
       countries.length > 0 &&
       address &&
