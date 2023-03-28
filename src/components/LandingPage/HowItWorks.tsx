@@ -10,7 +10,7 @@ function HowItWorks() {
                 </div>
                 <div className="HowItWorks__description col-12 col-md-7 ps-5">
                     <h1>How It Works</h1>
-                    <p>Steps to scheduling your local move or local storage.</p>
+                    <p>Here’s how to schedule your local move or storage space.</p>
                     <ul>
                         <li>
                             <div className='ServiceCard__icon ServiceCard__icon--blue'>{<MdOutlineEmojiTransportation />}</div>
@@ -18,15 +18,15 @@ function HowItWorks() {
                         </li>
                         <li>
                             <div className='ServiceCard__icon' style={{ backgroundColor: 'var(--color-red-primary)' }}>{<MdOutlineEmojiTransportation />}</div>
-                            <p>Plan your move</p>
+                            <p>Plan</p>
                         </li>
                         <li>
                             <div className='ServiceCard__icon' style={{ backgroundColor: 'var(--color-error)' }}><MdOutlineEmojiTransportation /></div>
-                            <p>Pay for your move</p>
+                            <p>Pay</p>
                         </li>
                         <li>
                             <div className='ServiceCard__icon' style={{ backgroundColor: 'var(--color-bg-footer)' }}><MdOutlineEmojiTransportation /></div>
-                            <p>Get moving</p>
+                            <p>Get started</p>
                         </li>
                     </ul>
                 </div>
