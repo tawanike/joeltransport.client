@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import React, { FC, ReactNode } from 'react'
 import { ServiceConfig } from '../../_configurations/services.config';
 
-const ServiceCard: FC<ServiceConfig> = ({ image, title, description, link, bgColor, icon }) => {
+const ServiceCard: FC<ServiceConfig> = ({ image, title, description, link, bgColor, icon, btnText }) => {
     const router = useRouter();
     return (
         <div className=" col-12 col-md-4 mt-3">
@@ -14,7 +14,7 @@ const ServiceCard: FC<ServiceConfig> = ({ image, title, description, link, bgCol
                 <div className="ServiceCard__content py-4">
                     {description}
                 </div>
-                <button className="button button-secondary" onClick={() => router.push(`${link}`)}>Get moving</button>
+                <button className="button button-secondary" onClick={() => router.push(`${link}`)}>{btnText}</button>
             </div>
         </div>
     )

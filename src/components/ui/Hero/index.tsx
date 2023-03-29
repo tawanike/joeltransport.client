@@ -9,11 +9,10 @@ function Hero() {
                 <div className="container d-flex justify-contents-start">
                     <div className="row">
                         <div className="col-12 col-md-6 justify-contents-start">
-                            <h1 className="col-12">Get your free quote now
-                                for your move if you are
-                                within Gauteng</h1>
-                            <h4 className="col-12">If you are outside Gauteng, provide us with your
-                                contact information and a specialist will be in touch.</h4>
+                            <h1 className="col-12">Moving. It’s mayhem! Fortunately, we can handle it</h1>
+                            <h4 className="col-12">We’re the experts of stress-free moving. Chat to us about how we can simplify your moving process.
+
+                                Get your free quote now.</h4>
                             <div className="col-12 d-flex justify-contents-start mt-4">
                                 <Button variant="primary" onClick={() => router.push("/services")} className="">Learn more</Button>
                             </div>
