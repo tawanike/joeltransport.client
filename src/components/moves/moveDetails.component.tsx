@@ -228,10 +228,10 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
         ) ||
           bookingState.formValues.collection) && (
           <>
-            <h5 className="my-5">Please provide loading address</h5>
+            <h5 className="my-5">Please provide loading details</h5>
             <Row className="mb-5">
               <Form.Group as={Col} md="12" controlId="from">
-                <Form.Label>Search loading address</Form.Label>
+                <Form.Label>Search loading location</Form.Label>
                 {bookingState.formValues.to_address &&
                 bookingState.formValues.to_address.place_id ? (
                   <GooglePlacesAutocomplete
@@ -328,7 +328,7 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
             </Row>
             <Row className="mb-5">
               <Form.Group as={Col} md="6" controlId="date">
-                <Form.Label>How many floors does your house have?</Form.Label>
+                <Form.Label>What level is your apartment on?</Form.Label>
                 {FromFloorsCountDisplay}
               </Form.Group>
               <Form.Group as={Col} md="6" className="">
@@ -376,7 +376,7 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
             </Row>
             <Row className="mb-5">
               <Form.Group as={Col} md="12" className="">
-                <Form.Label>What time would you like to move?</Form.Label>
+                <Form.Label>What time should we collect?</Form.Label>
                 <Form.Check
                   type="radio"
                   required
@@ -422,10 +422,10 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
 
         {hasDelivery && (
           <>
-            <h5 className="my-5">Please provide delivery address</h5>
+            <h5 className="my-5">Please provide delivery details</h5>
             <Row className="mb-5">
               <Form.Group as={Col} md="12" controlId="to">
-                <Form.Label>Search delivery address</Form.Label>
+                <Form.Label>Search delivery location</Form.Label>
                 {bookingState.formValues.to_address &&
                 bookingState.formValues.to_address.place_id ? (
                   <GooglePlacesAutocomplete
@@ -478,14 +478,14 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
                 />
               </Form.Group>
               <Form.Group as={Col} md="6" controlId="date">
-                <Form.Label>To floors count</Form.Label>
+                <Form.Label>How many floors are in your building?</Form.Label>
                 {ToFloorsCountDisplay}
               </Form.Group>
             </Row>
             <Row className="mb-5">
               {showToWorkingLift && (
                 <Form.Group as={Col} md="6" className="">
-                  <Form.Label>Does the house have a working lift?</Form.Label>
+                  <Form.Label>Is there a working lift?</Form.Label>
                   <Form.Check
                     type="radio"
                     inline
