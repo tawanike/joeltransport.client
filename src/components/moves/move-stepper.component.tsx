@@ -37,7 +37,7 @@ const MoveStepper = () => {
             {bookingContext.state.openSection === "move_details" && (
               <MoveDetails
                 hasDelivery={true}
-                dateLabel="When would you like to move?"
+                dateLabel="When would you like us to collect?"
               />
             )}
           </div>
