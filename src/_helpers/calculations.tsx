@@ -16,6 +16,13 @@ accounting.settings = {
   },
 };
 
+const getSubTotalStorage = (state: any): number => {
+  if (state && state.storage) {
+    return (state.storage?.quantity || 0) * (state.storage?.price || 0);
+  }
+  return 0.0;
+};
+
 const getSubTotal = (state: any): string => {
   return (Object.keys(state) as Array<keyof CostSummary>)
     .map((expense) => {
@@ -84,4 +91,5 @@ export const Calculations = {
   truckTotal,
   getSubTotal,
   getTotalInCents,
+  getSubTotalStorage,
 };
