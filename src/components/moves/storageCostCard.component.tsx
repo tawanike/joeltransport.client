@@ -244,9 +244,9 @@ const StorageCostCard = () => {
                       <div className="col-4 csTablecenter move-cost-card__section__details__title center">
                         <p>
                           R
-                          {Calculations.getSubTotal(CostSummaryState).toFixed(
-                            2
-                          )}
+                          {Calculations.getSubTotalStorage(
+                            CostSummaryState
+                          ).toFixed(2)}
                         </p>
                       </div>
                       <div className="col-4 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
@@ -271,7 +271,8 @@ const StorageCostCard = () => {
                         <p>
                           R
                           {(
-                            Calculations.getSubTotal(CostSummaryState) * 0.15
+                            Calculations.getSubTotalStorage(CostSummaryState) *
+                            0.15
                           ).toFixed(2)}
                         </p>
                       </div>
@@ -306,10 +307,8 @@ const StorageCostCard = () => {
                 <div className="col-4 csTablecenter move-cost-card__section__details__title center">
                   <p>
                     R
-                    {(
-                      Calculations.getSubTotal(CostSummaryState) * 0.15 +
-                      Calculations.getSubTotal(CostSummaryState)
-                    ).toFixed(2)}
+                    {Calculations.getSubTotalStorage(CostSummaryState) * 0.15 +
+                      Calculations.getSubTotal(CostSummaryState)}
                   </p>
                 </div>
                 <div className="col-4 move-cost-card__section__details__title move-cost-card__section__details__title--cost">

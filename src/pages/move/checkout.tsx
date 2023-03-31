@@ -119,10 +119,9 @@ const Checkout = () => {
                       </div>
                       <div className="col-6 moves__checkout__summary__list__price">
                         R
-                        {(
-                          Calculations.getSubTotal(CostSummaryState) * 0.15 +
-                          Calculations.getSubTotal(CostSummaryState)
-                        ).toFixed(2)}
+                        {Calculations.getSubTotalStorage(CostSummaryState) *
+                          0.15 +
+                          Calculations.getSubTotal(CostSummaryState)}
                       </div>
                     </div>
                   </div>
@@ -133,10 +132,9 @@ const Checkout = () => {
                       </div>
                       <div className="col-6 moves__checkout__summary__list__price">
                         R
-                        {(
-                          Calculations.getSubTotal(CostSummaryState) * 0.15 +
-                          Calculations.getSubTotal(CostSummaryState)
-                        ).toFixed(2)}
+                        {Calculations.getSubTotalStorage(CostSummaryState) *
+                          0.15 +
+                          Calculations.getSubTotalStorage(CostSummaryState)}
                       </div>
                     </div>
                   </div>
@@ -149,10 +147,8 @@ const Checkout = () => {
                     }}
                   >
                     Pay R
-                    {(
-                      Calculations.getSubTotal(CostSummaryState) * 0.15 +
-                      Calculations.getSubTotal(CostSummaryState)
-                    ).toFixed(2)}
+                    {Calculations.getSubTotalStorage(CostSummaryState) * 0.15 +
+                      Calculations.getSubTotalStorage(CostSummaryState)}
                   </Button>
                 </div>
               </div>
