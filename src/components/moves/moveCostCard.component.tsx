@@ -82,9 +82,10 @@ const MoveCostCard = () => {
                         <div className="col-5 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
                           <p>
                             {CostSummaryState.truck
-                              ? Calculations.truckTotal(
-                                  CostSummaryState.truck,
-                                  bookingContext.state.formValues
+                              ? accounting.formatMoney(
+                                  Calculations.truckTotal(
+                                    CostSummaryState.truck
+                                  )
                                 )
                               : accounting.formatMoney(0)}
                           </p>
@@ -124,10 +125,11 @@ const MoveCostCard = () => {
                           </div>
                           <div className="col-5 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
                             <p>
-                              R
                               {CostSummaryState.truck &&
                               CostSummaryState.truck.off_peak_discount
-                                ? CostSummaryState.truck.off_peak_discount
+                                ? accounting.formatMoney(
+                                    CostSummaryState.truck.off_peak_discount
+                                  )
                                 : accounting.formatMoney(0)}
                             </p>
                           </div>
@@ -174,8 +176,9 @@ const MoveCostCard = () => {
                           <p>
                             R
                             {CostSummaryState.bakkieShuttle
-                              ? CostSummaryState.bakkieShuttle.price *
-                                CostSummaryState.bakkieShuttle.quantity
+                              ? accounting.formatMoney(
+                                  CostSummaryState.bakkieShuttle.price
+                                )
                               : accounting.formatMoney(0)}
                           </p>
                         </div>
@@ -197,7 +200,11 @@ const MoveCostCard = () => {
                         <p>Sub total</p>
                       </div>
                       <div className="col-6 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
-                        <p>{Calculations.getSubTotal(CostSummaryState)}</p>
+                        <p>
+                          {accounting.formatMoney(
+                            Calculations.getSubTotal(CostSummaryState)
+                          )}
+                        </p>
                       </div>
                     </div>
                   </li>
@@ -207,7 +214,11 @@ const MoveCostCard = () => {
                         <p>VAT (15%)</p>
                       </div>
                       <div className="col-6 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
-                        <p>{Calculations.getVAT(CostSummaryState)}</p>
+                        <p>
+                          {accounting.formatMoney(
+                            Calculations.getVAT(CostSummaryState)
+                          )}
+                        </p>
                       </div>
                     </div>
                   </li>
@@ -226,7 +237,11 @@ const MoveCostCard = () => {
                   <p>Total</p>
                 </div>
                 <div className="col-6 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
-                  <p>{Calculations.getTotal(CostSummaryState)}</p>
+                  <p>
+                    {accounting.formatMoney(
+                      Calculations.getTotal(CostSummaryState)
+                    )}
+                  </p>
                 </div>
               </div>
             </li>
