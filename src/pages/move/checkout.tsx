@@ -1,3 +1,4 @@
+import accounting from "accounting";
 import MoveStepper from "components/moves/move-stepper.component";
 import StorageStepper from "components/moves/storage-stepper.component";
 import { useRouter } from "next/router";
@@ -10,6 +11,20 @@ import { BookingContext } from "src/_contexts/booking.context";
 import CostSummaryStateContext from "src/_contexts/costSummary.context";
 import { CHANGE_OPEN_SECTION } from "src/_models/types";
 import { Calculations } from "../../_helpers/calculations";
+accounting.settings = {
+  currency: {
+    symbol: "R", // default currency symbol is '$'
+    format: "%s%v", // controls output: %s = symbol, %v = value/number (can be object: see below)
+    decimal: ".", // decimal point separator
+    thousand: ",", // thousands separator
+    precision: 2, // decimal places
+  },
+  number: {
+    precision: 0, // default precision on numbers is 0
+    thousand: ",",
+    decimal: ".",
+  },
+};
 
 const Checkout = () => {
   const router = useRouter();
@@ -118,10 +133,9 @@ const Checkout = () => {
                         <p>Items</p>
                       </div>
                       <div className="col-6 moves__checkout__summary__list__price">
-                        R
-                        {Calculations.getSubTotalStorage(CostSummaryState) *
-                          0.15 +
-                          Calculations.getSubTotal(CostSummaryState)}
+                        {accounting.formatMoney(
+                          Calculations.getTotal(CostSummaryState)
+                        )}
                       </div>
                     </div>
                   </div>
@@ -131,10 +145,9 @@ const Checkout = () => {
                         <p>Total</p>
                       </div>
                       <div className="col-6 moves__checkout__summary__list__price">
-                        R
-                        {Calculations.getSubTotalStorage(CostSummaryState) *
-                          0.15 +
-                          Calculations.getSubTotalStorage(CostSummaryState)}
+                        {accounting.formatMoney(
+                          Calculations.getTotal(CostSummaryState)
+                        )}
                       </div>
                     </div>
                   </div>
@@ -146,9 +159,10 @@ const Checkout = () => {
                       initializePayment(onSuccess, onClose);
                     }}
                   >
-                    Pay R
-                    {Calculations.getSubTotalStorage(CostSummaryState) * 0.15 +
-                      Calculations.getSubTotalStorage(CostSummaryState)}
+                    Pay{" "}
+                    {accounting.formatMoney(
+                      Calculations.getTotal(CostSummaryState)
+                    )}
                   </Button>
                 </div>
               </div>
