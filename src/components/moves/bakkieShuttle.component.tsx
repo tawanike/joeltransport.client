@@ -201,7 +201,7 @@ const BakkieShuttle: FC<IProps> = () => {
                             </div>
                         </div>
                     </Alert>
-                    {bookingState.formValues.move_type === 1 && (
+                    {bookingState.formValues.move_type === 0 && (
                         <Form.Group as={Col} md="8" controlId="bakkie_address">
                             <Form.Label>Select address for a bakkie shuttle</Form.Label>
                             <Select
