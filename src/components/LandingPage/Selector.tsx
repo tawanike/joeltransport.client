@@ -62,11 +62,11 @@ const Selector = () => {
               dispatchCostSummary({ type: "RESET_BOOKING" });
               bookingsDispatch({ type: "RESET_COST_SUMMARY" });
 
-              selectedView.title === "Home Move"
+              selectedView.title === "Home move"
                 ? toggleMoveModal(true)
                 : toggleStorageModal(true);
 
-              selectedView.title === "Home Move"
+              selectedView.title === "Home move"
                 ? bookingsDispatch(
                     updateBooking({ move_type: 0, self_delivery: 0 })
                   )

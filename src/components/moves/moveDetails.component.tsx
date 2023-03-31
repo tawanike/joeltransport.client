@@ -485,7 +485,9 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
             <Row className="mb-5">
               {showToWorkingLift && (
                 <Form.Group as={Col} md="6" className="">
-                  <Form.Label>Is there a working lift?</Form.Label>
+                  <Form.Label>
+                    Does your apartment building have a working lift?
+                  </Form.Label>
                   <Form.Check
                     type="radio"
                     inline

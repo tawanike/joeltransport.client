@@ -39,26 +39,6 @@ const ChooseTruck = ({ setChooseTruckComplete }: any) => {
 
   useEffect(() => {
     if (selectedTruck) {
-      let price = 0,
-        offPeakDiscount: number = 0;
-      if (isHoliday(bookingContext.state.formValues.move_date)) {
-        price = selectedTruck.price + selectedTruck.off_peak_discount;
-        offPeakDiscount = 0;
-      } else {
-        price = selectedTruck.price;
-        offPeakDiscount = selectedTruck.off_peak_discount;
-      }
-
-      dispatchCostSummary(
-        selectTruck({
-          quantity: 1,
-          price: price,
-          off_peak_discount: offPeakDiscount,
-        })
-      );
-    }
-
-    if (selectedTruck) {
       api
         .post(`/bookings/${bookingContext.state.formValues.id}/products`, {
           product: selectedTruck.id,
@@ -74,6 +54,29 @@ const ChooseTruck = ({ setChooseTruckComplete }: any) => {
               .then((res) => {
                 if (!res.error) {
                   bookingContext.dispatch(getBooking({ formValues: res }));
+                  console.log("UPDATED BOOKING PRODUCTS", res.products);
+                  const selected_truck = res.products.find(
+                    (p: any) => p.category === "trucks"
+                  );
+                  let price = 0,
+                    offPeakDiscount: number = 0;
+                  if (isHoliday(bookingContext.state.formValues.move_date)) {
+                    price =
+                      selectedTruck.price + selectedTruck.off_peak_discount;
+                    offPeakDiscount = 0;
+                  } else {
+                    price = selectedTruck.price;
+                    offPeakDiscount = selectedTruck.off_peak_discount;
+                  }
+
+                  dispatchCostSummary(
+                    selectTruck({
+                      quantity: 1,
+                      price: price,
+                      off_peak_discount: offPeakDiscount,
+                      additional_costs: selected_truck.additional_costs,
+                    })
+                  );
                 }
               });
           }
@@ -122,11 +125,6 @@ const ChooseTruck = ({ setChooseTruckComplete }: any) => {
         // });
       });
   }, [currentMonth]);
-
-  useEffect(() => {
-    console.log("booked dates", bookedDates);
-    console.log("Moving Date", bookingContext.state.formValues.move_date);
-  }, [bookedDates]);
 
   return (
     <div className="row">
