@@ -17,31 +17,28 @@ accounting.settings = {
 };
 
 const getSubTotal = (state: any): string => {
-  return accounting.formatMoney(
-    (Object.keys(state) as Array<keyof CostSummary>)
-      .map((expense) => {
-        if (state && state[expense]) {
-          if (state[expense].additional_costs) {
-            return (
-              (state[expense]?.quantity || 0) * (state[expense]?.price || 0) +
-              state[expense]?.additional_costs.crew +
-              state[expense]?.additional_costs.distance +
-              state[expense]?.additional_costs.peak_period +
-              state[expense]?.additional_costs.saturday +
-              state[expense]?.additional_costs.sunday_holiday +
-              state[expense]?.additional_costs.working_lift_origin +
-              state[expense]?.additional_costs.working_lift_destination
-            );
-          } else {
-            return (
-              (state[expense]?.quantity || 0) * (state[expense]?.price || 0)
-            );
-          }
+  return (Object.keys(state) as Array<keyof CostSummary>)
+    .map((expense) => {
+      if (state && state[expense]) {
+        if (state[expense].additional_costs) {
+          return (
+            (state[expense]?.quantity || 0) * (state[expense]?.price || 0) +
+            state[expense]?.additional_costs.crew +
+            state[expense]?.additional_costs.distance +
+            state[expense]?.additional_costs.peak_period +
+            state[expense]?.additional_costs.saturday +
+            state[expense]?.additional_costs.sunday +
+            state[expense]?.additional_costs.holiday +
+            state[expense]?.additional_costs.working_lift_origin +
+            state[expense]?.additional_costs.working_lift_destination
+          );
+        } else {
+          return (state[expense]?.quantity || 0) * (state[expense]?.price || 0);
         }
-        return 0;
-      })
-      .reduce((sum, exp) => sum + exp, 0)
-  );
+      }
+      return 0;
+    })
+    .reduce((sum, exp) => sum + exp, 0);
 };
 
 const getTotalInCents = (state: any): number => {
@@ -50,7 +47,7 @@ const getTotalInCents = (state: any): number => {
   return Math.round(total * 100);
 };
 
-const truckTotal = (truck: any, booking: any): string => {
+const truckTotal = (truck: any): string => {
   if (truck) {
     const truckTotal =
       truck.price +
@@ -58,26 +55,27 @@ const truckTotal = (truck: any, booking: any): string => {
       truck.additional_costs.distance +
       truck.additional_costs.peak_period +
       truck.additional_costs.saturday +
-      truck.additional_costs.sunday_holiday +
+      truck.additional_costs.holiday +
+      truck.additional_costs.sunday +
       truck.additional_costs.working_lift_origin +
       truck.additional_costs.working_lift_destination;
 
-    return accounting.formatMoney(truckTotal);
+    return truckTotal;
   }
 
   return accounting.formatMoney(0);
 };
 
-const getVAT = (state: any): string => {
+const getVAT = (state: any): number => {
   const subTotal = getSubTotal(state);
   const vat = Number(subTotal) * 0.15;
-  return accounting.formatMoney(vat);
+  return vat;
 };
 
-const getTotal = (state: any): string => {
+const getTotal = (state: any): number => {
   const subTotal = getSubTotal(state);
   const total = Number(subTotal) * 1.15;
-  return accounting.formatMoney(total);
+  return total;
 };
 
 export const Calculations = {
