@@ -1,9 +1,25 @@
+import accounting from "accounting";
 import { useContext, useRef, useState } from "react";
 import Overlay from "react-bootstrap/Overlay";
 import Tooltip from "react-bootstrap/Tooltip";
 import { BsInfoCircle } from "react-icons/bs";
+import { BookingContext } from "src/_contexts/booking.context";
 import { Calculations } from "src/_helpers/calculations";
 import CostSummaryStateContext from "../../_contexts/costSummary.context";
+accounting.settings = {
+  currency: {
+    symbol: "R", // default currency symbol is '$'
+    format: "%s%v", // controls output: %s = symbol, %v = value/number (can be object: see below)
+    decimal: ".", // decimal point separator
+    thousand: ",", // thousands separator
+    precision: 2, // decimal places
+  },
+  number: {
+    precision: 0, // default precision on numbers is 0
+    thousand: ",",
+    decimal: ".",
+  },
+};
 
 const MoveCostCard = () => {
   const [show, setShow] = useState(false);
@@ -18,6 +34,7 @@ const MoveCostCard = () => {
   const { CostSummaryState, dispatchCostSummary } = useContext(
     CostSummaryStateContext
   );
+  const bookingContext = useContext(BookingContext);
 
   return (
     <>
@@ -64,10 +81,12 @@ const MoveCostCard = () => {
                         </div>
                         <div className="col-5 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
                           <p>
-                            R
                             {CostSummaryState.truck
-                              ? CostSummaryState.truck.price
-                              : "0.00"}
+                              ? Calculations.truckTotal(
+                                  CostSummaryState.truck,
+                                  bookingContext.state.formValues
+                                )
+                              : accounting.formatMoney(0)}
                           </p>
                         </div>
                       </div>
@@ -109,7 +128,7 @@ const MoveCostCard = () => {
                               {CostSummaryState.truck &&
                               CostSummaryState.truck.off_peak_discount
                                 ? CostSummaryState.truck.off_peak_discount
-                                : "0.00"}
+                                : accounting.formatMoney(0)}
                             </p>
                           </div>
                         </div>
@@ -157,7 +176,7 @@ const MoveCostCard = () => {
                             {CostSummaryState.bakkieShuttle
                               ? CostSummaryState.bakkieShuttle.price *
                                 CostSummaryState.bakkieShuttle.quantity
-                              : "0.00"}
+                              : accounting.formatMoney(0)}
                           </p>
                         </div>
                       </div>
@@ -178,7 +197,7 @@ const MoveCostCard = () => {
                         <p>Sub total</p>
                       </div>
                       <div className="col-6 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
-                        <p>R{Calculations.getSubTotal(CostSummaryState)}</p>
+                        <p>{Calculations.getSubTotal(CostSummaryState)}</p>
                       </div>
                     </div>
                   </li>
@@ -188,9 +207,7 @@ const MoveCostCard = () => {
                         <p>VAT (15%)</p>
                       </div>
                       <div className="col-6 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
-                        <p>
-                          R{Calculations.getSubTotal(CostSummaryState) * 0.15}
-                        </p>
+                        <p>{Calculations.getVAT(CostSummaryState)}</p>
                       </div>
                     </div>
                   </li>
@@ -209,11 +226,7 @@ const MoveCostCard = () => {
                   <p>Total</p>
                 </div>
                 <div className="col-6 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
-                  <p>
-                    R
-                    {Calculations.getSubTotal(CostSummaryState) * 0.15 +
-                      Calculations.getSubTotal(CostSummaryState)}
-                  </p>
+                  <p>{Calculations.getTotal(CostSummaryState)}</p>
                 </div>
               </div>
             </li>
