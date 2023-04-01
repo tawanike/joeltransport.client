@@ -71,7 +71,6 @@ const BookStorageUnit = () => {
           booking: bookingState.formValues.id,
         })
         .then((res) => {
-          console.log("BOOKING_PRODUCT", res);
           dispatchCostSummary(
             addHandlingFee({
               quantity: 1,
@@ -84,65 +83,68 @@ const BookStorageUnit = () => {
 
   useEffect(() => {
     if (moveType && moveType.id) {
-      if (NumberOfUnitsValue === 0) {
-        setRecommendedTruck(null);
-        dispatchCostSummary(
-          selectTruck({
-            quantity: 0,
-            price: 0,
-            off_peak_discount: 0,
-          })
-        );
-      } else if (NumberOfUnitsValue === 1) {
-        setRecommendedTruck(trucks[0]);
-        dispatchCostSummary(
-          selectTruck({
-            quantity: 1,
-            price: trucks[0].price,
-            off_peak_discount: 0,
-          })
-        );
-      } else if (NumberOfUnitsValue >= 2 && NumberOfUnitsValue < 5) {
-        setRecommendedTruck(trucks[1]);
-        dispatchCostSummary(
-          selectTruck({
-            quantity: 1,
-            price: trucks[1].price,
-            off_peak_discount: 0,
-          })
-        );
-      } else if (NumberOfUnitsValue >= 5 && NumberOfUnitsValue < 9) {
-        setRecommendedTruck(trucks[1]);
-        dispatchCostSummary(
-          selectTruck({
-            quantity: 1,
-            price: trucks[2].price,
-            off_peak_discount: 0,
-          })
-        );
-      } else {
-        trucks.map((truck) => {
-          if (
-            truck.storage_units_recommendations &&
-            Number(truck.storage_units_recommendations.min) >=
-              NumberOfUnitsValue
-          ) {
-            if (truck.storage_units_recommendations.max >= NumberOfUnitsValue) {
-              setRecommendedTruck(truck);
-              dispatchCostSummary(
-                selectTruck({
-                  quantity: 1,
-                  price: truck.price,
-                  off_peak_discount: 0,
-                })
-              );
+      if (bookingState.formValues.collection) {
+        if (NumberOfUnitsValue === 0) {
+          setRecommendedTruck(null);
+          dispatchCostSummary(
+            selectTruck({
+              quantity: 0,
+              price: 0,
+              off_peak_discount: 0,
+            })
+          );
+        } else if (NumberOfUnitsValue === 1) {
+          setRecommendedTruck(trucks[0]);
+          dispatchCostSummary(
+            selectTruck({
+              quantity: 1,
+              price: trucks[0].price,
+              off_peak_discount: 0,
+            })
+          );
+        } else if (NumberOfUnitsValue >= 2 && NumberOfUnitsValue < 5) {
+          setRecommendedTruck(trucks[1]);
+          dispatchCostSummary(
+            selectTruck({
+              quantity: 1,
+              price: trucks[1].price,
+              off_peak_discount: 0,
+            })
+          );
+        } else if (NumberOfUnitsValue >= 5 && NumberOfUnitsValue < 9) {
+          setRecommendedTruck(trucks[1]);
+          dispatchCostSummary(
+            selectTruck({
+              quantity: 1,
+              price: trucks[2].price,
+              off_peak_discount: 0,
+            })
+          );
+        } else {
+          trucks.map((truck) => {
+            if (
+              truck.storage_units_recommendations &&
+              Number(truck.storage_units_recommendations.min) >=
+                NumberOfUnitsValue
+            ) {
+              if (
+                truck.storage_units_recommendations.max >= NumberOfUnitsValue
+              ) {
+                setRecommendedTruck(truck);
+                dispatchCostSummary(
+                  selectTruck({
+                    quantity: 1,
+                    price: truck.price,
+                    off_peak_discount: 0,
+                  })
+                );
+              }
             }
-          }
-        });
+          });
 
-        setRecommendedTruck(trucks[0]);
+          setRecommendedTruck(trucks[0]);
+        }
       }
-
       bookingsDispatch({
         type: ADD_FORM_VALUES,
         payload: {
