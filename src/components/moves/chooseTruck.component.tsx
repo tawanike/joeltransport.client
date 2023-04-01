@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from "react";
 import { getBooking } from "src/_actions/booking.actions";
 import { selectTruck } from "src/_actions/trucks.actions";
 import { BookingContext } from "src/_contexts/booking.context";
-import { isHoliday } from "src/_helpers/dateFormat";
 import { useAPI } from "src/_hooks";
 import { IProduct } from "src/_models/types";
 import { Navigation } from "swiper";
@@ -32,7 +31,11 @@ const ChooseTruck = ({ setChooseTruckComplete }: any) => {
 
   useEffect(() => {
     (async () => {
-      const trucks = await api.get("/products?category=2", false);
+      const trucks = await api.get(
+        `/products?category=2&booking=${bookingContext.state.formValues.id}`,
+        false
+      );
+      console.log("TRUCK PRODUCT", trucks);
       setTrucks(trucks.results);
     })();
   }, []);
@@ -54,26 +57,14 @@ const ChooseTruck = ({ setChooseTruckComplete }: any) => {
               .then((res) => {
                 if (!res.error) {
                   bookingContext.dispatch(getBooking({ formValues: res }));
-                  console.log("UPDATED BOOKING PRODUCTS", res.products);
                   const selected_truck = res.products.find(
                     (p: any) => p.category === "trucks"
                   );
-                  let price = 0,
-                    offPeakDiscount: number = 0;
-                  if (isHoliday(bookingContext.state.formValues.move_date)) {
-                    price =
-                      selectedTruck.price + selectedTruck.off_peak_discount;
-                    offPeakDiscount = 0;
-                  } else {
-                    price = selectedTruck.price;
-                    offPeakDiscount = selectedTruck.off_peak_discount;
-                  }
 
                   dispatchCostSummary(
                     selectTruck({
                       quantity: 1,
-                      price: price,
-                      off_peak_discount: offPeakDiscount,
+                      price: selected_truck.price,
                       additional_costs: selected_truck.additional_costs,
                     })
                   );

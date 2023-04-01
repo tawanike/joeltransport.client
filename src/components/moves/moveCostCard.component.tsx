@@ -174,10 +174,10 @@ const MoveCostCard = () => {
                         </div>
                         <div className="col-5 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
                           <p>
-                            R
                             {CostSummaryState.bakkieShuttle
                               ? accounting.formatMoney(
-                                  CostSummaryState.bakkieShuttle.price
+                                  CostSummaryState.bakkieShuttle.price *
+                                    CostSummaryState.bakkieShuttle.quantity
                                 )
                               : accounting.formatMoney(0)}
                           </p>

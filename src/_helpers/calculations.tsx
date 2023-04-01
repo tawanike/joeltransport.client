@@ -28,17 +28,7 @@ const getSubTotal = (state: any): string => {
     .map((expense) => {
       if (state && state[expense]) {
         if (state[expense].additional_costs) {
-          return (
-            (state[expense]?.quantity || 0) * (state[expense]?.price || 0) +
-            state[expense]?.additional_costs.crew +
-            state[expense]?.additional_costs.distance +
-            state[expense]?.additional_costs.peak_period +
-            state[expense]?.additional_costs.saturday +
-            state[expense]?.additional_costs.sunday +
-            state[expense]?.additional_costs.holiday +
-            state[expense]?.additional_costs.working_lift_origin +
-            state[expense]?.additional_costs.working_lift_destination
-          );
+          return (state[expense]?.quantity || 0) * (state[expense]?.price || 0);
         } else {
           return (state[expense]?.quantity || 0) * (state[expense]?.price || 0);
         }
@@ -55,17 +45,22 @@ const getTotalInCents = (state: any): number => {
 };
 
 const truckTotal = (truck: any): string => {
+  let truckTotal = "0.00";
   if (truck) {
-    const truckTotal =
-      truck.price +
-      truck.additional_costs.crew +
-      truck.additional_costs.distance +
-      truck.additional_costs.peak_period +
-      truck.additional_costs.saturday +
-      truck.additional_costs.holiday +
-      truck.additional_costs.sunday +
-      truck.additional_costs.working_lift_origin +
-      truck.additional_costs.working_lift_destination;
+    if (truck.additional_costs.distance == 0) {
+      truckTotal =
+        truck.price +
+        truck.additional_costs.crew +
+        truck.additional_costs.distance +
+        truck.additional_costs.peak_period +
+        truck.additional_costs.saturday +
+        truck.additional_costs.holiday +
+        truck.additional_costs.sunday +
+        truck.additional_costs.working_lift_origin +
+        truck.additional_costs.working_lift_destination;
+    } else {
+      truckTotal = truck.price;
+    }
 
     return truckTotal;
   }
