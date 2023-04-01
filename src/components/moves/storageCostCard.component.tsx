@@ -99,7 +99,7 @@ const StorageCostCard = () => {
                             <p>
                               {CostSummaryState.storage
                                 ? accounting.formatMoney(
-                                    CostSummaryState.storageHandlingFee.price
+                                    CostSummaryState.storageHandlingFee?.price
                                   )
                                 : "0.00"}
                             </p>
