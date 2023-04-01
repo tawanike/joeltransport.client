@@ -23,7 +23,7 @@ const getSubTotalStorage = (state: any): number => {
   return 0.0;
 };
 
-const getSubTotal = (state: any): string => {
+const getSubTotal = (state: any): number => {
   return (Object.keys(state) as Array<keyof CostSummary>)
     .map((expense) => {
       if (state && state[expense]) {
