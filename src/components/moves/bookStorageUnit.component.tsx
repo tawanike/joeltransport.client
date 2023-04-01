@@ -51,33 +51,11 @@ const BookStorageUnit = () => {
         setRecommendedTruck(trucks[0]);
       }
       const moves = await api.get("/products?category=1", false);
-      console.log("MOVES", moves);
       moves.results.forEach((move: any) => {
         if (move.slug === "storage") {
           setMoveType(move);
         }
       });
-
-      const handlingFee = moves.results.find(
-        (product: any) => product.slug === "storage-handling-fee"
-      );
-      console.log("HANDLING FEE", handlingFee);
-
-      api
-        .post(`/bookings/${bookingState.formValues.id}/products`, {
-          product: handlingFee.id,
-          quantity: 1,
-          product_type: "storage-handling-fee",
-          booking: bookingState.formValues.id,
-        })
-        .then((res) => {
-          dispatchCostSummary(
-            addHandlingFee({
-              quantity: 1,
-              price: handlingFee.price,
-            })
-          );
-        });
     })();
   }, []);
 
@@ -182,6 +160,14 @@ const BookStorageUnit = () => {
               .then((res) => {
                 if (!res.error) {
                   bookingsDispatch(getBooking({ formValues: res }));
+
+                  dispatchCostSummary(
+                    addHandlingFee({
+                      quantity: 1,
+                      price: 250,
+                      off_peak_discount: 0,
+                    })
+                  );
                 }
               });
           }
