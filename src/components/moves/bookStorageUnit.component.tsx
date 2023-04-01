@@ -99,17 +99,12 @@ const BookStorageUnit = () => {
                 );
             } else {
                 trucks.map((truck) => {
-                    console.log(
-                        "NumberOfUnitsValue",
-                        truck.storage_units_recommendations
-                    );
                     if (
                         truck.storage_units_recommendations &&
                         Number(truck.storage_units_recommendations.min) >=
                         NumberOfUnitsValue
                     ) {
                         if (truck.storage_units_recommendations.max >= NumberOfUnitsValue) {
-                            console.log("PANO", truck);
                             setRecommendedTruck(truck);
                             dispatchCostSummary(
                                 selectTruck({
