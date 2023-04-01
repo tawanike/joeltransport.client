@@ -1,13 +1,30 @@
+import accounting from "accounting";
 import MoveStepper from "components/moves/move-stepper.component";
+import StorageStepper from "components/moves/storage-stepper.component";
 import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { Alert, Button, Modal } from "react-bootstrap";
 import { BsCheckCircle } from "react-icons/bs";
 import { MdWarning } from "react-icons/md";
 import { usePaystackPayment } from "react-paystack";
 import { BookingContext } from "src/_contexts/booking.context";
 import CostSummaryStateContext from "src/_contexts/costSummary.context";
+import { CHANGE_OPEN_SECTION } from "src/_models/types";
 import { Calculations } from "../../_helpers/calculations";
+accounting.settings = {
+  currency: {
+    symbol: "R", // default currency symbol is '$'
+    format: "%s%v", // controls output: %s = symbol, %v = value/number (can be object: see below)
+    decimal: ".", // decimal point separator
+    thousand: ",", // thousands separator
+    precision: 2, // decimal places
+  },
+  number: {
+    precision: 0, // default precision on numbers is 0
+    thousand: ",",
+    decimal: ".",
+  },
+};
 
 const Checkout = () => {
   const router = useRouter();
@@ -16,10 +33,6 @@ const Checkout = () => {
   const { CostSummaryState, dispatchCostSummary } = useContext(
     CostSummaryStateContext
   );
-
-  useEffect(() => {
-    console.log("bookingContext", bookingContext.state);
-  }, []);
 
   const paystackConfig = {
     reference: bookingContext.state.formValues.id,
@@ -30,24 +43,19 @@ const Checkout = () => {
   };
 
   const initializePayment = usePaystackPayment(paystackConfig as any);
-
-  // you can call this function anything
   const onSuccess: any = (reference: any) => {
-    // Implementation for whatever you want to do with reference and after success call.
     setShowSuccessModal(true);
     localStorage.removeItem("bookingId");
-    router.push("/");
   };
 
   const handleDone = () => {
     setShowSuccessModal(false);
     dispatchCostSummary({ type: "RESET_BOOKING" });
     bookingContext.dispatch({ type: "RESET_COST_SUMMARY" });
+    window.location.href = "/";
   };
 
-  // you can call this function anything
   const onClose = () => {
-    // implementation for  whatever you want to do when the Paystack dialog closed.
     console.log("closed");
   };
 
@@ -105,23 +113,29 @@ const Checkout = () => {
                   </div>
                 </div>
               </Alert>
-              <MoveStepper />
+              {bookingContext.state.formValues.move_type === 0 ? (
+                <MoveStepper />
+              ) : (
+                <StorageStepper />
+              )}
             </div>
             <div className="col-3 offset-1 moves__checkout">
               <div className="col-12 moves__checkout__summary">
-                <h5>Move summary</h5>
+                {bookingContext.state.formValues.move_type === 0 ? (
+                  <h5>Move summary</h5>
+                ) : (
+                  <h5>Storage summary</h5>
+                )}
                 <div className="row">
                   <div className="col-12 moves__checkout__summary__list mt-3">
                     <div className="row">
                       <div className="col-6 moves__checkout__summary__list__text">
-                        <p>5 Items</p>
+                        <p>Items</p>
                       </div>
                       <div className="col-6 moves__checkout__summary__list__price">
-                        R
-                        {(
-                          Calculations.getSubTotal(CostSummaryState) * 0.15 +
-                          Calculations.getSubTotal(CostSummaryState)
-                        ).toFixed(2)}
+                        {accounting.formatMoney(
+                          Calculations.getTotal(CostSummaryState)
+                        )}
                       </div>
                     </div>
                   </div>
@@ -131,11 +145,9 @@ const Checkout = () => {
                         <p>Total</p>
                       </div>
                       <div className="col-6 moves__checkout__summary__list__price">
-                        R
-                        {(
-                          Calculations.getSubTotal(CostSummaryState) * 0.15 +
-                          Calculations.getSubTotal(CostSummaryState)
-                        ).toFixed(2)}
+                        {accounting.formatMoney(
+                          Calculations.getTotal(CostSummaryState)
+                        )}
                       </div>
                     </div>
                   </div>
@@ -147,11 +159,10 @@ const Checkout = () => {
                       initializePayment(onSuccess, onClose);
                     }}
                   >
-                    Pay R
-                    {(
-                      Calculations.getSubTotal(CostSummaryState) * 0.15 +
-                      Calculations.getSubTotal(CostSummaryState)
-                    ).toFixed(2)}
+                    Pay{" "}
+                    {accounting.formatMoney(
+                      Calculations.getTotal(CostSummaryState)
+                    )}
                   </Button>
                 </div>
               </div>
@@ -159,7 +170,11 @@ const Checkout = () => {
                 <img src="/img/pay.png" alt="Checkout" />
               </div>
               <div className="col-12 moves__checkout__summary">
-                <h5>Move review</h5>
+                {bookingContext.state.formValues.move_type === 0 ? (
+                  <h5>Move review</h5>
+                ) : (
+                  <h5>Storage review</h5>
+                )}
                 <div className="row">
                   <div className="col-12 moves__checkout__summary__list mt-3">
                     <div className="row">
@@ -167,7 +182,15 @@ const Checkout = () => {
                         <p>Date</p>
                         <p>{bookingContext.state.formValues.move_date}</p>
                       </div>
-                      <div className="col-6 moves__checkout__summary__list__edit">
+                      <div
+                        className="col-6 moves__checkout__summary__list__edit"
+                        onClick={() =>
+                          bookingContext.dispatch({
+                            type: CHANGE_OPEN_SECTION,
+                            payload: { openSection: "move_details" },
+                          })
+                        }
+                      >
                         Edit
                       </div>
                     </div>
@@ -179,11 +202,19 @@ const Checkout = () => {
                           Move details
                         </p>
                         <p>
-                          {bookingContext.state.formValues?.user?.first_name}
+                          {bookingContext.state.formValues?.user?.first_name}{" "}
                           {bookingContext.state.formValues?.user?.last_name}
                         </p>
                       </div>
-                      <div className="col-6 moves__checkout__summary__list__edit">
+                      <div
+                        className="col-6 moves__checkout__summary__list__edit"
+                        onClick={() =>
+                          bookingContext.dispatch({
+                            type: CHANGE_OPEN_SECTION,
+                            payload: { openSection: "move_details" },
+                          })
+                        }
+                      >
                         Edit
                       </div>
                       <div className="col-12 moves__checkout__summary__list__text mt-3">
@@ -197,17 +228,19 @@ const Checkout = () => {
                           }
                         </p>
                       </div>
-                      <div className="col-12 moves__checkout__summary__list__text mt-3">
-                        <p className="moves__checkout__summary__list__text--bold">
-                          Moving to
-                        </p>
-                        <p>
-                          {
-                            bookingContext.state.formValues?.to_address
-                              ?.formatted_address
-                          }
-                        </p>
-                      </div>
+                      {bookingContext.state.formValues.move_type === 0 && (
+                        <div className="col-12 moves__checkout__summary__list__text mt-3">
+                          <p className="moves__checkout__summary__list__text--bold">
+                            Moving to
+                          </p>
+                          <p>
+                            {
+                              bookingContext.state.formValues?.to_address
+                                ?.formatted_address
+                            }
+                          </p>
+                        </div>
+                      )}
                     </div>
                   </div>
                   <div className="col-12 moves__checkout__summary__list mt-3">
@@ -222,7 +255,15 @@ const Checkout = () => {
                           }
                         )}
                       </div>
-                      <div className="col-6 moves__checkout__summary__list__edit">
+                      <div
+                        className="col-6 moves__checkout__summary__list__edit"
+                        onClick={() =>
+                          bookingContext.dispatch({
+                            type: CHANGE_OPEN_SECTION,
+                            payload: { openSection: "truck" },
+                          })
+                        }
+                      >
                         Edit
                       </div>
                     </div>

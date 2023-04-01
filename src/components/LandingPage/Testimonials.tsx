@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
-// import StarRatingComponent from 'react-star-rating-component';
+const placeJSON = require("../../../public/js/places.sample.json");
 
 const Review = ({ review, onClick }: any) => {
   return (
@@ -28,7 +28,6 @@ const Testimonials = () => {
   const [selectedReview, setSelectedReview] = useState<any>({});
 
   useEffect(() => {
-    const placeJSON = require("../../../public/js/places.sample.json");
     const place = placeJSON.result;
     setSelectedReview(place.reviews[0]);
     setReviews(place.reviews);
@@ -37,7 +36,7 @@ const Testimonials = () => {
   return (
     <div className="Testimonials container">
       <h1>Testimonials</h1>
-      <h3>What our customers say about us</h3>
+      <h3>Don’t take it from us – trust our customer reviews.</h3>
       {reviews.length ? (
         <div className="Testimonials__container row">
           <div className="Testimonials__reviewers col-4">

@@ -4,6 +4,10 @@
     padding-bottom: 0.3rem;
     border-radius: 5px;
     overflow: hidden;
+    &--disabled {
+        opacity: 0.5;
+        pointer-events: none;
+    }
     p {
         margin-bottom: 0;
     }

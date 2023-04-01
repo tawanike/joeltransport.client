@@ -1,12 +1,40 @@
-import { useContext } from "react";
+import accounting from "accounting";
+import { useContext, useRef, useState } from "react";
+import Overlay from "react-bootstrap/Overlay";
+import Tooltip from "react-bootstrap/Tooltip";
 import { BsInfoCircle } from "react-icons/bs";
+import { BookingContext } from "src/_contexts/booking.context";
 import { Calculations } from "src/_helpers/calculations";
 import CostSummaryStateContext from "../../_contexts/costSummary.context";
+accounting.settings = {
+  currency: {
+    symbol: "R", // default currency symbol is '$'
+    format: "%s%v", // controls output: %s = symbol, %v = value/number (can be object: see below)
+    decimal: ".", // decimal point separator
+    thousand: ",", // thousands separator
+    precision: 2, // decimal places
+  },
+  number: {
+    precision: 0, // default precision on numbers is 0
+    thousand: ",",
+    decimal: ".",
+  },
+};
 
 const MoveCostCard = () => {
+  const [show, setShow] = useState(false);
+  const [showDiscountTooltip, setShowDiscountTooltip] = useState(false);
+  const [showBukkieShuttleTooltip, setShowBukkieShuttleTooltip] =
+    useState(false);
+
+  const target = useRef(null);
+  const discountTooltipTarget = useRef(null);
+  const bukkieShuttleTooltipTarget = useRef(null);
+
   const { CostSummaryState, dispatchCostSummary } = useContext(
     CostSummaryStateContext
   );
+  const bookingContext = useContext(BookingContext);
 
   return (
     <>
@@ -22,62 +50,141 @@ const MoveCostCard = () => {
               </div>
               <div className="col-12 move-cost-card__section__details">
                 <ul>
-                  <li>
-                    <div className="row">
-                      <div className="col-6 move-cost-card__section__details__title">
-                        <p>Truck & crew</p>
+                  {CostSummaryState.truck && (
+                    <li>
+                      <div className="row">
+                        <div className="col-6 move-cost-card__section__details__title">
+                          <p>Truck & crew</p>
+                        </div>
+                        <div
+                          className="col-1 move-cost-card__section__details__title"
+                          ref={target}
+                        >
+                          <BsInfoCircle
+                            onClick={() => {
+                              setShow(!show);
+                              setShowDiscountTooltip(false);
+                              setShowBukkieShuttleTooltip(false);
+                            }}
+                          />
+                          <Overlay
+                            target={target.current}
+                            show={show}
+                            placement="right"
+                          >
+                            {(props) => (
+                              <Tooltip id="truck-crew" {...props}>
+                                My Tooltip
+                              </Tooltip>
+                            )}
+                          </Overlay>
+                        </div>
+                        <div className="col-5 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
+                          <p>
+                            {CostSummaryState.truck
+                              ? accounting.formatMoney(
+                                  Calculations.truckTotal(
+                                    CostSummaryState.truck
+                                  )
+                                )
+                              : accounting.formatMoney(0)}
+                          </p>
+                        </div>
                       </div>
-                      <div className="col-1 move-cost-card__section__details__title">
-                        <BsInfoCircle />
+                    </li>
+                  )}
+                  {CostSummaryState.truck &&
+                    CostSummaryState.truck.off_peak_discount > 0 && (
+                      <li>
+                        <div className="row">
+                          <div className="col-6 move-cost-card__section__details__title">
+                            <p>Off peak discount</p>
+                          </div>
+                          <div
+                            className="col-1 move-cost-card__section__details__title"
+                            ref={discountTooltipTarget}
+                          >
+                            <BsInfoCircle
+                              onClick={() => {
+                                setShowDiscountTooltip(!showDiscountTooltip);
+                                setShow(false);
+                                setShowBukkieShuttleTooltip(false);
+                              }}
+                            />
+                            <Overlay
+                              target={discountTooltipTarget.current}
+                              show={showDiscountTooltip}
+                              placement="right"
+                            >
+                              {(props) => (
+                                <Tooltip id="truck-crew" {...props}>
+                                  My Tooltip
+                                </Tooltip>
+                              )}
+                            </Overlay>
+                          </div>
+                          <div className="col-5 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
+                            <p>
+                              {CostSummaryState.truck &&
+                              CostSummaryState.truck.off_peak_discount
+                                ? accounting.formatMoney(
+                                    CostSummaryState.truck.off_peak_discount
+                                  )
+                                : accounting.formatMoney(0)}
+                            </p>
+                          </div>
+                        </div>
+                      </li>
+                    )}
+                  {CostSummaryState.bakkieShuttle && (
+                    <li>
+                      <div className="row">
+                        <div className="col-6 move-cost-card__section__details__title">
+                          <p>Bakkie shuttle</p>
+                        </div>
+                        <div
+                          className="col-1 move-cost-card__section__details__title"
+                          ref={bukkieShuttleTooltipTarget}
+                        >
+                          <BsInfoCircle
+                            onClick={() => {
+                              setShowBukkieShuttleTooltip(
+                                !showBukkieShuttleTooltip
+                              );
+                              setShow(false);
+                              setShowDiscountTooltip(false);
+                            }}
+                          />
+                          <Overlay
+                            target={bukkieShuttleTooltipTarget.current}
+                            show={showBukkieShuttleTooltip}
+                            placement="right"
+                          >
+                            {(props) => (
+                              <Tooltip id="bukkie-shuttle" {...props}>
+                                Used where a home or office estate, complex or
+                                location cannot be accessed using our removals
+                                trucks, or due to restrictions in an estate or
+                                complex for large-sized trucks. Our bakkie
+                                shuttles customer belongings to our removal
+                                truck.
+                              </Tooltip>
+                            )}
+                          </Overlay>
+                        </div>
+                        <div className="col-5 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
+                          <p>
+                            {CostSummaryState.bakkieShuttle
+                              ? accounting.formatMoney(
+                                  CostSummaryState.bakkieShuttle.price *
+                                    CostSummaryState.bakkieShuttle.quantity
+                                )
+                              : accounting.formatMoney(0)}
+                          </p>
+                        </div>
                       </div>
-                      <div className="col-5 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
-                        <p>
-                          R
-                          {CostSummaryState.truck
-                            ? CostSummaryState.truck.price
-                            : "0.00"}
-                        </p>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div className="row">
-                      <div className="col-6 move-cost-card__section__details__title">
-                        <p>Off peak discount</p>
-                      </div>
-                      <div className="col-1 move-cost-card__section__details__title">
-                        <BsInfoCircle />
-                      </div>
-                      <div className="col-5 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
-                        <p>
-                          R
-                          {CostSummaryState.truck &&
-                          CostSummaryState.truck.off_peak_discount
-                            ? CostSummaryState.truck.off_peak_discount
-                            : "0.00"}
-                        </p>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div className="row">
-                      <div className="col-6 move-cost-card__section__details__title">
-                        <p>Bakkie shuttle</p>
-                      </div>
-                      <div className="col-1 move-cost-card__section__details__title">
-                        <BsInfoCircle />
-                      </div>
-                      <div className="col-5 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
-                        <p>
-                          R
-                          {CostSummaryState.bakkieShuttle
-                            ? CostSummaryState.bakkieShuttle.price *
-                              CostSummaryState.bakkieShuttle.quantity
-                            : "0.00"}
-                        </p>
-                      </div>
-                    </div>
-                  </li>
+                    </li>
+                  )}
                 </ul>
               </div>
             </div>
@@ -93,7 +200,11 @@ const MoveCostCard = () => {
                         <p>Sub total</p>
                       </div>
                       <div className="col-6 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
-                        <p>R{Calculations.getSubTotal(CostSummaryState)}</p>
+                        <p>
+                          {accounting.formatMoney(
+                            Calculations.getSubTotal(CostSummaryState)
+                          )}
+                        </p>
                       </div>
                     </div>
                   </li>
@@ -104,7 +215,9 @@ const MoveCostCard = () => {
                       </div>
                       <div className="col-6 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
                         <p>
-                          R{Calculations.getSubTotal(CostSummaryState) * 0.15}
+                          {accounting.formatMoney(
+                            Calculations.getVAT(CostSummaryState)
+                          )}
                         </p>
                       </div>
                     </div>
@@ -125,9 +238,9 @@ const MoveCostCard = () => {
                 </div>
                 <div className="col-6 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
                   <p>
-                    R
-                    {Calculations.getSubTotal(CostSummaryState) * 0.15 +
-                      Calculations.getSubTotal(CostSummaryState)}
+                    {accounting.formatMoney(
+                      Calculations.getTotal(CostSummaryState)
+                    )}
                   </p>
                 </div>
               </div>

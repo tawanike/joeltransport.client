@@ -1,11 +1,13 @@
 .storage-cost-card {
-    background-color: #F4F6F8;
+    // background-color: #F4F6F8;
     padding: 2rem;
     p {
         margin-bottom: 0;
         font-weight: 500;
     }
     &__head {
+        border-bottom: 1px solid #D9D9D9;
+        padding-bottom: 1rem;
         p {
             font-size: 1rem;
             font-weight: 800;
@@ -25,4 +27,9 @@
             text-align: center;
         }
     }
+}
+
+.csTablecenter {
+    border-left: 1px solid #D9D9D9;
+    border-right: 1px solid #D9D9D9;
 }

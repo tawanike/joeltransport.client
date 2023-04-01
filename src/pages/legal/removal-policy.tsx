@@ -39,20 +39,21 @@ export default function PrivacyPolicy({}: Props) {
         <Accordion.Item eventKey="0">
           <Accordion.Header>1. Our quotation.</Accordion.Header>
           <Accordion.Body>
-            is valid for 7 days and does not include packing, insurance, customs
-            duties or any other fees paid to third parties, we may change the
-            quotation if: (a)The work has not been completed within three (3)
-            months if you have caused the delay. (b) Our costs go up because of
-            changes in the official rate of exchange between the currency of
-            South Africa and a foreign currency (c) taxation or freight charges
-            outside of our control are levied (d) Extra goods are removed or
-            stored (e) We have to collect or deliver above a second floor unless
-            we have agreed to do so in writing. (f) We supply extra services at
-            your request. (g) There are delays outside of our control. (h) The
-            stairs, lifts or doorways are inadequate for easy delivery; or the
-            road or approach are unsuitable for our vehicles; unless you told us
-            in writing of these problems before we prepared the quotation. In
-            all these circumstances you agree to pay the extra charges.
+            is valid for 31 days and does not include packing, insurance,
+            customs duties or any other fees paid to third parties, we may
+            change the quotation if: (a)The work has not been completed within
+            three (3) months if you have caused the delay. (b) Our costs go up
+            because of changes in the official rate of exchange between the
+            currency of South Africa and a foreign currency (c) taxation or
+            freight charges outside of our control are levied (d) Extra goods
+            are removed or stored (e) We have to collect or deliver above a
+            second floor unless we have agreed to do so in writing. (f) We
+            supply extra services at your request. (g) There are delays outside
+            of our control. (h) The stairs, lifts or doorways are inadequate for
+            easy delivery; or the road or approach are unsuitable for our
+            vehicles; unless you told us in writing of these problems before we
+            prepared the quotation. In all these circumstances you agree to pay
+            the extra charges.
           </Accordion.Body>
         </Accordion.Item>
         <Accordion.Item eventKey="1">
@@ -211,13 +212,13 @@ export default function PrivacyPolicy({}: Props) {
         <Accordion.Item eventKey="12">
           <Accordion.Header>13. Our rights to sell the goods.</Accordion.Header>
           <Accordion.Body>
-            On giving you 28 days' notice we are entitled to require you to move
-            your goods from our custody and to pay all money due to us. If you
-            fail to pay all outstanding debts due to us, we are entitled to sell
-            or dispose of some or all of the goods to defray expenses. The cost
-            of the sale or disposal will be charged to you. The net proceeds
-            will be credited to your account and any eventual surplus will be
-            paid to you without interest.
+            On giving you 28 {"days'"} notice we are entitled to require you to
+            move your goods from our custody and to pay all money due to us. If
+            you fail to pay all outstanding debts due to us, we are entitled to
+            sell or dispose of some or all of the goods to defray expenses. The
+            cost of the sale or disposal will be charged to you. The net
+            proceeds will be credited to your account and any eventual surplus
+            will be paid to you without interest.
           </Accordion.Body>
         </Accordion.Item>
         <Accordion.Item eventKey="13">
@@ -283,7 +284,7 @@ export default function PrivacyPolicy({}: Props) {
           <Accordion.Header>20. Revision of storage charges.</Accordion.Header>
           <Accordion.Body>
             We review our storage charges periodically. You will be given 28
-            days' notice of any increases.
+            {"days'"} notice of any increases.
           </Accordion.Body>
         </Accordion.Item>
 
@@ -304,7 +305,7 @@ export default function PrivacyPolicy({}: Props) {
           </Accordion.Header>
           <Accordion.Body>
             If your payments are up to date, we will not end this contract,
-            except giving at least three months' notice.
+            except giving at least three {"months'"} notice.
           </Accordion.Body>
         </Accordion.Item>
 
@@ -315,9 +316,9 @@ export default function PrivacyPolicy({}: Props) {
           <Accordion.Body>
             Account: Joel Transport
             <br />
-            Bankers: FNB
-            <br /> Branch: Centurion
-            <br /> Account Number: 55291136544
+            Bankers: ABSA
+            <br /> Branch code: 632005
+            <br /> Account Number: 4095365029
             <br />
             Funds paid to any other banking account will not be accepted as
             payment by us.

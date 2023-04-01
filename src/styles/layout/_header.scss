@@ -13,4 +13,17 @@
             color: $primary;
         }
     }
+    &__icons {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        .icon {
+            margin-right: 20px;
+            font-size: 22px;
+            color: $primary;
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
 }

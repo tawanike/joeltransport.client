@@ -16,66 +16,70 @@ export type ServiceConfig = {
   image: string;
   bgColor: string;
   icon: ReactNode;
+  btnText: string;
 };
 
 export const servicesConfig: ServiceConfig[] = [
   {
     id: "1",
     title: "Domestic move",
-    description:
-      "Planning to relocate your home around Gauteng? Schedule your move online.",
+    description: "Planning to relocate? Schedule the process online.",
     link: "/services/home-moves",
     image: "",
     bgColor: "light-blue",
     icon: <BiHomeSmile />,
+    btnText: "Get started",
   },
   {
     id: "2",
     title: "Long distance move",
-    description:
-      "Get in-touch with one of expects to help you plan your international move.",
+    description: "More distance, less stress. So good that it’s true!",
     link: "/services/home-moves",
     image: "",
     bgColor: "orange",
     icon: <FaLocationArrow />,
+    btnText: "Get started",
   },
   {
     id: "3",
     title: "International move",
-    description: "Get in-touch with one of expects to help you with your move",
+    description: "Long distance doesn’t intimidate us.",
     link: "/services/home-moves",
     image: "",
     bgColor: "brown",
     icon: <FaPlaneDeparture />,
+    btnText: "Get started",
   },
   {
     id: "4",
     title: "Office relocation",
-    description:
-      "Get in-touch with one of expects to help you plan your international move.",
+    description: "Our experts take the headache out of international moves.",
     link: "/services/office-removals",
     image: "",
     bgColor: "orange",
     icon: <MdOutlineEmojiTransportation />,
+    btnText: "Get started",
   },
   {
     id: "5",
-    title: "Specialized services",
+    title: "Specialised services",
     description:
-      "Planning to relocate your piano, art, pet? get in touch with one of our expects to help you with your move or relocation. ",
+      "We’re in tune with your piano’s needs, know exactly how delicate moving art is, and can bet that your pet will be safe.",
     link: "/services/specialized-services",
     image: "",
     bgColor: "light-blue",
     icon: <FaLaptopHouse />,
+    btnText: "Get started",
   },
   {
     id: "6",
     title: "Storage services",
     description:
-      "Looking for a shot-term or long term storage? book and schedule your storage online.",
+      "Looking for short-term or long-term storage facilities? Book your unit with us!",
     link: "/services/storage",
     image: "",
     bgColor: "orange",
     icon: <FaWarehouse />,
+    btnText: "Get started",
   },
 ];

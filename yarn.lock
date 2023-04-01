@@ -378,6 +378,11 @@
   dependencies:
     tslib "^2.4.0"
 
+"@types/accounting@^0.4.2":
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/@types/accounting/-/accounting-0.4.2.tgz#81239fc56bc62511a3d3ff535dde2e0bbf3c53c1"
+  integrity sha512-M8W6tsLZguGdRaSQMmg58PUM/5HgoDuBGVyMiYNGi0FZkLzJDjUBGGYRYj1J9OWELCTqfux+ogVyKObCzfWJgg==
+
 "@types/google.maps@^3.49.1":
   version "3.51.1"
   resolved "https://registry.yarnpkg.com/@types/google.maps/-/google.maps-3.51.1.tgz#7cd2007d231d49b9642d84e752d25f41827f7c2b"
@@ -544,6 +549,11 @@
   dependencies:
     "@zeit/next-css" "1.0.1"
     sass-loader "6.0.6"
+
+accounting@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/accounting/-/accounting-0.4.1.tgz#87dd4103eff7f4460f1e186f5c677ed6cf566883"
+  integrity sha512-RU6KY9Y5wllyaCNBo1W11ZOTnTHMMgOZkIwdOOs6W5ibMTp72i4xIbEA48djxVGqMNTUNbvrP/1nWg5Af5m2gQ==
 
 acorn-jsx@^5.3.2:
   version "5.3.2"
@@ -3221,6 +3231,11 @@ sprintf-js@~1.0.2:
   resolved "https://registry.yarnpkg.com/sprintf-js/-/sprintf-js-1.0.3.tgz#04e6926f662895354f3dd015203633b857297e2c"
   integrity sha512-D9cPgkvLlV3t3IzL0D0YLvGA9Ahk4PcvVwUbN0dSGr1aP0Nrt4AEnTUbuGvquEC0mA64Gqt1fzirlRs5ibXx8g==
 
+ssr-window@^4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/ssr-window/-/ssr-window-4.0.2.tgz#dc6b3ee37be86ac0e3ddc60030f7b3bc9b8553be"
+  integrity sha512-ISv/Ch+ig7SOtw7G2+qkwfVASzazUnvlDTwypdLoPoySv+6MqlOV10VwPSE6EWkGjhW50lUmghPmpYZXMu/+AQ==
+
 stop-iteration-iterator@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/stop-iteration-iterator/-/stop-iteration-iterator-1.0.0.tgz#6a60be0b4ee757d1ed5254858ec66b10c49285e4"
@@ -3319,6 +3334,13 @@ supports-preserve-symlinks-flag@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz#6eda4bd344a3c94aea376d4cc31bc77311039e09"
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
+
+swiper@^9.1.1:
+  version "9.1.1"
+  resolved "https://registry.yarnpkg.com/swiper/-/swiper-9.1.1.tgz#8e8d49a3667d9ef8997cddb023d913c422e72142"
+  integrity sha512-D1zArOwI6XCXCYBULPA4jTxpqp5SQtvntjinbXNZwXzj6P3KS51zSWuMarCLXq5oRISay4nX+TuShpxz8qhtbw==
+  dependencies:
+    ssr-window "^4.0.2"
 
 synckit@^0.8.4:
   version "0.8.5"

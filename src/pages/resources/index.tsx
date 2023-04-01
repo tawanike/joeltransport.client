@@ -12,8 +12,9 @@ export default function Resources() {
       <CoverImage
         size="medium"
         src="/img/services/resources_banner.png"
-        pageTitle="Resources & articles"
-        description="Download documents and or view our certifications"
+        pageTitle="Resources and articles"
+        description="Everything you need to know"
+        variant="--resources"
       />
 
       <div className="resources__documents">
@@ -26,8 +27,8 @@ export default function Resources() {
                     <p>Resourceful documents</p>
                   </div>
                   <div className="resources__product-description__summary__information-summary">
-                    We are industry compliance for both local and international
-                    moving and storage services.
+                    We follow industry standards for both local and
+                    international moving/ storage services.
                   </div>
                   <div className="resources__product-description__summary__information-button py-3">
                     {
@@ -54,8 +55,8 @@ export default function Resources() {
                         </div>
                         <div className="col-12 resources__downloads__outline__summary">
                           <p>
-                            We have provided an excel document to help with your
-                            move.
+                            This excel document is great for keeping track of
+                            everything during your move.
                           </p>
                         </div>
                         <div className="col-12 resources__downloads__outline__button">
@@ -76,7 +77,9 @@ export default function Resources() {
                           <p>Certification</p>
                         </div>
                         <div className="col-12 resources__downloads__outline__summary">
-                          <p>We are trusted and compliance with RFA. </p>
+                          <p>
+                            RFA has granted us compliance. Have a look below!
+                          </p>
                         </div>
                         <div className="col-12 resources__downloads__outline__button">
                           <Link href="https://joeltransport.co.za/wp-content/uploads/2022/09/Joel-Transport-RFA_Membership_Certificate_2022.pdf">
@@ -96,7 +99,7 @@ export default function Resources() {
                           <p>Certification</p>
                         </div>
                         <div className="col-12 resources__downloads__outline__summary">
-                          <p>We are trusted and compliant with Amosa. </p>
+                          <p>Have a look at our Armosa compliance details.</p>
                         </div>
                         <div className="col-12 resources__downloads__outline__button">
                           <Link href="https://joeltransport.co.za/wp-content/uploads/2020/09/Joel-Transport-Pty-Ltd-AMOSA_Member_Certificate_2020-.pdf">

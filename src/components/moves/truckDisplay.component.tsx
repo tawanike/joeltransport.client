@@ -13,7 +13,7 @@ const TruckDisplay: FC<IProps> = ({ truck, onSelect, isSelected }) => {
     return <div className={`col-12 truckDisplay truckDisplay${isSelected ? "--selected" : ""}`}>
         <div className="row">
             <div className="col-12 truckDisplay__head">
-                <BsTruck />
+                <img src="/img/trucks/1.png" alt="" />
             </div>
             <div className="col-12 truckDisplay__body">
                 <div className="col-12 mb-3">

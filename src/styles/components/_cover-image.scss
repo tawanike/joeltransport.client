@@ -1,11 +1,36 @@
 .CoverImage {
-  width: 100%;
-  height: 300px;
-  position: relative;
-  &__text {
+    width: 100%;
+    height: 300px;
     position: relative;
-    top: 20px;
-    left: 0;
-    color: var(--color-white);
-  }
+    padding: 0px;
+    &--storage {
+        background: url(../../../public/img/storage.png) no-repeat center center;
+        background-size: cover;
+    }
+    &--domestic {
+        background: url(../../../public/img/kaleb.png) no-repeat center center;
+        background-size: cover;
+    }
+    &--resources {
+        background: url(../../../public/img/services/resources_banner.png) no-repeat center center;
+        background-size: cover;
+    }
+    &--home-moves {
+        background: url(../../../public/img/services/home_moves_banner_image.png) no-repeat center center;
+        background-size: cover;
+    }
+    &__text {
+        position: relative;
+        top: 20px;
+        left: 0;
+        color: var(--color-white);
+    }
+    &__overlay {
+        background: url(../../../public/img/landing_overlay.png) no-repeat center center;
+        background-size: cover;
+        height: 300px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+    }
 }

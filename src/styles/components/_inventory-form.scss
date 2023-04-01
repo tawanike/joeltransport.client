@@ -1,0 +1,15 @@
+.InventoryForm {
+    &__display {
+        &__title {
+            p {
+                margin-bottom: 0;
+            }
+        }
+        &__count {
+            p {
+                margin-bottom: 0;
+                font-size: 0.9rem;
+            }
+        }
+    }
+}

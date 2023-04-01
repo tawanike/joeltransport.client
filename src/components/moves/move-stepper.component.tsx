@@ -1,20 +1,15 @@
-import { useState } from "react";
-import { BsCartPlus, BsInfoCircle, BsPerson, BsTruck } from "react-icons/bs";
+import { useContext } from "react";
 import { RxCaretDown } from "react-icons/rx";
-import AddedServices from "./bakkieShuttle.component";
+import { BookingContext } from "src/_contexts/booking.context";
+import { CHANGE_OPEN_SECTION } from "src/_models/types";
+import BakkieShuttle from "./bakkieShuttle.component";
 import ChooseTruck from "./chooseTruck.component";
 import MoveDetails from "./moveDetails.component";
 import PersonalInformation from "./personalInfomation.componnent";
 
 const MoveStepper = () => {
-  const [currentView, setCurrentView] = useState("");
-  const toggleView = (view: string) => {
-    if (currentView === view) {
-      setCurrentView("");
-      return;
-    }
-    setCurrentView(view);
-  };
+  const bookingContext = useContext(BookingContext);
+
   return (
     <>
       <div className="col-12 moves__stepper">
@@ -22,13 +17,16 @@ const MoveStepper = () => {
           <div className="row">
             <div
               className="col-12 moves__step__head"
-              onClick={() => toggleView("move")}
+              onClick={() =>
+                bookingContext.dispatch({
+                  type: CHANGE_OPEN_SECTION,
+                  payload: { openSection: "move_details" },
+                })
+              }
             >
               <div className="row">
                 <div className="col-11">
-                  <p>
-                    <BsInfoCircle className="me-2" /> Move details
-                  </p>
+                  <p>Move details</p>
                 </div>
 
                 <div className="col-1 moves__step__head__curret">
@@ -36,10 +34,10 @@ const MoveStepper = () => {
                 </div>
               </div>
             </div>
-            {currentView === "move" && (
+            {bookingContext.state.openSection === "move_details" && (
               <MoveDetails
                 hasDelivery={true}
-                dateLabel="When would you like to move?"
+                dateLabel="When would you like us to collect?"
               />
             )}
           </div>
@@ -48,13 +46,16 @@ const MoveStepper = () => {
           <div className="row">
             <div
               className="col-12 moves__step__head"
-              onClick={() => toggleView("truck")}
+              onClick={() =>
+                bookingContext.dispatch({
+                  type: CHANGE_OPEN_SECTION,
+                  payload: { openSection: "truck" },
+                })
+              }
             >
               <div className="row">
                 <div className="col-11">
-                  <p>
-                    <BsTruck className="me-2" /> Choose a truck
-                  </p>
+                  <p>Choose a truck</p>
                 </div>
 
                 <div className="col-1 moves__step__head__curret">
@@ -62,7 +63,7 @@ const MoveStepper = () => {
                 </div>
               </div>
             </div>
-            {currentView === "truck" && <ChooseTruck />}
+            {bookingContext.state.openSection === "truck" && <ChooseTruck />}
           </div>
         </div>
 
@@ -70,14 +71,16 @@ const MoveStepper = () => {
           <div className="row">
             <div
               className="col-12 moves__step__head"
-              onClick={() => toggleView("added")}
+              onClick={() =>
+                bookingContext.dispatch({
+                  type: CHANGE_OPEN_SECTION,
+                  payload: { openSection: "additional_services" },
+                })
+              }
             >
               <div className="row">
                 <div className="col-11">
-                  <p>
-                    <BsCartPlus className="me-2" />
-                    Bukkie Shuttle
-                  </p>
+                  <p>Bakkie Shuttle</p>
                 </div>
 
                 <div className="col-1 moves__step__head__curret">
@@ -85,7 +88,9 @@ const MoveStepper = () => {
                 </div>
               </div>
             </div>
-            {currentView === "added" && <AddedServices />}
+            {bookingContext.state.openSection === "additional_services" && (
+              <BakkieShuttle />
+            )}
           </div>
         </div>
 
@@ -93,14 +98,16 @@ const MoveStepper = () => {
           <div className="row">
             <div
               className="col-12 moves__step__head"
-              onClick={() => toggleView("personal")}
+              onClick={() =>
+                bookingContext.dispatch({
+                  type: CHANGE_OPEN_SECTION,
+                  payload: { openSection: "personal" },
+                })
+              }
             >
               <div className="row">
                 <div className="col-11">
-                  <p>
-                    <BsPerson className="me-2" />
-                    Personal information
-                  </p>
+                  <p>Personal information</p>
                 </div>
 
                 <div className="col-1 moves__step__head__curret">
@@ -108,7 +115,9 @@ const MoveStepper = () => {
                 </div>
               </div>
             </div>
-            {currentView === "personal" && <PersonalInformation />}
+            {bookingContext.state.openSection === "personal" && (
+              <PersonalInformation />
+            )}
           </div>
         </div>
       </div>

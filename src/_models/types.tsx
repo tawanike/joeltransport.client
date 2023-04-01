@@ -12,7 +12,12 @@ export const ADD_MOVE_DETAILS = "ADD_MOVE_DETAILS";
 export const ADD_PRODUCTS_DATA = "ADD_ADDITIONAL_PRODUCTS_DATA";
 export const ADD_FORM_VALUES = "ADD_FORM_VALUES";
 export const EDIT_ADDITIONAL_SERVICES = "EDIT_ADDITIONAL_SERVICES";
-
+export const ADD_INVENTORY_ITEM = "ADD_INVENTORY_ITEM";
+export const DELETE_INVENTORY_ITEM = "DELETE_INVENTORY_ITEM";
+export const ZERO_TRUCK_QUANTITY = "ZERO_TRUCK_QUANTITY";
+export const ADD_STORAGE_ADDITIONAL_SERVICES =
+    "ADD_STORAGE_ADDITIONAL_SERVICES";
+export const CHANGE_OPEN_SECTION = "CHANGE_OPEN_SECTION";
 export enum UserRoles {
     Global = "global",
     Manager = "manager",
@@ -83,6 +88,7 @@ export interface IAction {
 }
 
 export interface IProduct {
+    storage_units_recommendations: any;
     id: string;
     title: string;
     slug: string;
@@ -110,6 +116,7 @@ export interface IFormValues {
     to_property_type: number;
     move_date: any;
     move_time_period: number;
+    move_type: number;
     submited: boolean;
     to_floors_count: number;
     from_floors_count: number;
@@ -120,6 +127,21 @@ export interface IFormValues {
     storage_units_count: number;
     deliver_to_storage: boolean;
     products: IProduct[];
+
+    moving_survey: boolean;
+    packing_material: boolean;
+    packing_service: boolean;
+    insurance: boolean;
+    storage: boolean;
+    bakkie_shuttle: boolean;
+    crating: boolean;
+    gauteng_removal: boolean;
+    international_moving_services: boolean;
+
+    addOns: any[];
+    inventoryList: IInventoryListItem[];
+    collection: boolean;
+
     user: {
         first_name: string;
         last_name: string;
@@ -128,11 +150,29 @@ export interface IFormValues {
     };
 }
 
+export interface IInventoryListItem {
+    inventory_item: string;
+    quantity: number;
+    booking: string;
+    room: number;
+    category: number | string;
+    description: string;
+}
+
 export interface IBooking {
     id: string | undefined;
     products: IProduct[];
     formValues: IFormValues;
+    openSection:
+    | "move_details"
+    | "additional_services"
+    | "inventory"
+    | "truck"
+    | "bakkie_shuttle"
+    | "storage"
+    | "personal";
     additionalServices: { [key: string]: boolean };
+    inventoryList: IInventoryListItem[];
 }
 
 export interface IAddress {
@@ -143,4 +183,21 @@ export interface IAddress {
     suburb: string;
     province: string;
     country: string;
+}
+
+export interface IRoom {
+    id: string;
+    title: string;
+    image: string;
+    cover: string;
+}
+
+export interface IInventoryItem {
+    id: string;
+    category: number;
+    created_at: string;
+    description: string;
+    title: string;
+    updated_at: string;
+    weight: string;
 }

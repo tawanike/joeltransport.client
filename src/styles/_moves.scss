@@ -9,12 +9,13 @@
             padding-bottom: 1.2rem;
             p {
                 margin-bottom: 0;
+                font-size: 1rem;
             }
         }
         &__body {
             &__table-head {
                 background-color: #F2F0F4;
-                font-size: 0.8rem;
+                font-size: 1rem;
                 font-weight: 400;
             }
         }
@@ -111,5 +112,17 @@
                 height: auto;
             }
         }
+    }
+}
+
+.storage-delete {
+    border: none;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    &:hover {
+        cursor: pointer;
+        color: #f44336;
     }
 }

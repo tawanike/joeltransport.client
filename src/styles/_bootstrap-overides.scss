@@ -20,3 +20,37 @@
     padding-left: 0;
     padding-right: 45px;
 }
+
+.btn:disabled,
+.btn.disabled,
+fieldset:disabled .btn {
+    color: white;
+    background-color: #c2c2c2;
+    border: none;
+    outline: none;
+}
+
+.btn-secondary {
+    color: white;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+    color: #fa551e !important;
+}
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+    font-size: 30px !important;
+    font-weight: 800 !important;
+}
+
+.breadcrumb-item {
+    a {
+        color: black;
+        text-decoration: none;
+    }
+    &.active {
+        color: #fa551e !important;
+    }
+}

@@ -1,12 +1,26 @@
 import MoveStepper from "components/moves/move-stepper.component";
 import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
-import { Button, Form, Modal } from "react-bootstrap";
+import { useContext, useEffect, useRef, useState } from "react";
+import {
+  Alert,
+  Breadcrumb,
+  Button,
+  Col,
+  Form,
+  Modal,
+  Overlay,
+  Row,
+  Tooltip,
+} from "react-bootstrap";
+import { BsInfoCircle } from "react-icons/bs";
+import { FcInfo } from "react-icons/fc";
 import { BookingContext } from "src/_contexts/booking.context";
 import useAPI from "../../_hooks/useAPI";
 import {
-    ADD_PRODUCTS_DATA,
-    EDIT_ADDITIONAL_SERVICES,
+  ADD_FORM_VALUES,
+  ADD_PRODUCTS_DATA,
+  EDIT_ADDITIONAL_SERVICES,
+  IBooking,
 } from "../../_models/types";
 import { productService } from "../../_services/product.service";
 import MoveCostCard from "../../components/moves/moveCostCard.component";
@@ -14,162 +28,248 @@ import CallMeBackButton from "../../components/shared/callMeBackButton.component
 import { CoverImage } from "../../components/ui";
 
 const DomesticMoveServices = () => {
-    const [canConfirmMove, setCanConfirmMove] = useState(true);
-    const fetchWrapper = useAPI();
-    const { state: bookingState, dispatch: dispatchBookings } =
-        useContext(BookingContext);
-    const [showSelectorModal, setShowSelectorModal] = useState(false);
-    const [selectedServices, setSelectedServices] = useState([]);
-    const router = useRouter();
+  const targets: any = {
+    insurance: useRef(null),
+    "packing-service": useRef(null),
+    "packing-material": useRef(null),
+    "specialised-moving-services": useRef(null),
+  };
+  const [show, setShow] = useState(false);
+  const [optionalServices, setOptionalServices] = useState<any[]>([]);
+  const fetchWrapper = useAPI();
+  const { state: bookingState, dispatch: dispatchBookings } =
+    useContext(BookingContext);
+  const [showSelectorModal, setShowSelectorModal] = useState(false);
+  const [selectedServices] = useState([]);
+  const router = useRouter();
 
-    useEffect(() => {
-        const getProducts = async () => {
-            const products = await productService.getProducts(fetchWrapper);
-            dispatchBookings({ type: ADD_PRODUCTS_DATA, payload: products.results });
-        };
-        getProducts();
-    }, []);
-
-    const goToCheckout = () => {
-        if (canConfirmMove) {
-            setShowSelectorModal(true);
-
-            fetchWrapper
-                .post(`/bookings/${bookingState.formValues.id}/invoices`, {
-                    booking: bookingState.formValues.id,
-                })
-                .then((res) => {
-                    console.log(res);
-                });
-        }
+  useEffect(() => {
+    const getProducts = async () => {
+      const products = await productService.getProducts(fetchWrapper);
+      dispatchBookings({ type: ADD_PRODUCTS_DATA, payload: products.results });
     };
 
-    const selectService = (e: any) => {
-        dispatchBookings({
-            type: EDIT_ADDITIONAL_SERVICES,
-            payload: { [e.target.name]: e.target.checked },
-        });
+    const getOptionalServices = async () => {
+      const optionalServices = await fetchWrapper.get(
+        "/products/optional-services",
+        false
+      );
+      setOptionalServices(optionalServices.results);
     };
 
-    const saveAndContinue = () => {
-        router.push(`/move/checkout`);
-    };
+    dispatchBookings({
+      type: ADD_FORM_VALUES,
+      payload: { move_type: 0 },
+    });
 
-    return (
-        <>
-            <div className="moves container-fluid">
-                <Modal
-                    show={showSelectorModal}
-                    onHide={() => setShowSelectorModal(false)}
-                >
-                    <Modal.Body>
-                        <div className="col-12 custom-modal">
-                            <div className="custom-modal__header">
-                                <h3>We have additional moving services should you need </h3>
-                                <p>
-                                    Select one or more of below services and our sales team will
-                                    contact you.
-                                </p>
-                            </div>
-                            <div className="col-12 custom-modal__body">
-                                <Form.Check
-                                    label="Packing service"
-                                    name="packing_service"
-                                    type="checkbox"
-                                    value="packing_service"
-                                    id="packing_service"
-                                    className="radioBtn"
-                                    onChange={selectService}
-                                />
-                                <Form.Check
-                                    label="Packaging material"
-                                    name="packaging_material"
-                                    type="checkbox"
-                                    value="packaging_material"
-                                    id="packaging_material"
-                                    className="radioBtn"
-                                    onChange={selectService}
-                                />
-                                <Form.Check
-                                    label="Insurance"
-                                    name="insurance"
-                                    type="checkbox"
-                                    value="insurance"
-                                    id="insurance"
-                                    className="radioBtn"
-                                    onChange={selectService}
-                                />
-                                <Form.Check
-                                    label="Specialized moving services"
-                                    name="specialized_moving_services"
-                                    type="checkbox"
-                                    value="specialized_moving_services"
-                                    id="specialized_moving_services"
-                                    className="radioBtn"
-                                    onChange={selectService}
-                                />
-                            </div>
-                            <div className="col-12 auth__bottom-text">
-                                <p> Additional charges and T&Cs apply</p>
-                            </div>
-                            <div className="col-12 custom-modal__footer">
-                                <Button
-                                    disabled={!selectedServices}
-                                    className="w-100"
-                                    onClick={saveAndContinue}
-                                    variant="secondary"
-                                >
-                                    Continue
-                                </Button>
-                            </div>
-                        </div>
-                    </Modal.Body>
-                </Modal>
-                <CoverImage
-                    size="medium"
-                    src="/img/kaleb.png"
-                    pageTitle="Move Services"
-                    description="Meet the experts in moving and storage"
-                />
-                <div className="moves__container container mt-5">
-                    <div className="row">
-                        <div className="col-12 mb-5">
-                            <h2>Make a local move</h2>
-                            <p>
-                                To provide you with the best quote, we need some information
-                                about you Once you are happy with your quote, you will need to
-                                log in or create an account to pay
-                            </p>
-                        </div>
-                        <div className="col-6">
-                            <MoveStepper />
-                        </div>
-                        <div className="col-5 offset-1">
-                            <MoveCostCard />
-                        </div>
-                        <div className="col-12 my-5 pt-3 moves__container__button-container">
-                            <div className="row w-100">
-                                <div className="col-2 offset-8">
-                                    <CallMeBackButton title="Call me back" />
-                                </div>
-                                <div className="col-2">
-                                    <div className="col-12">
-                                        <Button
-                                            disabled={!canConfirmMove}
-                                            onClick={goToCheckout}
-                                            variant="secondary"
-                                        >
-                                            Confirm move
-                                        </Button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </>
+    getProducts();
+    getOptionalServices();
+  }, []);
+
+  const goToCheckout = () => {
+    setShowSelectorModal(true);
+  };
+
+  const selectService = async (e: any) => {
+    dispatchBookings({
+      type: EDIT_ADDITIONAL_SERVICES,
+      payload: { [e.target.name]: e.target.checked },
+    });
+
+    await fetchWrapper.post(
+      `/bookings/${bookingState.formValues.id}/products/addons`,
+      {
+        booking: bookingState.formValues.id,
+        product: e.target.value,
+        category: 0,
+        selected: e.target.checked,
+      }
     );
+  };
+
+  const saveAndContinue = () => {
+    router.push(`/move/checkout`);
+  };
+
+  const isDisabled = (state: IBooking) => {
+    const objKeys = Object.keys(state.formValues);
+    let userVals = true;
+
+    const formVals = ["move_date"].some((x) => {
+      const xVal = state.formValues[x as keyof typeof state.formValues];
+      return (
+        xVal === null ||
+        xVal === "" ||
+        xVal === false ||
+        xVal === 0 ||
+        xVal?.length === 0 ||
+        xVal === undefined
+      );
+    });
+
+    if (state.formValues.user) {
+      userVals = ["first_name", "last_name", "email", "phone_number"].some(
+        (x) => {
+          const xVal =
+            state.formValues.user[x as keyof typeof state.formValues.user];
+          return (
+            xVal === null ||
+            xVal === "" ||
+            xVal?.length === 0 ||
+            xVal === undefined
+          );
+        }
+      );
+    }
+    return formVals || userVals;
+  };
+
+  return (
+    <>
+      <div className="moves container-fluid">
+        <Modal
+          show={showSelectorModal}
+          onHide={() => setShowSelectorModal(false)}
+        >
+          <Modal.Body>
+            <div className="col-12 custom-modal" style={{ padding: 0 }}>
+              <div
+                className="custom-modal__header"
+                style={{ padding: 12, position: "relative" }}
+              >
+                <h3>We have additional moving services should you need </h3>
+                <p>
+                  Select one or more of below services and our sales team will
+                  contact you.
+                </p>
+              </div>
+              <div
+                className="col-12 custom-modal__body"
+                style={{ padding: 12 }}
+              >
+                {optionalServices.map((service) => (
+                  <Row key={service.id}>
+                    <Col sm={9} md={10} className="mt-3">
+                      <Form.Check
+                        label={service.title}
+                        name={service.slug}
+                        type="checkbox"
+                        value={service.id}
+                        id={service.id}
+                        className="radioBtn"
+                        onChange={selectService}
+                      />
+                    </Col>
+                    <Col
+                      sm={3}
+                      md={2}
+                      className="mt-3"
+                      ref={targets[service.slug]}
+                    >
+                      <BsInfoCircle
+                        onClick={() => {
+                          setShow(service.id);
+                        }}
+                      />
+                      <Overlay
+                        target={targets[service.slug]?.current}
+                        show={show === service.id}
+                        placement="right"
+                      >
+                        {(props) => (
+                          <Tooltip id={service.id} {...props}>
+                            {service.description}
+                          </Tooltip>
+                        )}
+                      </Overlay>
+                    </Col>
+                  </Row>
+                ))}
+              </div>
+
+              <div
+                className="row pb-3 mb-3 mt-3 custom-modal__footer"
+                style={{ borderBottom: "1px solid #ccc" }}
+              >
+                <div className="col-12 d-flex justify-content-end">
+                  <Button
+                    disabled={!selectedServices}
+                    className=""
+                    onClick={saveAndContinue}
+                    variant="secondary"
+                  >
+                    Continue
+                  </Button>
+                </div>
+              </div>
+
+              <Alert variant="info" className="mt-3" style={{ padding: 8 }}>
+                <div className="row">
+                  <div
+                    className="col-1"
+                    style={{
+                      display: "grid",
+                      placeItems: "center",
+                      fontSize: "1.5rem",
+                    }}
+                  >
+                    <FcInfo />
+                  </div>
+                  <div className="col-11" style={{ fontSize: 12 }}>
+                    <b>Please note:</b> There may be additional charges. Terms
+                    and conditions apply.
+                  </div>
+                </div>
+              </Alert>
+            </div>
+          </Modal.Body>
+        </Modal>
+        <CoverImage
+          size="medium"
+          src="/img/kaleb.png"
+          pageTitle="Moving services"
+          subtitle="Are you ready for a change?"
+          description={`Let's make it happen!`}
+          variant="--domestic"
+        />
+        <div className="moves__container container mt-5">
+          <div className="row">
+            <div className="col-12 my-5">
+              <Breadcrumb>
+                <Breadcrumb.Item onClick={() => router.push("/")}>
+                  Home
+                </Breadcrumb.Item>
+                <Breadcrumb.Item active>Home move</Breadcrumb.Item>
+              </Breadcrumb>
+            </div>
+            <div className="col-12 mb-5">
+              <h2>Book a home move</h2>
+            </div>
+            <div className="col-12 col-md-7">
+              <MoveStepper />
+            </div>
+            <div className="col-12 col-md-4 offset-md-1">
+              <MoveCostCard />
+            </div>
+            <div className="col-12 my-5 pt-3 moves__container__button-container">
+              <div className="row w-100">
+                <div className="col-12 d-flex justify-content-end">
+                  <CallMeBackButton title="Call me back" />
+                  <Button
+                    disabled={isDisabled(bookingState)}
+                    onClick={goToCheckout}
+                    variant="secondary"
+                  >
+                    Confirm move
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default DomesticMoveServices;
