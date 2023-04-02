@@ -5,7 +5,7 @@ import { BookingContext } from "src/_contexts/booking.context";
 import { useAPI } from "src/_hooks";
 import { IProduct } from "src/_models/types";
 import { Navigation } from "swiper";
-import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
+import { Swiper, SwiperSlide } from "swiper/react";
 import CostSummaryStateContext from "../../_contexts/costSummary.context";
 import TruckDisplay from "./truckDisplay.component";
 
@@ -15,7 +15,6 @@ const ChooseTruck = ({ setChooseTruckComplete }: any) => {
   const [selectedTruck, setSelectedTruck] = useState<IProduct>();
   const [activeTruck, setActiveTruck] = useState<IProduct>();
   const [index, setIndex] = useState(0);
-  const swiper = useSwiper();
   const [bookedDates, setBookedDates] = useState<any[]>([]);
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
 

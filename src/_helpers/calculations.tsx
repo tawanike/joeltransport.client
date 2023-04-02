@@ -24,18 +24,53 @@ const getSubTotalStorage = (state: any): number => {
 };
 
 const getSubTotal = (state: any): number => {
-  return (Object.keys(state) as Array<keyof CostSummary>)
-    .map((expense) => {
-      if (state && state[expense]) {
-        if (state[expense].additional_costs) {
-          return (state[expense]?.quantity || 0) * (state[expense]?.price || 0);
-        } else {
-          return (state[expense]?.quantity || 0) * (state[expense]?.price || 0);
+  if (truckTotal(state.truck) == 0.0) {
+    return (Object.keys(state) as Array<keyof CostSummary>)
+      .map((expense) => {
+        if (state && state[expense]) {
+          if (state[expense].additional_costs) {
+            console.log("TRUCK STATE");
+            return (
+              (state[expense]?.quantity || 0) * (state[expense]?.price || 0) +
+              1000
+            );
+          } else {
+            console.log("STATE TRUCK");
+            return (
+              (state[expense]?.quantity || 0) * (state[expense]?.price || 0)
+            );
+          }
         }
-      }
-      return 0;
-    })
-    .reduce((sum, exp) => sum + exp, 0);
+
+        return 0;
+      })
+      .reduce((sum, exp) => sum + exp, 0);
+  } else {
+    return (Object.keys(state) as Array<keyof CostSummary>)
+      .map((expense) => {
+        if (state && state[expense]) {
+          if (state[expense].additional_costs) {
+            return (
+              (state[expense]?.quantity || 0) * (state[expense]?.price || 0) +
+              state[expense]?.additional_costs?.crew +
+              state[expense]?.additional_costs?.distance +
+              state[expense]?.additional_costs?.peak_period +
+              state[expense]?.additional_costs?.saturday +
+              state[expense]?.additional_costs?.holiday +
+              state[expense]?.additional_costs?.sunday +
+              state[expense]?.additional_costs?.working_lift_origin +
+              state[expense]?.additional_costs?.working_lift_destination
+            );
+          } else {
+            return (
+              (state[expense]?.quantity || 0) * (state[expense]?.price || 0)
+            );
+          }
+        }
+        return 0;
+      })
+      .reduce((sum, exp) => sum + exp, 0);
+  }
 };
 
 const getTotalInCents = (state: any): number => {
@@ -44,28 +79,29 @@ const getTotalInCents = (state: any): number => {
   return Math.round(total * 100);
 };
 
-const truckTotal = (truck: any): string => {
-  let truckTotal = "0.00";
+const truckTotal = (truck: any): number => {
+  console.log("TRUCK", truck);
+  let truckTotal = 0.0;
   if (truck) {
-    if (truck.additional_costs.distance == 0) {
+    if (truck.additional_costs?.distance == 0) {
+      truckTotal = truck.price;
+    } else {
       truckTotal =
         truck.price +
-        truck.additional_costs.crew +
-        truck.additional_costs.distance +
-        truck.additional_costs.peak_period +
-        truck.additional_costs.saturday +
-        truck.additional_costs.holiday +
-        truck.additional_costs.sunday +
-        truck.additional_costs.working_lift_origin +
-        truck.additional_costs.working_lift_destination;
-    } else {
-      truckTotal = truck.price;
+        truck.additional_costs?.crew +
+        truck.additional_costs?.distance +
+        truck.additional_costs?.peak_period +
+        truck.additional_costs?.saturday +
+        truck.additional_costs?.holiday +
+        truck.additional_costs?.sunday +
+        truck.additional_costs?.working_lift_origin +
+        truck.additional_costs?.working_lift_destination;
     }
 
     return truckTotal;
   }
 
-  return accounting.formatMoney(0);
+  return 0.0;
 };
 
 const getVAT = (state: any): number => {
@@ -75,7 +111,9 @@ const getVAT = (state: any): number => {
 };
 
 const getTotal = (state: any): number => {
+  console.log("GET_TOTAL", state);
   const subTotal = getSubTotal(state);
+  console.log("subTotal", subTotal);
   const total = Number(subTotal) * 1.15;
   return total;
 };
