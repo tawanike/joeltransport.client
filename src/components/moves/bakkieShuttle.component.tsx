@@ -27,13 +27,11 @@ const BakkieShuttle: FC<IProps> = () => {
     });
 
     if (bakkieShuttle) {
-      console.log("BAKKIE SHUTTLE", values.value, bakkieShuttle);
-
       if (values.value === 3) {
         dispatchCostSummary(
           addBakkieShuttle({
             requires_bakkie_shuttle: 1,
-            quantity: 1.75,
+            quantity: 1.85,
             price: bakkieShuttle.price,
           })
         );
