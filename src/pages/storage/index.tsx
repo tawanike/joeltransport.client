@@ -85,6 +85,13 @@ const Storage = () => {
       );
       setOptionalServices(optionalServices.results);
     };
+
+    const getProduct = async () => {
+      const product = await fetchWrapper.get(`/products/storage`, false);
+      console.log(product);
+    };
+
+    getProduct();
     getOptionalServices();
   }, []);
 
