@@ -176,8 +176,7 @@ const MoveCostCard = () => {
                           <p>
                             {CostSummaryState.bakkieShuttle
                               ? accounting.formatMoney(
-                                  CostSummaryState.bakkieShuttle.price *
-                                    CostSummaryState.bakkieShuttle.quantity
+                                  CostSummaryState.bakkieShuttle.price
                                 )
                               : accounting.formatMoney(0)}
                           </p>

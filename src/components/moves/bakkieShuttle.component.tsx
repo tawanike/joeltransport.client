@@ -19,6 +19,25 @@ const BakkieShuttle: FC<IProps> = () => {
   const { state: bookingState, dispatch: dispatchBookings } =
     useContext(BookingContext);
   const [bakkieShuttle, setBakkieShuttle] = useState<IProduct | null>(null);
+  const [bakkieShuttleBothAddresses, setBakkieShuttleBothAddresses] =
+    useState<IProduct | null>(null);
+
+  useEffect(() => {
+    (async () => {
+      const response = await api.get("/products?category=3", false);
+      setBakkieShuttle(
+        response.results.find(
+          (product: any) => product.slug === "bakkie-shuttle"
+        )
+      );
+
+      setBakkieShuttleBothAddresses(
+        response.results.find(
+          (product: any) => product.slug === "bakkie-shuttle-both"
+        )
+      );
+    })();
+  }, []);
 
   const handleBakkieShuttleAddress = (values: any) => {
     dispatchBookings({
@@ -27,12 +46,12 @@ const BakkieShuttle: FC<IProps> = () => {
     });
 
     if (bakkieShuttle) {
-      if (values.value === 3) {
+      if (values.value === 3 && bakkieShuttleBothAddresses) {
         dispatchCostSummary(
           addBakkieShuttle({
             requires_bakkie_shuttle: 1,
-            quantity: 1.85,
-            price: bakkieShuttle.price,
+            quantity: 1,
+            price: bakkieShuttleBothAddresses.price,
           })
         );
       } else {
@@ -111,19 +130,6 @@ const BakkieShuttle: FC<IProps> = () => {
         });
     }
   };
-
-  useEffect(() => {
-    (async () => {
-      const response = await api.get("/products?category=3", false);
-      setBakkieShuttle(
-        response.results.find(
-          (product: any) => product.slug === "bakkie-shuttle"
-        )
-      );
-    })();
-  }, []);
-
-  console.log(bookingState);
 
   const getBakkieAddressOption = (value: any) => {
     switch (value) {
