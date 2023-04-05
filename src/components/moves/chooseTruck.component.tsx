@@ -40,6 +40,7 @@ const ChooseTruck = ({ setChooseTruckComplete }: any) => {
   }, []);
 
   useEffect(() => {
+    console.log("TRUCK SELECTED", selectedTruck);
     if (selectedTruck) {
       api
         .post(`/bookings/${bookingContext.state.formValues.id}/products`, {

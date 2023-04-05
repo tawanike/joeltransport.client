@@ -78,18 +78,21 @@ const getTotalInCents = (state: any): number => {
 };
 
 const truckTotal = (truck: any): number => {
+  console.log("TRUCK_TOTAL", truck);
   let truckTotal = 0.0;
   if (truck) {
-    truckTotal =
-      truck.price +
-      truck.additional_costs?.crew +
-      truck.additional_costs?.distance +
-      truck.additional_costs?.peak_period +
-      truck.additional_costs?.saturday +
-      truck.additional_costs?.holiday +
-      truck.additional_costs?.sunday +
-      truck.additional_costs?.working_lift_origin +
-      truck.additional_costs?.working_lift_destination;
+    truckTotal = truck.price;
+    if (truck.additional_costs) {
+      truckTotal +
+        truck.additional_costs?.crew +
+        truck.additional_costs?.distance +
+        truck.additional_costs?.peak_period +
+        truck.additional_costs?.saturday +
+        truck.additional_costs?.holiday +
+        truck.additional_costs?.sunday +
+        truck.additional_costs?.working_lift_origin +
+        truck.additional_costs?.working_lift_destination;
+    }
 
     return truckTotal;
   }

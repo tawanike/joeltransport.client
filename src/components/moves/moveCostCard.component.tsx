@@ -93,6 +93,7 @@ const MoveCostCard = () => {
                       </div>
                     </li>
                   )}
+
                   {CostSummaryState.truck &&
                     CostSummaryState.truck.off_peak_discount > 0 && (
                       <li>
@@ -136,6 +137,7 @@ const MoveCostCard = () => {
                         </div>
                       </li>
                     )}
+
                   {CostSummaryState.bakkieShuttle && (
                     <li>
                       <div className="row">
