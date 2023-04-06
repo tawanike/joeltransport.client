@@ -120,7 +120,6 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
     if (bookingState.formValues.move_date) {
       submitForm();
     }
-    console.log("MOVE_DETAILS", bookingState.formValues);
   }, [bookingState.formValues, bookingState.formValues.move_date]);
 
   const onDateChange = (date: Date) => {

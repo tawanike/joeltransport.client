@@ -40,7 +40,6 @@ const ChooseTruck = ({ setChooseTruckComplete }: any) => {
   }, []);
 
   useEffect(() => {
-    console.log("TRUCK SELECTED", selectedTruck);
     if (selectedTruck) {
       api
         .post(`/bookings/${bookingContext.state.formValues.id}/products`, {
@@ -56,18 +55,12 @@ const ChooseTruck = ({ setChooseTruckComplete }: any) => {
               .get(`/bookings/${bookingContext.state.formValues.id}`, false)
               .then((res) => {
                 if (!res.error) {
-                  console.log("RES", res);
                   bookingContext.dispatch(getBooking(res));
 
                   const selected_truck = res.products.find(
                     (p: any) => p.category === 2
                   );
 
-                  console.log("SELECTED TRUCK", selected_truck);
-                  console.log(
-                    "BOOKING STATE: ",
-                    bookingContext.state.formValues
-                  );
                   dispatchCostSummary(
                     selectTruck({
                       quantity: 1,

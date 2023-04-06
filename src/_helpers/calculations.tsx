@@ -14,20 +14,27 @@ accounting.settings = {
   },
 };
 
-const getSubTotalStorage = (state: any): number => {
-  if (state && state.storage) {
-    return (state.storage?.quantity || 0) * (state.storage?.price || 0);
-  }
-  return 0.0;
+const getSubTotalStorage = (products: any): number => {
+  const bookingTotal = products
+    .filter(
+      (product: any) =>
+        product.title === "Storage" || product.title === "Storage handling fee"
+    )
+    .reduce(
+      (previous: any, current: any) => Number(previous) + Number(current.total),
+      0
+    );
+  return bookingTotal;
 };
 
 const getSubTotal = (products: any, CostSummaryState: any): number => {
   let subTotal = 0;
+
   subTotal = subTotal + truckTotal(products);
   if (CostSummaryState.bakkieShuttle) {
     subTotal = subTotal + CostSummaryState.bakkieShuttle?.price;
   }
-
+  subTotal = subTotal + getSubTotalStorage(products);
   return subTotal;
 };
 
@@ -43,18 +50,22 @@ function isArray(myArray: any[]) {
 
 const truckTotal = (products: any): number => {
   let bookingProductsTotal = 0.0;
-  console.log("PRODUCTS", products);
 
   if (products !== undefined) {
     if (isArray(products)) {
-      const bookingTotal = products.reduce((previous: any, current: any) => {
-        console.log("CURRENT", current);
-        console.log("PREVIOUS", previous);
-        if (current && current.category !== "bakkie-shuttle") {
-          return Number(previous) + Number(current.total);
-        }
-      }, 0);
-      return bookingTotal;
+      const bookingTotal = products
+        .filter(
+          (product: any) =>
+            product.title !== "Storage" &&
+            product.title !== "Storage handling fee"
+        )
+        .reduce((previous: any, current: any) => {
+          if (current && current.title !== "bakkie-shuttle") {
+            return Number(previous) + Number(current.total);
+          }
+        }, 0);
+
+      bookingProductsTotal = bookingTotal;
     }
   }
   return bookingProductsTotal;
