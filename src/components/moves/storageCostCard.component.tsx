@@ -320,10 +320,9 @@ const StorageCostCard = () => {
                         <p>
                           {CostSummaryState.storage
                             ? accounting.formatMoney(
-                                Calculations.getVAT(
-                                  bookingContext.state.formValues.products,
-                                  CostSummaryState
-                                )
+                                CostSummaryState.storage.quantity *
+                                  CostSummaryState.storage.price *
+                                  0.15
                               )
                             : "0.00"}
                         </p>

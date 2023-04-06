@@ -64,25 +64,47 @@ const BakkieShuttle: FC<IProps> = () => {
         );
       }
 
-      api
-        .post(`/bookings/${bookingState.formValues.id}/products`, {
-          product: bakkieShuttle?.id,
-          address: values.value,
-          product_type: "bakkie-shuttle",
-          booking: bookingState.formValues.id,
-        })
-        .then((res) => {
-          if (!res.error) {
-            // setChooseTruckComplete(true);
-            api
-              .get(`/bookings/${bookingState.formValues.id}`, false)
-              .then((res) => {
-                if (!res.error) {
-                  dispatchBookings(getBooking(res));
-                }
-              });
-          }
-        });
+      if (values.value === 3 && bakkieShuttleBothAddresses) {
+        api
+          .post(`/bookings/${bookingState.formValues.id}/products`, {
+            product: bakkieShuttleBothAddresses.id,
+            address: values.value,
+            product_type: "bakkie-shuttle",
+            booking: bookingState.formValues.id,
+          })
+          .then((res) => {
+            if (!res.error) {
+              // setChooseTruckComplete(true);
+              api
+                .get(`/bookings/${bookingState.formValues.id}`, false)
+                .then((res) => {
+                  if (!res.error) {
+                    dispatchBookings(getBooking(res));
+                  }
+                });
+            }
+          });
+      } else {
+        api
+          .post(`/bookings/${bookingState.formValues.id}/products`, {
+            product: bakkieShuttle.id,
+            address: values.value,
+            product_type: "bakkie-shuttle",
+            booking: bookingState.formValues.id,
+          })
+          .then((res) => {
+            if (!res.error) {
+              // setChooseTruckComplete(true);
+              api
+                .get(`/bookings/${bookingState.formValues.id}`, false)
+                .then((res) => {
+                  if (!res.error) {
+                    dispatchBookings(getBooking(res));
+                  }
+                });
+            }
+          });
+      }
     }
   };
 
