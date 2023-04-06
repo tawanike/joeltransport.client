@@ -84,7 +84,7 @@ const MoveCostCard = () => {
                             {CostSummaryState.truck
                               ? accounting.formatMoney(
                                   Calculations.truckTotal(
-                                    CostSummaryState.truck
+                                    bookingContext.state.formValues?.products
                                   )
                                 )
                               : accounting.formatMoney(0)}
@@ -203,7 +203,10 @@ const MoveCostCard = () => {
                       <div className="col-6 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
                         <p>
                           {accounting.formatMoney(
-                            Calculations.getSubTotal(CostSummaryState)
+                            Calculations.getSubTotal(
+                              bookingContext.state.formValues?.products,
+                              CostSummaryState
+                            )
                           )}
                         </p>
                       </div>
@@ -217,7 +220,10 @@ const MoveCostCard = () => {
                       <div className="col-6 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
                         <p>
                           {accounting.formatMoney(
-                            Calculations.getVAT(CostSummaryState)
+                            Calculations.getVAT(
+                              bookingContext.state.formValues?.products,
+                              CostSummaryState
+                            )
                           )}
                         </p>
                       </div>
@@ -240,7 +246,10 @@ const MoveCostCard = () => {
                 <div className="col-6 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
                   <p>
                     {accounting.formatMoney(
-                      Calculations.getTotal(CostSummaryState)
+                      Calculations.getTotal(
+                        bookingContext.state.formValues?.products,
+                        CostSummaryState
+                      )
                     )}
                   </p>
                 </div>
