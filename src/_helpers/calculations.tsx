@@ -37,10 +37,14 @@ const getTotalInCents = (state: any): number => {
   return Math.round(total * 100);
 };
 
+function isArray(myArray: any[]) {
+  return myArray.constructor === Array;
+}
+
 const truckTotal = (products: any): number => {
   let bookingProductsTotal = 1120.0;
-
-  if (products) {
+  console.log("PRODUCTS", isArray(products));
+  if (products && isArray(products)) {
     const bookingTotal = products.reduce((previous: any, current: any) => {
       if (current && current.category !== "bakkie-shuttle") {
         return (
