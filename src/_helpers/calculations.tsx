@@ -14,17 +14,21 @@ accounting.settings = {
   },
 };
 
-const getSubTotalStorage = (products: any): number => {
-  const bookingTotal = products
-    .filter(
-      (product: any) =>
-        product.title === "Storage" || product.title === "Storage handling fee"
-    )
-    .reduce(
-      (previous: any, current: any) => Number(previous) + Number(current.total),
-      0
-    );
-  return bookingTotal;
+const getSubTotalStorage = (products: any) => {
+  if (products) {
+    const bookingTotal = products
+      .filter(
+        (product: any) =>
+          product.title === "Storage" ||
+          product.title === "Storage handling fee"
+      )
+      .reduce(
+        (previous: any, current: any) =>
+          Number(previous) + Number(current.total),
+        0
+      );
+    return bookingTotal;
+  }
 };
 
 const getSubTotal = (products: any, CostSummaryState: any): number => {
