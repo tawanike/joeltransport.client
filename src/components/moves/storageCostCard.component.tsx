@@ -156,7 +156,9 @@ const StorageCostCard = () => {
                               <p>
                                 {CostSummaryState.truck
                                   ? accounting.formatMoney(
-                                      bookingContext.state.formValues.products
+                                      Calculations.truckTotal(
+                                        bookingContext.state.formValues.products
+                                      )
                                     )
                                   : "0.00"}
                               </p>
@@ -307,10 +309,10 @@ const StorageCostCard = () => {
                       <div className="col-4 csTablecenter move-cost-card__section__details__title center">
                         <p>
                           {accounting.formatMoney(
-                            Calculations.getSubTotal(
+                            Calculations.getVAT(
                               bookingContext.state.formValues.products,
                               CostSummaryState
-                            ) * 0.15
+                            )
                           )}
                         </p>
                       </div>

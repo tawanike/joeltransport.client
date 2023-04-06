@@ -159,7 +159,7 @@ const BookStorageUnit = () => {
               .get(`/bookings/${bookingState.formValues.id}`, false)
               .then((res) => {
                 if (!res.error) {
-                  bookingsDispatch(getBooking({ formValues: res }));
+                  bookingsDispatch(getBooking(res));
 
                   dispatchCostSummary(
                     addHandlingFee({

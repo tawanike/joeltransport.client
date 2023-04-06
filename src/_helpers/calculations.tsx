@@ -31,8 +31,8 @@ const getSubTotal = (products: any, CostSummaryState: any): number => {
   return subTotal;
 };
 
-const getTotalInCents = (state: any): number => {
-  const subTotal = getSubTotal(state);
+const getTotalInCents = (products: any, state: any): number => {
+  const subTotal = getSubTotal(products, state);
   const total = Number(subTotal) * 1.15;
   return Math.round(total * 100);
 };
@@ -42,17 +42,20 @@ function isArray(myArray: any[]) {
 }
 
 const truckTotal = (products: any): number => {
-  let bookingProductsTotal = 1120.0;
-  console.log("PRODUCTS", isArray(products));
-  if (products && isArray(products)) {
-    const bookingTotal = products.reduce((previous: any, current: any) => {
-      if (current && current.category !== "bakkie-shuttle") {
-        return (
-          Number(previous) + Number(current.price) * Number(current.quantity)
-        );
-      }
-    }, 0);
-    return bookingTotal;
+  let bookingProductsTotal = 0.0;
+  console.log("PRODUCTS", products);
+
+  if (products !== undefined) {
+    if (isArray(products)) {
+      const bookingTotal = products.reduce((previous: any, current: any) => {
+        console.log("CURRENT", current);
+        console.log("PREVIOUS", previous);
+        if (current && current.category !== "bakkie-shuttle") {
+          return Number(previous) + Number(current.total);
+        }
+      }, 0);
+      return bookingTotal;
+    }
   }
   return bookingProductsTotal;
 };

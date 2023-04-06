@@ -37,7 +37,10 @@ const Checkout = () => {
   const paystackConfig = {
     reference: bookingContext.state.formValues.id,
     email: bookingContext.state.formValues.user?.email || "",
-    amount: Calculations.getTotalInCents(CostSummaryState),
+    amount: Calculations.getTotalInCents(
+      bookingContext.state.formValues.products,
+      CostSummaryState
+    ),
     currency: "ZAR",
     publicKey: "pk_test_031a560a948c05f7721f754c86ed89d4335d5250",
   };
@@ -134,7 +137,10 @@ const Checkout = () => {
                       </div>
                       <div className="col-6 moves__checkout__summary__list__price">
                         {accounting.formatMoney(
-                          Calculations.getTotal(CostSummaryState)
+                          Calculations.getTotal(
+                            bookingContext.state.formValues.products,
+                            CostSummaryState
+                          )
                         )}
                       </div>
                     </div>
@@ -146,7 +152,10 @@ const Checkout = () => {
                       </div>
                       <div className="col-6 moves__checkout__summary__list__price">
                         {accounting.formatMoney(
-                          Calculations.getTotal(CostSummaryState)
+                          Calculations.getTotal(
+                            bookingContext.state.formValues.products,
+                            CostSummaryState
+                          )
                         )}
                       </div>
                     </div>
@@ -161,7 +170,10 @@ const Checkout = () => {
                   >
                     Pay{" "}
                     {accounting.formatMoney(
-                      Calculations.getTotal(CostSummaryState)
+                      Calculations.getTotal(
+                        bookingContext.state.formValues.products,
+                        CostSummaryState
+                      )
                     )}
                   </Button>
                 </div>
