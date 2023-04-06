@@ -56,16 +56,22 @@ const ChooseTruck = ({ setChooseTruckComplete }: any) => {
               .get(`/bookings/${bookingContext.state.formValues.id}`, false)
               .then((res) => {
                 if (!res.error) {
-                  bookingContext.dispatch(getBooking({ formValues: res }));
+                  console.log("RES", res);
+                  bookingContext.dispatch(getBooking(res));
+
                   const selected_truck = res.products.find(
-                    (p: any) => p.category === "trucks"
+                    (p: any) => p.category === 2
                   );
 
+                  console.log("SELECTED TRUCK", selected_truck);
+                  console.log(
+                    "BOOKING STATE: ",
+                    bookingContext.state.formValues
+                  );
                   dispatchCostSummary(
                     selectTruck({
                       quantity: 1,
                       price: selected_truck.price,
-                      additional_costs: selected_truck.additional_costs,
                     })
                   );
                 }
@@ -77,11 +83,11 @@ const ChooseTruck = ({ setChooseTruckComplete }: any) => {
 
   useEffect(() => {
     const truckInContext = bookingContext.state.formValues?.products?.filter(
-      (p: any) => p.category === "trucks"
+      (p: any) => p.category === 2
     );
 
     if (truckInContext && truckInContext.length) {
-      const truck = trucks.find((t) => t.slug === truckInContext[0].slug);
+      const truck = trucks.find((t) => t.slug == "2"); //truckInContext[0].slug
       if (truck) {
         setSelectedTruck(truck);
       }
