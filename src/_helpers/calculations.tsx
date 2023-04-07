@@ -61,12 +61,12 @@ const truckTotal = (products: any): number => {
         .filter(
           (product: any) =>
             product.title !== "Storage" &&
-            product.title !== "Storage handling fee"
+            product.title !== "Storage handling fee" &&
+            product.title !== "Bakkie Shuttle Both Addresses" &&
+            product.title !== "Bakkie Shuttle"
         )
         .reduce((previous: any, current: any) => {
-          if (current && current.title !== "bakkie-shuttle") {
-            return Number(previous) + Number(current.total);
-          }
+          return Number(previous) + Number(current.total);
         }, 0);
 
       bookingProductsTotal = bookingTotal;
