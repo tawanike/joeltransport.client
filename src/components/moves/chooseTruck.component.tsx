@@ -58,7 +58,7 @@ const ChooseTruck = ({ setChooseTruckComplete }: any) => {
                   bookingContext.dispatch(getBooking(res));
 
                   const selected_truck = res.products.find(
-                    (p: any) => p.category === 2
+                    (p: any) => p.category === "trucks"
                   );
 
                   dispatchCostSummary(
@@ -76,11 +76,11 @@ const ChooseTruck = ({ setChooseTruckComplete }: any) => {
 
   useEffect(() => {
     const truckInContext = bookingContext.state.formValues?.products?.filter(
-      (p: any) => p.category === 2
+      (p: any) => p.category === "trucks"
     );
 
     if (truckInContext && truckInContext.length) {
-      const truck = trucks.find((t) => t.slug == "2"); //truckInContext[0].slug
+      const truck = trucks.find((t) => t.slug == "trucks"); //truckInContext[0].slug
       if (truck) {
         setSelectedTruck(truck);
       }
