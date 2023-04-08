@@ -34,7 +34,6 @@ const ChooseTruck = ({ setChooseTruckComplete }: any) => {
         `/products?category=2&booking=${bookingContext.state.formValues.id}`,
         false
       );
-      console.log("TRUCK PRODUCT", trucks);
       setTrucks(trucks.results);
     })();
   }, []);

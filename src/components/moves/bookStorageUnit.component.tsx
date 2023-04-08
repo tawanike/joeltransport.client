@@ -13,6 +13,7 @@ import { selectTruck } from "src/_actions/trucks.actions";
 import { BookingContext } from "src/_contexts/booking.context";
 import CostSummaryStateContext from "src/_contexts/costSummary.context";
 import { formatDate, stringToDateTime } from "src/_helpers/dateFormat";
+import recommend_truck from "src/_helpers/recommendations";
 import { useAPI, useNumberInput } from "src/_hooks";
 import {
   ADD_FORM_VALUES,
@@ -23,7 +24,7 @@ import {
 const BookStorageUnit = () => {
   const api = useAPI();
   const [trucks, setTrucks] = useState<IProduct[]>([]);
-  const [recommendedTruck, setRecommendedTruck] = useState<IProduct | null>();
+  const [recommendedTruck, setRecommendedTruck] = useState<any | null>();
   const [moveType, setMoveType] = useState<any>();
   const { CostSummaryState, dispatchCostSummary } = useContext(
     CostSummaryStateContext
@@ -48,7 +49,6 @@ const BookStorageUnit = () => {
       if (bookingState.formValues.collection) {
         const trucks = await api.get("/products?category=2", false);
         setTrucks(trucks.results);
-        setRecommendedTruck(trucks[0]);
       }
       const moves = await api.get("/products?category=1", false);
       moves.results.forEach((move: any) => {
@@ -62,65 +62,16 @@ const BookStorageUnit = () => {
   useEffect(() => {
     if (moveType && moveType.id) {
       if (bookingState.formValues.collection) {
-        if (NumberOfUnitsValue === 0) {
-          setRecommendedTruck(null);
-          dispatchCostSummary(
-            selectTruck({
-              quantity: 0,
-              price: 0,
-              off_peak_discount: 0,
-            })
-          );
-        } else if (NumberOfUnitsValue === 1) {
-          setRecommendedTruck(trucks[0]);
-          dispatchCostSummary(
-            selectTruck({
-              quantity: 1,
-              price: trucks[0].price,
-              off_peak_discount: 0,
-            })
-          );
-        } else if (NumberOfUnitsValue >= 2 && NumberOfUnitsValue < 5) {
-          setRecommendedTruck(trucks[1]);
-          dispatchCostSummary(
-            selectTruck({
-              quantity: 1,
-              price: trucks[1].price,
-              off_peak_discount: 0,
-            })
-          );
-        } else if (NumberOfUnitsValue >= 5 && NumberOfUnitsValue < 9) {
-          setRecommendedTruck(trucks[1]);
-          dispatchCostSummary(
-            selectTruck({
-              quantity: 1,
-              price: trucks[2].price,
-              off_peak_discount: 0,
-            })
-          );
-        } else {
-          trucks.map((truck) => {
-            if (
-              truck.storage_units_recommendations &&
-              Number(truck.storage_units_recommendations.min) >=
-                NumberOfUnitsValue
-            ) {
-              if (
-                truck.storage_units_recommendations.max >= NumberOfUnitsValue
-              ) {
-                setRecommendedTruck(truck);
-                dispatchCostSummary(
-                  selectTruck({
-                    quantity: 1,
-                    price: truck.price,
-                    off_peak_discount: 0,
-                  })
-                );
-              }
-            }
-          });
+        if (NumberOfUnitsValue > 0) {
+          const recommendation = recommend_truck(trucks, NumberOfUnitsValue);
 
-          setRecommendedTruck(trucks[0]);
+          dispatchCostSummary(
+            selectTruck({
+              quantity: 1,
+              price: recommendation.price,
+              off_peak_discount: 0,
+            })
+          );
         }
       }
       bookingsDispatch({
@@ -146,28 +97,31 @@ const BookStorageUnit = () => {
         })
         .then((res) => {
           if (bookingState.formValues.collection) {
-            api.post(`/bookings/${bookingState.formValues.id}/products`, {
-              product: recommendedTruck?.id,
-              quantity: 1,
-              product_type: "truck",
-              booking: bookingState.formValues.id,
-            });
-          }
-
-          if (!res.error) {
+            const recommendation = recommend_truck(trucks, NumberOfUnitsValue);
             api
-              .get(`/bookings/${bookingState.formValues.id}`, false)
+              .post(`/bookings/${bookingState.formValues.id}/products`, {
+                product: recommendation.id,
+                quantity: 1,
+                product_type: "truck",
+                booking: bookingState.formValues.id,
+              })
               .then((res) => {
                 if (!res.error) {
-                  bookingsDispatch(getBooking(res));
-
-                  dispatchCostSummary(
-                    addHandlingFee({
-                      quantity: 1,
-                      price: 250,
-                      off_peak_discount: 0,
-                    })
-                  );
+                  api
+                    .get(`/bookings/${bookingState.formValues.id}`, false)
+                    .then((res) => {
+                      if (!res.error) {
+                        bookingsDispatch(getBooking(res));
+                        // TODO: Get handling fee from backend
+                        dispatchCostSummary(
+                          addHandlingFee({
+                            quantity: 1,
+                            price: 250,
+                            off_peak_discount: 0,
+                          })
+                        );
+                      }
+                    });
                 }
               });
           }
