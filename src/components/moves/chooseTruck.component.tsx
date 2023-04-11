@@ -5,7 +5,7 @@ import { BookingContext } from "src/_contexts/booking.context";
 import { useAPI } from "src/_hooks";
 import { IProduct } from "src/_models/types";
 import { Navigation } from "swiper";
-import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
+import { Swiper, SwiperSlide } from "swiper/react";
 import CostSummaryStateContext from "../../_contexts/costSummary.context";
 import TruckDisplay from "./truckDisplay.component";
 
@@ -15,7 +15,6 @@ const ChooseTruck = ({ setChooseTruckComplete }: any) => {
   const [selectedTruck, setSelectedTruck] = useState<IProduct>();
   const [activeTruck, setActiveTruck] = useState<IProduct>();
   const [index, setIndex] = useState(0);
-  const swiper = useSwiper();
   const [bookedDates, setBookedDates] = useState<any[]>([]);
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
 
@@ -35,7 +34,6 @@ const ChooseTruck = ({ setChooseTruckComplete }: any) => {
         `/products?category=2&booking=${bookingContext.state.formValues.id}`,
         false
       );
-      console.log("TRUCK PRODUCT", trucks);
       setTrucks(trucks.results);
     })();
   }, []);
@@ -56,7 +54,8 @@ const ChooseTruck = ({ setChooseTruckComplete }: any) => {
               .get(`/bookings/${bookingContext.state.formValues.id}`, false)
               .then((res) => {
                 if (!res.error) {
-                  bookingContext.dispatch(getBooking({ formValues: res }));
+                  bookingContext.dispatch(getBooking(res));
+
                   const selected_truck = res.products.find(
                     (p: any) => p.category === "trucks"
                   );
@@ -65,7 +64,6 @@ const ChooseTruck = ({ setChooseTruckComplete }: any) => {
                     selectTruck({
                       quantity: 1,
                       price: selected_truck.price,
-                      additional_costs: selected_truck.additional_costs,
                     })
                   );
                 }
@@ -81,7 +79,7 @@ const ChooseTruck = ({ setChooseTruckComplete }: any) => {
     );
 
     if (truckInContext && truckInContext.length) {
-      const truck = trucks.find((t) => t.slug === truckInContext[0].slug);
+      const truck = trucks.find((t) => t.slug == "trucks"); //truckInContext[0].slug
       if (truck) {
         setSelectedTruck(truck);
       }

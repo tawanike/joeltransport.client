@@ -19,6 +19,25 @@ const BakkieShuttle: FC<IProps> = () => {
   const { state: bookingState, dispatch: dispatchBookings } =
     useContext(BookingContext);
   const [bakkieShuttle, setBakkieShuttle] = useState<IProduct | null>(null);
+  const [bakkieShuttleBothAddresses, setBakkieShuttleBothAddresses] =
+    useState<IProduct | null>(null);
+
+  useEffect(() => {
+    (async () => {
+      const response = await api.get("/products?category=3", false);
+      setBakkieShuttle(
+        response.results.find(
+          (product: any) => product.slug === "bakkie-shuttle"
+        )
+      );
+
+      setBakkieShuttleBothAddresses(
+        response.results.find(
+          (product: any) => product.slug === "bakkie-shuttle-both"
+        )
+      );
+    })();
+  }, []);
 
   const handleBakkieShuttleAddress = (values: any) => {
     dispatchBookings({
@@ -27,14 +46,12 @@ const BakkieShuttle: FC<IProps> = () => {
     });
 
     if (bakkieShuttle) {
-      console.log("BAKKIE SHUTTLE", values.value, bakkieShuttle);
-
-      if (values.value === 3) {
+      if (values.value === 3 && bakkieShuttleBothAddresses) {
         dispatchCostSummary(
           addBakkieShuttle({
             requires_bakkie_shuttle: 1,
-            quantity: 1.75,
-            price: bakkieShuttle.price,
+            quantity: 1,
+            price: bakkieShuttleBothAddresses.price,
           })
         );
       } else {
@@ -47,25 +64,47 @@ const BakkieShuttle: FC<IProps> = () => {
         );
       }
 
-      api
-        .post(`/bookings/${bookingState.formValues.id}/products`, {
-          product: bakkieShuttle?.id,
-          address: values.value,
-          product_type: "bakkie-shuttle",
-          booking: bookingState.formValues.id,
-        })
-        .then((res) => {
-          if (!res.error) {
-            // setChooseTruckComplete(true);
-            api
-              .get(`/bookings/${bookingState.formValues.id}`, false)
-              .then((res) => {
-                if (!res.error) {
-                  dispatchBookings(getBooking(res));
-                }
-              });
-          }
-        });
+      if (values.value === 3 && bakkieShuttleBothAddresses) {
+        api
+          .post(`/bookings/${bookingState.formValues.id}/products`, {
+            product: bakkieShuttleBothAddresses.id,
+            address: values.value,
+            product_type: "bakkie-shuttle",
+            booking: bookingState.formValues.id,
+          })
+          .then((res) => {
+            if (!res.error) {
+              // setChooseTruckComplete(true);
+              api
+                .get(`/bookings/${bookingState.formValues.id}`, false)
+                .then((res) => {
+                  if (!res.error) {
+                    dispatchBookings(getBooking(res));
+                  }
+                });
+            }
+          });
+      } else {
+        api
+          .post(`/bookings/${bookingState.formValues.id}/products`, {
+            product: bakkieShuttle.id,
+            address: values.value,
+            product_type: "bakkie-shuttle",
+            booking: bookingState.formValues.id,
+          })
+          .then((res) => {
+            if (!res.error) {
+              // setChooseTruckComplete(true);
+              api
+                .get(`/bookings/${bookingState.formValues.id}`, false)
+                .then((res) => {
+                  if (!res.error) {
+                    dispatchBookings(getBooking(res));
+                  }
+                });
+            }
+          });
+      }
     }
   };
 
@@ -113,19 +152,6 @@ const BakkieShuttle: FC<IProps> = () => {
         });
     }
   };
-
-  useEffect(() => {
-    (async () => {
-      const response = await api.get("/products?category=3", false);
-      setBakkieShuttle(
-        response.results.find(
-          (product: any) => product.slug === "bakkie-shuttle"
-        )
-      );
-    })();
-  }, []);
-
-  console.log(bookingState);
 
   const getBakkieAddressOption = (value: any) => {
     switch (value) {
@@ -198,28 +224,28 @@ const BakkieShuttle: FC<IProps> = () => {
               </div>
             </div>
           </Alert>
-          {bookingState.formValues.move_type === 0 && (
-            <Form.Group as={Col} md="8" controlId="bakkie_address">
-              <Form.Label>Select address for a bakkie shuttle</Form.Label>
-              <Select
-                name="bakkie_address"
-                placeholder="Select address"
-                isDisabled={
-                  !Boolean(bookingState.formValues.requires_bakkie_shuttle)
-                }
-                defaultValue={getBakkieAddressOption(
-                  bookingState.formValues.bakkie_address
-                )}
-                onChange={handleBakkieShuttleAddress}
-                options={[
-                  { value: 1, label: "Loading address" },
-                  { value: 2, label: "Delivery address" },
-                  { value: 3, label: "Both address" },
-                ]}
-                className=""
-              />
-            </Form.Group>
-          )}
+          {/* {bookingState.formValues.move_type === 0 && ( */}
+          <Form.Group as={Col} md="8" controlId="bakkie_address">
+            <Form.Label>Select address for a bakkie shuttle</Form.Label>
+            <Select
+              name="bakkie_address"
+              placeholder="Select address"
+              isDisabled={
+                !Boolean(bookingState.formValues.requires_bakkie_shuttle)
+              }
+              defaultValue={getBakkieAddressOption(
+                bookingState.formValues.bakkie_address
+              )}
+              onChange={handleBakkieShuttleAddress}
+              options={[
+                { value: 1, label: "Loading address" },
+                { value: 2, label: "Delivery address" },
+                { value: 3, label: "Both address" },
+              ]}
+              className=""
+            />
+          </Form.Group>
+          {/* )} */}
         </div>
       </div>
     </>

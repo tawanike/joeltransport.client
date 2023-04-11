@@ -1,5 +1,3 @@
-import { CostSummary } from "src/_models/types";
-
 import accounting from "accounting";
 accounting.settings = {
   currency: {
@@ -16,67 +14,76 @@ accounting.settings = {
   },
 };
 
-const getSubTotalStorage = (state: any): number => {
-  if (state && state.storage) {
-    return (state.storage?.quantity || 0) * (state.storage?.price || 0);
+const getSubTotalStorage = (products: any) => {
+  if (products) {
+    const bookingTotal = products
+      .filter(
+        (product: any) =>
+          product.title === "Storage" ||
+          product.title === "Storage handling fee"
+      )
+      .reduce(
+        (previous: any, current: any) =>
+          Number(previous) + Number(current.total),
+        0
+      );
+    return bookingTotal;
   }
-  return 0.0;
 };
 
-const getSubTotal = (state: any): number => {
-  return (Object.keys(state) as Array<keyof CostSummary>)
-    .map((expense) => {
-      if (state && state[expense]) {
-        if (state[expense].additional_costs) {
-          return (state[expense]?.quantity || 0) * (state[expense]?.price || 0);
-        } else {
-          return (state[expense]?.quantity || 0) * (state[expense]?.price || 0);
-        }
-      }
-      return 0;
-    })
-    .reduce((sum, exp) => sum + exp, 0);
+const getSubTotal = (products: any, CostSummaryState: any): number => {
+  let subTotal = 0;
+
+  subTotal = subTotal + truckTotal(products);
+  if (CostSummaryState.bakkieShuttle) {
+    subTotal = subTotal + CostSummaryState.bakkieShuttle?.price;
+  }
+  subTotal = subTotal + getSubTotalStorage(products);
+  return subTotal;
 };
 
-const getTotalInCents = (state: any): number => {
-  const subTotal = getSubTotal(state);
+const getTotalInCents = (products: any, state: any): number => {
+  const subTotal = getSubTotal(products, state);
   const total = Number(subTotal) * 1.15;
   return Math.round(total * 100);
 };
 
-const truckTotal = (truck: any): string => {
-  let truckTotal = "0.00";
-  if (truck) {
-    if (truck.additional_costs.distance == 0) {
-      truckTotal =
-        truck.price +
-        truck.additional_costs.crew +
-        truck.additional_costs.distance +
-        truck.additional_costs.peak_period +
-        truck.additional_costs.saturday +
-        truck.additional_costs.holiday +
-        truck.additional_costs.sunday +
-        truck.additional_costs.working_lift_origin +
-        truck.additional_costs.working_lift_destination;
-    } else {
-      truckTotal = truck.price;
+function isArray(myArray: any[]) {
+  return myArray.constructor === Array;
+}
+
+const truckTotal = (products: any): number => {
+  let bookingProductsTotal = 0.0;
+
+  if (products !== undefined) {
+    if (isArray(products)) {
+      const bookingTotal = products
+        .filter(
+          (product: any) =>
+            product.title !== "Storage" &&
+            product.title !== "Storage handling fee" &&
+            product.title !== "Bakkie Shuttle Both Addresses" &&
+            product.title !== "Bakkie Shuttle"
+        )
+        .reduce((previous: any, current: any) => {
+          return Number(previous) + Number(current.total);
+        }, 0);
+
+      bookingProductsTotal = bookingTotal;
     }
-
-    return truckTotal;
   }
-
-  return accounting.formatMoney(0);
+  return bookingProductsTotal;
 };
 
-const getVAT = (state: any): number => {
-  const subTotal = getSubTotal(state);
+const getVAT = (products: any, CostSummaryState: any): number => {
+  const subTotal = getSubTotal(products, CostSummaryState);
   const vat = Number(subTotal) * 0.15;
   return vat;
 };
 
-const getTotal = (state: any): number => {
-  const subTotal = getSubTotal(state);
-  const total = Number(subTotal) * 1.15;
+const getTotal = (products: any, CostSummaryState: any): number => {
+  const subTotal = getSubTotal(products, CostSummaryState);
+  const total = Number(subTotal) + getVAT(products, CostSummaryState);
   return total;
 };
 

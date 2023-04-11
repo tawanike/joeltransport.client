@@ -9,7 +9,6 @@ import { FcInfo } from "react-icons/fc";
 import { FiCalendar } from "react-icons/fi";
 import { MdWarning } from "react-icons/md";
 import Select from "react-select";
-import { addFormValues } from "src/_actions/form.actions";
 import { BookingContext } from "src/_contexts/booking.context";
 import {
   formatDate,
@@ -121,7 +120,7 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
     if (bookingState.formValues.move_date) {
       submitForm();
     }
-  }, [bookingState.formValues]);
+  }, [bookingState.formValues, bookingState.formValues.move_date]);
 
   const onDateChange = (date: Date) => {
     bookingsDispatch({
@@ -345,7 +344,7 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
                     bookingsDispatch({
                       type: ADD_FORM_VALUES,
                       payload: {
-                        from_working_lift: event.target.value,
+                        from_working_lift: Number(event.target.value),
                       },
                     })
                   }
@@ -362,9 +361,12 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
                   label="No"
                   disabled={bookingState.formValues.from_floors_count === 0}
                   onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                    bookingsDispatch(
-                      addFormValues("from_working_lift", event.target.value)
-                    )
+                    bookingsDispatch({
+                      type: ADD_FORM_VALUES,
+                      payload: {
+                        from_working_lift: Number(event.target.value),
+                      },
+                    })
                   }
                   id="no"
                   value={0}
@@ -497,7 +499,7 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
                       bookingsDispatch({
                         type: ADD_FORM_VALUES,
                         payload: {
-                          to_working_lift: event.target.value,
+                          to_working_lift: Number(event.target.value),
                         },
                       })
                     }
@@ -513,9 +515,12 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
                     name="to_working_lift"
                     label="No"
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                      bookingsDispatch(
-                        addFormValues("to_working_lift", event.target.value)
-                      )
+                      bookingsDispatch({
+                        type: ADD_FORM_VALUES,
+                        payload: {
+                          to_working_lift: Number(event.target.value),
+                        },
+                      })
                     }
                     id="no"
                     value={0}
