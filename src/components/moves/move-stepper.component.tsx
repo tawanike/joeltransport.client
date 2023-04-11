@@ -42,6 +42,7 @@ const MoveStepper = () => {
             )}
           </div>
         </div>
+
         <div className="moves__step col-12 mb-3">
           <div className="row">
             <div
