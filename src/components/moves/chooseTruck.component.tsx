@@ -4,12 +4,12 @@ import { selectTruck } from "src/_actions/trucks.actions";
 import { BookingContext } from "src/_contexts/booking.context";
 import { useAPI } from "src/_hooks";
 import { IProduct } from "src/_models/types";
-import { A11y, Navigation, Pagination, Scrollbar } from "swiper";
+import { Navigation, Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import CostSummaryStateContext from "../../_contexts/costSummary.context";
 import TruckDisplay from "./truckDisplay.component";
 
-const ChooseTruck = ({ setChooseTruckComplete }: any) => {
+const ChooseTruck = () => {
   const api = useAPI();
   const bgActiveColor = "#FA551E";
   const bgNonActiveColor = "#979797";
@@ -17,7 +17,6 @@ const ChooseTruck = ({ setChooseTruckComplete }: any) => {
   const [trucks, setTrucks] = useState<any[]>([]);
   const [selectedTruck, setSelectedTruck] = useState<IProduct>();
   const [activeTruck, setActiveTruck] = useState<number>(0);
-  const [index, setIndex] = useState(0);
   const [bookedDates, setBookedDates] = useState<any[]>([]);
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
 
@@ -25,11 +24,6 @@ const ChooseTruck = ({ setChooseTruckComplete }: any) => {
     CostSummaryStateContext
   );
   const bookingContext = useContext(BookingContext);
-
-  const handleSelect = (selectedIndex: number, e: any) => {
-    setIndex(selectedIndex);
-    if (trucks && trucks.length > 0) setActiveTruck(trucks[selectedIndex]);
-  };
 
   useEffect(() => {
     (async () => {
@@ -39,6 +33,13 @@ const ChooseTruck = ({ setChooseTruckComplete }: any) => {
       );
       setTrucks(trucks.results);
     })();
+  }, []);
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 400,
+      behavior: "smooth",
+    });
   }, []);
 
   useEffect(() => {
@@ -90,7 +91,6 @@ const ChooseTruck = ({ setChooseTruckComplete }: any) => {
   }, [trucks]);
 
   useEffect(() => {
-    let booked: any[] = [];
     api
       .get(
         `/bookings/unavailable?month=${
@@ -99,7 +99,6 @@ const ChooseTruck = ({ setChooseTruckComplete }: any) => {
         false
       )
       .then((res) => {
-        console.log("BOOKED DATE", res);
         if (res.length === 0) {
           setBookedDates([]);
           return;
@@ -129,7 +128,7 @@ const ChooseTruck = ({ setChooseTruckComplete }: any) => {
       <div className="col-12">
         <Swiper
           navigation={true}
-          modules={[Navigation, Pagination, Scrollbar, A11y]}
+          modules={[Navigation, Pagination]}
           pagination={{ clickable: true }}
           scrollbar={{ draggable: true }}
           spaceBetween={20}
