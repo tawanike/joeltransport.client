@@ -4,14 +4,17 @@ import { selectTruck } from "src/_actions/trucks.actions";
 import { BookingContext } from "src/_contexts/booking.context";
 import { useAPI } from "src/_hooks";
 import { IProduct } from "src/_models/types";
-import { Navigation } from "swiper";
+import { A11y, Navigation, Pagination, Scrollbar } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import CostSummaryStateContext from "../../_contexts/costSummary.context";
 import TruckDisplay from "./truckDisplay.component";
 
 const ChooseTruck = ({ setChooseTruckComplete }: any) => {
   const api = useAPI();
-  const [trucks, setTrucks] = useState<IProduct[]>([]);
+  const bgActiveColor = "#FA551E";
+  const bgNonActiveColor = "#979797";
+
+  const [trucks, setTrucks] = useState<any[]>([]);
   const [selectedTruck, setSelectedTruck] = useState<IProduct>();
   const [activeTruck, setActiveTruck] = useState<number>(0);
   const [index, setIndex] = useState(0);
@@ -25,7 +28,7 @@ const ChooseTruck = ({ setChooseTruckComplete }: any) => {
 
   const handleSelect = (selectedIndex: number, e: any) => {
     setIndex(selectedIndex);
-    setActiveTruck(trucks[selectedIndex]);
+    if (trucks && trucks.length > 0) setActiveTruck(trucks[selectedIndex]);
   };
 
   useEffect(() => {
@@ -126,7 +129,9 @@ const ChooseTruck = ({ setChooseTruckComplete }: any) => {
       <div className="col-12">
         <Swiper
           navigation={true}
-          modules={[Navigation]}
+          modules={[Navigation, Pagination, Scrollbar, A11y]}
+          pagination={{ clickable: true }}
+          scrollbar={{ draggable: true }}
           spaceBetween={20}
           slidesPerView={2}
           onSlideChange={(swiper) => {
@@ -153,6 +158,22 @@ const ChooseTruck = ({ setChooseTruckComplete }: any) => {
         </Swiper>
         <div className="col-12 truckDisplay__truck-summary">
           <p>{trucks.length > 0 && trucks[activeTruck]["description"]}</p>
+        </div>
+        <div className="col-12 truckDisplay__truck-summary d-flex justify-content-center">
+          {trucks.length > 0 &&
+            trucks.map((truck, index) => (
+              <div
+                key={truck.id}
+                style={{
+                  height: 10,
+                  width: 10,
+                  margin: 5,
+                  borderRadius: 5,
+                  backgroundColor:
+                    index === activeTruck ? bgActiveColor : bgNonActiveColor,
+                }}
+              ></div>
+            ))}
         </div>
       </div>
       {/* <div
