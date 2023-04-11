@@ -146,6 +146,7 @@ const ChooseTruck = ({ setChooseTruckComplete }: any) => {
               <TruckDisplay
                 truck={truck}
                 onSelect={setSelectedTruck}
+                inView={i === activeTruck}
                 isSelected={
                   selectedTruck
                     ? (selectedTruck as IProduct).id === truck.id

@@ -6,13 +6,14 @@ interface IProps {
   truck: IProduct;
   onSelect: (product: IProduct) => void;
   isSelected: boolean;
+  inView: boolean;
 }
 
-const TruckDisplay: FC<IProps> = ({ truck, onSelect, isSelected }) => {
+const TruckDisplay: FC<IProps> = ({ truck, onSelect, isSelected, inView }) => {
   return (
     <div
       className={`col-12 truckDisplay truckDisplay${
-        isSelected ? "--selected" : ""
+        isSelected ? "--selected" : inView ? "--selected" : ""
       }`}
     >
       <div className="row">
