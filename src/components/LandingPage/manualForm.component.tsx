@@ -4,6 +4,7 @@ import { Alert, Button, Col, Form, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { FcInfo } from "react-icons/fc";
 import Select from "react-select";
+import { getBooking } from "src/_actions/booking.actions";
 import { BookingContext } from "src/_contexts/booking.context";
 import { useAPI } from "src/_hooks";
 import { ADD_FORM_VALUES } from "src/_models/types";
@@ -76,6 +77,7 @@ function AddressManualForm({
     });
 
     console.log("Booking created: ", booking);
+    bookingsDispatch(getBooking(booking));
 
     if (
       bookingState.formValues.from_address.province === "Gauteng" &&
