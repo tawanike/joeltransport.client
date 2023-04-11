@@ -4,18 +4,17 @@ import React, { FC, useContext, useEffect, useState } from "react";
 import { Alert, Col, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import DatePicker from "react-date-picker/dist/entry.nostyle";
-import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 import { FcInfo } from "react-icons/fc";
 import { FiCalendar } from "react-icons/fi";
 import { MdWarning } from "react-icons/md";
 import Select from "react-select";
+import { getBooking } from "src/_actions/booking.actions";
 import { BookingContext } from "src/_contexts/booking.context";
 import {
   formatDate,
   holidays,
   stringToDateTime,
 } from "src/_helpers/dateFormat";
-import { addressUtils } from "src/_helpers/formatAddress";
 import { useAPI, useNumberInput } from "src/_hooks";
 import { ADD_FORM_VALUES } from "src/_models/types";
 import { bookingsService } from "src/_services/bookings.service";
@@ -39,6 +38,8 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
   const router = useRouter();
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
   const [bookedDates, setBookedDates] = useState<any[]>([]);
+  const [fromWorkingLift, setFromWorkingLift] = useState(false);
+  const [toWorkingLift, setToWorkingLift] = useState(false);
 
   useEffect(() => {
     let booked: any[] = [];
@@ -106,10 +107,11 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
   useEffect(() => {
     const submitForm = async () => {
       if (bookingState.formValues.id) {
-        await bookingsService.updateBooking(
+        const booking = await bookingsService.updateBooking(
           bookingState.formValues,
           fetchWrapper
         );
+        bookingsDispatch(getBooking(booking));
       } else {
         await bookingsService.createBooking(
           bookingState.formValues,
@@ -120,13 +122,17 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
     if (bookingState.formValues.move_date) {
       submitForm();
     }
-  }, [bookingState.formValues, bookingState.formValues.move_date]);
+  }, []);
 
-  const onDateChange = (date: Date) => {
-    bookingsDispatch({
-      type: ADD_FORM_VALUES,
-      payload: { move_date: formatDate(date) },
-    });
+  const onDateChange = async (date: Date) => {
+    if (bookingState.formValues.id) {
+      const booking = await bookingsService.updateBooking(
+        { id: bookingState.formValues.id, move_date: formatDate(date) },
+        fetchWrapper
+      );
+
+      bookingsDispatch(getBooking(booking));
+    }
   };
 
   const getPropertyTypeOption = (value: number) => {
@@ -141,21 +147,38 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
   };
 
   useEffect(() => {
-    bookingsDispatch({
-      type: ADD_FORM_VALUES,
-      payload: {
-        to_floors_count: ToFloorsCountValue,
-        from_floors_count: FromFloorsCountValue,
-      },
-    });
+    (async () => {
+      console.log("FromFloorsCountValue", FromFloorsCountValue);
+      bookingsDispatch({
+        type: ADD_FORM_VALUES,
+        payload: {
+          to_floors_count: ToFloorsCountValue,
+          from_floors_count: FromFloorsCountValue,
+          from_working_lift: fromWorkingLift,
+          to_working_lift: toWorkingLift,
+        },
+      });
 
-    if (FromFloorsCountValue > 0) {
-      setShowFromWorkingLift(true);
-    }
+      if (FromFloorsCountValue > 0) {
+        setShowFromWorkingLift(true);
+      }
 
-    if (ToFloorsCountValue > 0) {
-      setShowToWorkingLift(true);
-    }
+      if (ToFloorsCountValue > 0) {
+        setShowToWorkingLift(true);
+      }
+
+      if (bookingState.formValues.id) {
+        const booking = await bookingsService.updateBooking(
+          {
+            id: bookingState.formValues.id,
+            to_floors_count: ToFloorsCountValue,
+            from_floors_count: FromFloorsCountValue,
+          },
+          fetchWrapper
+        );
+        bookingsDispatch(getBooking(booking));
+      }
+    })();
   }, [FromFloorsCountValue, ToFloorsCountValue]);
 
   return (
@@ -222,7 +245,7 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
             </Form.Group>
           </Row>
         )}
-        {(["/move/domestic", "/move/inventory-form"].includes(
+        {(["/move/domestic", "/move/inventory-form", "/move/checkout"].includes(
           router.pathname
         ) ||
           bookingState.formValues.collection) && (
@@ -231,35 +254,10 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
             <Row className="mb-5">
               <Form.Group as={Col} md="12" controlId="from">
                 <Form.Label>Search loading location</Form.Label>
-                {bookingState.formValues.to_address &&
-                bookingState.formValues.to_address.place_id ? (
-                  <GooglePlacesAutocomplete
-                    apiKey="AIzaSyC_GzK_Vl1Z4sC0-SjAlJd8lzhodDk1coE"
-                    minLengthAutocomplete={5}
-                    selectProps={{
-                      value: {
-                        value: bookingState.formValues.from_address.place_id,
-                        label:
-                          bookingState.formValues.from_address
-                            .formatted_address,
-                      },
-                      onChange: (location: any) =>
-                        addressUtils.formatAddress(location).then((address) => {
-                          bookingsDispatch({
-                            type: ADD_FORM_VALUES,
-                            payload: {
-                              from_address: address,
-                            },
-                          });
-                        }),
-                    }}
-                  />
-                ) : (
-                  <AddressForm
-                    address={bookingState.formValues.from_address}
-                    address_type="from_address"
-                  />
-                )}
+                <AddressForm
+                  address={bookingState.formValues.from_address}
+                  address_type="from_address"
+                />
               </Form.Group>
             </Row>
             <Row className="mb-5">
@@ -340,14 +338,29 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
                   name="from_working_lift"
                   label="Yes"
                   disabled={bookingState.formValues.from_floors_count === 0}
-                  onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    if (bookingState.formValues.id) {
+                      bookingsService
+                        .updateBooking(
+                          {
+                            id: bookingState.formValues.id,
+                            from_working_lift: true,
+                            to_floors_count: ToFloorsCountValue,
+                            from_floors_count: FromFloorsCountValue,
+                          },
+                          fetchWrapper
+                        )
+                        .then((booking: any) => {
+                          bookingsDispatch(getBooking(booking));
+                        });
+                    }
                     bookingsDispatch({
                       type: ADD_FORM_VALUES,
                       payload: {
                         from_working_lift: Number(event.target.value),
                       },
-                    })
-                  }
+                    });
+                  }}
                   id="yes"
                   value={1}
                   checked={
@@ -360,14 +373,29 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
                   name="from_working_lift"
                   label="No"
                   disabled={bookingState.formValues.from_floors_count === 0}
-                  onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    if (bookingState.formValues.id) {
+                      bookingsService
+                        .updateBooking(
+                          {
+                            id: bookingState.formValues.id,
+                            from_working_lift: false,
+                            to_floors_count: ToFloorsCountValue,
+                            from_floors_count: FromFloorsCountValue,
+                          },
+                          fetchWrapper
+                        )
+                        .then((booking: any) => {
+                          bookingsDispatch(getBooking(booking));
+                        });
+                    }
                     bookingsDispatch({
                       type: ADD_FORM_VALUES,
                       payload: {
                         from_working_lift: Number(event.target.value),
                       },
-                    })
-                  }
+                    });
+                  }}
                   id="no"
                   value={0}
                   checked={
@@ -428,34 +456,10 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
             <Row className="mb-5">
               <Form.Group as={Col} md="12" controlId="to">
                 <Form.Label>Search delivery location</Form.Label>
-                {bookingState.formValues.to_address &&
-                bookingState.formValues.to_address.place_id ? (
-                  <GooglePlacesAutocomplete
-                    apiKey="AIzaSyC_GzK_Vl1Z4sC0-SjAlJd8lzhodDk1coE"
-                    minLengthAutocomplete={5}
-                    selectProps={{
-                      value: {
-                        value: bookingState.formValues.to_address.place_id,
-                        label:
-                          bookingState.formValues.to_address.formatted_address,
-                      },
-                      onChange: (location: string) =>
-                        addressUtils.formatAddress(location).then((address) => {
-                          bookingsDispatch({
-                            type: ADD_FORM_VALUES,
-                            payload: {
-                              to_address: address,
-                            },
-                          });
-                        }),
-                    }}
-                  />
-                ) : (
-                  <AddressForm
-                    address={bookingState.formValues.to_address}
-                    address_type="to_address"
-                  />
-                )}
+                <AddressForm
+                  address={bookingState.formValues.to_address}
+                  address_type="to_address"
+                />
               </Form.Group>
             </Row>
             <Row className="mb-5">
@@ -495,14 +499,30 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
                     inline
                     name="to_working_lift"
                     label="Yes"
-                    onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                      if (bookingState.formValues.id) {
+                        bookingsService
+                          .updateBooking(
+                            {
+                              id: bookingState.formValues.id,
+                              to_working_lift: true,
+                              to_floors_count: ToFloorsCountValue,
+                              from_floors_count: FromFloorsCountValue,
+                            },
+                            fetchWrapper
+                          )
+                          .then((booking: any) => {
+                            bookingsDispatch(getBooking(booking));
+                          });
+                      }
+
                       bookingsDispatch({
                         type: ADD_FORM_VALUES,
                         payload: {
                           to_working_lift: Number(event.target.value),
                         },
-                      })
-                    }
+                      });
+                    }}
                     id="yes"
                     value={1}
                     checked={
@@ -514,14 +534,29 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
                     inline
                     name="to_working_lift"
                     label="No"
-                    onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                      if (bookingState.formValues.id) {
+                        bookingsService
+                          .updateBooking(
+                            {
+                              id: bookingState.formValues.id,
+                              to_working_lift: false,
+                              to_floors_count: ToFloorsCountValue,
+                              from_floors_count: FromFloorsCountValue,
+                            },
+                            fetchWrapper
+                          )
+                          .then((booking: any) => {
+                            bookingsDispatch(getBooking(booking));
+                          });
+                      }
                       bookingsDispatch({
                         type: ADD_FORM_VALUES,
                         payload: {
                           to_working_lift: Number(event.target.value),
                         },
-                      })
-                    }
+                      });
+                    }}
                     id="no"
                     value={0}
                     checked={
