@@ -13,7 +13,7 @@ const ChooseTruck = ({ setChooseTruckComplete }: any) => {
   const api = useAPI();
   const [trucks, setTrucks] = useState<IProduct[]>([]);
   const [selectedTruck, setSelectedTruck] = useState<IProduct>();
-  const [activeTruck, setActiveTruck] = useState<IProduct>();
+  const [activeTruck, setActiveTruck] = useState<number>(0);
   const [index, setIndex] = useState(0);
   const [bookedDates, setBookedDates] = useState<any[]>([]);
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
@@ -129,6 +129,12 @@ const ChooseTruck = ({ setChooseTruckComplete }: any) => {
           modules={[Navigation]}
           spaceBetween={20}
           slidesPerView={2}
+          onSlideChange={(swiper) => {
+            setActiveTruck(swiper.activeIndex);
+            if (swiper.activeIndex < trucks.length - 1) {
+              swiper.allowSlideNext = true;
+            }
+          }}
         >
           {trucks.map((truck: IProduct, i) => (
             <SwiperSlide key={truck.id}>
@@ -143,9 +149,10 @@ const ChooseTruck = ({ setChooseTruckComplete }: any) => {
               />
             </SwiperSlide>
           ))}
+          <SwiperSlide key="last"></SwiperSlide>
         </Swiper>
         <div className="col-12 truckDisplay__truck-summary">
-          <p>{selectedTruck && selectedTruck.description}</p>
+          <p>{trucks.length > 0 && trucks[activeTruck]["description"]}</p>
         </div>
       </div>
       {/* <div

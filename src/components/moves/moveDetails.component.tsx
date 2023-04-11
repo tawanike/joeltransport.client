@@ -11,6 +11,7 @@ import Select from "react-select";
 import { getBooking } from "src/_actions/booking.actions";
 import { BookingContext } from "src/_contexts/booking.context";
 import {
+  addHours,
   formatDate,
   holidays,
   stringToDateTime,
@@ -274,7 +275,7 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
                   dayPlaceholder="dd"
                   monthPlaceholder="mm"
                   yearPlaceholder="yyyy"
-                  minDate={new Date()}
+                  minDate={addHours(new Date(), 24)}
                   // tileDisabled={tileDisabled}
                   tileClassName={tileClassName}
                   className="date-picker"
