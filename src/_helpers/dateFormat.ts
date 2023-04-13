@@ -29,3 +29,15 @@ export const holidays = () => {
     za_holidays.init('ZA');
     return za_holidays.getHolidays(new Date().getFullYear());
 }
+
+export const subDays = (date: Date, hours: number) => {
+    date.setHours(date.getHours() - hours);
+
+    return date;
+  }
+
+  export const addHours = (date: Date, hours: number) => {
+    date.setHours(date.getHours() + hours);
+
+    return date;
+  }

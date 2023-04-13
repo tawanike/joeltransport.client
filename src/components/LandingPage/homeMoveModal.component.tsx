@@ -65,10 +65,13 @@ const HomeMoveModalComponent: FC<IProps> = ({
     setLoading(false);
     bookingsDispatch(getBooking(booking));
     localStorage.setItem("bookingId", booking.id);
-    if (
-      bookingState.formValues.from_address?.province === "Gauteng" &&
-      bookingState.formValues.to_address?.province === "Gauteng"
-    ) {
+    const from_province =
+      bookingState.formValues.from_address?.province.charAt(0).toUpperCase() +
+      bookingState.formValues.from_address?.province.slice(1);
+    const to_province =
+      bookingState.formValues.to_address?.province.charAt(0).toUpperCase() +
+      bookingState.formValues.to_address?.province.slice(1);
+    if (from_province === "Gauteng" && to_province === "Gauteng") {
       router.push(`/move/domestic`);
       setShowSelectorModal(false);
     } else {
