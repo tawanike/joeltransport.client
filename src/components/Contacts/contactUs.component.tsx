@@ -1,10 +1,10 @@
 import { ErrorMessage, Field, Formik, FormikProps } from "formik";
+import { useRouter } from "next/router";
 import { FC, useState } from "react";
 import { Button, Col, Form, Modal, Row } from "react-bootstrap";
 import { BsCheckCircle } from "react-icons/bs";
 import PhoneInput from "react-phone-number-input";
 import * as yup from "yup";
-import useAPI from "../../_hooks/useAPI";
 import { CoverImage, Uploader } from "../ui";
 
 const phoneRegExp =
@@ -14,7 +14,7 @@ interface IProps {
   isModal?: boolean;
 }
 const ContactUsComponent: FC<IProps> = ({ isModal = false }) => {
-  const { post } = useAPI();
+  const router = useRouter();
   const [show, setShow] = useState(false);
   const [validated, setValidated] = useState(false);
   const [files, setFiles] = useState<any[]>([]);
@@ -80,7 +80,7 @@ const ContactUsComponent: FC<IProps> = ({ isModal = false }) => {
                 <Button
                   variant="secondary"
                   className="col-4"
-                  onClick={() => setShow(false)}
+                  onClick={() => router.push("/")}
                 >
                   Done
                 </Button>

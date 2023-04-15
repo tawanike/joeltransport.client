@@ -1,7 +1,20 @@
 import { RequestOptions } from "../_models/types";
 
 const useAPI = () => {
-  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+  let API_URL = "";
+  if (
+    process.env.NODE_ENV === "development" &&
+    process.env.NEXT_PUBLIC_API_URL_DEV
+  ) {
+    API_URL = process.env.NEXT_PUBLIC_API_URL_DEV;
+  }
+
+  if (
+    process.env.NODE_ENV === "production" &&
+    process.env.NEXT_PUBLIC_API_URL
+  ) {
+    API_URL = process.env.NEXT_PUBLIC_API_URL;
+  }
 
   const request = (method: string) => {
     return (url: string, body: any) => {

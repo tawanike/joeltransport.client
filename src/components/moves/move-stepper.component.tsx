@@ -56,7 +56,12 @@ const MoveStepper = () => {
             >
               <div className="row">
                 <div className="col-11">
-                  <p>Choose a truck</p>
+                  <p>
+                    Choose a truck{" "}
+                    <span style={{ fontSize: 8, color: "red" }}>
+                      (Required)
+                    </span>
+                  </p>
                 </div>
 
                 <div className="col-1 moves__step__head__curret">
@@ -108,7 +113,12 @@ const MoveStepper = () => {
             >
               <div className="row">
                 <div className="col-11">
-                  <p>Personal information</p>
+                  <p>
+                    Personal information{" "}
+                    <span style={{ fontSize: 8, color: "red" }}>
+                      (Required)
+                    </span>
+                  </p>
                 </div>
 
                 <div className="col-1 moves__step__head__curret">
