@@ -254,7 +254,9 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
             <h5 className="my-5">Please provide loading details</h5>
             <Row className="mb-5">
               <Form.Group as={Col} md="12" controlId="from">
-                <Form.Label>Search loading location</Form.Label>
+                <Form.Label>
+                  <span className="text-danger">*</span>Search loading location
+                </Form.Label>
                 <AddressForm
                   address={bookingState.formValues.from_address}
                   address_type="from_address"
@@ -263,7 +265,10 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
             </Row>
             <Row className="mb-5">
               <Form.Group as={Col} md="6" controlId="move_date">
-                <Form.Label>{dateLabel}</Form.Label>
+                <Form.Label>
+                  <span className="text-danger">*</span>
+                  {dateLabel}
+                </Form.Label>
                 <DatePicker
                   onChange={onDateChange}
                   value={
@@ -456,7 +461,9 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
             <h5 className="my-5">Please provide delivery details</h5>
             <Row className="mb-5">
               <Form.Group as={Col} md="12" controlId="to">
-                <Form.Label>Search delivery location</Form.Label>
+                <Form.Label>
+                  <span className="text-danger">*</span>Search delivery location
+                </Form.Label>
                 <AddressForm
                   address={bookingState.formValues.to_address}
                   address_type="to_address"
