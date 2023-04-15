@@ -69,6 +69,12 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
             });
     }, [currentMonth]);
 
+    useEffect(() => {
+        window.scrollTo({
+            top: 400,
+            behavior: "smooth",
+        });
+    }, []);
     function tileClassName({ date, view }: any) {
         // Add class to tiles in month view only
         if (view === "month") {
