@@ -126,6 +126,8 @@ function AddressManualForm({
     if (whichAddress === "from_address") {
       reset();
     }
+
+    // createBooking(bookingState.formValues);
   };
 
   useEffect(() => {
@@ -133,7 +135,8 @@ function AddressManualForm({
       bookingState.formValues.to_address &&
       bookingState.formValues.from_address
     )
-      createBooking(bookingState.formValues);
+      console.log("ABOUT TO CREATE BOOKING", bookingState.formValues);
+    createBooking(bookingState.formValues);
   }, [bookingState.formValues.to_address]);
 
   return (
