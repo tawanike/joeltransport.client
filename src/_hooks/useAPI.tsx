@@ -9,12 +9,12 @@ const useAPI = () => {
     API_URL = process.env.NEXT_PUBLIC_API_URL_DEV;
   }
 
-  if (
-    process.env.NODE_ENV === "production" &&
-    process.env.NEXT_PUBLIC_API_URL
-  ) {
-    API_URL = process.env.NEXT_PUBLIC_API_URL;
-  }
+  // if (
+  //   process.env.NODE_ENV === "production" &&
+  //   process.env.NEXT_PUBLIC_API_URL
+  // ) {
+  //   API_URL = process.env.NEXT_PUBLIC_API_URL;
+  // }
 
   const request = (method: string) => {
     return (url: string, body: any) => {
