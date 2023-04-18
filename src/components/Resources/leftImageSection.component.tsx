@@ -9,10 +9,10 @@ const LeftImageSection: FC<RightImageSectionConfig> = ({ title, description, ima
             <div className="row">
                 <div className="resources__product-description col-12">
                     <div className="row">
-                        <div className="resources__product-description__image col-6">
+                        <div className="resources__product-description__image col-12 col-md-6">
                             <img src={image} alt="" />
                         </div>
-                        <div className="resources__product-description__summary col-6">
+                        <div className="resources__product-description__summary col-12 col-md-6">
                             <div className="resources__product-description__summary__information-head">
                                 <p>{title} </p>
                             </div>
