@@ -1,20 +1,20 @@
 import { RequestOptions } from "../_models/types";
 
 const useAPI = () => {
-  let API_URL = "";
-  if (
-    process.env.NODE_ENV === "development" &&
-    process.env.NEXT_PUBLIC_API_URL_DEV
-  ) {
-    API_URL = process.env.NEXT_PUBLIC_API_URL_DEV;
-  }
+  let API_URL = "https://dev.joeltransport.wddng.co/v1";
+  // if (
+  //   process.env.NODE_ENV === "development" &&
+  //   process.env.NEXT_PUBLIC_API_URL_DEV
+  // ) {
+  //   API_URL = process.env.NEXT_PUBLIC_API_URL_DEV;
+  // }
 
-  if (
-    process.env.NODE_ENV === "production" &&
-    process.env.NEXT_PUBLIC_API_URL
-  ) {
-    API_URL = process.env.NEXT_PUBLIC_API_URL;
-  }
+  // if (
+  //   process.env.NODE_ENV === "production" &&
+  //   process.env.NEXT_PUBLIC_API_URL
+  // ) {
+  //   API_URL = process.env.NEXT_PUBLIC_API_URL;
+  // }
 
   const request = (method: string) => {
     return (url: string, body: any) => {
