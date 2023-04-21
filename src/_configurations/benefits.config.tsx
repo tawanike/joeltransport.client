@@ -12,7 +12,7 @@ export type BlueSectionListItemConfig = {
 export const homeMoversBenefitsConfig: BlueSectionListItemConfig[] = [
   {
     id: 1,
-    title: "Truck & crew",
+    title: "Truck and crew",
     description: (
       <>
         <p>
@@ -64,7 +64,7 @@ export const homeMoversBenefitsConfig: BlueSectionListItemConfig[] = [
 
 export const homeMoversConfig: BlueSectionConfig = {
   id: 1,
-  title: "Here are some of the benefits of moving with us",
+  title: "Choosing us has its perks",
   description: (
     <>
       <p>

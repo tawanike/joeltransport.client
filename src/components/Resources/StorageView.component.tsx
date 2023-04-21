@@ -60,12 +60,12 @@ const StorageComponent = ({ getQuote }: any) => {
                   </div>
                   <div className="resources__product-description__summary col-7 offset-1">
                     <div className="resources__product-description__summary__information-head">
-                      <p>Our standard pricing for local storage.</p>
+                      <p>Our standard pricing for local storage</p>
                     </div>
                     <div className="resources__product-description__summary__information-summary">
                       <p>
-                        Our storage is charged monthly, we offer short term or
-                        long term storage services. Minimum storage period is
+                        Our storage is charged monthly, we offer short-term or
+                        long-term storage services. Minimum storage period is
                         one month
                       </p>
                     </div>

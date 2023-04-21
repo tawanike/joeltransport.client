@@ -275,12 +275,12 @@ const ContactUsComponent: FC<IProps> = ({ isModal = false }) => {
                         <Form.Label>
                           <Field
                             type="checkbox"
-                            label="Specialized move"
+                            label="Specialised move"
                             name="service_options"
                             value="2"
                             className="m-1"
                           />
-                          Specialized move
+                          Specialised move
                         </Form.Label>
                       </Form.Group>
                       <Form.Group as={Col} md="4" className="mb-5">
