@@ -10,7 +10,7 @@ const Articles = () => {
         size="medium"
         src="/img/services/resources_banner.png"
         pageTitle="Articles"
-        description="Take a moment to catch your breath – we all need help sometimes"
+        description="Take a moment to catch your breath – we all need help"
       />
 
       <div className="resources__article container mt-5">

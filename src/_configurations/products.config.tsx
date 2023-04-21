@@ -12,7 +12,7 @@ export const productConfig: ProductConfig[] = [
     id: 1,
     title: "Home moves",
     description:
-      "We have well-trained reliable experts who offer a comprehensive moving full service to ensure minimal stress during your home move. We ensure that packing of documents is done and furniture is moved with great care.",
+      "We have well-trained, reliable experts who offer a comprehensive moving service. This full-service option ensures minimal stress during your home move. All documents and furniture are packed and moved with great care.",
     image: "home_moves.png",
     route: "home-moves",
   },
@@ -20,7 +20,7 @@ export const productConfig: ProductConfig[] = [
     id: 2,
     title: "Office removals",
     description:
-      "To successfully undertake professional Office Removals requires significant expertise and a detailed plan for action. Joel Transport are the experts when planning and executing office furniture removals...",
+      "To successfully undertake professional office removals requires significant expertise and a detailed plan of action. Joël Transport are the experts when planning and executing office furniture removals.",
     image: "office_removals.png",
     route: "office-removals",
   },
@@ -28,7 +28,7 @@ export const productConfig: ProductConfig[] = [
     id: 3,
     title: "Storage",
     description:
-      "We provide storage facilities for your personal and household effects. We offer short and long-term storage contracts. Loads are stored in Pallets within our warehouse. With storage in Gauteng...",
+      "We provide storage facilities for your personal and household belongings. There are short and long-term storage contracts, and loads are stored in pallets within our warehouse. Storage in Gauteng is also available.",
     image: "storage.png",
     route: "storage",
   },
@@ -36,7 +36,7 @@ export const productConfig: ProductConfig[] = [
     id: 4,
     title: "Pet relocation",
     description:
-      "We provide domestic and international Pet Moving Services using our trusted pet removal teams working to the local and international regulations on the movement of pets.",
+      "We provide domestic and international pet moving services at reasonable pricing. Our teams are trustworthy and adhere to local and international regulations on the movement of pets.",
     image: "pet.png",
     route: "specialized-services",
   },
@@ -45,7 +45,7 @@ export const productConfig: ProductConfig[] = [
     id: 5,
     title: "Fine art relocation",
     description:
-      "We move Fine Art pieces domestically and internationally in safely packaged and secure packaging and/or crating to prevent damage. This service is backed up by our insurance service option.",
+      "We move fine art pieces both domestically and internationally in safe and secure packaging and/ or crating. This service is backed up by our insurance service option.",
     image: "art.png",
     route: "specialized-services",
   },
@@ -53,7 +53,7 @@ export const productConfig: ProductConfig[] = [
     id: 6,
     title: "Vehicle transportation",
     description:
-      "We provide domestic and international Vehicle Moving services, for vehicles that can move using their own power. Moving of non-runner vehicles is significantly more costly, with limited-service options.",
+      "We provide domestic and international vehicle moving services for vehicles that can move using their own power. Moving of non-runner vehicles is significantly costlier, with limited service options.",
     image: "vehicle.png",
     route: "specialized-services",
   },
@@ -61,7 +61,7 @@ export const productConfig: ProductConfig[] = [
     id: 7,
     title: "Dangerous goods",
     description:
-      "Our Dangerous Goods moving service uses highly trained specialist teams. Dangerous goods we move include Paints, Chemicals, Flammable Gases, Flammable Liquids and Solids or Corrosives.",
+      "Our Dangerous Goods service option uses highly trained specialist teams. The dangerous goods we move include paints, chemicals, flammable gases, flammable liquids and solids/corrosives.",
     image: "danger.png",
     route: "specialized-services",
   },
