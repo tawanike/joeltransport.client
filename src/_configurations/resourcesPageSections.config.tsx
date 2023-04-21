@@ -123,7 +123,7 @@ export const officeMoveSections: any = {
         </ul>
       </>
     ),
-    image: "/img/services/office_move.png",
+    image: "/img/services/international.png",
     secondaryButton: { title: "Call me back" },
   },
 };
@@ -177,7 +177,7 @@ export const storageSections: any = {
         </p>
       </>
     ),
-    image: "/img/services/storage_int.png",
+    image: "/img/services/international.png",
     secondaryButton: { title: "Call me back" },
   },
 };
@@ -233,7 +233,7 @@ export const specializedServicesSections: any = {
         </p>
       </>
     ),
-    image: "/img/services/vehicle_service.png",
+    image: "/img/services/vehicle-transportation.png",
     secondaryButton: { title: "Call me back" },
   },
   danger: {
@@ -251,7 +251,7 @@ export const specializedServicesSections: any = {
         </p>
       </>
     ),
-    image: "/img/services/danger_service.png",
+    image: "/img/services/dangerous-goods.png",
     secondaryButton: { title: "Call me back" },
   },
 };

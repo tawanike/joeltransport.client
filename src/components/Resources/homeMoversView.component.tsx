@@ -93,7 +93,7 @@ const HomeMoversView = ({ getQuote }: any) => {
           <div className="resources__product-description col-12">
             <div className="row">
               <div className="resources__product-description__image col-12 col-md-6">
-                <img src="/img/services/plain-tail.png" alt="" />
+                <img src="/img/services/international.png" alt="" />
               </div>
 
               <div className="resources__product-description__summary col-12 col-md-6 mt-5 mt-md-0">
