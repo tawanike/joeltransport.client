@@ -21,6 +21,9 @@ const RightImageSection: FC<RightImageSectionConfig> = ({
                                 <div className="resources__product-description__summary__information-head">
                                     <p>{title} </p>
                                 </div>
+                                <div className="resources__product-description__image col-12 d-md-none mb-4">
+                                    <img src={image} alt="" />
+                                </div>
                                 <div className="resources__product-description__summary__information-summary">
                                     {description}
                                 </div>
@@ -36,7 +39,7 @@ const RightImageSection: FC<RightImageSectionConfig> = ({
                                     )}
                                 </div>
                             </div>
-                            <div className="resources__product-description__image col-12 col-md-6 mt-3 mt-md-0">
+                            <div className="resources__product-description__image d-none d-md-flex col-md-6 mt-3 mt-md-0">
                                 <img src={image} alt="" />
                             </div>
                         </div>

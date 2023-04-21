@@ -26,7 +26,7 @@ const StorageComponent = ({ getQuote }: any) => {
             <div className="row">
               <div className="resources__pricing__prices col-12 pb-5">
                 <div className="row">
-                  <div className="col-3 resources__pricing__prices-container">
+                  <div className="col-12 col-md-3 resources__pricing__prices-container">
                     <div className="col-12 resources__pricing__prices-container__item">
                       <div className="col-12 resources__pricing__prices-container__item-head">
                         <p>Standard 1 bed move</p>
@@ -58,14 +58,14 @@ const StorageComponent = ({ getQuote }: any) => {
                       ))}
                     </div>
                   </div>
-                  <div className="resources__product-description__summary col-7 offset-1">
+                  <div className="resources__product-description__summary col-12 col-md-7 offset-md-1 mt-3 mt-md-0">
                     <div className="resources__product-description__summary__information-head">
-                      <p>Our standard pricing for local storage</p>
+                      <p>Our standard pricing for local storage.</p>
                     </div>
                     <div className="resources__product-description__summary__information-summary">
                       <p>
-                        Our storage is charged monthly, we offer short-term or
-                        long-term storage services. Minimum storage period is
+                        Our storage is charged monthly, we offer short term or
+                        long term storage services. Minimum storage period is
                         one month
                       </p>
                     </div>
@@ -91,7 +91,35 @@ const StorageComponent = ({ getQuote }: any) => {
             </div>
           </div>
         </div>
+        <div className="resources__product-description__summary col-7 offset-1">
+          <div className="resources__product-description__summary__information-head">
+            <p>Our standard pricing for local storage</p>
+          </div>
+          <div className="resources__product-description__summary__information-summary">
+            <p>
+              Our storage is charged monthly, we offer short-term or long-term
+              storage services. Minimum storage period is one month
+            </p>
+          </div>
+          <div className="resources__product-description__summary__information-button py-3">
+            <Button
+              variant="outline-secondary"
+              className="me-3"
+              onClick={() => router.push("/contact-us")}
+            >
+              Call me back
+            </Button>
+            <Button
+              variant="secondary"
+              className="me-3"
+              onClick={() => getQuote(true)}
+            >
+              Get a quote
+            </Button>
+          </div>
+        </div>
       </div>
+
       <LeftImageSection
         {...(storageSections.internationally as RightImageSectionConfig)}
       />
