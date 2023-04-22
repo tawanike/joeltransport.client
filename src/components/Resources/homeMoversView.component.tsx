@@ -34,11 +34,8 @@ const HomeMoversView = ({ getQuote }: any) => {
               <div className="resources__pricing__prices col-8 offset-2 pb-5">
                 <div className="row">
                   {pricingConfig.map((price) => (
-                    <>
-                      <div
-                        key={uuid()}
-                        className="col-12 mb-3 mb-md-0 col-md-4 resources__pricing__prices-container"
-                      >
+                    <div key={uuid()}>
+                      <div className="col-12 mb-3 mb-md-0 col-md-4 resources__pricing__prices-container">
                         <div className="col-12 resources__pricing__prices-container__item">
                           <div className="col-12 resources__pricing__prices-container__item-head">
                             <p>{price.title}</p>
@@ -80,7 +77,7 @@ const HomeMoversView = ({ getQuote }: any) => {
                           </div>
                         </div>
                       </div>
-                    </>
+                    </div>
                   ))}
                 </div>
               </div>
@@ -109,22 +106,21 @@ const HomeMoversView = ({ getQuote }: any) => {
                     <br />
                     The services we offer under “International Moves” are as
                     follows:
-                    <ul>
-                      <li>
-                        Lower Container Load Service: cargo is collected,
-                        crated, consolidated, and dispatched within a 30-day
-                        period.
-                      </li>
-                      <li>
-                        Full Container Load Service: for larger loads of either
-                        6 or 12 cubic metres.
-                      </li>
-                      <li>
-                        Air Freight Service: most commonly used method for
-                        everyday needs.
-                      </li>
-                    </ul>
                   </p>
+                  <ul>
+                    <li>
+                      Lower Container Load Service: cargo is collected, crated,
+                      consolidated, and dispatched within a 30-day period.
+                    </li>
+                    <li>
+                      Full Container Load Service: for larger loads of either 6
+                      or 12 cubic metres.
+                    </li>
+                    <li>
+                      Air Freight Service: most commonly used method for
+                      everyday needs.
+                    </li>
+                  </ul>
                 </div>
                 <div className="resources__product-description__summary__information-button py-3">
                   <CallMeBackButton title="Call me back" />

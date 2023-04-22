@@ -11,13 +11,13 @@ function Navigation() {
         expand="md"
         className="Navigation container-fluid"
       >
-        <Container>
+        <Container style={{ backgroundColor: "#1D3A7A" }}>
           {/* <Navbar.Brand href="#"></Navbar.Brand> */}
           <Navbar.Toggle aria-controls="navbarScroll" />
           <Navbar.Collapse id="navbarScroll">
             <Nav
               className="me-auto my-2 my-lg-0"
-              style={{ maxHeight: "80px" }}
+              style={{ maxHeight: "300px", backgroundColor: "#1D3A7A" }}
               navbarScroll
             >
               <Link href="/" className="nav-link">
