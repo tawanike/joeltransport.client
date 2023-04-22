@@ -66,10 +66,16 @@ function Navigation() {
                   </NavDropdown.Item>
                 </Link>
               </NavDropdown>
-
-              <Link href="/about" className="nav-link">
-                About Us
-              </Link>
+              <NavDropdown title="About" id="navbarScrollingDropdown">
+                <Link href="/about" className="nav-link">
+                  <NavDropdown.Item href="/about">About Us</NavDropdown.Item>
+                </Link>
+                <Link href="/about/mission-vision" className="nav-link">
+                  <NavDropdown.Item href="/about/mission-vision">
+                    Mission & Vision
+                  </NavDropdown.Item>
+                </Link>
+              </NavDropdown>
 
               <Link href="/contact-us" className="nav-link">
                 Contact us
