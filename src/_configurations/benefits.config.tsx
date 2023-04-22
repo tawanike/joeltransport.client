@@ -11,7 +11,7 @@ export type BlueSectionListItemConfig = {
 
 export const homeMoversBenefitsConfig: BlueSectionListItemConfig[] = [
   {
-    id: 1,
+    id: 1000,
     title: "Truck and crew",
     description: (
       <>
@@ -24,7 +24,7 @@ export const homeMoversBenefitsConfig: BlueSectionListItemConfig[] = [
     icon: <BsTruck />,
   },
   {
-    id: 2,
+    id: 2000,
     title: "Trained staff",
     description: (
       <>
@@ -37,7 +37,7 @@ export const homeMoversBenefitsConfig: BlueSectionListItemConfig[] = [
     icon: <BsTruck />,
   },
   {
-    id: 3,
+    id: 3000,
     title: "Moving insurance",
     description: (
       <>
@@ -49,7 +49,7 @@ export const homeMoversBenefitsConfig: BlueSectionListItemConfig[] = [
     icon: <BsTruck />,
   },
   {
-    id: 4,
+    id: 4000,
     title: "Storage insurance",
     description: (
       <>
@@ -63,7 +63,7 @@ export const homeMoversBenefitsConfig: BlueSectionListItemConfig[] = [
 ];
 
 export const homeMoversConfig: BlueSectionConfig = {
-  id: 1,
+  id: 9000,
   title: "Choosing us has its perks",
   description: (
     <>
