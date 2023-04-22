@@ -4,6 +4,9 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { Breadcrumb } from "react-bootstrap";
 import StorageModalComponent from "src/components/LandingPage/storageModal.component";
+import { servicesConfig } from "../../_configurations/services.config";
+import InternationalMovesView from "../../components/Resources/InternationalMovesView.component";
+import LongDistanceMoveView from "../../components/Resources/LongDistanceMoveView.component";
 import OfficeRemovalsComponent from "../../components/Resources/OfficeRemovalsView.component";
 import SpecialisedServicesComponent from "../../components/Resources/SpecialisedServices.component";
 import HomeMoversView from "../../components/Resources/homeMoversView.component";
@@ -25,6 +28,10 @@ const Resources = () => {
         return <StorageComponent getQuote={setShowStorageModal} />;
       case "specialized-services":
         return <SpecialisedServicesComponent />;
+      case "long-distance":
+        return <LongDistanceMoveView />;
+      case "international-moves":
+        return <InternationalMovesView />;
       default:
         break;
     }
@@ -42,6 +49,10 @@ const Resources = () => {
       default:
         return "--home-moves";
     }
+  };
+  const getCurrentPage = (slug: string) => {
+    const current = servicesConfig.find((service) => service.slug === slug);
+    return current?.breadcrumb;
   };
   return (
     <div className="resources container-fluid">
@@ -67,7 +78,9 @@ const Resources = () => {
               <Breadcrumb>
                 <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
                 <Breadcrumb.Item href="/services">Our products</Breadcrumb.Item>
-                <Breadcrumb.Item active>{slug}</Breadcrumb.Item>
+                <Breadcrumb.Item active>
+                  {getCurrentPage(slug as string)}
+                </Breadcrumb.Item>
               </Breadcrumb>
             </div>
           </div>

@@ -17,6 +17,8 @@ export type ServiceConfig = {
   bgColor: string;
   icon: ReactNode;
   btnText: string;
+  breadcrumb: string;
+  slug: string;
 };
 
 export const servicesConfig: ServiceConfig[] = [
@@ -29,26 +31,32 @@ export const servicesConfig: ServiceConfig[] = [
     bgColor: "light-blue",
     icon: <BiHomeSmile />,
     btnText: "Get started",
+    slug: "home-moves",
+    breadcrumb: "Home moves",
   },
   {
     id: "2",
     title: "Long distance move",
     description: "More distance, less stress. So good that it’s true!",
-    link: "/services/home-moves",
+    link: "/services/long-distance",
     image: "",
     bgColor: "orange",
     icon: <FaLocationArrow />,
     btnText: "Get started",
+    slug: "long-distance",
+    breadcrumb: "Long distance move",
   },
   {
     id: "3",
     title: "International move",
     description: "Long distance doesn’t intimidate us.",
-    link: "/services/home-moves",
+    link: "/services/international-moves",
     image: "",
     bgColor: "brown",
     icon: <FaPlaneDeparture />,
     btnText: "Get started",
+    slug: "international-moves",
+    breadcrumb: "International move",
   },
   {
     id: "4",
@@ -59,6 +67,8 @@ export const servicesConfig: ServiceConfig[] = [
     bgColor: "orange",
     icon: <MdOutlineEmojiTransportation />,
     btnText: "Get started",
+    slug: "office-removals",
+    breadcrumb: "Office relocation",
   },
   {
     id: "5",
@@ -70,6 +80,8 @@ export const servicesConfig: ServiceConfig[] = [
     bgColor: "light-blue",
     icon: <FaLaptopHouse />,
     btnText: "Get started",
+    slug: "specialized-services",
+    breadcrumb: "Specialised services",
   },
   {
     id: "6",
@@ -81,5 +93,7 @@ export const servicesConfig: ServiceConfig[] = [
     bgColor: "orange",
     icon: <FaWarehouse />,
     btnText: "Get started",
+    slug: "storage",
+    breadcrumb: "Storage services",
   },
 ];

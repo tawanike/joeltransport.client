@@ -24,8 +24,34 @@ function Navigation() {
                 Home
               </Link>
               <NavDropdown title="Move Services" id="navbarScrollingDropdown">
-                <Link href="/services" passHref>
-                  <NavDropdown.Item href="/services">Services</NavDropdown.Item>
+                <Link href="/services/home-moves" passHref>
+                  <NavDropdown.Item href="/services/home-moves">
+                    Home moves
+                  </NavDropdown.Item>
+                </Link>
+
+                <Link href="/services/international-moves" passHref>
+                  <NavDropdown.Item href="/services/international-moves">
+                    International moves
+                  </NavDropdown.Item>
+                </Link>
+
+                <Link href="/services/office-removals" passHref>
+                  <NavDropdown.Item href="/services/office-removals">
+                    Office removals
+                  </NavDropdown.Item>
+                </Link>
+
+                <Link href="/services/storage" passHref>
+                  <NavDropdown.Item href="/services/storage">
+                    Storage
+                  </NavDropdown.Item>
+                </Link>
+
+                <Link href="/services/specialized-services" passHref>
+                  <NavDropdown.Item href="/services/specialized-services">
+                    Specialised services
+                  </NavDropdown.Item>
                 </Link>
               </NavDropdown>
               <NavDropdown title="Resources" id="navbarScrollingDropdown">

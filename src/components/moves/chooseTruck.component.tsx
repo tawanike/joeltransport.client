@@ -91,6 +91,7 @@ const ChooseTruck = () => {
   }, [trucks]);
 
   useEffect(() => {
+    console.log("MOVE DATE CHANGED");
     api
       .get(
         `/bookings/unavailable?month=${
@@ -100,22 +101,39 @@ const ChooseTruck = () => {
       )
       .then((res) => {
         if (res.length === 0) {
-          setBookedDates([]);
           return;
         }
-
-        // res.forEach((date: any) => {
-        //   const d = new Date(date.date);
-        //   if (
-        //     currentMonth === d.getMonth() &&
-        //     d.getDate() !== bookingContext.state.formValues.move_date
-        //   ) {
-        //     booked.push(d.getDate());
-        //     setBookedDates([...booked]);
-        //   }
-        // });
+        setBookedDates(res);
+        console.log("DATES", res);
       });
-  }, [currentMonth]);
+  }, [bookingContext.state.formValues.move_date]);
+
+  const isBooked = () => {
+    console.log("CHECK IF BOOKED", bookedDates);
+    if (bookedDates.length === 0) {
+      return false;
+    } else {
+      bookedDates.map((date) => {
+        const d = new Date(date.move_date);
+
+        const move_date = new Date(bookingContext.state.formValues.move_date);
+        if (
+          d.getDate() === move_date.getDate() &&
+          d.getMonth() === move_date.getMonth() &&
+          d.getFullYear() === move_date.getFullYear() &&
+          bookingContext.state.formValues.move_time_period === date.move_time
+        ) {
+          return true;
+        }
+        console.log(
+          d.getDate(),
+          d.getMonth() === move_date.getMonth(),
+          d.getFullYear() === move_date.getFullYear(),
+          bookingContext.state.formValues.move_time_period === date.move_time
+        );
+      });
+    }
+  };
 
   return (
     <div className="row">
@@ -139,6 +157,16 @@ const ChooseTruck = () => {
               swiper.allowSlideNext = true;
             }
           }}
+          breakpoints={{
+            300: {
+              width: 270,
+              slidesPerView: 1,
+            },
+            768: {
+              width: 768,
+              slidesPerView: 2,
+            },
+          }}
         >
           {trucks.map((truck: IProduct, i) => (
             <SwiperSlide key={truck.id}>
@@ -146,6 +174,7 @@ const ChooseTruck = () => {
                 truck={truck}
                 onSelect={setSelectedTruck}
                 inView={i === activeTruck}
+                isBooked={isBooked}
                 isSelected={
                   selectedTruck
                     ? (selectedTruck as IProduct).id === truck.id
