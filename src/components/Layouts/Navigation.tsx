@@ -26,19 +26,25 @@ function Navigation() {
               <NavDropdown title="Move Services" id="navbarScrollingDropdown">
                 <Link href="/services/home-moves" passHref>
                   <NavDropdown.Item href="/services/home-moves">
-                    Home moves
+                    Domestic move
                   </NavDropdown.Item>
                 </Link>
 
-                <Link href="/services/international-moves" passHref>
-                  <NavDropdown.Item href="/services/international-moves">
-                    International moves
+                <Link href="/services/long-distance-move" passHref>
+                  <NavDropdown.Item href="/services/long-distance-move">
+                    Long distance move
                   </NavDropdown.Item>
                 </Link>
 
-                <Link href="/services/office-removals" passHref>
-                  <NavDropdown.Item href="/services/office-removals">
-                    Office removals
+                <Link href="/services/international-move" passHref>
+                  <NavDropdown.Item href="/services/international-move">
+                    International move
+                  </NavDropdown.Item>
+                </Link>
+
+                <Link href="/services/office-relocation" passHref>
+                  <NavDropdown.Item href="/services/office-relocation">
+                    Office relocation
                   </NavDropdown.Item>
                 </Link>
 
@@ -68,11 +74,11 @@ function Navigation() {
               </NavDropdown>
               <NavDropdown title="About" id="navbarScrollingDropdown">
                 <Link href="/about" className="nav-link">
-                  <NavDropdown.Item href="/about">About Us</NavDropdown.Item>
+                  <NavDropdown.Item href="/about">About us</NavDropdown.Item>
                 </Link>
-                <Link href="/about/mission-vision" className="nav-link">
-                  <NavDropdown.Item href="/about/mission-vision">
-                    Mission & Vision
+                <Link href="/about/our-team" className="nav-link">
+                  <NavDropdown.Item href="/about/our-team">
+                    Our team
                   </NavDropdown.Item>
                 </Link>
               </NavDropdown>

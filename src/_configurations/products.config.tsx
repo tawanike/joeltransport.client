@@ -22,7 +22,7 @@ export const productConfig: ProductConfig[] = [
     description:
       "To successfully undertake professional office removals requires significant expertise and a detailed plan of action. Joël Transport are the experts when planning and executing office furniture removals.",
     image: "office_removals.png",
-    route: "office-removals",
+    route: "office-relocation",
   },
   {
     id: 3,

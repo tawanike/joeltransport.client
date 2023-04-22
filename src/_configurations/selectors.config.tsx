@@ -11,7 +11,8 @@ export const selectorConfig: SelectorConfig[] = [
     id: 1,
     title: "Home move",
     route: "/move/domestic",
-    heading: "Chat to us about how we can simplify your process.",
+    heading:
+      "Looking to move within South Africa’s Gauteng province? Get an instant quote.",
     description: "Get free quote for your home move",
   },
   // {

@@ -6,7 +6,6 @@ import { BlueSectionConfig } from "../../_configurations/blueSection.config";
 import { storageSections } from "../../_configurations/resourcesPageSections.config";
 import { RightImageSectionConfig } from "../../_configurations/rightsection.config";
 import BlueSection from "./blueSection.component";
-import LeftImageSection from "./leftImageSection.component";
 import RelatedArticles from "./relatedArticles.component";
 import RightImageSection from "./rightImageSection.component";
 
@@ -91,38 +90,8 @@ const StorageComponent = ({ getQuote }: any) => {
             </div>
           </div>
         </div>
-        <div className="resources__product-description__summary col-7 offset-1">
-          <div className="resources__product-description__summary__information-head">
-            <p>Our standard pricing for local storage</p>
-          </div>
-          <div className="resources__product-description__summary__information-summary">
-            <p>
-              Our storage is charged monthly, we offer short-term or long-term
-              storage services. Minimum storage period is one month
-            </p>
-          </div>
-          <div className="resources__product-description__summary__information-button py-3">
-            <Button
-              variant="outline-secondary"
-              className="me-3"
-              onClick={() => router.push("/contact-us")}
-            >
-              Call me back
-            </Button>
-            <Button
-              variant="secondary"
-              className="me-3"
-              onClick={() => getQuote(true)}
-            >
-              Get a quote
-            </Button>
-          </div>
-        </div>
       </div>
 
-      <LeftImageSection
-        {...(storageSections.internationally as RightImageSectionConfig)}
-      />
       <RelatedArticles />
     </>
   );

@@ -6,8 +6,8 @@ function About() {
     <div className="AboutSection">
       <h1>Who we are</h1>
       <p>
-        Joël Transport has been around since 1965. We’re a household name with
-        hundreds of happy clients.
+        Joël Transport is a home and office moving company and has been around
+        since 1965. We’re a household name with thousands of happy clients.
       </p>
       <button
         className="button button-secondary"
