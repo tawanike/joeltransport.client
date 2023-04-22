@@ -115,12 +115,11 @@ const PersonalInformation = () => {
                 .catch((err) => console.log(err));
         }
     };
-    console.log("bookingContext.state", bookingContext.state);
     return (
         <>
             <Form noValidate>
-                <Row className="mb-5">
-                    <Form.Group as={Col} md="6" controlId="first_name">
+                <Row className="mb-4 mb-md-3">
+                    <Form.Group as={Col} md="6" controlId="first_name" className="mb-4 mb-md-0">
                         <Form.Control
                             name="first_name"
                             placeholder="Name"
@@ -143,8 +142,8 @@ const PersonalInformation = () => {
                         <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                     </Form.Group>
                 </Row>
-                <Row className="mb-5">
-                    <Form.Group as={Col} md="6" controlId="phone_number">
+                <Row className="mb-4 mb-md-3">
+                    <Form.Group as={Col} md="6" controlId="phone_number" className="mb-4 mb-md-0">
                         <Form.Control
                             name="phone_number"
                             placeholder="Phone number"
