@@ -7,9 +7,16 @@ interface IProps {
   onSelect: (product: IProduct) => void;
   isSelected: boolean;
   inView: boolean;
+  isBooked: () => any;
 }
 
-const TruckDisplay: FC<IProps> = ({ truck, onSelect, isSelected, inView }) => {
+const TruckDisplay: FC<IProps> = ({
+  isBooked,
+  truck,
+  onSelect,
+  isSelected,
+  inView,
+}) => {
   return (
     <div
       className={`col-12 truckDisplay truckDisplay${
@@ -44,7 +51,7 @@ const TruckDisplay: FC<IProps> = ({ truck, onSelect, isSelected, inView }) => {
           <Button
             variant="secondary"
             onClick={() => onSelect(truck)}
-            disabled={isSelected}
+            disabled={isSelected || isBooked()}
           >
             Choose truck
           </Button>

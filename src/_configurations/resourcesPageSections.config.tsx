@@ -255,3 +255,27 @@ export const specializedServicesSections: any = {
     secondaryButton: { title: "Call me back" },
   },
 };
+
+export const internationalMovesConfig = {
+  id: 100,
+  title: "Do you plan to move your home internationally?",
+  description: <>Description here</>,
+  image: "/img/services/international.png",
+  secondaryButton: { title: "Call me back" },
+  benefits: {
+    ...homeMoversConfig,
+    title: "Choosing us has its perks",
+  },
+};
+
+export const domesticMovesConfig = {
+  id: 100,
+  title: "Do you plan to do a long distance move?",
+  description: <>Description here</>,
+  image: "/img/services/international.png",
+  secondaryButton: { title: "Call me back" },
+  benefits: {
+    ...homeMoversConfig,
+    title: "Choosing us has its perks",
+  },
+};

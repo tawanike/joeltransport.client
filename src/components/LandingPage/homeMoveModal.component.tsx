@@ -58,7 +58,6 @@ const HomeMoveModalComponent: FC<IProps> = ({
     delete bookingState.formValues.move_date;
     localStorage.removeItem("bookingId");
     whichAddress === "to_address" && setLoading(true);
-    console.log("CREATE BOOKING IN HANDLE NEXT");
     const booking = await bookingsService.createBooking(
       bookingState.formValues,
       fetchWrapper
