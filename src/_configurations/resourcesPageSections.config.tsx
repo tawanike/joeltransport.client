@@ -258,8 +258,27 @@ export const specializedServicesSections: any = {
 
 export const internationalMovesConfig = {
   id: 100,
-  title: "Do you plan to move your home internationally?",
-  description: <>Description here</>,
+  title: "Planning to move your home internationally?",
+  description: (
+    <>
+      <p>
+        We offer a full-range international moving service. From packing,
+        crating, and shipping to customs clearance and storage. The services we
+        offer under “International Moves” are as follows:
+      </p>
+      <ul>
+        <li>
+          Lower Container Load Service: cargo is collected, crated,
+          consolidated, and dispatched within a 30-day period.
+        </li>
+        <li>
+          Full Container Load Service: for larger loads of either 6 or 12 cubic
+          metres.
+        </li>
+        <li>Air Freight Service: commonly used method for everyday needs.</li>
+      </ul>
+    </>
+  ),
   image: "/img/services/international.png",
   secondaryButton: { title: "Call me back" },
   benefits: {
@@ -270,9 +289,21 @@ export const internationalMovesConfig = {
 
 export const domesticMovesConfig = {
   id: 101,
-  title: "Do you plan to do a long distance move?",
-  description: <>Description here</>,
-  image: "/img/services/international.png",
+  title: "Do you plan a long-distance move?",
+  description: (
+    <>
+      <p>
+        Our long-distance moves cover all cities and towns in South Africa, for
+        moves that originate or end outside South Africa’s Gauteng province.
+      </p>
+      <p>
+        We make long distance moving easy and enjoyable. We do almost everything
+        for you! From packing, packaging material, removal, storage, and full
+        value risk insurance, according to your needs.
+      </p>
+    </>
+  ),
+  image: "/img/truck.png",
   secondaryButton: { title: "Call me back" },
   benefits: {
     ...homeMoversConfig,

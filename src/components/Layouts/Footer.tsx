@@ -12,13 +12,22 @@ function Footer() {
             <h5>Services</h5>
             <ul className="Footer__links">
               <li>
-                <Link href="/services/home-moves">Home movers</Link>
+                <Link href="/services/home-moves">Domestic move</Link>
               </li>
               <li>
-                <Link href="/services/home-moves">International Moves</Link>
+                <Link href="/services/long-distance-move">
+                  Long distance move
+                </Link>
               </li>
               <li>
-                <Link href="/services/office-removals">Office removals</Link>
+                <Link href="/services/international-move">
+                  International move
+                </Link>
+              </li>
+              <li>
+                <Link href="/services/office-relocation">
+                  Office relocation
+                </Link>
               </li>
               <li>
                 <Link href="/services/storage">Storage</Link>
@@ -92,7 +101,8 @@ function Footer() {
         </div>
         <div className="Footer__copyright row">
           <div className="col">
-            Copyright&copy; 2022 Joel Transport. All rights reserved.
+            Copyright&copy; {new Date().getFullYear()} Joel Transport. All
+            rights reserved.
           </div>
           <div
             className="col"
