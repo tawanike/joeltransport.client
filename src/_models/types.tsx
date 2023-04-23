@@ -57,7 +57,7 @@ export type CostSummary = {
     price: number;
   };
   storageHandlingFee: {
-    quantity: 1;
+    quantity: number;
     price: number;
   };
   subtotal: number;
