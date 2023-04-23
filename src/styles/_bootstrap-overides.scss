@@ -67,6 +67,8 @@ fieldset:disabled .btn {
     }
 }
 
-.navbar-collapse {
-    z-index: 9999 !important;
+@media screen and (max-width: 480px) {
+    .navbar-collapse {
+        z-index: 5000 !important;
+    }
 }
