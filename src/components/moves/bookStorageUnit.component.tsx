@@ -156,7 +156,7 @@ const BookStorageUnit = () => {
                 </div>
             </Alert>
             <Row>
-                <Form.Group as={Col} md="5" controlId="move_date">
+                <Form.Group as={Col} xs="12" md="5" controlId="move_date">
                     <Form.Label>When would you like to start?</Form.Label>
                     <DatePicker
                         onChange={onDateChange}
@@ -173,13 +173,14 @@ const BookStorageUnit = () => {
                         className="date-picker"
                     />
                 </Form.Group>
-                <Form.Group as={Col} md="6" controlId="date">
+                <Form.Group as={Col} xs="10" md="6" controlId="date" className="mt-3 mt-md-0">
                     <Form.Label>How many storage units do you need?</Form.Label>
                     {NumberOfUnitsDisplay}
                 </Form.Group>
                 <Form.Group
                     as={Col}
                     md="1"
+                    xs={2}
                     controlId="delete"
                     className="d-flex align-items-end pb-3 storage-delete"
                 >

@@ -1,68 +1,72 @@
 // Accodion
 .accordion {
-  border: none;
+    border: none;
 }
 
 .accordion-button:not(.collapsed) {
-  color: black;
-  background-color: white;
-  box-shadow: none;
-  font-weight: 600;
+    color: black;
+    background-color: white;
+    box-shadow: none;
+    font-weight: 600;
 }
 
 //tabs
 .nav-tabs {
-  --bs-nav-tabs-link-active-border-color: transparent transparent #fa551e;
-  --bs-nav-tabs-link-hover-border-color: transparent transparent #fac3b0;
+    --bs-nav-tabs-link-active-border-color: transparent transparent #fa551e;
+    --bs-nav-tabs-link-hover-border-color: transparent transparent #fac3b0;
 }
 
 .nav-link {
-  padding-left: 0;
-  padding-right: 45px;
+    padding-left: 0;
+    padding-right: 45px;
 }
 
 .btn:disabled,
 .btn.disabled,
 fieldset:disabled .btn {
-  color: white;
-  background-color: #c2c2c2;
-  border: none;
-  outline: none;
+    color: white;
+    background-color: #c2c2c2;
+    border: none;
+    outline: none;
 }
 
 .btn-secondary {
-  color: white;
+    color: white;
 }
 
 .swiper-button-next,
 .swiper-button-prev {
-  color: #fa551e !important;
+    color: #fa551e !important;
 }
 
 .swiper-button-next::after,
 .swiper-button-prev::after {
-  font-size: 30px !important;
-  font-weight: 800 !important;
+    font-size: 30px !important;
+    font-weight: 800 !important;
 }
 
 .breadcrumb-item {
-  a {
-    color: black;
-    text-decoration: none;
-  }
-  &.active {
-    color: #fa551e !important;
-  }
+    a {
+        color: black;
+        text-decoration: none;
+    }
+    &.active {
+        color: #fa551e !important;
+    }
 }
 
 @media screen and (max-width: 400px) {
-  .swiper-container {
-    width: 640px;
-  }
+    .swiper-container {
+        width: 640px;
+    }
 }
 
 @media screen and (min-width: 768px) {
-  .swiper-container {
-    width: 768px;
-  }
+    .swiper-container {
+        width: 768px;
+    }
+}
+
+.navbar-collapse {
+    z-index: 9999 !important;
 }
