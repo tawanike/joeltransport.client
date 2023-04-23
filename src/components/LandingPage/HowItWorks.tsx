@@ -24,7 +24,7 @@ function HowItWorks() {
               >
                 {<MdOutlineEmojiTransportation />}
               </div>
-              <p>Plan</p>
+              <p>Book</p>
             </li>
             <li>
               <div

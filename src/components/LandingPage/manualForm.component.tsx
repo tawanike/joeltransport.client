@@ -75,15 +75,12 @@ function AddressManualForm({
         from_address_original: booking.from_address,
       },
     });
-
-    console.log("Booking created: ", booking);
     bookingsDispatch(getBooking(booking));
 
     if (
       bookingState.formValues.from_address.province === "Gauteng" &&
       bookingState.formValues.to_address.province === "Gauteng"
     ) {
-      console.log("Booking created: ", booking);
       // Save booking id to local storage
       localStorage.setItem("bookingId", booking.id);
       if (moveType === 0) router.push(`/move/domestic`);
@@ -135,8 +132,7 @@ function AddressManualForm({
       bookingState.formValues.to_address &&
       bookingState.formValues.from_address
     )
-      console.log("ABOUT TO CREATE BOOKING", bookingState.formValues);
-    createBooking(bookingState.formValues);
+      createBooking(bookingState.formValues);
   }, [bookingState.formValues.to_address]);
 
   return (

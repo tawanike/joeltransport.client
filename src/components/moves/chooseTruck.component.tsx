@@ -91,7 +91,6 @@ const ChooseTruck = () => {
   }, [trucks]);
 
   useEffect(() => {
-    console.log("MOVE DATE CHANGED");
     api
       .get(
         `/bookings/unavailable?month=${
@@ -104,34 +103,33 @@ const ChooseTruck = () => {
           return;
         }
         setBookedDates(res);
-        console.log("DATES", res);
       });
   }, [bookingContext.state.formValues.move_date]);
 
-  const isBooked = () => {
-    console.log("CHECK IF BOOKED", bookedDates);
+  const isBooked = (isSelected: any, truckId: any) => {
+    if (isSelected) {
+      return true;
+    }
+
     if (bookedDates.length === 0) {
       return false;
     } else {
-      bookedDates.map((date) => {
-        const d = new Date(date.move_date);
-
-        const move_date = new Date(bookingContext.state.formValues.move_date);
-        if (
-          d.getDate() === move_date.getDate() &&
-          d.getMonth() === move_date.getMonth() &&
-          d.getFullYear() === move_date.getFullYear() &&
-          bookingContext.state.formValues.move_time_period === date.move_time
-        ) {
-          return true;
-        }
-        console.log(
-          d.getDate(),
-          d.getMonth() === move_date.getMonth(),
-          d.getFullYear() === move_date.getFullYear(),
-          bookingContext.state.formValues.move_time_period === date.move_time
-        );
-      });
+      return bookedDates
+        .map((date) => {
+          const d = new Date(date.move_date);
+          const move_date = new Date(bookingContext.state.formValues.move_date);
+          if (
+            date.move_time ===
+              bookingContext.state.formValues.move_time_period &&
+            d.getDate() === move_date.getDate() &&
+            d.getMonth() === move_date.getMonth() &&
+            d.getFullYear() === move_date.getFullYear()
+          ) {
+            return date.id;
+          }
+        })
+        .filter((t) => t !== undefined)
+        .includes(truckId);
     }
   };
 

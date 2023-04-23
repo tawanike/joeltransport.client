@@ -5,7 +5,6 @@ import { homeMoversConfig } from "../../_configurations/benefits.config";
 import { pricingConfig } from "../../_configurations/pricing.config";
 import { pageSections } from "../../_configurations/resourcesPageSections.config";
 import { RightImageSectionConfig } from "../../_configurations/rightsection.config";
-import CallMeBackButton from "../shared/callMeBackButton.component";
 import BlueSection from "./blueSection.component";
 import RightImageSection from "./rightImageSection.component";
 
@@ -34,7 +33,6 @@ const HomeMoversView = ({ getQuote }: any) => {
                             <div className="resources__pricing__prices col-8 offset-2 pb-5">
                                 <div className="row">
                                     {pricingConfig.map((price) => (
-
                                         <div key={uuid()} className="col-12 mb-3 mb-md-0 col-md-4 resources__pricing__prices-container">
                                             <div className="col-12 resources__pricing__prices-container__item">
                                                 <div className="col-12 resources__pricing__prices-container__item-head">
@@ -77,53 +75,7 @@ const HomeMoversView = ({ getQuote }: any) => {
                                                 </div>
                                             </div>
                                         </div>
-
                                     ))}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div className="resources__documents container mt-5">
-                <div className="row">
-                    <div className="resources__product-description col-12">
-                        <div className="row">
-                            <div className="resources__product-description__image col-12 col-md-6">
-                                <img src="/img/services/international.png" alt="" />
-                            </div>
-
-                            <div className="resources__product-description__summary col-12 col-md-6 mt-5 mt-md-0">
-                                <div className="resources__product-description__summary__information-head">
-                                    <p>Planning to move your home internationally?</p>
-                                </div>
-                                <div className="resources__product-description__summary__information-summary">
-                                    <p>
-                                        We offer a full-range international moving service. From
-                                        packing, crating, and shipping; to customs clearance and
-                                        even storage.
-                                        <br />
-                                        <br />
-                                        The services we offer under “International Moves” are as
-                                        follows:
-                                    </p>
-                                    <ul>
-                                        <li>
-                                            Lower Container Load Service: cargo is collected, crated,
-                                            consolidated, and dispatched within a 30-day period.
-                                        </li>
-                                        <li>
-                                            Full Container Load Service: for larger loads of either 6
-                                            or 12 cubic metres.
-                                        </li>
-                                        <li>
-                                            Air Freight Service: most commonly used method for
-                                            everyday needs.
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div className="resources__product-description__summary__information-button py-3">
-                                    <CallMeBackButton title="Call me back" />
                                 </div>
                             </div>
                         </div>

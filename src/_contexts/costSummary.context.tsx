@@ -19,7 +19,6 @@ const initialCostSummaryState: CostSummary = {
 } as CostSummary;
 
 const CostSummaryReducer = (state: CostSummary, action: IAction) => {
-
     switch (action.type) {
         case ADJUST_ADDITIONAL_SERVICES:
             return { ...state, ...action.payload };

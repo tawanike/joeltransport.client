@@ -22,15 +22,15 @@ const Resources = () => {
     switch (slug) {
       case "home-moves":
         return <HomeMoversView getQuote={setShow} />;
-      case "office-removals":
+      case "office-relocation":
         return <OfficeRemovalsComponent />;
       case "storage":
         return <StorageComponent getQuote={setShowStorageModal} />;
       case "specialized-services":
         return <SpecialisedServicesComponent />;
-      case "long-distance":
+      case "long-distance-move":
         return <LongDistanceMoveView />;
-      case "international-moves":
+      case "international-move":
         return <InternationalMovesView />;
       default:
         break;

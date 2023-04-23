@@ -107,7 +107,6 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
   useEffect(() => {
     const submitForm = async () => {
       if (bookingState.formValues.id) {
-        console.log("BOOKING STATE UPDATED");
         const booking = await bookingsService.updateBooking(
           bookingState.formValues,
           fetchWrapper
