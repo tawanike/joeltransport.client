@@ -3,6 +3,7 @@ import { RequestOptions } from "../_models/types";
 const useAPI = () => {
   // let API_URL = "https://dev.joeltransport.wddng.co/v1";
   let API_URL = process.env.NEXT_PUBLIC_API_URL_DEV as string;
+  console.log("API_URL", API_URL);
   // if (
   //   process.env.NODE_ENV === "development" &&
   //   process.env.NEXT_PUBLIC_API_URL_DEV
