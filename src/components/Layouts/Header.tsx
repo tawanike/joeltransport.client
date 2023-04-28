@@ -18,7 +18,15 @@ const Header = () => {
               </div>
             </div>
             <div className="Header__account col-6 col-md-4 d-flex justify-content-end align-items-center">
-              <div className="row">
+              <div
+                className="row"
+                onClick={() =>
+                  window.open(
+                    "https://www.moverspoe.com/(S(rxxslwckykai05100lacwr3j))/PriceGenerator.aspx",
+                    "_blank"
+                  )
+                }
+              >
                 <span className="col-12 col-md-7 agent d-flex justify-content-start align-items-center">
                   Are you an agent?
                 </span>
