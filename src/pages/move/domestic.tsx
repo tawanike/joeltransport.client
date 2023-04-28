@@ -216,7 +216,7 @@ const DomesticMoveServices = () => {
                     <FcInfo />
                   </div>
                   <div className="col-11" style={{ fontSize: 12 }}>
-                    <b>Please note:</b> There may be additional charges. Terms
+                    <b>Please note:</b> There will be additional charges. Terms
                     and conditions apply.
                   </div>
                 </div>

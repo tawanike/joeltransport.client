@@ -11,17 +11,9 @@ export const selectorConfig: SelectorConfig[] = [
     id: 1,
     title: "Home move",
     route: "/move/domestic",
-    heading:
-      "Looking to move within South Africa’s Gauteng province? Get an instant quote.",
+    heading: "Looking to move your home? Get an instant quote.",
     description: "Get free quote for your home move",
   },
-  // {
-  //     id: 2,
-  //     title: "International",
-  //     route: "/move/international",
-  //     heading: "Looking for long distance moving services?",
-  //     description: "For long distance & international services, we’ll need to collect your info & one of our specialist will be in touch."
-  // },
   {
     id: 3,
     title: "Storage",
