@@ -53,7 +53,9 @@ const TruckDisplay: FC<IProps> = ({
             onClick={() => onSelect(truck)}
             disabled={isBooked(isSelected, truck.id)}
           >
-            Choose truck
+            {isBooked(isSelected, truck.id)
+              ? `Booked out, change Date/Time`
+              : `Choose truck`}
           </Button>
         </div>
       </div>
