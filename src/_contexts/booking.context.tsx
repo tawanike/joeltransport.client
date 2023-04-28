@@ -19,7 +19,9 @@ export interface InitContextProps {
 const initialState = {
     id: undefined,
     products: [],
-    formValues: {} as IFormValues,
+    formValues: {
+        storage_units_count: 1
+    } as IFormValues,
     inventoryList: [],
     openSection: "move_details",
     additionalServices: {
