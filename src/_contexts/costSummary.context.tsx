@@ -14,7 +14,7 @@ import {
 const initialCostSummaryState: CostSummary = {
     storage: {
         quantity: 1,
-        price: 600
+        price: 350
     }
 } as CostSummary;
 
