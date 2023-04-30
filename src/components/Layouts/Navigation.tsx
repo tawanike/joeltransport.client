@@ -72,16 +72,9 @@ function Navigation() {
                   </NavDropdown.Item>
                 </Link>
               </NavDropdown>
-              <NavDropdown title="About" id="navbarScrollingDropdown">
-                <Link href="/about" className="nav-link">
-                  <NavDropdown.Item href="/about">About us</NavDropdown.Item>
-                </Link>
-                <Link href="/about/our-team" className="nav-link">
-                  <NavDropdown.Item href="/about/our-team">
-                    Our team
-                  </NavDropdown.Item>
-                </Link>
-              </NavDropdown>
+              <Link href="/about" className="nav-link">
+                <NavDropdown.Item href="/about">About us</NavDropdown.Item>
+              </Link>
 
               <Link href="/contact-us" className="nav-link">
                 Contact us

@@ -272,7 +272,12 @@ const Checkout = () => {
                         onClick={() =>
                           bookingContext.dispatch({
                             type: CHANGE_OPEN_SECTION,
-                            payload: { openSection: "truck" },
+                            payload: {
+                              openSection:
+                                bookingContext.state.formValues?.move_type === 0
+                                  ? "truck"
+                                  : "storage",
+                            },
                           })
                         }
                       >
