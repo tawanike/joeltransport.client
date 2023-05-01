@@ -95,8 +95,11 @@ const StorageCostCard = () => {
 
                       <div className="col-4 move-cost-card__section__details__title center csTablecenter move-cost-card__section__details__title--cost">
                         <p>
-                          {CostSummaryState.storage.quantity > 0
-                            ? accounting.formatMoney(250)
+                          {CostSummaryState.storageHandlingFee.quantity > 0
+                            ? accounting.formatMoney(
+                                CostSummaryState.storageHandlingFee.quantity *
+                                  CostSummaryState.storageHandlingFee.price
+                              )
                             : "R0.00"}
                         </p>
                       </div>

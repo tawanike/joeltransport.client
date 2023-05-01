@@ -5,7 +5,10 @@ import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 import { FcInfo } from "react-icons/fc";
 import { MdClose } from "react-icons/md";
 import { getBooking } from "src/_actions/booking.actions";
-import { addStorageCount } from "src/_actions/costSummary.actions";
+import {
+  addHandlingFee,
+  addStorageCount,
+} from "src/_actions/costSummary.actions";
 import { BookingContext } from "src/_contexts/booking.context";
 import CostSummaryStateContext from "src/_contexts/costSummary.context";
 import { addressUtils } from "src/_helpers/formatAddress";
@@ -284,7 +287,7 @@ const StorageModalComponent: FC<IProps> = ({
         if (bookingState.formValues.move_type === 1) {
           // Update Cost summary
           if (booking.products.length > 0) {
-            booking.products.find((product: any) => {
+            booking.products.forEach((product: any) => {
               if (product.title === "Storage") {
                 dispatchCostSummary(
                   addStorageCount({
@@ -293,10 +296,22 @@ const StorageModalComponent: FC<IProps> = ({
                   })
                 );
               }
+
+              if (product.title === "Storage handling fee") {
+                console.log("Storage handling fee");
+                dispatchCostSummary(
+                  addHandlingFee({
+                    quantity: product.quantity,
+                    price: product.price,
+                  })
+                );
+              }
             });
           }
         }
+        console.log("PANO");
         localStorage.setItem("bookingId", booking.id);
+        console.log("PANO APA");
         router.push(`/storage`);
       } catch (error) {
         setLoading(false);

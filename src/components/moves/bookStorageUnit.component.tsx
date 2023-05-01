@@ -5,10 +5,7 @@ import { BsTrash } from "react-icons/bs";
 import { FcInfo } from "react-icons/fc";
 import { FiCalendar } from "react-icons/fi";
 import { getBooking } from "src/_actions/booking.actions";
-import {
-  addHandlingFee,
-  addStorageCount,
-} from "src/_actions/costSummary.actions";
+import { addStorageCount } from "src/_actions/costSummary.actions";
 import { selectTruck } from "src/_actions/trucks.actions";
 import { BookingContext } from "src/_contexts/booking.context";
 import CostSummaryStateContext from "src/_contexts/costSummary.context";
@@ -124,14 +121,6 @@ const BookStorageUnit = () => {
                     .then((res) => {
                       if (!res.error) {
                         bookingsDispatch(getBooking(res));
-                        // TODO: Get handling fee from backend
-                        dispatchCostSummary(
-                          addHandlingFee({
-                            quantity: 1,
-                            price: 250,
-                            off_peak_discount: 0,
-                          })
-                        );
                       }
                     });
                 }
