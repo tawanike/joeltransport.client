@@ -170,7 +170,7 @@ const ChooseTruck = () => {
                 truck={truck}
                 onSelect={setSelectedTruck}
                 inView={i === activeTruck}
-                isBooked={!trucks.available}
+                isBooked={!truck.available}
                 isSelected={
                   selectedTruck
                     ? (selectedTruck as IProduct).id === truck.id
