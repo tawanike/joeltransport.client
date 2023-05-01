@@ -125,6 +125,16 @@ const BookStorageUnit = () => {
                     });
                 }
               });
+          } else {
+            if (!res.error) {
+              api
+                .get(`/bookings/${bookingState.formValues.id}`, false)
+                .then((res) => {
+                  if (!res.error) {
+                    bookingsDispatch(getBooking(res));
+                  }
+                });
+            }
           }
         });
     }
