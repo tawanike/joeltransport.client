@@ -7,7 +7,7 @@ interface IProps {
   onSelect: (product: IProduct) => void;
   isSelected: boolean;
   inView: boolean;
-  isBooked: (isSelected: boolean, id: string) => any;
+  isBooked: boolean;
 }
 
 const TruckDisplay: FC<IProps> = ({
@@ -51,11 +51,9 @@ const TruckDisplay: FC<IProps> = ({
           <Button
             variant="secondary"
             onClick={() => onSelect(truck)}
-            disabled={isBooked(isSelected, truck.id)}
+            disabled={!isBooked || isSelected}
           >
-            {isBooked(isSelected, truck.id)
-              ? `Booked out, change Date/Time`
-              : `Choose truck`}
+            {!isBooked ? `Booked out, change Date/Time` : `Choose truck`}
           </Button>
         </div>
       </div>

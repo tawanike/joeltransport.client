@@ -97,6 +97,7 @@ export interface IProduct {
   weight: number | null;
   load_capacity: number | null;
   off_peak_discount: number;
+  available: boolean;
 }
 
 export interface IFormValues {

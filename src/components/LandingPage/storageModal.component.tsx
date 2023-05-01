@@ -5,7 +5,9 @@ import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 import { FcInfo } from "react-icons/fc";
 import { MdClose } from "react-icons/md";
 import { getBooking } from "src/_actions/booking.actions";
+import { addStorageCount } from "src/_actions/costSummary.actions";
 import { BookingContext } from "src/_contexts/booking.context";
+import CostSummaryStateContext from "src/_contexts/costSummary.context";
 import { addressUtils } from "src/_helpers/formatAddress";
 import { useAPI } from "src/_hooks";
 import { ADD_FORM_VALUES } from "src/_models/types";
@@ -23,7 +25,11 @@ const StorageModalComponent: FC<IProps> = ({
   const [selectType, setSelectType] = useState("auto");
   const { state: bookingState, dispatch: bookingsDispatch } =
     useContext(BookingContext);
+  const { CostSummaryState, dispatchCostSummary } = useContext(
+    CostSummaryStateContext
+  );
   const [whichAddress] = useState<"from_address">("from_address");
+  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
   const fetchWrapper = useAPI();
@@ -78,7 +84,6 @@ const StorageModalComponent: FC<IProps> = ({
             <div className="col-3">
               <Button
                 onClick={handleNext}
-                // disabled={isNextActive()}
                 className="w-100"
                 variant="secondary"
               >
@@ -113,6 +118,7 @@ const StorageModalComponent: FC<IProps> = ({
   };
 
   const addressSelectionView = () => {
+    console.log("LOADING", loading);
     return (
       <>
         <div
@@ -148,10 +154,10 @@ const StorageModalComponent: FC<IProps> = ({
               >
                 <div
                   className={`custom-modal__search-address__tab-container__tab
-                                        ${
-                                          selectType === "auto" &&
-                                          "custom-modal__search-address__tab-container__tab--active"
-                                        } col-12`}
+                    ${
+                      selectType === "auto" &&
+                      "custom-modal__search-address__tab-container__tab--active"
+                    } col-12`}
                 >
                   <p>Auto-search your location</p>
                 </div>
@@ -162,10 +168,10 @@ const StorageModalComponent: FC<IProps> = ({
               >
                 <div
                   className={`custom-modal__search-address__tab-container__tab
-                                        ${
-                                          selectType === "manual" &&
-                                          "custom-modal__search-address__tab-container__tab--active"
-                                        } col-12`}
+                      ${
+                        selectType === "manual" &&
+                        "custom-modal__search-address__tab-container__tab--active"
+                      } col-12`}
                 >
                   <p>Manually add your location</p>
                 </div>
@@ -200,12 +206,15 @@ const StorageModalComponent: FC<IProps> = ({
                 style={{ borderBottom: "1px solid #ccc" }}
               >
                 <Button
-                  onClick={handleNext}
-                  // disabled={isNextActive()}
+                  onClick={() => {
+                    setLoading(true);
+                    handleNext();
+                  }}
+                  disabled={loading}
                   className=""
                   variant="secondary"
                 >
-                  Continue
+                  {loading ? "Loading..." : "Continue"}
                 </Button>
               </div>
             </div>
@@ -256,23 +265,44 @@ const StorageModalComponent: FC<IProps> = ({
   const handleNext = async () => {
     if (view === "delivery") setView("address");
     else {
-      if (
-        !["Gauteng"].includes(bookingState.formValues[whichAddress].province)
-      ) {
-        router.push("/contact-us");
-        return;
+      try {
+        if (
+          !["Gauteng"].includes(bookingState.formValues[whichAddress].province)
+        ) {
+          router.push("/contact-us");
+          return;
+        }
+
+        delete bookingState.formValues.move_date;
+        const booking = await bookingsService.createBooking(
+          bookingState.formValues,
+          fetchWrapper
+        );
+        console.log("BOOKING", booking);
+
+        bookingsDispatch(getBooking(booking));
+        if (bookingState.formValues.move_type === 1) {
+          // Update Cost summary
+          if (booking.products.length > 0) {
+            booking.products.find((product: any) => {
+              if (product.title === "Storage") {
+                dispatchCostSummary(
+                  addStorageCount({
+                    quantity: product.quantity,
+                    price: product.price,
+                  })
+                );
+              }
+            });
+          }
+        }
+        localStorage.setItem("bookingId", booking.id);
+        router.push(`/storage`);
+      } catch (error) {
+        setLoading(false);
       }
-
-      delete bookingState.formValues.move_date;
-      const booking = await bookingsService.createBooking(
-        bookingState.formValues,
-        fetchWrapper
-      );
-
-      bookingsDispatch(getBooking(booking));
-      localStorage.setItem("bookingId", booking.id);
-      router.push(`/storage`);
     }
+
     return;
   };
 

@@ -20,6 +20,7 @@ import {
   IProduct,
   ZERO_TRUCK_QUANTITY,
 } from "src/_models/types";
+import { bookingsService } from "src/_services/bookings.service";
 
 const BookStorageUnit = () => {
   const api = useAPI();
@@ -37,11 +38,15 @@ const BookStorageUnit = () => {
     setAValue,
   } = useNumberInput(bookingState.formValues.storage_units_count);
 
-  const onDateChange = (date: Date) => {
-    bookingsDispatch({
-      type: ADD_FORM_VALUES,
-      payload: { move_date: formatDate(date) },
-    });
+  const onDateChange = async (date: Date) => {
+    if (bookingState.formValues.id) {
+      const booking = await bookingsService.updateBooking(
+        { id: bookingState.formValues.id, move_date: formatDate(date) },
+        api
+      );
+
+      bookingsDispatch(getBooking(booking));
+    }
   };
 
   useEffect(() => {
