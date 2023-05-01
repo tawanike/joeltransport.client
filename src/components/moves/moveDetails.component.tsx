@@ -197,14 +197,21 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
                 inline
                 name="collection"
                 label="Yes - collect"
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                  bookingsService.updateBooking(
+                    {
+                      id: bookingState.formValues.id,
+                      self_delivery: true,
+                    },
+                    fetchWrapper
+                  );
                   bookingsDispatch({
                     type: ADD_FORM_VALUES,
                     payload: {
                       collection: Boolean(Number(event.target.value)),
                     },
-                  })
-                }
+                  });
+                }}
                 id="collection"
                 value={1}
                 checked={Number(bookingState.formValues.collection) === 1}
@@ -214,14 +221,22 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
                 inline
                 name="collection"
                 label="No - I will deliver"
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                  bookingsService.updateBooking(
+                    {
+                      id: bookingState.formValues.id,
+                      self_delivery: false,
+                    },
+                    fetchWrapper
+                  );
                   bookingsDispatch({
                     type: ADD_FORM_VALUES,
                     payload: {
+                      id: bookingState.formValues.id,
                       collection: Boolean(Number(event.target.value)),
                     },
-                  })
-                }
+                  });
+                }}
                 id="collection"
                 value={0}
                 checked={Number(bookingState.formValues.collection) === 0}
