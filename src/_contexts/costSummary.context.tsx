@@ -16,6 +16,10 @@ const initialCostSummaryState: CostSummary = {
     quantity: 1,
     price: 0,
   },
+  storageHandlingFee: {
+    quantity: 1,
+    price: 0,
+  },
 } as CostSummary;
 
 const CostSummaryReducer = (state: CostSummary, action: IAction) => {
