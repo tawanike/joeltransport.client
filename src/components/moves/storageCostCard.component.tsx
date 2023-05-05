@@ -67,22 +67,22 @@ const StorageCostCard = () => {
 
                       <div className="col-4 move-cost-card__section__details__title center csTablecenter move-cost-card__section__details__title--cost">
                         <p>
-                          {CostSummaryState.storage
+                          {CostSummaryState.storage.quantity > 0
                             ? accounting.formatMoney(
                                 CostSummaryState.storage.quantity *
                                   CostSummaryState.storage.price
                               )
-                            : "0.00"}
+                            : "R0.00"}
                         </p>
                       </div>
                       <div className="col-4 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
                         <p>
-                          {CostSummaryState.storage
+                          {CostSummaryState.storage.quantity > 0
                             ? accounting.formatMoney(
                                 CostSummaryState.storage.quantity *
                                   CostSummaryState.storage.price
                               )
-                            : "0.00"}
+                            : "R0.00"}
                         </p>
                       </div>
                     </div>
@@ -95,9 +95,12 @@ const StorageCostCard = () => {
 
                       <div className="col-4 move-cost-card__section__details__title center csTablecenter move-cost-card__section__details__title--cost">
                         <p>
-                          {CostSummaryState.storage
-                            ? accounting.formatMoney(250)
-                            : "0.00"}
+                          {CostSummaryState.storageHandlingFee.quantity > 0
+                            ? accounting.formatMoney(
+                                CostSummaryState.storageHandlingFee.quantity *
+                                  CostSummaryState.storageHandlingFee.price
+                              )
+                            : "R0.00"}
                         </p>
                       </div>
                       <div className="col-4 move-cost-card__section__details__title move-cost-card__section__details__title--cost">
@@ -154,7 +157,7 @@ const StorageCostCard = () => {
                                       bookingContext.state.formValues.products
                                     )
                                   )
-                                : "0.00"}
+                                : "R0.00"}
                             </p>
                           </div>
                           <div className="col-4 move-cost-card__section__details__title move-cost-card__section__details__title--cost">

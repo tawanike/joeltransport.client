@@ -93,9 +93,7 @@ const ChooseTruck = () => {
   useEffect(() => {
     api
       .get(
-        `/bookings/unavailable?month=${
-          currentMonth + 1
-        }&year=${new Date().getFullYear()}`,
+        `/bookings/unavailable?move_date=${bookingContext.state.formValues?.move_date}&move_time=${bookingContext.state.formValues?.move_time_period}`,
         false
       )
       .then((res) => {
@@ -172,7 +170,7 @@ const ChooseTruck = () => {
                 truck={truck}
                 onSelect={setSelectedTruck}
                 inView={i === activeTruck}
-                isBooked={isBooked}
+                isBooked={!truck.available}
                 isSelected={
                   selectedTruck
                     ? (selectedTruck as IProduct).id === truck.id

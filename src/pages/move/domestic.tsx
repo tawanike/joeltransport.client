@@ -91,6 +91,8 @@ const DomesticMoveServices = () => {
     router.push(`/move/checkout`);
   };
 
+  const isLoading = (state: IBooking) => {};
+
   const isDisabled = (state: IBooking) => {
     const objKeys = Object.keys(state.formValues);
     let userVals = true;
@@ -256,11 +258,16 @@ const DomesticMoveServices = () => {
                 <div className="col-12 d-flex justify-content-end">
                   <CallMeBackButton title="Call me back" />
                   <Button
-                    disabled={isDisabled(bookingState)}
+                    disabled={
+                      isDisabled(bookingState) ||
+                      bookingState.formValues.loading
+                    }
                     onClick={goToCheckout}
                     variant="secondary"
                   >
-                    Confirm move
+                    {bookingState.formValues.loading
+                      ? "Loading..."
+                      : "Confirm move"}
                   </Button>
                 </div>
               </div>

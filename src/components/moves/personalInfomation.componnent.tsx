@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
+import { isLoading } from "src/_actions/booking.actions";
 import { BookingContext } from "src/_contexts/booking.context";
 import { useAPI } from "src/_hooks";
 import { GET_BOOKING } from "src/_models/types";
@@ -47,6 +48,7 @@ const PersonalInformation = () => {
   }, []);
 
   const handleOnBlur = (e: any) => {
+    bookingContext.dispatch(isLoading(true));
     values.booking = bookingContext.state.formValues.id;
     if (
       values.first_name === "" ||
@@ -98,6 +100,8 @@ const PersonalInformation = () => {
         .post(`/bookings/${bookingContext.state.formValues.id}/users`, values)
         .then((res) => {
           if (res.message == "ok") {
+            console.log("USERS OK");
+            bookingContext.dispatch(isLoading(false));
             api
               .get(`/bookings/${bookingContext.state.formValues.id}`, false)
               .then((res) => {

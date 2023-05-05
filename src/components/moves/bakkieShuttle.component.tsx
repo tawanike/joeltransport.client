@@ -163,11 +163,11 @@ const BakkieShuttle: FC<IProps> = () => {
   const getBakkieAddressOption = (value: any) => {
     switch (value) {
       case Number(value) === 1:
-        return { value: 1, label: "Loading address" };
+        return 1;
       case Number(value) === 2:
-        return { value: 2, label: "Delivery address" };
+        return 2;
       case Number(value) === 3:
-        return { value: 3, label: "Both address" };
+        return 3;
       default:
         return {};
     }

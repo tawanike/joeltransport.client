@@ -1,6 +1,7 @@
 //Authorization
 export const LOGIN = "LOGIN";
 export const LOGOUT = "LOGOUT";
+export const LOADING = "LOADING";
 export const GET_BOOKING = "GET_BOOKING";
 export const SELECT_TRUCK = "SELECT_TRUCK";
 export const RESET_BOOKING = "RESET_BOOKING";
@@ -97,6 +98,7 @@ export interface IProduct {
   weight: number | null;
   load_capacity: number | null;
   off_peak_discount: number;
+  available: boolean;
 }
 
 export interface IFormValues {
@@ -120,6 +122,7 @@ export interface IFormValues {
   storage_units_count: number;
   deliver_to_storage: boolean;
   products: IProduct[];
+  loading: boolean;
 
   moving_survey: boolean;
   packing_material: boolean;

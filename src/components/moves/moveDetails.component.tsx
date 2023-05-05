@@ -38,37 +38,8 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
   const [showToWorkingLift, setShowToWorkingLift] = useState(false);
   const router = useRouter();
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
-  const [bookedDates, setBookedDates] = useState<any[]>([]);
   const [fromWorkingLift, setFromWorkingLift] = useState(false);
   const [toWorkingLift, setToWorkingLift] = useState(false);
-
-  useEffect(() => {
-    let booked: any[] = [];
-    fetchWrapper
-      .get(
-        `/bookings/unavailable?month=${
-          currentMonth + 1
-        }&year=${new Date().getFullYear()}`,
-        false
-      )
-      .then((res) => {
-        if (res.length === 0) {
-          setBookedDates([]);
-          return;
-        }
-
-        //   res.forEach((date: any) => {
-        //     const d = new Date(date.date);
-        //     if (
-        //       currentMonth === d.getMonth() &&
-        //       d.getDate() !== bookingState.formValues.move_date
-        //     ) {
-        //       booked.push(d.getDate());
-        //       setBookedDates([...booked]);
-        //     }
-        //   });
-      });
-  }, [currentMonth]);
 
   useEffect(() => {
     window.scrollTo({
@@ -76,6 +47,7 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
       behavior: "smooth",
     });
   }, []);
+
   function tileClassName({ date, view }: any) {
     // Add class to tiles in month view only
     if (view === "month") {
@@ -225,14 +197,21 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
                 inline
                 name="collection"
                 label="Yes - collect"
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                  bookingsService.updateBooking(
+                    {
+                      id: bookingState.formValues.id,
+                      self_delivery: true,
+                    },
+                    fetchWrapper
+                  );
                   bookingsDispatch({
                     type: ADD_FORM_VALUES,
                     payload: {
                       collection: Boolean(Number(event.target.value)),
                     },
-                  })
-                }
+                  });
+                }}
                 id="collection"
                 value={1}
                 checked={Number(bookingState.formValues.collection) === 1}
@@ -242,14 +221,22 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
                 inline
                 name="collection"
                 label="No - I will deliver"
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                  bookingsService.updateBooking(
+                    {
+                      id: bookingState.formValues.id,
+                      self_delivery: false,
+                    },
+                    fetchWrapper
+                  );
                   bookingsDispatch({
                     type: ADD_FORM_VALUES,
                     payload: {
+                      id: bookingState.formValues.id,
                       collection: Boolean(Number(event.target.value)),
                     },
-                  })
-                }
+                  });
+                }}
                 id="collection"
                 value={0}
                 checked={Number(bookingState.formValues.collection) === 0}

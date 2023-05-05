@@ -4,7 +4,7 @@ function HowItWorks() {
   return (
     <div className="HowItWorks container">
       <div className="row">
-        <div className="HowItWorks__image-container col-12 col-md-5">
+        <div className="HowItWorks__image-container col-11 col-md-5">
           <img src="/img/landing/how-it-works.png" alt="How it works" />
         </div>
         <div className="HowItWorks__description col-12 col-md-7 ps-5">
