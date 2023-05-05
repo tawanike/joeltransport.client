@@ -24,6 +24,7 @@ function Accreditation() {
           height="77"
           alt=""
         />
+        <Image src="/img/memberships/mpoe.jpg" width="180" height="40" alt="" />
       </div>
     </div>
   );

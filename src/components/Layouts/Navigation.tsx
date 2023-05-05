@@ -9,6 +9,7 @@ function Navigation() {
         bg="primary"
         variant="dark"
         expand="md"
+        collapseOnSelect
         className="Navigation container-fluid"
       >
         <Container style={{ backgroundColor: "#1D3A7A" }}>
@@ -23,7 +24,7 @@ function Navigation() {
               <Link href="/" className="nav-link">
                 Home
               </Link>
-              <NavDropdown title="Move Services" id="navbarScrollingDropdown">
+              <NavDropdown title="Services" id="navbarScrollingDropdown">
                 <Link href="/services/home-moves" passHref>
                   <NavDropdown.Item href="/services/home-moves">
                     Domestic move

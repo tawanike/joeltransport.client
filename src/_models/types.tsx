@@ -88,7 +88,7 @@ export interface IProduct {
   slug: string;
   subtitle: string;
   description: string;
-  image: string | null;
+  image: string;
   category: number;
   ordering: number;
   published: boolean;
