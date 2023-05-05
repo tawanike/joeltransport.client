@@ -91,6 +91,42 @@ const ChooseTruck = () => {
   }, [trucks]);
 
   useEffect(() => {
+    (() => {
+      console.log("move_date", bookingContext.state.formValues?.move_date);
+      console.log(
+        "move_time_period",
+        bookingContext.state.formValues?.move_time_period
+      );
+      api
+        .get(
+          `/bookings/unavailable?move_date=${bookingContext.state.formValues?.move_date}&move_time=${bookingContext.state.formValues?.move_time_period}`,
+          false
+        )
+        .then((res) => {
+          console.log("TRCK AVAILABILITY", res);
+          if (res.length === 0) {
+            return;
+          }
+
+          setBookedDates(res);
+        });
+    })();
+  }, []);
+
+  useEffect(() => {
+    const truckInContext = bookingContext.state.formValues?.products?.filter(
+      (p: any) => p.category === "trucks"
+    );
+
+    if (truckInContext && truckInContext.length) {
+      const truck = trucks.find((t) => t.slug == "trucks"); //truckInContext[0].slug
+      if (truck) {
+        setSelectedTruck(truck);
+      }
+    }
+  }, [trucks]);
+
+  useEffect(() => {
     api
       .get(
         `/bookings/unavailable?move_date=${bookingContext.state.formValues?.move_date}&move_time=${bookingContext.state.formValues?.move_time_period}`,
@@ -100,36 +136,10 @@ const ChooseTruck = () => {
         if (res.length === 0) {
           return;
         }
+        console.log("TRCK AVAILABILITY", res);
         setBookedDates(res);
       });
   }, [bookingContext.state.formValues.move_date]);
-
-  const isBooked = (isSelected: any, truckId: any) => {
-    if (isSelected) {
-      return true;
-    }
-
-    if (bookedDates.length === 0) {
-      return false;
-    } else {
-      return bookedDates
-        .map((date) => {
-          const d = new Date(date.move_date);
-          const move_date = new Date(bookingContext.state.formValues.move_date);
-          if (
-            date.move_time ===
-              bookingContext.state.formValues.move_time_period &&
-            d.getDate() === move_date.getDate() &&
-            d.getMonth() === move_date.getMonth() &&
-            d.getFullYear() === move_date.getFullYear()
-          ) {
-            return date.id;
-          }
-        })
-        .filter((t) => t !== undefined)
-        .includes(truckId);
-    }
-  };
 
   return (
     <div className="row">
@@ -170,7 +180,11 @@ const ChooseTruck = () => {
                 truck={truck}
                 onSelect={setSelectedTruck}
                 inView={i === activeTruck}
-                isBooked={!truck.available}
+                available={
+                  bookedDates.find(
+                    (availability) => truck.id == availability.id
+                  ).available
+                }
                 isSelected={
                   selectedTruck
                     ? (selectedTruck as IProduct).id === truck.id

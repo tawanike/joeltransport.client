@@ -12,7 +12,7 @@ export const pricingConfig: PricingConfig[] = [
     title: "Standard 1 bed move",
     description:
       "Please note: these prices only apply to moves around Gauteng province.",
-    price: "R1,850.00",
+    price: "R2,000.00",
     details: [
       "1 Bedroom, 1 Lounge, 1 Kitchen, 1 Bathroom",
       "Est. contents volume: 500 to 700 cubic feet",
@@ -24,7 +24,7 @@ export const pricingConfig: PricingConfig[] = [
     title: "Standard 2 bed move",
     description:
       "Please note: these prices only apply to moves around Gauteng province.",
-    price: "R2,400.00",
+    price: "R3,150.00",
     details: [
       "2 bedrooms, 1 lounge, 1 kitchen, 2 bathrooms​",
       "1 extra room or single garage",
@@ -37,7 +37,7 @@ export const pricingConfig: PricingConfig[] = [
     title: "Standard 3 bed move",
     description:
       "Please note: these prices only apply to moves around Gauteng province.",
-    price: "R4,800.00",
+    price: "R6,300.00",
     details: [
       "3 bedrooms, 1 lounge, 1 kitchen, 2.5 bath​​",
       "1 Extra Room & Double Garage​",
