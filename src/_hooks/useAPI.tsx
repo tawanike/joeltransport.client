@@ -1,17 +1,7 @@
 import { RequestOptions } from "../_models/types";
 
 const useAPI = () => {
-  let API_URL = "";
-  switch (process.env["NODE_ENV"]) {
-    case "development":
-      API_URL = process.env.NEXT_PUBLIC_API_URL_DEV as string;
-    case "production":
-      process.env.NEXT_PUBLIC_API_URL_PROD as string;
-    case "test":
-      process.env.NEXT_PUBLIC_API_URL_UAT as string;
-    default:
-      process.env.NEXT_PUBLIC_API_URL_PROD as string;
-  }
+  let API_URL = process.env.NEXT_PUBLIC_API_URL as string;
 
   const request = (method: string) => {
     return (url: string, body: any) => {
