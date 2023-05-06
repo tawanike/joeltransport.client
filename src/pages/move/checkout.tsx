@@ -181,7 +181,7 @@ const Checkout = () => {
               <div className="col-12 moves__checkout__image my-4">
                 <img src="/img/pay.png" alt="Checkout" />
               </div>
-              <div className="col-12 d-sm-none moves__checkout__summary">
+              <div className="col-12 moves__checkout__summary">
                 {bookingContext.state.formValues.move_type === 0 ? (
                   <h5>Move review</h5>
                 ) : (

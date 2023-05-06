@@ -160,14 +160,14 @@ const BakkieShuttle: FC<IProps> = () => {
     }
   };
 
-  const getBakkieAddressOption = (value: any) => {
-    switch (value) {
-      case Number(value) === 1:
-        return 1;
-      case Number(value) === 2:
-        return 2;
-      case Number(value) === 3:
-        return 3;
+  const getBakkieAddressOption = (option: any) => {
+    switch (option) {
+      case Number(option) === 1:
+        return { value: 1, label: "Loading address" };
+      case Number(option) === 2:
+        return { value: 2, label: "Delivery address" };
+      case Number(option) === 3:
+        return { value: 3, label: "Both address" };
       default:
         return {};
     }
@@ -248,7 +248,7 @@ const BakkieShuttle: FC<IProps> = () => {
                   !Boolean(bookingState.formValues.requires_bakkie_shuttle)
                 }
                 defaultValue={getBakkieAddressOption(
-                  bookingState.formValues.bakkie_address
+                  bookingState.formValues.bakkie_address || 1
                 )}
                 onChange={handleBakkieShuttleAddress}
                 options={[

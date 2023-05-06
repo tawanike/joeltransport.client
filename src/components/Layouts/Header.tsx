@@ -28,7 +28,7 @@ const Header = () => {
                 }
               >
                 <span className="col-12 col-md-7 agent d-flex justify-content-start align-items-center">
-                  Are you an agent?
+                  Are you a moving services agent?
                 </span>
                 <ul className="col-12 col-md-5  Header__icons d-flex justify-content-between">
                   <li className="icon">

@@ -68,23 +68,24 @@ export default function About() {
                 className=""
               >
                 <div className="row mb-5 pt-5">
-                  <div className="About__our-story--text col-12 col-md-7">
+                  <div className="About__our-story--text col-12 col-md-7 pt-5">
                     <h3>Our customer value proposition</h3>
                     <p>
                       Joel Transport makes moving epic, you don’t lift a finger.
                       We do everything for you! From Protective Wrapping,
                       Packing, Furniture Removal and Storage.
-                      <br />
+                    </p>
+                    <p>
                       Further, we provide expertly trained and reliable movers
                       for any local or international move, whether that be
                       residential, commercial, office, apartments, cottages, or
                       a specialized move. They cover it all.
-                      <br />
+                    </p>
+                    <p>
                       We carefully customise each move according to your move
-                      specifications, schedule, and specialized needs.
-                      <br />
-                      We facilitate industry full-value risk insurance packages
-                      for all our customers, to give them peace of mind.
+                      specifications, schedule, and specialized needs. We
+                      facilitate industry full-value risk insurance packages for
+                      all our customers, to give them peace of mind.
                     </p>
                   </div>
                   <div className="About__our-story--image col-12 col-md-5">
@@ -108,11 +109,11 @@ export default function About() {
                     <h3>Our mission statement</h3>
                     <p>
                       We are an experienced, accredited, and professional moving
-                      and storage company that delivers stress-free services.
-                      <br />
-                      We offer a convenient and seamless end-to-end customer
+                      and storage company that delivers stress-free services. We
+                      offer a convenient and seamless end-to-end customer
                       experience.
-                      <br />
+                    </p>
+                    <p>
                       Our +50 years moving, storage and happy customer
                       experiences demonstrates that:
                       <ul>
