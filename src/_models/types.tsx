@@ -122,7 +122,6 @@ export interface IFormValues {
   storage_units_count: number;
   deliver_to_storage: boolean;
   products: IProduct[];
-  loading: boolean;
 
   moving_survey: boolean;
   packing_material: boolean;
@@ -159,6 +158,7 @@ export interface IBooking {
   id: string | undefined;
   products: IProduct[];
   formValues: IFormValues;
+  loading: boolean;
   openSection:
     | "move_details"
     | "additional_services"

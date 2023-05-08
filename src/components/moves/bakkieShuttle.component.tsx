@@ -39,12 +39,12 @@ const BakkieShuttle: FC<IProps> = () => {
     })();
   }, []);
 
-  useEffect(() => {
-    window.scrollTo({
-      top: 400,
-      behavior: "smooth",
-    });
-  }, []);
+  // useEffect(() => {
+  //   window.scrollTo({
+  //     top: 400,
+  //     behavior: "smooth",
+  //   });
+  // }, []);
 
   const handleBakkieShuttleAddress = (values: any) => {
     dispatchBookings({

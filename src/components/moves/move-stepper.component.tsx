@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { RxCaretDown } from "react-icons/rx";
 import { BookingContext } from "src/_contexts/booking.context";
 import { CHANGE_OPEN_SECTION } from "src/_models/types";
@@ -9,10 +9,67 @@ import PersonalInformation from "./personalInfomation.componnent";
 
 const MoveStepper = () => {
   const bookingContext = useContext(BookingContext);
+  const moveDetailsRef = useRef<any>(null);
+  const chooseTruckRef = useRef<any>(null);
+  const bukkieShuttleRef = useRef<any>(null);
+  const personalInfoRef = useRef<any>(null);
+  const additionalServicesRef = useRef<any>(null);
+  const inventoryFormRef = useRef<any>(null);
+  const storageUnitRef = useRef<any>(null);
+
+  useEffect(() => {
+    console.log("SECTION", bookingContext.state.openSection);
+    switch (bookingContext.state.openSection) {
+      case "move_details":
+        return moveDetailsRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+
+      case "additional_services":
+        return additionalServicesRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      case "bakkie_shuttle":
+        return bukkieShuttleRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      case "inventory":
+        return inventoryFormRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      case "personal":
+        return personalInfoRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+
+      case "truck":
+        return chooseTruckRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+
+      case "storage":
+        return storageUnitRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+
+      default:
+        return moveDetailsRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+    }
+  }, [bookingContext.state.openSection]);
   return (
     <>
       <div className="col-12 moves__stepper">
-        <div className="moves__step col-12 mb-3">
+        <div className="moves__step col-12 mb-3" ref={moveDetailsRef}>
           <div className="row">
             <div
               className="col-12 moves__step__head"
@@ -42,7 +99,7 @@ const MoveStepper = () => {
           </div>
         </div>
 
-        <div className="moves__step col-12 mb-3">
+        <div className="moves__step col-12 mb-3" ref={chooseTruckRef}>
           <div className="row">
             <div
               className="col-12 moves__step__head"
@@ -72,14 +129,14 @@ const MoveStepper = () => {
           </div>
         </div>
 
-        <div className="moves__step col-12 mb-3">
+        <div className="moves__step col-12 mb-3" ref={bukkieShuttleRef}>
           <div className="row">
             <div
               className="col-12 moves__step__head"
               onClick={() =>
                 bookingContext.dispatch({
                   type: CHANGE_OPEN_SECTION,
-                  payload: { openSection: "additional_services" },
+                  payload: { openSection: "bakkie_shuttle" },
                 })
               }
             >
@@ -93,13 +150,13 @@ const MoveStepper = () => {
                 </div>
               </div>
             </div>
-            {bookingContext.state.openSection === "additional_services" && (
+            {bookingContext.state.openSection === "bakkie_shuttle" && (
               <BakkieShuttle />
             )}
           </div>
         </div>
 
-        <div className="moves__step col-12 mb-3">
+        <div className="moves__step col-12 mb-3" ref={personalInfoRef}>
           <div className="row">
             <div
               className="col-12 moves__step__head"
