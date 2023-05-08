@@ -20,9 +20,9 @@ export interface InitContextProps {
 const initialState = {
   id: undefined,
   products: [],
+  loading: false,
   formValues: {
     storage_units_count: 1,
-    loading: false,
   } as IFormValues,
   inventoryList: [],
   openSection: "move_details",
@@ -37,6 +37,7 @@ type ContextProviderProps = {
   children: React.ReactNode;
 };
 const reducer = (state: IBooking, action: IAction) => {
+  console.log(action);
   switch (action.type) {
     case GET_BOOKING:
       return {
@@ -54,7 +55,7 @@ const reducer = (state: IBooking, action: IAction) => {
     case LOADING:
       return {
         ...state,
-        formValues: { ...state.formValues, ...action.payload },
+        ...action.payload,
       };
     case CHANGE_OPEN_SECTION:
       return {

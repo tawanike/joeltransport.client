@@ -35,12 +35,12 @@ const ChooseTruck = () => {
     })();
   }, []);
 
-  useEffect(() => {
-    window.scrollTo({
-      top: 400,
-      behavior: "smooth",
-    });
-  }, []);
+  // useEffect(() => {
+  //   window.scrollTo({
+  //     top: 400,
+  //     behavior: "smooth",
+  //   });
+  // }, []);
 
   useEffect(() => {
     if (selectedTruck) {

@@ -18,8 +18,6 @@ export const updateBooking = (payload: any) => {
 export const isLoading = (payload: boolean) => {
     return {
         type: LOADING,
-        payload: {
-            formValues: { loading: payload }
-        }
+        payload: {loading: payload}
     }
 }

@@ -19,6 +19,7 @@ import useAPI from "../../_hooks/useAPI";
 import {
   ADD_FORM_VALUES,
   ADD_PRODUCTS_DATA,
+  CHANGE_OPEN_SECTION,
   EDIT_ADDITIONAL_SERVICES,
   IBooking,
 } from "../../_models/types";
@@ -68,6 +69,10 @@ const DomesticMoveServices = () => {
 
   const goToCheckout = () => {
     setShowSelectorModal(true);
+    dispatchBookings({
+      type: CHANGE_OPEN_SECTION,
+      payload: { openSection: "move_details" },
+    });
   };
 
   const selectService = async (e: any) => {
@@ -90,8 +95,6 @@ const DomesticMoveServices = () => {
   const saveAndContinue = () => {
     router.push(`/move/checkout`);
   };
-
-  const isLoading = (state: IBooking) => {};
 
   const isDisabled = (state: IBooking) => {
     const objKeys = Object.keys(state.formValues);
@@ -258,16 +261,11 @@ const DomesticMoveServices = () => {
                 <div className="col-12 d-flex justify-content-end">
                   <CallMeBackButton title="Call me back" />
                   <Button
-                    disabled={
-                      isDisabled(bookingState) ||
-                      bookingState.formValues.loading
-                    }
+                    disabled={isDisabled(bookingState) || bookingState.loading}
                     onClick={goToCheckout}
                     variant="secondary"
                   >
-                    {bookingState.formValues.loading
-                      ? "Loading..."
-                      : "Confirm move"}
+                    {bookingState.loading ? "Loading..." : "Confirm move"}
                   </Button>
                 </div>
               </div>
