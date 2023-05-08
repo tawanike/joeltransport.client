@@ -11,6 +11,8 @@ import { BookingContext } from "src/_contexts/booking.context";
 import CostSummaryStateContext from "src/_contexts/costSummary.context";
 import { CHANGE_OPEN_SECTION } from "src/_models/types";
 import { Calculations } from "../../_helpers/calculations";
+let PAYSTACK_API_KEY = process.env.NEXT_PUBLIC_PAYSTACK_API_KEY as string;
+
 accounting.settings = {
   currency: {
     symbol: "R", // default currency symbol is '$'
@@ -42,7 +44,7 @@ const Checkout = () => {
       CostSummaryState
     ),
     currency: "ZAR",
-    publicKey: "pk_test_031a560a948c05f7721f754c86ed89d4335d5250",
+    publicKey: PAYSTACK_API_KEY,
   };
 
   const initializePayment = usePaystackPayment(paystackConfig as any);
