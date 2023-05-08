@@ -35,12 +35,12 @@ const ChooseTruck = () => {
     })();
   }, []);
 
-  useEffect(() => {
-    window.scrollTo({
-      top: 400,
-      behavior: "smooth",
-    });
-  }, []);
+  // useEffect(() => {
+  //   window.scrollTo({
+  //     top: 400,
+  //     behavior: "smooth",
+  //   });
+  // }, []);
 
   useEffect(() => {
     if (selectedTruck) {
@@ -91,31 +91,55 @@ const ChooseTruck = () => {
   }, [trucks]);
 
   useEffect(() => {
+    (() => {
+      console.log("move_date", bookingContext.state.formValues?.move_date);
+      console.log(
+        "move_time_period",
+        bookingContext.state.formValues?.move_time_period
+      );
+      api
+        .get(
+          `/bookings/unavailable?move_date=${bookingContext.state.formValues?.move_date}&move_time=${bookingContext.state.formValues?.move_time_period}`,
+          false
+        )
+        .then((res) => {
+          console.log("TRCK AVAILABILITY", res);
+          if (res.length === 0) {
+            return;
+          }
+
+          setBookedDates(res);
+        });
+    })();
+  }, []);
+
+  useEffect(() => {
+    const truckInContext = bookingContext.state.formValues?.products?.filter(
+      (p: any) => p.category === "trucks"
+    );
+
+    if (truckInContext && truckInContext.length) {
+      const truck = trucks.find((t) => t.slug == "trucks"); //truckInContext[0].slug
+      if (truck) {
+        setSelectedTruck(truck);
+      }
+    }
+  }, [trucks]);
+
+  useEffect(() => {
     api
       .get(
-        `/bookings/unavailable?month=${
-          currentMonth + 1
-        }&year=${new Date().getFullYear()}`,
+        `/bookings/unavailable?move_date=${bookingContext.state.formValues?.move_date}&move_time=${bookingContext.state.formValues?.move_time_period}`,
         false
       )
       .then((res) => {
         if (res.length === 0) {
-          setBookedDates([]);
           return;
         }
-
-        // res.forEach((date: any) => {
-        //   const d = new Date(date.date);
-        //   if (
-        //     currentMonth === d.getMonth() &&
-        //     d.getDate() !== bookingContext.state.formValues.move_date
-        //   ) {
-        //     booked.push(d.getDate());
-        //     setBookedDates([...booked]);
-        //   }
-        // });
+        console.log("TRCK AVAILABILITY", res);
+        setBookedDates(res);
       });
-  }, [currentMonth]);
+  }, [bookingContext.state.formValues.move_date]);
 
   return (
     <div className="row">
@@ -139,6 +163,16 @@ const ChooseTruck = () => {
               swiper.allowSlideNext = true;
             }
           }}
+          breakpoints={{
+            300: {
+              width: 270,
+              slidesPerView: 1,
+            },
+            768: {
+              width: 768,
+              slidesPerView: 2,
+            },
+          }}
         >
           {trucks.map((truck: IProduct, i) => (
             <SwiperSlide key={truck.id}>
@@ -146,6 +180,11 @@ const ChooseTruck = () => {
                 truck={truck}
                 onSelect={setSelectedTruck}
                 inView={i === activeTruck}
+                available={
+                  bookedDates.find(
+                    (availability) => truck.id == availability.id
+                  ).available
+                }
                 isSelected={
                   selectedTruck
                     ? (selectedTruck as IProduct).id === truck.id

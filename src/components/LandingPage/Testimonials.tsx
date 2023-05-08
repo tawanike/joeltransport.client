@@ -26,6 +26,7 @@ const Review = ({ review, onClick }: any) => {
 const Testimonials = () => {
   const [reviews, setReviews] = useState<any[]>([]);
   const [selectedReview, setSelectedReview] = useState<any>({});
+  //   const [loading, reviews] = useGoogleReviews("ChIJV7Cq11V7lR4RpmekzP8Ov2M");
 
   useEffect(() => {
     const place = placeJSON.result;
@@ -39,7 +40,7 @@ const Testimonials = () => {
       <h3>Don’t take it from us – trust our customer reviews.</h3>
       {reviews.length ? (
         <div className="Testimonials__container row">
-          <div className="Testimonials__reviewers col-4">
+          <div className="Testimonials__reviewers col-12 col-md-6 col-lg-4">
             {reviews.map((review) => (
               <Review
                 key={review.author_name}

@@ -10,6 +10,7 @@ import {
   IAction,
   IBooking,
   IFormValues,
+  LOADING,
   RESET_BOOKING,
 } from "src/_models/types";
 export interface InitContextProps {
@@ -19,7 +20,10 @@ export interface InitContextProps {
 const initialState = {
   id: undefined,
   products: [],
-  formValues: {} as IFormValues,
+  loading: false,
+  formValues: {
+    storage_units_count: 1,
+  } as IFormValues,
   inventoryList: [],
   openSection: "move_details",
   additionalServices: {
@@ -47,6 +51,11 @@ const reducer = (state: IBooking, action: IAction) => {
       return {
         ...state,
         formValues: { ...state.formValues, ...action.payload },
+      };
+    case LOADING:
+      return {
+        ...state,
+        ...action.payload,
       };
     case CHANGE_OPEN_SECTION:
       return {

@@ -11,10 +11,18 @@ import {
   SELECT_TRUCK,
   ZERO_TRUCK_QUANTITY,
 } from "../_models/types";
-const initialCostSummaryState: CostSummary = {} as CostSummary;
+const initialCostSummaryState: CostSummary = {
+  storage: {
+    quantity: 1,
+    price: 0,
+  },
+  storageHandlingFee: {
+    quantity: 1,
+    price: 0,
+  },
+} as CostSummary;
 
 const CostSummaryReducer = (state: CostSummary, action: IAction) => {
-  console.log(action);
   switch (action.type) {
     case ADJUST_ADDITIONAL_SERVICES:
       return { ...state, ...action.payload };

@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
+import { isLoading } from "src/_actions/booking.actions";
 import { BookingContext } from "src/_contexts/booking.context";
 import { useAPI } from "src/_hooks";
 import { GET_BOOKING } from "src/_models/types";
@@ -39,81 +40,113 @@ const PersonalInformation = () => {
     });
   };
 
+  function isValidEmail(address: string) {
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(address)) {
+      return true;
+    }
+    return false;
+  }
+
   const handleOnBlur = (e: any) => {
-    values.booking = bookingContext.state.formValues.id;
-    if (
-      values.first_name === "" ||
-      values.first_name === undefined ||
-      values.first_name === " "
-    ) {
-      setErrors({ ...errors, first_name: true });
-    } else {
-      setErrors({ ...errors, first_name: false });
-    }
+    bookingContext.dispatch(isLoading(true));
+    const bookingId = localStorage.getItem("bookingId");
+    if (bookingId) {
+      const booking_id = bookingContext.state.formValues.id || bookingId;
 
-    if (values.last_name === "" || values.last_name === undefined) {
-      console.log("last name is empty");
-      setErrors({ ...errors, last_name: true });
-    } else {
-      setErrors({ ...errors, last_name: false });
-    }
+      values.booking = booking_id;
+      console.log("handleOnBlur", values);
+      if (
+        values.first_name === "" ||
+        values.first_name === undefined ||
+        values.first_name === " "
+      ) {
+        setErrors({ ...errors, first_name: true });
+      } else {
+        setErrors({ ...errors, first_name: false });
+      }
 
-    if (
-      values.phone_number === "" ||
-      values.phone_number === undefined ||
-      values.phone_number === " "
-    ) {
-      setErrors({ ...errors, phone_number: true });
-    } else {
-      setErrors({ ...errors, phone_number: false });
-    }
+      if (values.last_name === "" || values.last_name === undefined) {
+        setErrors({ ...errors, last_name: true });
+      } else {
+        setErrors({ ...errors, last_name: false });
+      }
 
-    if (values.email === "" || values.email === undefined) {
-      setErrors({ ...errors, email: true });
-    } else {
-      setErrors({ ...errors, email: false });
-    }
+      if (
+        values.phone_number === "" ||
+        values.phone_number === undefined ||
+        values.phone_number === " "
+      ) {
+        setErrors({ ...errors, phone_number: true });
+      } else {
+        setErrors({ ...errors, phone_number: false });
+      }
 
-    if (
-      values.first_name !== "" &&
-      values.first_name !== undefined &&
-      values.first_name !== " " &&
-      values.last_name !== "" &&
-      values.last_name !== undefined &&
-      values.last_name !== " " &&
-      values.email !== "" &&
-      values.email !== undefined &&
-      values.email !== " " &&
-      values.phone_number !== "" &&
-      values.phone_number !== undefined &&
-      values.phone_number !== " "
-    ) {
-      api
-        .post(`/bookings/${bookingContext.state.formValues.id}/users`, values)
-        .then((res) => {
-          if (res.message == "ok") {
-            api
-              .get(`/bookings/${bookingContext.state.formValues.id}`, false)
-              .then((res) => {
-                bookingContext.dispatch({
-                  type: GET_BOOKING,
-                  payload: {
-                    formValues: { users: { ...values } },
-                  },
-                });
-              })
-              .catch((err) => console.log(err));
-          }
-        })
-        .catch((err) => console.log(err));
+      if (values.email === "" || values.email === undefined) {
+        setErrors({ ...errors, email: true });
+      } else {
+        setErrors({ ...errors, email: false });
+      }
+
+      if (
+        values.first_name !== "" &&
+        values.first_name !== undefined &&
+        values.first_name !== " " &&
+        values.last_name !== "" &&
+        values.last_name !== undefined &&
+        values.last_name !== " " &&
+        values.email !== "" &&
+        values.email !== undefined &&
+        values.email !== " " &&
+        // isValidEmail(values.email) &&
+        values.phone_number !== "" &&
+        values.phone_number !== undefined &&
+        values.phone_number !== " "
+      ) {
+        api
+          .post(
+            `/bookings/${
+              bookingContext.state.formValues.id || bookingId
+            }/users`,
+            values
+          )
+          .then((res) => {
+            if (res.id != undefined) {
+              console.log("USERS OK");
+              bookingContext.dispatch(isLoading(false));
+              api
+                .get(
+                  `/bookings/${
+                    bookingContext.state.formValues.id || bookingId
+                  }`,
+                  false
+                )
+                .then((res) => {
+                  bookingContext.dispatch({
+                    type: GET_BOOKING,
+                    payload: {
+                      formValues: { users: { ...values } },
+                    },
+                  });
+                })
+                .catch((err) => console.log(err));
+            }
+          })
+          .catch((err) => console.log(err));
+      }
+    } else {
+      return;
     }
   };
-  console.log("bookingContext.state", bookingContext.state);
   return (
     <>
       <Form noValidate>
-        <Row className="mb-5">
-          <Form.Group as={Col} md="6" controlId="first_name">
+        <Row className="mb-4 mb-md-3">
+          <Form.Group
+            as={Col}
+            md="6"
+            controlId="first_name"
+            className="mb-4 mb-md-0"
+          >
             <Form.Control
               name="first_name"
               placeholder="Name"
@@ -136,8 +169,13 @@ const PersonalInformation = () => {
             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
           </Form.Group>
         </Row>
-        <Row className="mb-5">
-          <Form.Group as={Col} md="6" controlId="phone_number">
+        <Row className="mb-4 mb-md-3">
+          <Form.Group
+            as={Col}
+            md="6"
+            controlId="phone_number"
+            className="mb-4 mb-md-0"
+          >
             <Form.Control
               name="phone_number"
               placeholder="Phone number"

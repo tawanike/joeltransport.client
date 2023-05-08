@@ -7,9 +7,16 @@ interface IProps {
   onSelect: (product: IProduct) => void;
   isSelected: boolean;
   inView: boolean;
+  available: boolean;
 }
 
-const TruckDisplay: FC<IProps> = ({ truck, onSelect, isSelected, inView }) => {
+const TruckDisplay: FC<IProps> = ({
+  available,
+  truck,
+  onSelect,
+  isSelected,
+  inView,
+}) => {
   return (
     <div
       className={`col-12 truckDisplay truckDisplay${
@@ -18,7 +25,7 @@ const TruckDisplay: FC<IProps> = ({ truck, onSelect, isSelected, inView }) => {
     >
       <div className="row">
         <div className="col-12 truckDisplay__head">
-          <img src="/img/trucks/1.png" alt="" />
+          <img src={truck.image} alt={truck.title} />
           <h6>Loads: {truck.subtitle}</h6>
         </div>
         <div className="col-12 truckDisplay__body">
@@ -44,9 +51,10 @@ const TruckDisplay: FC<IProps> = ({ truck, onSelect, isSelected, inView }) => {
           <Button
             variant="secondary"
             onClick={() => onSelect(truck)}
-            disabled={isSelected}
+            disabled={!available || isSelected}
           >
-            Choose truck
+            {" "}
+            {!available ? `Booked out, change date or time` : `Choose truck`}
           </Button>
         </div>
       </div>

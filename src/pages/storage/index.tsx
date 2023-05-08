@@ -17,7 +17,11 @@ import {
 import { BsInfoCircle } from "react-icons/bs";
 import { FcInfo } from "react-icons/fc";
 import { BookingContext } from "src/_contexts/booking.context";
-import { EDIT_ADDITIONAL_SERVICES, IBooking } from "src/_models/types";
+import {
+  CHANGE_OPEN_SECTION,
+  EDIT_ADDITIONAL_SERVICES,
+  IBooking,
+} from "src/_models/types";
 import useAPI from "../../_hooks/useAPI";
 import { CoverImage } from "../../components/ui";
 
@@ -40,6 +44,10 @@ const Storage = () => {
 
   const goToCheckout = () => {
     setShowSelectorModal(true);
+    dispatchBookings({
+      type: CHANGE_OPEN_SECTION,
+      payload: { openSection: "move_details" },
+    });
   };
 
   const saveAndContinue = () => {
@@ -60,6 +68,7 @@ const Storage = () => {
         xVal === undefined
       );
     });
+    console.log(state);
     if (state.formValues.user) {
       userVals = ["first_name", "last_name", "email", "phone_number"].some(
         (x) => {
@@ -74,6 +83,7 @@ const Storage = () => {
         }
       );
     }
+    console.log(formVals, userVals);
     return formVals || userVals;
   };
 
@@ -88,7 +98,6 @@ const Storage = () => {
 
     const getProduct = async () => {
       const product = await fetchWrapper.get(`/products/storage`, false);
-      console.log(product);
     };
 
     getProduct();
@@ -209,8 +218,8 @@ const Storage = () => {
                   <FcInfo />
                 </div>
                 <div className="col-11" style={{ fontSize: 12 }}>
-                  <b>Please note:</b> There may be additional charges. Terms and
-                  conditions apply.
+                  <b>Please note:</b> There will be additional charges. Terms
+                  and conditions apply.
                 </div>
               </div>
             </Alert>
@@ -234,10 +243,10 @@ const Storage = () => {
             </div>
             <div className="col-12 col-lg-6">
               <div className="row">
-                <div className="col-6 moves__container__thumbnail">
+                <div className="col-12 col-md-6  moves__container__thumbnail">
                   <img src="/img/storage_thumb.png" alt="storage" />
                 </div>
-                <div className="col-6 moves__container__summary">
+                <div className="col-12 col-md-6 mt-3 mt-md-0 moves__container__summary">
                   <div>
                     <p>
                       <b>Storage type: wooden crate unit </b>
@@ -270,11 +279,11 @@ const Storage = () => {
                 <div className="col-12 d-flex justify-content-end">
                   <CallMeBackButton title="Call me back" />
                   <Button
-                    disabled={isDisabled(bookingState)}
+                    disabled={isDisabled(bookingState) || bookingState.loading}
                     onClick={goToCheckout}
                     variant="secondary"
                   >
-                    Confirm move
+                    {bookingState.loading ? "Loading..." : "Confirm move"}
                   </Button>
                 </div>
               </div>

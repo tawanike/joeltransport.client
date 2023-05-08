@@ -38,37 +38,15 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
   const [showToWorkingLift, setShowToWorkingLift] = useState(false);
   const router = useRouter();
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
-  const [bookedDates, setBookedDates] = useState<any[]>([]);
   const [fromWorkingLift, setFromWorkingLift] = useState(false);
   const [toWorkingLift, setToWorkingLift] = useState(false);
 
-  useEffect(() => {
-    let booked: any[] = [];
-    fetchWrapper
-      .get(
-        `/bookings/unavailable?month=${
-          currentMonth + 1
-        }&year=${new Date().getFullYear()}`,
-        false
-      )
-      .then((res) => {
-        if (res.length === 0) {
-          setBookedDates([]);
-          return;
-        }
-
-        //   res.forEach((date: any) => {
-        //     const d = new Date(date.date);
-        //     if (
-        //       currentMonth === d.getMonth() &&
-        //       d.getDate() !== bookingState.formValues.move_date
-        //     ) {
-        //       booked.push(d.getDate());
-        //       setBookedDates([...booked]);
-        //     }
-        //   });
-      });
-  }, [currentMonth]);
+  // useEffect(() => {
+  //   window.scrollTo({
+  //     top: 400,
+  //     behavior: "smooth",
+  //   });
+  // }, []);
 
   function tileClassName({ date, view }: any) {
     // Add class to tiles in month view only
@@ -92,13 +70,6 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
       }
     }
     return "";
-  }
-
-  function tileDisabled({ date, view }: any) {
-    if (view === "month") {
-      return bookedDates.includes(date.getDate());
-    }
-    return false;
   }
 
   function onActiveStartDateChange({ activeStartDate }: any) {
@@ -149,7 +120,6 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
 
   useEffect(() => {
     (async () => {
-      console.log("FromFloorsCountValue", FromFloorsCountValue);
       bookingsDispatch({
         type: ADD_FORM_VALUES,
         payload: {
@@ -181,6 +151,19 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
       }
     })();
   }, [FromFloorsCountValue, ToFloorsCountValue]);
+
+  const updateTimePeriod = async (move_time_period: any) => {
+    if (bookingState.formValues.id) {
+      const booking = await bookingsService.updateBooking(
+        {
+          id: bookingState.formValues.id,
+          move_time_period: move_time_period,
+        },
+        fetchWrapper
+      );
+      bookingsDispatch(getBooking(booking));
+    }
+  };
 
   return (
     <div className="col-12 move__step__body">
@@ -214,14 +197,21 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
                 inline
                 name="collection"
                 label="Yes - collect"
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                  bookingsService.updateBooking(
+                    {
+                      id: bookingState.formValues.id,
+                      self_delivery: true,
+                    },
+                    fetchWrapper
+                  );
                   bookingsDispatch({
                     type: ADD_FORM_VALUES,
                     payload: {
                       collection: Boolean(Number(event.target.value)),
                     },
-                  })
-                }
+                  });
+                }}
                 id="collection"
                 value={1}
                 checked={Number(bookingState.formValues.collection) === 1}
@@ -231,14 +221,22 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
                 inline
                 name="collection"
                 label="No - I will deliver"
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                  bookingsService.updateBooking(
+                    {
+                      id: bookingState.formValues.id,
+                      self_delivery: false,
+                    },
+                    fetchWrapper
+                  );
                   bookingsDispatch({
                     type: ADD_FORM_VALUES,
                     payload: {
+                      id: bookingState.formValues.id,
                       collection: Boolean(Number(event.target.value)),
                     },
-                  })
-                }
+                  });
+                }}
                 id="collection"
                 value={0}
                 checked={Number(bookingState.formValues.collection) === 0}
@@ -251,19 +249,24 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
         ) ||
           bookingState.formValues.collection) && (
           <>
-            <h5 className="my-5">Please provide loading details</h5>
-            <Row className="mb-5">
+            <h5 className="my-4 my-md-5">Please provide loading details</h5>
+            <Row className="mb-4 mb-md-3">
               <Form.Group as={Col} md="12" controlId="from">
-                <Form.Label>Search loading location</Form.Label>
+                <Form.Label>
+                  <span className="text-danger">*</span>Search loading location
+                </Form.Label>
                 <AddressForm
                   address={bookingState.formValues.from_address}
                   address_type="from_address"
                 />
               </Form.Group>
             </Row>
-            <Row className="mb-5">
+            <Row className="mb-4 mb-md-3">
               <Form.Group as={Col} md="6" controlId="move_date">
-                <Form.Label>{dateLabel}</Form.Label>
+                <Form.Label>
+                  <span className="text-danger">*</span>
+                  {dateLabel}
+                </Form.Label>
                 <DatePicker
                   onChange={onDateChange}
                   value={
@@ -307,12 +310,16 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
                 <Form.Label>Property type</Form.Label>
                 <Select
                   name="from_property_type"
-                  onChange={(values: any) =>
-                    bookingsDispatch({
-                      type: ADD_FORM_VALUES,
-                      payload: { from_property_type: values.value },
-                    })
-                  }
+                  onChange={async (values: any) => {
+                    const booking = await bookingsService.updateBooking(
+                      {
+                        id: bookingState.formValues.id,
+                        from_property_type: values.value,
+                      },
+                      fetchWrapper
+                    );
+                    bookingsDispatch(getBooking(booking));
+                  }}
                   defaultValue={getPropertyTypeOption(
                     bookingState.formValues.from_property_type
                   )}
@@ -324,15 +331,18 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
                 />
               </Form.Group>
             </Row>
-            <Row className="mb-5">
-              <Form.Group as={Col} md="6" controlId="date">
-                <Form.Label>What level is your apartment on?</Form.Label>
+            <Row className="mb-4 mb-md-3">
+              <Form.Group as={Col} md="6" controlId="date" className="mb-4">
+                <div className="mb-1">
+                  <Form.Label>What level is your apartment on?</Form.Label>
+                </div>
                 {FromFloorsCountDisplay}
               </Form.Group>
               <Form.Group as={Col} md="6" className="">
                 <Form.Label>
                   Does your apartment building have a working lift?
                 </Form.Label>
+                <br />
                 <Form.Check
                   type="radio"
                   inline
@@ -405,7 +415,7 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
                 />
               </Form.Group>
             </Row>
-            <Row className="mb-5">
+            <Row className="mb-4 mb-md-3">
               <Form.Group as={Col} md="12" className="">
                 <Form.Label>What time should we collect?</Form.Label>
                 <Form.Check
@@ -413,14 +423,15 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
                   required
                   name="move_time_period"
                   label="Morning between (7am to 12pm)"
-                  onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                     bookingsDispatch({
                       type: ADD_FORM_VALUES,
                       payload: {
                         move_time_period: event.target.value,
                       },
-                    })
-                  }
+                    });
+                    updateTimePeriod(event.target.value);
+                  }}
                   id="morning"
                   value="0"
                   checked={
@@ -432,14 +443,15 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
                   required
                   name="move_time_period"
                   label="Afternoon between (12pm to 4pm)"
-                  onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                     bookingsDispatch({
                       type: ADD_FORM_VALUES,
                       payload: {
                         move_time_period: event.target.value,
                       },
-                    })
-                  }
+                    });
+                    updateTimePeriod(event.target.value);
+                  }}
                   id="afternoon"
                   value="1"
                   checked={
@@ -453,17 +465,19 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
 
         {hasDelivery && (
           <>
-            <h5 className="my-5">Please provide delivery details</h5>
-            <Row className="mb-5">
+            <h5 className="my-4 my-md-5">Please provide delivery details</h5>
+            <Row className="mb-4 mb-md-3">
               <Form.Group as={Col} md="12" controlId="to">
-                <Form.Label>Search delivery location</Form.Label>
+                <Form.Label>
+                  <span className="text-danger">*</span>Search delivery location
+                </Form.Label>
                 <AddressForm
                   address={bookingState.formValues.to_address}
                   address_type="to_address"
                 />
               </Form.Group>
             </Row>
-            <Row className="mb-5">
+            <Row className="mb-4 mb-md-3">
               <Form.Group as={Col} md="6" controlId="to_property_type">
                 <Form.Label>Property type</Form.Label>
                 <Select
@@ -481,20 +495,21 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
                     { value: 0, label: "Single Storey" },
                     { value: 1, label: "Multi Storey" },
                   ]}
-                  className=""
+                  className="mb-5"
                 />
               </Form.Group>
               <Form.Group as={Col} md="6" controlId="date">
-                <Form.Label>How many floors are in your building?</Form.Label>
+                <Form.Label>What level is your apartment on?</Form.Label>
                 {ToFloorsCountDisplay}
               </Form.Group>
             </Row>
-            <Row className="mb-5">
+            <Row className="mb-4 mb-md-3">
               {showToWorkingLift && (
-                <Form.Group as={Col} md="6" className="">
+                <Form.Group as={Col} md="6" className="mt-3">
                   <Form.Label>
                     Does your apartment building have a working lift?
                   </Form.Label>
+                  <br />
                   <Form.Check
                     type="radio"
                     inline

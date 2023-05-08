@@ -39,6 +39,13 @@ const BakkieShuttle: FC<IProps> = () => {
     })();
   }, []);
 
+  // useEffect(() => {
+  //   window.scrollTo({
+  //     top: 400,
+  //     behavior: "smooth",
+  //   });
+  // }, []);
+
   const handleBakkieShuttleAddress = (values: any) => {
     dispatchBookings({
       type: ADD_FORM_VALUES,
@@ -153,13 +160,13 @@ const BakkieShuttle: FC<IProps> = () => {
     }
   };
 
-  const getBakkieAddressOption = (value: any) => {
-    switch (value) {
-      case Number(value) === 1:
+  const getBakkieAddressOption = (option: any) => {
+    switch (option) {
+      case Number(option) === 1:
         return { value: 1, label: "Loading address" };
-      case Number(value) === 2:
+      case Number(option) === 2:
         return { value: 2, label: "Delivery address" };
-      case Number(value) === 3:
+      case Number(option) === 3:
         return { value: 3, label: "Both address" };
       default:
         return {};
@@ -185,6 +192,13 @@ const BakkieShuttle: FC<IProps> = () => {
                   bakkie_address: 1,
                 },
               });
+
+              if (bookingState.formValues.move_type === 1) {
+                handleBakkieShuttleAddress({
+                  value: 1,
+                  label: "Loading address",
+                });
+              }
             }}
             className="pe-5"
             checked={
@@ -224,28 +238,28 @@ const BakkieShuttle: FC<IProps> = () => {
               </div>
             </div>
           </Alert>
-          {/* {bookingState.formValues.move_type === 0 && ( */}
-          <Form.Group as={Col} md="8" controlId="bakkie_address">
-            <Form.Label>Select address for a bakkie shuttle</Form.Label>
-            <Select
-              name="bakkie_address"
-              placeholder="Select address"
-              isDisabled={
-                !Boolean(bookingState.formValues.requires_bakkie_shuttle)
-              }
-              defaultValue={getBakkieAddressOption(
-                bookingState.formValues.bakkie_address
-              )}
-              onChange={handleBakkieShuttleAddress}
-              options={[
-                { value: 1, label: "Loading address" },
-                { value: 2, label: "Delivery address" },
-                { value: 3, label: "Both address" },
-              ]}
-              className=""
-            />
-          </Form.Group>
-          {/* )} */}
+          {bookingState.formValues.move_type === 0 && (
+            <Form.Group as={Col} md="8" controlId="bakkie_address">
+              <Form.Label>Select address for a bakkie shuttle</Form.Label>
+              <Select
+                name="bakkie_address"
+                placeholder="Select address"
+                isDisabled={
+                  !Boolean(bookingState.formValues.requires_bakkie_shuttle)
+                }
+                defaultValue={getBakkieAddressOption(
+                  bookingState.formValues.bakkie_address || 1
+                )}
+                onChange={handleBakkieShuttleAddress}
+                options={[
+                  { value: 1, label: "Loading address" },
+                  { value: 2, label: "Delivery address" },
+                  { value: 3, label: "Both address" },
+                ]}
+                className=""
+              />
+            </Form.Group>
+          )}
         </div>
       </div>
     </>

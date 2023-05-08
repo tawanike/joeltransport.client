@@ -4,8 +4,8 @@ function HowItWorks() {
   return (
     <div className="HowItWorks container">
       <div className="row">
-        <div className="HowItWorks__image-container col-12 col-md-5">
-          <img src="/img/how-it-works.png" alt="How it works" />
+        <div className="HowItWorks__image-container col-11 col-md-5">
+          <img src="/img/landing/how-it-works.png" alt="How it works" />
         </div>
         <div className="HowItWorks__description col-12 col-md-7 ps-5">
           <h1>How it works</h1>
@@ -24,7 +24,7 @@ function HowItWorks() {
               >
                 {<MdOutlineEmojiTransportation />}
               </div>
-              <p>Plan</p>
+              <p>Book</p>
             </li>
             <li>
               <div

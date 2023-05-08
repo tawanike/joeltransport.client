@@ -96,7 +96,7 @@ const Checkout = () => {
       <div className="moves container-fluid">
         <div className="moves__container container mt-5">
           <div className="row">
-            <div className="col-8">
+            <div className="col-12 col-md-8">
               <Alert variant="warning" className="mt-3">
                 <div className="row">
                   <div
@@ -122,7 +122,7 @@ const Checkout = () => {
                 <StorageStepper />
               )}
             </div>
-            <div className="col-3 offset-1 moves__checkout">
+            <div className="col-12 col-md-3 offset-md-1 moves__checkout">
               <div className="col-12 moves__checkout__summary">
                 {bookingContext.state.formValues.move_type === 0 ? (
                   <h5>Move summary</h5>
@@ -272,7 +272,12 @@ const Checkout = () => {
                         onClick={() =>
                           bookingContext.dispatch({
                             type: CHANGE_OPEN_SECTION,
-                            payload: { openSection: "truck" },
+                            payload: {
+                              openSection:
+                                bookingContext.state.formValues?.move_type === 0
+                                  ? "truck"
+                                  : "storage",
+                            },
                           })
                         }
                       >

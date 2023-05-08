@@ -6,7 +6,6 @@ import { BlueSectionConfig } from "../../_configurations/blueSection.config";
 import { storageSections } from "../../_configurations/resourcesPageSections.config";
 import { RightImageSectionConfig } from "../../_configurations/rightsection.config";
 import BlueSection from "./blueSection.component";
-import LeftImageSection from "./leftImageSection.component";
 import RelatedArticles from "./relatedArticles.component";
 import RightImageSection from "./rightImageSection.component";
 
@@ -26,7 +25,7 @@ const StorageComponent = ({ getQuote }: any) => {
             <div className="row">
               <div className="resources__pricing__prices col-12 pb-5">
                 <div className="row">
-                  <div className="col-3 resources__pricing__prices-container">
+                  <div className="col-12 col-md-3 resources__pricing__prices-container">
                     <div className="col-12 resources__pricing__prices-container__item">
                       <div className="col-12 resources__pricing__prices-container__item-head">
                         <p>Standard 1 bed move</p>
@@ -58,7 +57,7 @@ const StorageComponent = ({ getQuote }: any) => {
                       ))}
                     </div>
                   </div>
-                  <div className="resources__product-description__summary col-7 offset-1">
+                  <div className="resources__product-description__summary col-12 col-md-7 offset-md-1 mt-3 mt-md-0">
                     <div className="resources__product-description__summary__information-head">
                       <p>Our standard pricing for local storage.</p>
                     </div>
@@ -92,9 +91,7 @@ const StorageComponent = ({ getQuote }: any) => {
           </div>
         </div>
       </div>
-      <LeftImageSection
-        {...(storageSections.internationally as RightImageSectionConfig)}
-      />
+
       <RelatedArticles />
     </>
   );

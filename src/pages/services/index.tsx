@@ -27,11 +27,11 @@ const Resources = () => {
                                     <>
                                         <div
                                             key={product.id}
-                                            className="resources__products-summary__product-container col-4 mb-3"
+                                            className="resources__products-summary__product-container col-12 col-md-4 mb-3"
                                         >
                                             <div className="resources__products-summary__product col-12">
                                                 <div className="row">
-                                                    <div className="col-7 resources__products-summary__product__information">
+                                                    <div className=" col-7 resources__products-summary__product__information">
                                                         <div className="row">
                                                             <div className="resources__products-summary__product__information-head col-12">
                                                                 <p>{product.title}</p>
@@ -51,10 +51,11 @@ const Resources = () => {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div className="col-5 resources__products-summary__product__image">
+                                                    <div className=" col-5 resources__products-summary__product__image">
                                                         <img
                                                             src={`/img/services/${product.image}`}
                                                             alt={`${product.title}`}
+
                                                         />
                                                     </div>
                                                 </div>

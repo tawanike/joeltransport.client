@@ -1,10 +1,9 @@
 import { ErrorMessage, Field, Formik, FormikProps } from "formik";
+import { useRouter } from "next/router";
 import { FC, useState } from "react";
 import { Button, Col, Form, Modal, Row } from "react-bootstrap";
 import { BsCheckCircle } from "react-icons/bs";
 import PhoneInput from "react-phone-number-input";
-import * as yup from "yup";
-import useAPI from "../../_hooks/useAPI";
 import { CoverImage, Uploader } from "../ui";
 
 const phoneRegExp =
@@ -14,34 +13,11 @@ interface IProps {
   isModal?: boolean;
 }
 const ContactUsComponent: FC<IProps> = ({ isModal = false }) => {
-  const { post } = useAPI();
+  const router = useRouter();
   const [show, setShow] = useState(false);
   const [validated, setValidated] = useState(false);
   const [files, setFiles] = useState<any[]>([]);
   const [CanSend, setCanSend] = useState(false);
-
-  const validationSchema = yup.object().shape({
-    first_name: yup
-      .string()
-      .min(2, "First name must have at least two characters")
-      .max(100, "First name cannot exceed 100 characters")
-      .required("First name is required"),
-    last_name: yup
-      .string()
-      .min(2, "Last names must have at least two characters")
-      .max(100, "Last names cannot exceed 100 characters")
-      .required("Last name is required"),
-    email: yup
-      .string()
-      .email("Must be a valid email address")
-      .required("Email address is required"),
-    phone_number: yup
-      .string()
-      .matches(phoneRegExp)
-      .required("Phone number is required"),
-    message: yup.string().required("Message is required"),
-    contact_reasons: yup.string().required("Contact reason is required"),
-  });
 
   const map = () => {
     return (
@@ -80,7 +56,7 @@ const ContactUsComponent: FC<IProps> = ({ isModal = false }) => {
                 <Button
                   variant="secondary"
                   className="col-4"
-                  onClick={() => setShow(false)}
+                  onClick={() => router.push("/")}
                 >
                   Done
                 </Button>
@@ -134,7 +110,7 @@ const ContactUsComponent: FC<IProps> = ({ isModal = false }) => {
                   formData.append("phone_number", values.phone_number);
 
                   const results: any = await fetch(
-                    "https://api.joeltransport.wddng.co/v1/contacts",
+                    "https://api.flmj.me/v1/contacts",
                     {
                       method: "POST",
                       body: formData,
@@ -172,7 +148,7 @@ const ContactUsComponent: FC<IProps> = ({ isModal = false }) => {
                     encType="multipart/form-data"
                     onSubmit={props.handleSubmit}
                   >
-                    <Row className="mb-5">
+                    <Row className="mb-4">
                       <Form.Group as={Col} md="6" controlId="first_name">
                         <ErrorMessage name="first_name" />
                         <Field
@@ -183,7 +159,12 @@ const ContactUsComponent: FC<IProps> = ({ isModal = false }) => {
                           className="form-control"
                         />
                       </Form.Group>
-                      <Form.Group as={Col} md="6" controlId="last_name">
+                      <Form.Group
+                        className="mt-4 mt-md-0"
+                        as={Col}
+                        md="6"
+                        controlId="last_name"
+                      >
                         <ErrorMessage name="last_name" />
                         <Field
                           type="text"
@@ -194,7 +175,7 @@ const ContactUsComponent: FC<IProps> = ({ isModal = false }) => {
                         />
                       </Form.Group>
                     </Row>
-                    <Row className="mb-5">
+                    <Row className="mb-4">
                       <Form.Group as={Col} md="12" controlId="email">
                         <ErrorMessage name="email" className="text-success" />
                         <Field
@@ -206,7 +187,7 @@ const ContactUsComponent: FC<IProps> = ({ isModal = false }) => {
                         />
                       </Form.Group>
                     </Row>
-                    <Row className="mb-5">
+                    <Row className="mb-4">
                       <Form.Group as={Col} md="12" controlId="emailAdd">
                         <ErrorMessage name="phone_number" />
                         <PhoneInput
@@ -219,7 +200,7 @@ const ContactUsComponent: FC<IProps> = ({ isModal = false }) => {
                         />
                       </Form.Group>
                     </Row>
-                    <Row className="mb-5">
+                    <Row className="mb-4">
                       <Form.Group as={Col} md="12" controlId="message">
                         <ErrorMessage name="message" />
                         <Field
@@ -232,7 +213,7 @@ const ContactUsComponent: FC<IProps> = ({ isModal = false }) => {
                         />
                       </Form.Group>
                     </Row>
-                    <Row className="mb-5">
+                    <Row className="mb-4">
                       <Form.Group as={Col} md="12" controlId="category">
                         <ErrorMessage name="category" />
                         <Form.Select onChange={props.handleChange}>
@@ -245,10 +226,10 @@ const ContactUsComponent: FC<IProps> = ({ isModal = false }) => {
                         </Form.Select>
                       </Form.Group>
                     </Row>
-                    <h5 className="mb-5">How can we help?*</h5>
+                    <h5 className="mb-4">How can we help?*</h5>
                     <ErrorMessage name="service_options" />
                     <Row>
-                      <Form.Group as={Col} md="4" className="mb-5">
+                      <Form.Group as={Col} md="4" className="mb-4">
                         <Form.Label>
                           <Field
                             type="checkbox"
@@ -259,7 +240,7 @@ const ContactUsComponent: FC<IProps> = ({ isModal = false }) => {
                           Home move
                         </Form.Label>
                       </Form.Group>
-                      <Form.Group as={Col} md="4" className="mb-5">
+                      <Form.Group as={Col} md="4" className="mb-4">
                         <Form.Label>
                           <Field
                             type="checkbox"
@@ -271,19 +252,19 @@ const ContactUsComponent: FC<IProps> = ({ isModal = false }) => {
                           Office move
                         </Form.Label>
                       </Form.Group>
-                      <Form.Group as={Col} md="4" className="mb-5">
+                      <Form.Group as={Col} md="4" className="mb-4">
                         <Form.Label>
                           <Field
                             type="checkbox"
-                            label="Specialized move"
+                            label="Specialised move"
                             name="service_options"
                             value="2"
                             className="m-1"
                           />
-                          Specialized move
+                          Specialised move
                         </Form.Label>
                       </Form.Group>
-                      <Form.Group as={Col} md="4" className="mb-5">
+                      <Form.Group as={Col} md="4" className="mb-4">
                         <Form.Label>
                           <Field
                             type="checkbox"
@@ -295,7 +276,7 @@ const ContactUsComponent: FC<IProps> = ({ isModal = false }) => {
                           Storage
                         </Form.Label>
                       </Form.Group>
-                      <Form.Group as={Col} md="6" className="mb-5">
+                      <Form.Group as={Col} md="6" className="mb-4">
                         <Form.Label>
                           <Field
                             type="checkbox"
@@ -309,7 +290,7 @@ const ContactUsComponent: FC<IProps> = ({ isModal = false }) => {
                       </Form.Group>
                     </Row>
 
-                    <Row className="mb-5">
+                    <Row className="mb-4">
                       <Uploader
                         onChange={(files) => {
                           props.setFieldValue("attachment", files[0]);
@@ -337,7 +318,7 @@ const ContactUsComponent: FC<IProps> = ({ isModal = false }) => {
                     <Button
                       disabled={!CanSend}
                       variant="secondary"
-                      className="p-3 col-12"
+                      className="mb-4 p-3 col-12"
                       type="submit"
                     >
                       Send

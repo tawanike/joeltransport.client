@@ -7,7 +7,7 @@ const BlueSection: FC<BlueSectionConfig> = ({ title, description, listItems }) =
             <div className="row">
                 <div className="container pt-5 pb-2">
                     <div className="row">
-                        <div className="col-6 resources__benefits__summary">
+                        <div className="col-12 col-md-6 resources__benefits__summary">
                             <div className="resources__benefits__summary__information-head">
                                 <p>{title}</p>
                             </div>
@@ -15,7 +15,7 @@ const BlueSection: FC<BlueSectionConfig> = ({ title, description, listItems }) =
                                 {description}
                             </div>
                         </div>
-                        <div className="col-6">
+                        <div className="col-12 col-md-6">
                             <ul className="row">
                                 {
                                     listItems.map(benft => <>

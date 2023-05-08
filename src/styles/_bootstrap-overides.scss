@@ -54,3 +54,21 @@ fieldset:disabled .btn {
         color: #fa551e !important;
     }
 }
+
+@media screen and (max-width: 400px) {
+    .swiper-container {
+        width: 640px;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .swiper-container {
+        width: 768px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .navbar-collapse {
+        z-index: 5000 !important;
+    }
+}

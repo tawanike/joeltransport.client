@@ -5,10 +5,7 @@ import { BsTrash } from "react-icons/bs";
 import { FcInfo } from "react-icons/fc";
 import { FiCalendar } from "react-icons/fi";
 import { getBooking } from "src/_actions/booking.actions";
-import {
-  addHandlingFee,
-  addStorageCount,
-} from "src/_actions/costSummary.actions";
+import { addStorageCount } from "src/_actions/costSummary.actions";
 import { selectTruck } from "src/_actions/trucks.actions";
 import { BookingContext } from "src/_contexts/booking.context";
 import CostSummaryStateContext from "src/_contexts/costSummary.context";
@@ -20,6 +17,7 @@ import {
   IProduct,
   ZERO_TRUCK_QUANTITY,
 } from "src/_models/types";
+import { bookingsService } from "src/_services/bookings.service";
 
 const BookStorageUnit = () => {
   const api = useAPI();
@@ -37,11 +35,17 @@ const BookStorageUnit = () => {
     setAValue,
   } = useNumberInput(bookingState.formValues.storage_units_count);
 
-  const onDateChange = (date: Date) => {
-    bookingsDispatch({
-      type: ADD_FORM_VALUES,
-      payload: { move_date: formatDate(date) },
-    });
+  const onDateChange = async (date: Date) => {
+    if (bookingState.formValues.id) {
+      const booking = await bookingsService.updateBooking(
+        { id: bookingState.formValues.id, move_date: formatDate(date) },
+        api
+      );
+
+      console.log("onDateChange", booking);
+
+      bookingsDispatch(getBooking(booking));
+    }
   };
 
   useEffect(() => {
@@ -60,11 +64,12 @@ const BookStorageUnit = () => {
   }, []);
 
   useEffect(() => {
+    console.log("NumberOfUnitsValue", NumberOfUnitsValue);
     if (moveType && moveType.id) {
       if (bookingState.formValues.collection) {
         if (NumberOfUnitsValue > 0) {
           const recommendation = recommend_truck(trucks, NumberOfUnitsValue);
-
+          console.log(recommendation);
           dispatchCostSummary(
             selectTruck({
               quantity: 1,
@@ -112,18 +117,20 @@ const BookStorageUnit = () => {
                     .then((res) => {
                       if (!res.error) {
                         bookingsDispatch(getBooking(res));
-                        // TODO: Get handling fee from backend
-                        dispatchCostSummary(
-                          addHandlingFee({
-                            quantity: 1,
-                            price: 250,
-                            off_peak_discount: 0,
-                          })
-                        );
                       }
                     });
                 }
               });
+          } else {
+            if (!res.error) {
+              api
+                .get(`/bookings/${bookingState.formValues.id}`, false)
+                .then((res) => {
+                  if (!res.error) {
+                    bookingsDispatch(getBooking(res));
+                  }
+                });
+            }
           }
         });
     }
@@ -149,7 +156,7 @@ const BookStorageUnit = () => {
         </div>
       </Alert>
       <Row>
-        <Form.Group as={Col} md="5" controlId="move_date">
+        <Form.Group as={Col} xs="12" md="5" controlId="move_date">
           <Form.Label>When would you like to start?</Form.Label>
           <DatePicker
             onChange={onDateChange}
@@ -166,13 +173,20 @@ const BookStorageUnit = () => {
             className="date-picker"
           />
         </Form.Group>
-        <Form.Group as={Col} md="6" controlId="date">
+        <Form.Group
+          as={Col}
+          xs="10"
+          md="6"
+          controlId="date"
+          className="mt-3 mt-md-0"
+        >
           <Form.Label>How many storage units do you need?</Form.Label>
           {NumberOfUnitsDisplay}
         </Form.Group>
         <Form.Group
           as={Col}
           md="1"
+          xs={2}
           controlId="delete"
           className="d-flex align-items-end pb-3 storage-delete"
         >

@@ -5,6 +5,7 @@ import { MdClose } from "react-icons/md";
 import Select from "react-select";
 import { getBooking } from "src/_actions/booking.actions";
 import { BookingContext } from "src/_contexts/booking.context";
+import { addressUtils } from "src/_helpers/formatAddress";
 import { useAPI } from "src/_hooks";
 import { ADD_FORM_VALUES } from "src/_models/types";
 
@@ -36,17 +37,20 @@ function AddressForm({ address, address_type }: Props) {
     getCountries();
   }, []);
 
-  useEffect(() => {}, [editMode]);
-
   useEffect(() => {
     reset(address);
   }, [address]);
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     delete data.id;
     delete data.created_at;
     delete data.updated_at;
+    data.booking = bookingState.formValues.id;
+    const newAddress = await addressUtils.findAddress(
+      `${data.unit_number}, ${data.complex_name}, ${data.street_address}, ${data.suburb}, ${data.city}, ${data.province}, ${data.postcode}, ${data.country}`
+    );
 
+    data.formatted_address = newAddress.formatted_address;
     api.put(`/addresses/${address.id}`, data).then((res) => {
       if (address_type === "from_address") {
         bookingsDispatch({
@@ -93,8 +97,8 @@ function AddressForm({ address, address_type }: Props) {
               </button>
             </Col>
           </Row>
-          <Row className="mt-5">
-            <Form.Group as={Col} md="6">
+          <Row className="mt-3">
+            <Form.Group as={Col} md="6" className="mt-2">
               <Form.Label>Unit number</Form.Label>
               <Form.Control
                 {...register("unit_number")}
@@ -102,7 +106,7 @@ function AddressForm({ address, address_type }: Props) {
                 id="unit_number"
               />
             </Form.Group>
-            <Form.Group as={Col} md="6">
+            <Form.Group as={Col} md="6" className="mt-3">
               <Form.Label>Complex name</Form.Label>
               <Form.Control
                 {...register("complex_name")}
@@ -110,7 +114,7 @@ function AddressForm({ address, address_type }: Props) {
               />
             </Form.Group>
           </Row>
-          <Row className="mt-5">
+          <Row className="mt-3">
             <Form.Group as={Col} md="6">
               <Form.Label>Street address</Form.Label>
               <Form.Control
@@ -118,17 +122,17 @@ function AddressForm({ address, address_type }: Props) {
                 placeholder="Street address"
               />
             </Form.Group>
-            <Form.Group as={Col} md="6">
+            <Form.Group as={Col} md="6" className="mt-3">
               <Form.Label>Suburb</Form.Label>
               <Form.Control {...register("suburb")} placeholder="Suburb" />
             </Form.Group>
           </Row>
-          <Row className="mt-5">
+          <Row className="mt-3">
             <Form.Group as={Col} md="6">
               <Form.Label>City</Form.Label>
               <Form.Control {...register("city")} placeholder="City" />
             </Form.Group>
-            <Form.Group as={Col} md="6">
+            <Form.Group as={Col} md="6" className="mt-3">
               <Form.Label>Postal code</Form.Label>
               <Form.Control
                 {...register("postcode")}
@@ -136,12 +140,12 @@ function AddressForm({ address, address_type }: Props) {
               />
             </Form.Group>
           </Row>
-          <Row className="mt-5">
+          <Row className="mt-3">
             <Form.Group as={Col} md="6">
               <Form.Label>Province</Form.Label>
               <Form.Control {...register("province")} placeholder="Province" />
             </Form.Group>
-            <Form.Group as={Col} md="6">
+            <Form.Group as={Col} md="6" className="mt-3">
               <Form.Label>Country</Form.Label>
               <Select
                 name="country"
