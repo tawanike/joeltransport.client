@@ -35,13 +35,6 @@ const ChooseTruck = () => {
     })();
   }, []);
 
-  // useEffect(() => {
-  //   window.scrollTo({
-  //     top: 400,
-  //     behavior: "smooth",
-  //   });
-  // }, []);
-
   useEffect(() => {
     if (selectedTruck) {
       api
@@ -183,7 +176,7 @@ const ChooseTruck = () => {
                 available={
                   bookedDates.find(
                     (availability) => truck.id == availability.id
-                  ).available
+                  )?.available
                 }
                 isSelected={
                   selectedTruck

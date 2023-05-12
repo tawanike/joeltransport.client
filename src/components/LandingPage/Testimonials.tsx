@@ -26,7 +26,7 @@ const Review = ({ review, onClick }: any) => {
 const Testimonials = () => {
   const [reviews, setReviews] = useState<any[]>([]);
   const [selectedReview, setSelectedReview] = useState<any>({});
-  //   const [loading, reviews] = useGoogleReviews("ChIJV7Cq11V7lR4RpmekzP8Ov2M");
+  // const [loading, reviews] = useGoogleReviews("ChIJV7Cq11V7lR4RpmekzP8Ov2M");
 
   useEffect(() => {
     const place = placeJSON.result;
@@ -65,7 +65,7 @@ const Testimonials = () => {
           </div>
         </div>
       ) : (
-        'LOADER HERE WITH TEXT "LOADING REVIEWS"'
+        "Loading..."
       )}
     </div>
   );

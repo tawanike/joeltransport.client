@@ -50,7 +50,11 @@ const Storage = () => {
     });
   };
 
-  const saveAndContinue = () => {
+  const saveAndContinue = async () => {
+    await fetchWrapper.get(
+      `/bookings/${bookingState.formValues.id}/products/addons`,
+      false
+    );
     router.push(`/move/checkout`);
   };
 

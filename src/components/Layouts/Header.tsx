@@ -18,16 +18,16 @@ const Header = () => {
               </div>
             </div>
             <div className="Header__account col-6 col-md-4 d-flex justify-content-end align-items-center">
-              <div
-                className="row"
-                onClick={() =>
-                  window.open(
-                    "https://www.moverspoe.com/(S(rxxslwckykai05100lacwr3j))/PriceGenerator.aspx",
-                    "_blank"
-                  )
-                }
-              >
-                <span className="col-12 col-md-7 agent d-flex justify-content-start align-items-center">
+              <div className="row">
+                <span
+                  className="col-12 col-md-7 agent d-flex justify-content-start align-items-center"
+                  onClick={() =>
+                    window.open(
+                      "https://www.moverspoe.com/(S(rxxslwckykai05100lacwr3j))/PriceGenerator.aspx",
+                      "_blank"
+                    )
+                  }
+                >
                   Are you a moving services agent?
                 </span>
                 <ul className="col-12 col-md-5  Header__icons d-flex justify-content-between">
@@ -45,7 +45,7 @@ const Header = () => {
                     <BsInstagram
                       onClick={() =>
                         window.open(
-                          "https://instagram.com/ptyltd.joeltransport/",
+                          "https://www.instagram.com/joel_transport/",
                           "_blank"
                         )
                       }
@@ -54,7 +54,10 @@ const Header = () => {
                   <li className="icon">
                     <BsLinkedin
                       onClick={() =>
-                        window.open("https://linkedin.com", "_blank")
+                        window.open(
+                          "https://www.linkedin.com/company/joel-transport/",
+                          "_blank"
+                        )
                       }
                     />
                   </li>

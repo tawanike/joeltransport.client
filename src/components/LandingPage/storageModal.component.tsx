@@ -16,6 +16,7 @@ import { useAPI } from "src/_hooks";
 import { ADD_FORM_VALUES } from "src/_models/types";
 import { bookingsService } from "src/_services/bookings.service";
 import AddressManualForm from "./manualForm.component";
+let GOOGLE_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_API_KEY as string;
 interface IProps {
   showStorageModal: boolean;
   setShowStorageModal: (state: boolean) => void;
@@ -186,7 +187,7 @@ const StorageModalComponent: FC<IProps> = ({
               <Form.Group as={Col} md="12" controlId="from">
                 <Form.Label>Search loading locations</Form.Label>
                 <GooglePlacesAutocomplete
-                  apiKey="AIzaSyBZfdpoBUniKbSIq_5YWdykaoOnADrsPjs"
+                  apiKey={GOOGLE_API_KEY}
                   minLengthAutocomplete={5}
                   selectProps={{
                     value: {

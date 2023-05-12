@@ -41,13 +41,6 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
   const [fromWorkingLift, setFromWorkingLift] = useState(false);
   const [toWorkingLift, setToWorkingLift] = useState(false);
 
-  // useEffect(() => {
-  //   window.scrollTo({
-  //     top: 400,
-  //     behavior: "smooth",
-  //   });
-  // }, []);
-
   function tileClassName({ date, view }: any) {
     // Add class to tiles in month view only
     if (view === "month") {

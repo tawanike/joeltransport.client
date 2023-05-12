@@ -76,6 +76,8 @@ const DomesticMoveServices = () => {
   };
 
   const selectService = async (e: any) => {
+    // setSelected(e.target.checked)
+
     dispatchBookings({
       type: EDIT_ADDITIONAL_SERVICES,
       payload: { [e.target.name]: e.target.checked },
@@ -92,7 +94,12 @@ const DomesticMoveServices = () => {
     );
   };
 
-  const saveAndContinue = () => {
+  const saveAndContinue = async () => {
+    await fetchWrapper.get(
+      `/bookings/${bookingState.formValues.id}/products/addons`,
+      false
+    );
+
     router.push(`/move/checkout`);
   };
 
