@@ -123,7 +123,7 @@ export const officeMoveSections: any = {
         </ul>
       </>
     ),
-    image: "/img/services/international.png",
+    image: "/img/international.png",
     secondaryButton: { title: "Call me back" },
   },
 };
