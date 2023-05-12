@@ -34,6 +34,7 @@ const Storage = () => {
   const { state: bookingState, dispatch: dispatchBookings } =
     useContext(BookingContext);
   const [selectedServices, setSelectedServices] = useState([]);
+  const [isNotReady, setIsNotReady] = useState(true);
 
   const targets: any = {
     insurance: useRef(null),
@@ -88,8 +89,30 @@ const Storage = () => {
       );
     }
     console.log(formVals, userVals);
+
     return formVals || userVals;
   };
+
+  useEffect(() => {
+    console.log("isDisabled(bookingState)", isDisabled(bookingState));
+    console.log("bookingState.loading", bookingState.loading);
+
+    if (isDisabled(bookingState) == true && bookingState.loading == true) {
+      setIsNotReady(true);
+    } else if (
+      isDisabled(bookingState) == false &&
+      bookingState.loading == true
+    ) {
+      setIsNotReady(true);
+    } else if (
+      isDisabled(bookingState) == true &&
+      bookingState.loading == false
+    ) {
+      setIsNotReady(true);
+    } else {
+      setIsNotReady(false);
+    }
+  }, [bookingState.loading]);
 
   useEffect(() => {
     const getOptionalServices = async () => {

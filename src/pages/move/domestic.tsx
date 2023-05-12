@@ -43,6 +43,7 @@ const DomesticMoveServices = () => {
   const [showSelectorModal, setShowSelectorModal] = useState(false);
   const [selectedServices] = useState([]);
   const router = useRouter();
+  const [isNotReady, setIsNotReady] = useState(true);
 
   useEffect(() => {
     const getProducts = async () => {
@@ -66,6 +67,27 @@ const DomesticMoveServices = () => {
     getProducts();
     getOptionalServices();
   }, []);
+
+  useEffect(() => {
+    console.log("isDisabled(bookingState)", isDisabled(bookingState));
+    console.log("bookingState.loading", bookingState.loading);
+
+    if (isDisabled(bookingState) == true && bookingState.loading == true) {
+      setIsNotReady(true);
+    } else if (
+      isDisabled(bookingState) == false &&
+      bookingState.loading == true
+    ) {
+      setIsNotReady(true);
+    } else if (
+      isDisabled(bookingState) == true &&
+      bookingState.loading == false
+    ) {
+      setIsNotReady(true);
+    } else {
+      setIsNotReady(false);
+    }
+  }, [bookingState.loading]);
 
   const goToCheckout = () => {
     setShowSelectorModal(true);
@@ -106,6 +128,7 @@ const DomesticMoveServices = () => {
   const isDisabled = (state: IBooking) => {
     const objKeys = Object.keys(state.formValues);
     let userVals = true;
+    let truckSelected = true;
 
     const formVals = ["move_date"].some((x) => {
       const xVal = state.formValues[x as keyof typeof state.formValues];
@@ -133,7 +156,17 @@ const DomesticMoveServices = () => {
         }
       );
     }
-    return formVals || userVals;
+
+    if (bookingState.formValues.products) {
+      bookingState.formValues.products.find((product) => {
+        if (product.category == "trucks") {
+          truckSelected = false;
+        }
+        console.log("TRUCK", product);
+      });
+    }
+    console.log("truckSelected", truckSelected);
+    return formVals || userVals || truckSelected;
   };
 
   return (
@@ -268,7 +301,10 @@ const DomesticMoveServices = () => {
                 <div className="col-12 d-flex justify-content-end">
                   <CallMeBackButton title="Call me back" />
                   <Button
-                    disabled={isDisabled(bookingState) || bookingState.loading}
+                    disabled={
+                      isDisabled(bookingState) == true ||
+                      bookingState.loading == true
+                    }
                     onClick={goToCheckout}
                     variant="secondary"
                   >
