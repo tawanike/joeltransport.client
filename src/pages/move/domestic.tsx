@@ -125,7 +125,7 @@ const DomesticMoveServices = () => {
     router.push(`/move/checkout`);
   };
 
-  const isDisabled = (state: IBooking) => {
+  const isDisabled = (state: IBooking): boolean => {
     const objKeys = Object.keys(state.formValues);
     let userVals = true;
     let truckSelected = true;
