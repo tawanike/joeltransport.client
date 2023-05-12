@@ -89,7 +89,7 @@ export interface IProduct {
   subtitle: string;
   description: string;
   image: string;
-  category: number;
+  category: number | string;
   ordering: number;
   published: boolean;
   size: string;
