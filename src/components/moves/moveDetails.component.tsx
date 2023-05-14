@@ -188,7 +188,7 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
               <Form.Check
                 type="radio"
                 inline
-                name="collection"
+                name="self_delivery"
                 label="Yes - collect"
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                   bookingsService.updateBooking(
@@ -201,18 +201,18 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
                   bookingsDispatch({
                     type: ADD_FORM_VALUES,
                     payload: {
-                      collection: Boolean(Number(event.target.value)),
+                      self_delivery: Boolean(Number(event.target.value)),
                     },
                   });
                 }}
-                id="collection"
+                id="self_delivery"
                 value={1}
-                checked={Number(bookingState.formValues.collection) === 1}
+                checked={Number(bookingState.formValues.self_delivery) === 1}
               />
               <Form.Check
                 type="radio"
                 inline
-                name="collection"
+                name="self_delivery"
                 label="No - I will deliver"
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                   bookingsService.updateBooking(
@@ -226,13 +226,13 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
                     type: ADD_FORM_VALUES,
                     payload: {
                       id: bookingState.formValues.id,
-                      collection: Boolean(Number(event.target.value)),
+                      self_delivery: Boolean(Number(event.target.value)),
                     },
                   });
                 }}
-                id="collection"
+                id="self_delivery"
                 value={0}
-                checked={Number(bookingState.formValues.collection) === 0}
+                checked={Number(bookingState.formValues.self_delivery) === 0}
               />
             </Form.Group>
           </Row>
@@ -240,7 +240,7 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
         {(["/move/domestic", "/move/inventory-form", "/move/checkout"].includes(
           router.pathname
         ) ||
-          bookingState.formValues.collection) && (
+          bookingState.formValues.self_delivery) && (
           <>
             <h5 className="my-4 my-md-5">Please provide loading details</h5>
             <Row className="mb-4 mb-md-3">

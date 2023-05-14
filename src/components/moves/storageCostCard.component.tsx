@@ -112,7 +112,7 @@ const StorageCostCard = () => {
               </div>
             </div>
           </div>
-          {bookingContext.state.formValues.collection && (
+          {bookingContext.state.formValues.self_delivery && (
             <div className="col-12 move-cost-card__section">
               <div className="row">
                 <div className="col-12 move-cost-card__section__head">

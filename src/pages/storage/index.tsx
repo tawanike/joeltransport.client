@@ -33,7 +33,8 @@ const Storage = () => {
   const [showSelectorModal, setShowSelectorModal] = useState(false);
   const { state: bookingState, dispatch: dispatchBookings } =
     useContext(BookingContext);
-  const [selectedServices, setSelectedServices] = useState([]);
+  const [isNotReady, setIsNotReady] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const targets: any = {
     insurance: useRef(null),
@@ -51,7 +52,14 @@ const Storage = () => {
   };
 
   const saveAndContinue = () => {
-    router.push(`/move/checkout`);
+    setLoading(true);
+    fetchWrapper
+      .get(`/bookings/${bookingState.formValues.id}/products/addons`, false)
+      .then((res) => {
+        setLoading(false);
+        setIsNotReady(false);
+        router.push(`/move/checkout`);
+      });
   };
 
   const isDisabled = (state: IBooking) => {
@@ -83,7 +91,7 @@ const Storage = () => {
         }
       );
     }
-    console.log(formVals, userVals);
+
     return formVals || userVals;
   };
 
@@ -97,7 +105,7 @@ const Storage = () => {
     };
 
     const getProduct = async () => {
-      const product = await fetchWrapper.get(`/products/storage`, false);
+      await fetchWrapper.get(`/products/storage`, false);
     };
 
     getProduct();
@@ -195,12 +203,12 @@ const Storage = () => {
             >
               <div className="col-12 d-flex justify-content-end">
                 <Button
-                  disabled={!selectedServices}
+                  disabled={loading}
                   className=""
                   onClick={saveAndContinue}
                   variant="secondary"
                 >
-                  Continue
+                  {loading ? `Loading...` : `Continue`}
                 </Button>
               </div>
             </div>

@@ -101,7 +101,7 @@ function Footer() {
         </div>
         <div className="Footer__copyright row">
           <div className="col">
-            Copyright&copy; {new Date().getFullYear()} Joel Transport. All
+            Copyright &copy;{new Date().getFullYear()} Joel Transport. All
             rights reserved.
           </div>
           <div
@@ -121,7 +121,10 @@ function Footer() {
                 marginRight: 12,
               }}
             >
-              <Link href="https://www.facebook.com/joeltransport">
+              <Link
+                href="https://facebook.com/Joel.Transport1965/"
+                target="_blank"
+              >
                 <MdOutlineFacebook color="black" size={24} />
               </Link>
             </div>
@@ -136,7 +139,11 @@ function Footer() {
                 marginRight: 12,
               }}
             >
-              <Link href="https://www.instagram.com/joeltransport">
+              <Link
+                passHref
+                href="https://www.instagram.com/joel_transport/"
+                target="_blank"
+              >
                 <BsInstagram color="black" size={20} />
               </Link>
             </div>
@@ -151,7 +158,10 @@ function Footer() {
                 marginRight: 12,
               }}
             >
-              <Link href="https://www.linkedin.com/in/joeltransport">
+              <Link
+                href="https://www.linkedin.com/company/joel-transport/"
+                target="_blank"
+              >
                 <FaLinkedinIn color="black" size={20} />
               </Link>
             </div>

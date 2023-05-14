@@ -89,7 +89,7 @@ export interface IProduct {
   subtitle: string;
   description: string;
   image: string;
-  category: number;
+  category: number | string;
   ordering: number;
   published: boolean;
   size: string;
@@ -135,7 +135,7 @@ export interface IFormValues {
 
   addOns: any[];
   inventoryList: IInventoryListItem[];
-  collection: boolean;
+  self_delivery: boolean;
 
   user: {
     first_name: string;
