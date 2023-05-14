@@ -135,7 +135,7 @@ export interface IFormValues {
 
   addOns: any[];
   inventoryList: IInventoryListItem[];
-  collection: boolean;
+  self_delivery: boolean;
 
   user: {
     first_name: string;

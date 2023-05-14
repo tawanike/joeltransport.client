@@ -18,7 +18,6 @@ const MoveStepper = () => {
   const storageUnitRef = useRef<any>(null);
 
   useEffect(() => {
-    console.log("SECTION", bookingContext.state.openSection);
     switch (bookingContext.state.openSection) {
       case "move_details":
         return moveDetailsRef.current.scrollIntoView({

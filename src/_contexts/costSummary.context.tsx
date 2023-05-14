@@ -23,6 +23,8 @@ const initialCostSummaryState: CostSummary = {
 } as CostSummary;
 
 const CostSummaryReducer = (state: CostSummary, action: IAction) => {
+  console.log("CostSummaryReducer", action);
+  console.log("CostSummaryState", state);
   switch (action.type) {
     case ADJUST_ADDITIONAL_SERVICES:
       return { ...state, ...action.payload };

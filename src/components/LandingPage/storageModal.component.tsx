@@ -9,6 +9,7 @@ import {
   addHandlingFee,
   addStorageCount,
 } from "src/_actions/costSummary.actions";
+import { selectTruck } from "src/_actions/trucks.actions";
 import { BookingContext } from "src/_contexts/booking.context";
 import CostSummaryStateContext from "src/_contexts/costSummary.context";
 import { addressUtils } from "src/_helpers/formatAddress";
@@ -55,7 +56,7 @@ const StorageModalComponent: FC<IProps> = ({
                 bookingsDispatch({
                   type: ADD_FORM_VALUES,
                   payload: {
-                    collection: Boolean(Number(event.target.value) as 0 | 1),
+                    self_delivery: Boolean(Number(event.target.value) as 0 | 1),
                   },
                 })
               }
@@ -71,7 +72,7 @@ const StorageModalComponent: FC<IProps> = ({
                 bookingsDispatch({
                   type: ADD_FORM_VALUES,
                   payload: {
-                    collection: Boolean(Number(event.target.value) as 0 | 1),
+                    self_delivery: Boolean(Number(event.target.value) as 0 | 1),
                   },
                 })
               }
@@ -122,7 +123,6 @@ const StorageModalComponent: FC<IProps> = ({
   };
 
   const addressSelectionView = () => {
-    console.log("LOADING", loading);
     return (
       <>
         <div
@@ -299,9 +299,17 @@ const StorageModalComponent: FC<IProps> = ({
               }
 
               if (product.title === "Storage handling fee") {
-                console.log("Storage handling fee");
                 dispatchCostSummary(
                   addHandlingFee({
+                    quantity: product.quantity,
+                    price: product.price,
+                  })
+                );
+              }
+
+              if (product.category == "trucks") {
+                dispatchCostSummary(
+                  selectTruck({
                     quantity: product.quantity,
                     price: product.price,
                   })
@@ -310,9 +318,7 @@ const StorageModalComponent: FC<IProps> = ({
             });
           }
         }
-        console.log("PANO");
         localStorage.setItem("bookingId", booking.id);
-        console.log("PANO APA");
         router.push(`/storage`);
       } catch (error) {
         setLoading(false);

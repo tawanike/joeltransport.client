@@ -18,7 +18,6 @@ const ChooseTruck = () => {
   const [selectedTruck, setSelectedTruck] = useState<IProduct>();
   const [activeTruck, setActiveTruck] = useState<number>(0);
   const [bookedDates, setBookedDates] = useState<any[]>([]);
-  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
 
   const { CostSummaryState, dispatchCostSummary } = useContext(
     CostSummaryStateContext
@@ -85,18 +84,12 @@ const ChooseTruck = () => {
 
   useEffect(() => {
     (() => {
-      console.log("move_date", bookingContext.state.formValues?.move_date);
-      console.log(
-        "move_time_period",
-        bookingContext.state.formValues?.move_time_period
-      );
       api
         .get(
           `/bookings/unavailable?move_date=${bookingContext.state.formValues?.move_date}&move_time=${bookingContext.state.formValues?.move_time_period}`,
           false
         )
         .then((res) => {
-          console.log("TRCK AVAILABILITY", res);
           if (res.length === 0) {
             return;
           }
@@ -129,19 +122,12 @@ const ChooseTruck = () => {
         if (res.length === 0) {
           return;
         }
-        console.log("TRCK AVAILABILITY", res);
         setBookedDates(res);
       });
   }, [bookingContext.state.formValues.move_date]);
 
   return (
     <div className="row">
-      {/* <div
-                className="col-1 truckDisplay__indicators"
-                onClick={() => !(index - 1 < 0) && setIndex(index - 1)}
-            >
-                <RxCaretLeft />
-            </div> */}
       <div className="col-12">
         <Swiper
           navigation={true}
@@ -208,13 +194,6 @@ const ChooseTruck = () => {
             ))}
         </div>
       </div>
-      {/* <div
-                className="col-1 truckDisplay__indicators"
-                // onClick={() => index + 1 < trucks.length && setIndex(index + 1)}
-                onClick={() => swiper.slideNext()}
-            >
-                <RxCaretRight />
-            </div> */}
     </div>
   );
 };

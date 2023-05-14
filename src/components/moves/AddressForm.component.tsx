@@ -26,9 +26,6 @@ function AddressForm({ address, address_type }: Props) {
     useContext(BookingContext);
 
   useEffect(() => {
-    // if (!bookingState.formValues.id) {
-    //   window.location.href = "/";
-    // }
     const getCountries = async () => {
       const countries = await api.get("/locations/countries", undefined);
       setCountries(countries.results);

@@ -42,15 +42,13 @@ const BookStorageUnit = () => {
         api
       );
 
-      console.log("onDateChange", booking);
-
       bookingsDispatch(getBooking(booking));
     }
   };
 
   useEffect(() => {
     (async () => {
-      if (bookingState.formValues.collection) {
+      if (bookingState.formValues.self_delivery) {
         const trucks = await api.get("/products?category=2", false);
         setTrucks(trucks.results);
       }
@@ -64,12 +62,10 @@ const BookStorageUnit = () => {
   }, []);
 
   useEffect(() => {
-    console.log("NumberOfUnitsValue", NumberOfUnitsValue);
     if (moveType && moveType.id) {
-      if (bookingState.formValues.collection) {
+      if (bookingState.formValues.self_delivery) {
         if (NumberOfUnitsValue > 0) {
           const recommendation = recommend_truck(trucks, NumberOfUnitsValue);
-          console.log(recommendation);
           dispatchCostSummary(
             selectTruck({
               quantity: 1,
@@ -101,7 +97,7 @@ const BookStorageUnit = () => {
           booking: bookingState.formValues.id,
         })
         .then((res) => {
-          if (bookingState.formValues.collection) {
+          if (bookingState.formValues.self_delivery) {
             const recommendation = recommend_truck(trucks, NumberOfUnitsValue);
             api
               .post(`/bookings/${bookingState.formValues.id}/products`, {
