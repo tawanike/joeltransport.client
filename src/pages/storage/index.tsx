@@ -33,8 +33,8 @@ const Storage = () => {
   const [showSelectorModal, setShowSelectorModal] = useState(false);
   const { state: bookingState, dispatch: dispatchBookings } =
     useContext(BookingContext);
-  const [selectedServices, setSelectedServices] = useState([]);
-  const [isNotReady, setIsNotReady] = useState(true);
+  const [isNotReady, setIsNotReady] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const targets: any = {
     insurance: useRef(null),
@@ -51,12 +51,15 @@ const Storage = () => {
     });
   };
 
-  const saveAndContinue = async () => {
-    await fetchWrapper.get(
-      `/bookings/${bookingState.formValues.id}/products/addons`,
-      false
-    );
-    router.push(`/move/checkout`);
+  const saveAndContinue = () => {
+    setLoading(true);
+    fetchWrapper
+      .get(`/bookings/${bookingState.formValues.id}/products/addons`, false)
+      .then((res) => {
+        setLoading(false);
+        setIsNotReady(false);
+        router.push(`/move/checkout`);
+      });
   };
 
   const isDisabled = (state: IBooking) => {
@@ -88,31 +91,9 @@ const Storage = () => {
         }
       );
     }
-    console.log(formVals, userVals);
 
     return formVals || userVals;
   };
-
-  useEffect(() => {
-    console.log("isDisabled(bookingState)", isDisabled(bookingState));
-    console.log("bookingState.loading", bookingState.loading);
-
-    if (isDisabled(bookingState) == true && bookingState.loading == true) {
-      setIsNotReady(true);
-    } else if (
-      isDisabled(bookingState) == false &&
-      bookingState.loading == true
-    ) {
-      setIsNotReady(true);
-    } else if (
-      isDisabled(bookingState) == true &&
-      bookingState.loading == false
-    ) {
-      setIsNotReady(true);
-    } else {
-      setIsNotReady(false);
-    }
-  }, [bookingState.loading]);
 
   useEffect(() => {
     const getOptionalServices = async () => {
@@ -124,7 +105,7 @@ const Storage = () => {
     };
 
     const getProduct = async () => {
-      const product = await fetchWrapper.get(`/products/storage`, false);
+      await fetchWrapper.get(`/products/storage`, false);
     };
 
     getProduct();
@@ -222,12 +203,12 @@ const Storage = () => {
             >
               <div className="col-12 d-flex justify-content-end">
                 <Button
-                  disabled={!selectedServices}
+                  disabled={loading}
                   className=""
                   onClick={saveAndContinue}
                   variant="secondary"
                 >
-                  Continue
+                  {loading ? `Loading...` : `Continue`}
                 </Button>
               </div>
             </div>

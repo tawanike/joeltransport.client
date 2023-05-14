@@ -69,9 +69,6 @@ const DomesticMoveServices = () => {
   }, []);
 
   useEffect(() => {
-    console.log("isDisabled(bookingState)", isDisabled(bookingState));
-    console.log("bookingState.loading", bookingState.loading);
-
     if (isDisabled(bookingState) == true && bookingState.loading == true) {
       setIsNotReady(true);
     } else if (
@@ -162,10 +159,8 @@ const DomesticMoveServices = () => {
         if (product.category == "trucks") {
           truckSelected = false;
         }
-        console.log("TRUCK", product);
       });
     }
-    console.log("truckSelected", truckSelected);
     return formVals || userVals || truckSelected;
   };
 
