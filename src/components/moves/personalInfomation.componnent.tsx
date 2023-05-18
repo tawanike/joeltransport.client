@@ -54,7 +54,6 @@ const PersonalInformation = () => {
       const booking_id = bookingContext.state.formValues.id || bookingId;
 
       values.booking = booking_id;
-      console.log("handleOnBlur", values);
       if (
         values.first_name === "" ||
         values.first_name === undefined ||
@@ -111,7 +110,6 @@ const PersonalInformation = () => {
           )
           .then((res) => {
             if (res.id != undefined) {
-              console.log("USERS OK");
               bookingContext.dispatch(isLoading(false));
               api
                 .get(
