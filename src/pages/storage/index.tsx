@@ -16,6 +16,7 @@ import {
 } from "react-bootstrap";
 import { BsInfoCircle } from "react-icons/bs";
 import { FcInfo } from "react-icons/fc";
+import { isLoading } from "src/_actions/booking.actions";
 import { BookingContext } from "src/_contexts/booking.context";
 import {
   CHANGE_OPEN_SECTION,
@@ -44,21 +45,37 @@ const Storage = () => {
   };
 
   const goToCheckout = () => {
-    setShowSelectorModal(true);
+    setLoading(true);
+    dispatchBookings(isLoading(true));
+
     dispatchBookings({
       type: CHANGE_OPEN_SECTION,
       payload: { openSection: "move_details" },
     });
+
+    fetchWrapper
+      .post(`/bookings/confirm-move`, {
+        booking: bookingState.formValues.id,
+      })
+      .then((res) => {
+        setLoading(false);
+        setShowSelectorModal(true);
+        dispatchBookings(isLoading(false));
+      });
   };
 
   const saveAndContinue = () => {
     setLoading(true);
+    dispatchBookings(isLoading(true));
     fetchWrapper
       .get(`/bookings/${bookingState.formValues.id}/products/addons`, false)
       .then((res) => {
         setLoading(false);
         setIsNotReady(false);
         router.push(`/move/checkout`);
+      })
+      .then((res) => {
+        dispatchBookings(isLoading(false));
       });
   };
 
