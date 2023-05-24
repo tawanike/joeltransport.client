@@ -236,6 +236,7 @@ const Checkout = () => {
                       </div>
                     </div>
                   </div>
+
                   {bookingContext.state.hasDirtyFields && (
                     <Button
                       disabled={bookingContext.state.loading == true}
@@ -249,23 +250,22 @@ const Checkout = () => {
                     </Button>
                   )}
 
-                  {bookingContext.state.hasDirtyFields || (
-                    <Button
-                      variant="success"
-                      className="mt-3 p-2"
-                      onClick={() => {
-                        initializePayment(onSuccess, onClose);
-                      }}
-                    >
-                      Pay{" "}
-                      {accounting.formatMoney(
-                        Calculations.getTotal(
-                          bookingContext.state.formValues.products,
-                          CostSummaryState
-                        )
-                      )}
-                    </Button>
-                  )}
+                  <Button
+                    disabled={bookingContext.state.hasDirtyFields}
+                    variant="success"
+                    className="mt-3 p-2"
+                    onClick={() => {
+                      initializePayment(onSuccess, onClose);
+                    }}
+                  >
+                    Pay{" "}
+                    {accounting.formatMoney(
+                      Calculations.getTotal(
+                        bookingContext.state.formValues.products,
+                        CostSummaryState
+                      )
+                    )}
+                  </Button>
                 </div>
               </div>
               <div className="col-12 moves__checkout__image my-4">
