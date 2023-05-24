@@ -14,6 +14,7 @@ import {
 } from "react-bootstrap";
 import { BsInfoCircle } from "react-icons/bs";
 import { FcInfo } from "react-icons/fc";
+import { isLoading } from "src/_actions/booking.actions";
 import { BookingContext } from "src/_contexts/booking.context";
 import useAPI from "../../_hooks/useAPI";
 import {
@@ -22,6 +23,7 @@ import {
   CHANGE_OPEN_SECTION,
   EDIT_ADDITIONAL_SERVICES,
   IBooking,
+  UPDATE_HAS_DIRTY_FIELDS,
 } from "../../_models/types";
 import { productService } from "../../_services/product.service";
 import MoveCostCard from "../../components/moves/moveCostCard.component";
@@ -43,7 +45,7 @@ const DomesticMoveServices = () => {
   const [showSelectorModal, setShowSelectorModal] = useState(false);
   const [selectedServices] = useState([]);
   const router = useRouter();
-  const [isNotReady, setIsNotReady] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const getProducts = async () => {
@@ -68,30 +70,29 @@ const DomesticMoveServices = () => {
     getOptionalServices();
   }, []);
 
-  useEffect(() => {
-    if (isDisabled(bookingState) == true && bookingState.loading == true) {
-      setIsNotReady(true);
-    } else if (
-      isDisabled(bookingState) == false &&
-      bookingState.loading == true
-    ) {
-      setIsNotReady(true);
-    } else if (
-      isDisabled(bookingState) == true &&
-      bookingState.loading == false
-    ) {
-      setIsNotReady(true);
-    } else {
-      setIsNotReady(false);
-    }
-  }, [bookingState.loading]);
-
   const goToCheckout = () => {
-    setShowSelectorModal(true);
+    setLoading(true);
+    dispatchBookings(isLoading(true));
     dispatchBookings({
-      type: CHANGE_OPEN_SECTION,
-      payload: { openSection: "move_details" },
+      type: UPDATE_HAS_DIRTY_FIELDS,
+      payload: {
+        hasDirtyFields: false,
+      },
     });
+
+    fetchWrapper
+      .post(`/bookings/confirm-move`, {
+        booking: bookingState.formValues.id,
+      })
+      .then((res) => {
+        setLoading(false);
+        setShowSelectorModal(true);
+        dispatchBookings(isLoading(false));
+        dispatchBookings({
+          type: CHANGE_OPEN_SECTION,
+          payload: { openSection: "move_details" },
+        });
+      });
   };
 
   const selectService = async (e: any) => {
@@ -114,12 +115,23 @@ const DomesticMoveServices = () => {
   };
 
   const saveAndContinue = async () => {
-    await fetchWrapper.get(
-      `/bookings/${bookingState.formValues.id}/products/addons`,
-      false
-    );
-
-    router.push(`/move/checkout`);
+    setLoading(true);
+    dispatchBookings(isLoading(true));
+    fetchWrapper
+      .get(`/bookings/${bookingState.formValues.id}/products/addons`, false)
+      .then((res) => {
+        setLoading(false);
+        router.push(`/move/checkout`);
+      })
+      .then((res) => {
+        dispatchBookings(isLoading(false));
+        dispatchBookings({
+          type: UPDATE_HAS_DIRTY_FIELDS,
+          payload: {
+            hasDirtyFields: false,
+          },
+        });
+      });
   };
 
   const isDisabled = (state: IBooking): boolean => {
@@ -233,12 +245,12 @@ const DomesticMoveServices = () => {
               >
                 <div className="col-12 d-flex justify-content-end">
                   <Button
-                    disabled={!selectedServices}
+                    disabled={loading}
                     className=""
                     onClick={saveAndContinue}
                     variant="secondary"
                   >
-                    Continue
+                    {loading ? `Loading...` : `Continue`}
                   </Button>
                 </div>
               </div>

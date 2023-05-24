@@ -12,6 +12,7 @@ import {
   IFormValues,
   LOADING,
   RESET_BOOKING,
+  UPDATE_HAS_DIRTY_FIELDS,
 } from "src/_models/types";
 export interface InitContextProps {
   state: IBooking;
@@ -21,6 +22,7 @@ const initialState = {
   id: undefined,
   products: [],
   loading: false,
+  hasDirtyFields: false,
   formValues: {
     storage_units_count: 1,
   } as IFormValues,
@@ -52,6 +54,12 @@ const reducer = (state: IBooking, action: IAction) => {
         formValues: { ...state.formValues, ...action.payload },
       };
     case LOADING:
+      return {
+        ...state,
+        ...action.payload,
+      };
+
+    case UPDATE_HAS_DIRTY_FIELDS:
       return {
         ...state,
         ...action.payload,

@@ -20,6 +20,7 @@ export const ADD_STORAGE_ADDITIONAL_SERVICES =
   "ADD_STORAGE_ADDITIONAL_SERVICES";
 export const CHANGE_OPEN_SECTION = "CHANGE_OPEN_SECTION";
 export const ADD_STORAGE_HANDLING_FEE = "ADD_STORAGE_HANDLING_FEE";
+export const UPDATE_HAS_DIRTY_FIELDS = "UPDATE_HAS_DIRTY_FIELDS";
 
 export type RequestOptions = {
   method: string;
@@ -159,6 +160,7 @@ export interface IBooking {
   products: IProduct[];
   formValues: IFormValues;
   loading: boolean;
+  hasDirtyFields: boolean;
   openSection:
     | "move_details"
     | "additional_services"
