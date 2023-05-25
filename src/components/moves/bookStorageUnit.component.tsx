@@ -77,7 +77,7 @@ const BookStorageUnit = () => {
       });
 
       if (bookingState.formValues.self_delivery) {
-        if (NumberOfUnitsValue > 0) {
+        if (NumberOfUnitsValue > 1) {
           const recommendation = recommend_truck(trucks, NumberOfUnitsValue);
           dispatchCostSummary(
             selectTruck({
@@ -110,7 +110,7 @@ const BookStorageUnit = () => {
           booking: bookingState.formValues.id,
         })
         .then((res) => {
-          if (bookingState.formValues.self_delivery) {
+          if (bookingState.formValues.self_delivery && NumberOfUnitsValue > 1) {
             const recommendation = recommend_truck(trucks, NumberOfUnitsValue);
             api
               .post(`/bookings/${bookingState.formValues.id}/products`, {
