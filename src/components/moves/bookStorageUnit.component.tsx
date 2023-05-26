@@ -72,7 +72,7 @@ const BookStorageUnit = () => {
       bookingsDispatch({
         type: UPDATE_HAS_DIRTY_FIELDS,
         payload: {
-          hasDirtyFields: true,
+          hasDirtyFields: false,
         },
       });
 
@@ -110,7 +110,10 @@ const BookStorageUnit = () => {
           booking: bookingState.formValues.id,
         })
         .then((res) => {
-          if (bookingState.formValues.self_delivery && NumberOfUnitsValue > 1) {
+          if (
+            !bookingState.formValues.self_delivery &&
+            NumberOfUnitsValue > 0
+          ) {
             const recommendation = recommend_truck(trucks, NumberOfUnitsValue);
             api
               .post(`/bookings/${bookingState.formValues.id}/products`, {
