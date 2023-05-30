@@ -7,7 +7,11 @@ import { addBakkieShuttle } from "src/_actions/added-services.actions";
 import { getBooking } from "src/_actions/booking.actions";
 import { BookingContext } from "src/_contexts/booking.context";
 import { useAPI } from "src/_hooks";
-import { ADD_FORM_VALUES, IProduct } from "src/_models/types";
+import {
+  ADD_FORM_VALUES,
+  IProduct,
+  UPDATE_HAS_DIRTY_FIELDS,
+} from "src/_models/types";
 import CostSummaryStateContext from "../../_contexts/costSummary.context";
 
 interface IProps {}
@@ -43,6 +47,13 @@ const BakkieShuttle: FC<IProps> = () => {
     dispatchBookings({
       type: ADD_FORM_VALUES,
       payload: { bakkie_address: values.value },
+    });
+
+    dispatchBookings({
+      type: UPDATE_HAS_DIRTY_FIELDS,
+      payload: {
+        hasDirtyFields: true,
+      },
     });
 
     if (bakkieShuttle) {
@@ -114,6 +125,13 @@ const BakkieShuttle: FC<IProps> = () => {
       payload: {
         requires_bakkie_shuttle: Number(event.target.value),
         bakkie_address: null,
+      },
+    });
+
+    dispatchBookings({
+      type: UPDATE_HAS_DIRTY_FIELDS,
+      payload: {
+        hasDirtyFields: true,
       },
     });
 
@@ -192,6 +210,12 @@ const BakkieShuttle: FC<IProps> = () => {
                   label: "Loading address",
                 });
               }
+              dispatchBookings({
+                type: UPDATE_HAS_DIRTY_FIELDS,
+                payload: {
+                  hasDirtyFields: true,
+                },
+              });
             }}
             className="pe-5"
             checked={

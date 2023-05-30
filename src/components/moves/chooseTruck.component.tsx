@@ -3,7 +3,7 @@ import { getBooking } from "src/_actions/booking.actions";
 import { selectTruck } from "src/_actions/trucks.actions";
 import { BookingContext } from "src/_contexts/booking.context";
 import { useAPI } from "src/_hooks";
-import { IProduct } from "src/_models/types";
+import { IProduct, UPDATE_HAS_DIRTY_FIELDS } from "src/_models/types";
 import { Navigation, Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import CostSummaryStateContext from "../../_contexts/costSummary.context";
@@ -36,6 +36,12 @@ const ChooseTruck = () => {
 
   useEffect(() => {
     if (selectedTruck) {
+      bookingContext.dispatch({
+        type: UPDATE_HAS_DIRTY_FIELDS,
+        payload: {
+          hasDirtyFields: true,
+        },
+      });
       api
         .post(`/bookings/${bookingContext.state.formValues.id}/products`, {
           product: selectedTruck.id,

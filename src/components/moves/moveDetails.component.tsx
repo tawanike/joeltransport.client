@@ -17,7 +17,7 @@ import {
   stringToDateTime,
 } from "src/_helpers/dateFormat";
 import { useAPI, useNumberInput } from "src/_hooks";
-import { ADD_FORM_VALUES } from "src/_models/types";
+import { ADD_FORM_VALUES, UPDATE_HAS_DIRTY_FIELDS } from "src/_models/types";
 import { bookingsService } from "src/_services/bookings.service";
 import AddressForm from "./AddressForm.component";
 
@@ -77,6 +77,12 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
           fetchWrapper
         );
         bookingsDispatch(getBooking(booking));
+        bookingsDispatch({
+          type: UPDATE_HAS_DIRTY_FIELDS,
+          payload: {
+            hasDirtyFields: false,
+          },
+        });
       } else {
         await bookingsService.createBooking(
           bookingState.formValues,
@@ -97,6 +103,13 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
       );
 
       bookingsDispatch(getBooking(booking));
+
+      bookingsDispatch({
+        type: UPDATE_HAS_DIRTY_FIELDS,
+        payload: {
+          hasDirtyFields: true,
+        },
+      });
     }
   };
 
@@ -120,6 +133,13 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
           from_floors_count: FromFloorsCountValue,
           from_working_lift: fromWorkingLift,
           to_working_lift: toWorkingLift,
+        },
+      });
+
+      bookingsDispatch({
+        type: UPDATE_HAS_DIRTY_FIELDS,
+        payload: {
+          hasDirtyFields: true,
         },
       });
 
@@ -204,6 +224,12 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
                       self_delivery: Boolean(Number(event.target.value)),
                     },
                   });
+                  bookingsDispatch({
+                    type: UPDATE_HAS_DIRTY_FIELDS,
+                    payload: {
+                      hasDirtyFields: true,
+                    },
+                  });
                 }}
                 id="self_delivery"
                 value={1}
@@ -222,6 +248,12 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
                     },
                     fetchWrapper
                   );
+                  bookingsDispatch({
+                    type: UPDATE_HAS_DIRTY_FIELDS,
+                    payload: {
+                      hasDirtyFields: true,
+                    },
+                  });
                   bookingsDispatch({
                     type: ADD_FORM_VALUES,
                     payload: {
@@ -364,6 +396,12 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
                         from_working_lift: Number(event.target.value),
                       },
                     });
+                    bookingsDispatch({
+                      type: UPDATE_HAS_DIRTY_FIELDS,
+                      payload: {
+                        hasDirtyFields: true,
+                      },
+                    });
                   }}
                   id="yes"
                   value={1}
@@ -397,6 +435,12 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
                       type: ADD_FORM_VALUES,
                       payload: {
                         from_working_lift: Number(event.target.value),
+                      },
+                    });
+                    bookingsDispatch({
+                      type: UPDATE_HAS_DIRTY_FIELDS,
+                      payload: {
+                        hasDirtyFields: true,
                       },
                     });
                   }}
@@ -531,6 +575,12 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
                           to_working_lift: Number(event.target.value),
                         },
                       });
+                      bookingsDispatch({
+                        type: UPDATE_HAS_DIRTY_FIELDS,
+                        payload: {
+                          hasDirtyFields: true,
+                        },
+                      });
                     }}
                     id="yes"
                     value={1}
@@ -563,6 +613,12 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
                         type: ADD_FORM_VALUES,
                         payload: {
                           to_working_lift: Number(event.target.value),
+                        },
+                      });
+                      bookingsDispatch({
+                        type: UPDATE_HAS_DIRTY_FIELDS,
+                        payload: {
+                          hasDirtyFields: true,
                         },
                       });
                     }}

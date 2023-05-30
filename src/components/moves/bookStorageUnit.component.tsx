@@ -15,6 +15,7 @@ import { useAPI, useNumberInput } from "src/_hooks";
 import {
   ADD_FORM_VALUES,
   IProduct,
+  UPDATE_HAS_DIRTY_FIELDS,
   ZERO_TRUCK_QUANTITY,
 } from "src/_models/types";
 import { bookingsService } from "src/_services/bookings.service";
@@ -41,7 +42,12 @@ const BookStorageUnit = () => {
         { id: bookingState.formValues.id, move_date: formatDate(date) },
         api
       );
-
+      bookingsDispatch({
+        type: UPDATE_HAS_DIRTY_FIELDS,
+        payload: {
+          hasDirtyFields: true,
+        },
+      });
       bookingsDispatch(getBooking(booking));
     }
   };
@@ -63,8 +69,15 @@ const BookStorageUnit = () => {
 
   useEffect(() => {
     if (moveType && moveType.id) {
+      bookingsDispatch({
+        type: UPDATE_HAS_DIRTY_FIELDS,
+        payload: {
+          hasDirtyFields: false,
+        },
+      });
+
       if (bookingState.formValues.self_delivery) {
-        if (NumberOfUnitsValue > 0) {
+        if (NumberOfUnitsValue > 1) {
           const recommendation = recommend_truck(trucks, NumberOfUnitsValue);
           dispatchCostSummary(
             selectTruck({
@@ -97,7 +110,10 @@ const BookStorageUnit = () => {
           booking: bookingState.formValues.id,
         })
         .then((res) => {
-          if (bookingState.formValues.self_delivery) {
+          if (
+            !bookingState.formValues.self_delivery &&
+            NumberOfUnitsValue > 0
+          ) {
             const recommendation = recommend_truck(trucks, NumberOfUnitsValue);
             api
               .post(`/bookings/${bookingState.formValues.id}/products`, {

@@ -7,10 +7,16 @@ import { Alert, Button, Modal } from "react-bootstrap";
 import { BsCheckCircle } from "react-icons/bs";
 import { MdWarning } from "react-icons/md";
 import { usePaystackPayment } from "react-paystack";
+import { isLoading } from "src/_actions/booking.actions";
 import { BookingContext } from "src/_contexts/booking.context";
 import CostSummaryStateContext from "src/_contexts/costSummary.context";
-import { CHANGE_OPEN_SECTION } from "src/_models/types";
+import {
+  CHANGE_OPEN_SECTION,
+  IBooking,
+  UPDATE_HAS_DIRTY_FIELDS,
+} from "src/_models/types";
 import { Calculations } from "../../_helpers/calculations";
+import useAPI from "../../_hooks/useAPI";
 let PAYSTACK_API_KEY = process.env.NEXT_PUBLIC_PAYSTACK_API_KEY as string;
 
 accounting.settings = {
@@ -30,11 +36,13 @@ accounting.settings = {
 
 const Checkout = () => {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const bookingContext = useContext(BookingContext);
   const { CostSummaryState, dispatchCostSummary } = useContext(
     CostSummaryStateContext
   );
+  const fetchWrapper = useAPI();
 
   const paystackConfig = {
     reference: bookingContext.state.formValues.id,
@@ -62,6 +70,72 @@ const Checkout = () => {
 
   const onClose = () => {
     console.log("closed");
+  };
+
+  const isDisabled = (state: IBooking): boolean => {
+    const objKeys = Object.keys(state.formValues);
+    let userVals = true;
+    let truckSelected = true;
+
+    const formVals = ["move_date"].some((x) => {
+      const xVal = state.formValues[x as keyof typeof state.formValues];
+      return (
+        xVal === null ||
+        xVal === "" ||
+        xVal === false ||
+        xVal === 0 ||
+        xVal?.length === 0 ||
+        xVal === undefined
+      );
+    });
+
+    if (state.formValues.user) {
+      userVals = ["first_name", "last_name", "email", "phone_number"].some(
+        (x) => {
+          const xVal =
+            state.formValues.user[x as keyof typeof state.formValues.user];
+          return (
+            xVal === null ||
+            xVal === "" ||
+            xVal?.length === 0 ||
+            xVal === undefined
+          );
+        }
+      );
+    }
+
+    if (bookingContext.state.formValues.products) {
+      bookingContext.state.formValues.products.find((product) => {
+        if (product.category == "trucks") {
+          truckSelected = false;
+        }
+      });
+    }
+    return formVals || userVals || truckSelected;
+  };
+
+  const confirmMove = () => {
+    setLoading(true);
+    bookingContext.dispatch(isLoading(true));
+
+    fetchWrapper
+      .post(`/bookings/confirm-move`, {
+        booking: bookingContext.state.formValues.id,
+      })
+      .then((res) => {
+        setLoading(false);
+        bookingContext.dispatch(isLoading(false));
+        bookingContext.dispatch({
+          type: CHANGE_OPEN_SECTION,
+          payload: { openSection: "move_details" },
+        });
+        bookingContext.dispatch({
+          type: UPDATE_HAS_DIRTY_FIELDS,
+          payload: {
+            hasDirtyFields: false,
+          },
+        });
+      });
   };
 
   return (
@@ -163,7 +237,21 @@ const Checkout = () => {
                     </div>
                   </div>
 
+                  {bookingContext.state.hasDirtyFields && (
+                    <Button
+                      disabled={bookingContext.state.loading == true}
+                      onClick={confirmMove}
+                      variant="secondary"
+                      className="mt-3 p-2"
+                    >
+                      {bookingContext.state.loading
+                        ? "Loading..."
+                        : "Confirm move"}
+                    </Button>
+                  )}
+
                   <Button
+                    disabled={bookingContext.state.hasDirtyFields}
                     variant="success"
                     className="mt-3 p-2"
                     onClick={() => {

@@ -16,11 +16,13 @@ import {
 } from "react-bootstrap";
 import { BsInfoCircle } from "react-icons/bs";
 import { FcInfo } from "react-icons/fc";
+import { isLoading } from "src/_actions/booking.actions";
 import { BookingContext } from "src/_contexts/booking.context";
 import {
   CHANGE_OPEN_SECTION,
   EDIT_ADDITIONAL_SERVICES,
   IBooking,
+  UPDATE_HAS_DIRTY_FIELDS,
 } from "src/_models/types";
 import useAPI from "../../_hooks/useAPI";
 import { CoverImage } from "../../components/ui";
@@ -33,7 +35,6 @@ const Storage = () => {
   const [showSelectorModal, setShowSelectorModal] = useState(false);
   const { state: bookingState, dispatch: dispatchBookings } =
     useContext(BookingContext);
-  const [isNotReady, setIsNotReady] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const targets: any = {
@@ -44,21 +45,47 @@ const Storage = () => {
   };
 
   const goToCheckout = () => {
-    setShowSelectorModal(true);
+    setLoading(true);
+    dispatchBookings(isLoading(true));
     dispatchBookings({
-      type: CHANGE_OPEN_SECTION,
-      payload: { openSection: "move_details" },
+      type: UPDATE_HAS_DIRTY_FIELDS,
+      payload: {
+        hasDirtyFields: false,
+      },
     });
+
+    fetchWrapper
+      .post(`/bookings/confirm-move`, {
+        booking: bookingState.formValues.id,
+      })
+      .then((res) => {
+        setLoading(false);
+        setShowSelectorModal(true);
+        dispatchBookings(isLoading(false));
+        dispatchBookings({
+          type: CHANGE_OPEN_SECTION,
+          payload: { openSection: "move_details" },
+        });
+      });
   };
 
   const saveAndContinue = () => {
     setLoading(true);
+    dispatchBookings(isLoading(true));
     fetchWrapper
       .get(`/bookings/${bookingState.formValues.id}/products/addons`, false)
       .then((res) => {
         setLoading(false);
-        setIsNotReady(false);
+        dispatchBookings({
+          type: UPDATE_HAS_DIRTY_FIELDS,
+          payload: {
+            hasDirtyFields: false,
+          },
+        });
         router.push(`/move/checkout`);
+      })
+      .then((res) => {
+        dispatchBookings(isLoading(false));
       });
   };
 
@@ -76,7 +103,7 @@ const Storage = () => {
         xVal === undefined
       );
     });
-    console.log(state);
+
     if (state.formValues.user) {
       userVals = ["first_name", "last_name", "email", "phone_number"].some(
         (x) => {
