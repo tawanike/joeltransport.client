@@ -6,7 +6,7 @@ export default function Document() {
     <Html lang="en">
       <Head>
         <Script
-          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBZfdpoBUniKbSIq_5YWdykaoOnADrsPjs&libraries=places"
+          src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_API_KEY}&libraries=places`}
           strategy="beforeInteractive"
         />
         {/* Global Site Tag (gtag.js) - Google Analytics */}
