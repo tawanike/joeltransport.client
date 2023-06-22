@@ -7,7 +7,7 @@ import { getBooking } from "src/_actions/booking.actions";
 import { BookingContext } from "src/_contexts/booking.context";
 import { addressUtils } from "src/_helpers/formatAddress";
 import { useAPI } from "src/_hooks";
-import { ADD_FORM_VALUES } from "src/_models/types";
+import { ADD_FORM_VALUES, UPDATE_HAS_DIRTY_FIELDS } from "src/_models/types";
 
 type Props = {
   address: any;
@@ -26,9 +26,6 @@ function AddressForm({ address, address_type }: Props) {
     useContext(BookingContext);
 
   useEffect(() => {
-    // if (!bookingState.formValues.id) {
-    //   window.location.href = "/";
-    // }
     const getCountries = async () => {
       const countries = await api.get("/locations/countries", undefined);
       setCountries(countries.results);
@@ -75,6 +72,13 @@ function AddressForm({ address, address_type }: Props) {
           },
         });
       }
+
+      bookingsDispatch({
+        type: UPDATE_HAS_DIRTY_FIELDS,
+        payload: {
+          hasDirtyFields: true,
+        },
+      });
     });
 
     setEditMode(false);

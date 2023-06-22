@@ -5,10 +5,7 @@ import { BsTrash } from "react-icons/bs";
 import { FcInfo } from "react-icons/fc";
 import { FiCalendar } from "react-icons/fi";
 import { getBooking } from "src/_actions/booking.actions";
-import {
-  addHandlingFee,
-  addStorageCount,
-} from "src/_actions/costSummary.actions";
+import { addStorageCount } from "src/_actions/costSummary.actions";
 import { selectTruck } from "src/_actions/trucks.actions";
 import { BookingContext } from "src/_contexts/booking.context";
 import CostSummaryStateContext from "src/_contexts/costSummary.context";
@@ -18,8 +15,10 @@ import { useAPI, useNumberInput } from "src/_hooks";
 import {
   ADD_FORM_VALUES,
   IProduct,
+  UPDATE_HAS_DIRTY_FIELDS,
   ZERO_TRUCK_QUANTITY,
 } from "src/_models/types";
+import { bookingsService } from "src/_services/bookings.service";
 
 const BookStorageUnit = () => {
   const api = useAPI();
@@ -37,23 +36,25 @@ const BookStorageUnit = () => {
     setAValue,
   } = useNumberInput(bookingState.formValues.storage_units_count);
 
-  const onDateChange = (date: Date) => {
-    bookingsDispatch({
-      type: ADD_FORM_VALUES,
-      payload: { move_date: formatDate(date) },
-    });
+  const onDateChange = async (date: Date) => {
+    if (bookingState.formValues.id) {
+      const booking = await bookingsService.updateBooking(
+        { id: bookingState.formValues.id, move_date: formatDate(date) },
+        api
+      );
+      bookingsDispatch({
+        type: UPDATE_HAS_DIRTY_FIELDS,
+        payload: {
+          hasDirtyFields: true,
+        },
+      });
+      bookingsDispatch(getBooking(booking));
+    }
   };
 
   useEffect(() => {
-    window.scrollTo({
-      top: 300,
-      behavior: "smooth",
-    });
-  }, []);
-
-  useEffect(() => {
     (async () => {
-      if (bookingState.formValues.collection) {
+      if (bookingState.formValues.self_delivery) {
         const trucks = await api.get("/products?category=2", false);
         setTrucks(trucks.results);
       }
@@ -68,10 +69,16 @@ const BookStorageUnit = () => {
 
   useEffect(() => {
     if (moveType && moveType.id) {
-      if (bookingState.formValues.collection) {
-        if (NumberOfUnitsValue > 0) {
-          const recommendation = recommend_truck(trucks, NumberOfUnitsValue);
+      bookingsDispatch({
+        type: UPDATE_HAS_DIRTY_FIELDS,
+        payload: {
+          hasDirtyFields: false,
+        },
+      });
 
+      if (bookingState.formValues.self_delivery) {
+        if (NumberOfUnitsValue > 1) {
+          const recommendation = recommend_truck(trucks, NumberOfUnitsValue);
           dispatchCostSummary(
             selectTruck({
               quantity: 1,
@@ -103,7 +110,10 @@ const BookStorageUnit = () => {
           booking: bookingState.formValues.id,
         })
         .then((res) => {
-          if (bookingState.formValues.collection) {
+          if (
+            !bookingState.formValues.self_delivery &&
+            NumberOfUnitsValue > 0
+          ) {
             const recommendation = recommend_truck(trucks, NumberOfUnitsValue);
             api
               .post(`/bookings/${bookingState.formValues.id}/products`, {
@@ -119,18 +129,20 @@ const BookStorageUnit = () => {
                     .then((res) => {
                       if (!res.error) {
                         bookingsDispatch(getBooking(res));
-                        // TODO: Get handling fee from backend
-                        dispatchCostSummary(
-                          addHandlingFee({
-                            quantity: 1,
-                            price: 250,
-                            off_peak_discount: 0,
-                          })
-                        );
                       }
                     });
                 }
               });
+          } else {
+            if (!res.error) {
+              api
+                .get(`/bookings/${bookingState.formValues.id}`, false)
+                .then((res) => {
+                  if (!res.error) {
+                    bookingsDispatch(getBooking(res));
+                  }
+                });
+            }
           }
         });
     }

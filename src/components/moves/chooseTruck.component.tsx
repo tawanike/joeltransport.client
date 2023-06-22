@@ -3,7 +3,7 @@ import { getBooking } from "src/_actions/booking.actions";
 import { selectTruck } from "src/_actions/trucks.actions";
 import { BookingContext } from "src/_contexts/booking.context";
 import { useAPI } from "src/_hooks";
-import { IProduct } from "src/_models/types";
+import { IProduct, UPDATE_HAS_DIRTY_FIELDS } from "src/_models/types";
 import { Navigation, Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import CostSummaryStateContext from "../../_contexts/costSummary.context";
@@ -18,7 +18,6 @@ const ChooseTruck = () => {
   const [selectedTruck, setSelectedTruck] = useState<IProduct>();
   const [activeTruck, setActiveTruck] = useState<number>(0);
   const [bookedDates, setBookedDates] = useState<any[]>([]);
-  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
 
   const { CostSummaryState, dispatchCostSummary } = useContext(
     CostSummaryStateContext
@@ -36,14 +35,13 @@ const ChooseTruck = () => {
   }, []);
 
   useEffect(() => {
-    window.scrollTo({
-      top: 400,
-      behavior: "smooth",
-    });
-  }, []);
-
-  useEffect(() => {
     if (selectedTruck) {
+      bookingContext.dispatch({
+        type: UPDATE_HAS_DIRTY_FIELDS,
+        payload: {
+          hasDirtyFields: true,
+        },
+      });
       api
         .post(`/bookings/${bookingContext.state.formValues.id}/products`, {
           product: selectedTruck.id,
@@ -91,11 +89,39 @@ const ChooseTruck = () => {
   }, [trucks]);
 
   useEffect(() => {
+    (() => {
+      api
+        .get(
+          `/bookings/unavailable?move_date=${bookingContext.state.formValues?.move_date}&move_time=${bookingContext.state.formValues?.move_time_period}`,
+          false
+        )
+        .then((res) => {
+          if (res.length === 0) {
+            return;
+          }
+
+          setBookedDates(res);
+        });
+    })();
+  }, []);
+
+  useEffect(() => {
+    const truckInContext = bookingContext.state.formValues?.products?.filter(
+      (p: any) => p.category === "trucks"
+    );
+
+    if (truckInContext && truckInContext.length) {
+      const truck = trucks.find((t) => t.slug == "trucks"); //truckInContext[0].slug
+      if (truck) {
+        setSelectedTruck(truck);
+      }
+    }
+  }, [trucks]);
+
+  useEffect(() => {
     api
       .get(
-        `/bookings/unavailable?month=${
-          currentMonth + 1
-        }&year=${new Date().getFullYear()}`,
+        `/bookings/unavailable?move_date=${bookingContext.state.formValues?.move_date}&move_time=${bookingContext.state.formValues?.move_time_period}`,
         false
       )
       .then((res) => {
@@ -106,41 +132,8 @@ const ChooseTruck = () => {
       });
   }, [bookingContext.state.formValues.move_date]);
 
-  const isBooked = (isSelected: any, truckId: any) => {
-    if (isSelected) {
-      return true;
-    }
-
-    if (bookedDates.length === 0) {
-      return false;
-    } else {
-      return bookedDates
-        .map((date) => {
-          const d = new Date(date.move_date);
-          const move_date = new Date(bookingContext.state.formValues.move_date);
-          if (
-            date.move_time ===
-              bookingContext.state.formValues.move_time_period &&
-            d.getDate() === move_date.getDate() &&
-            d.getMonth() === move_date.getMonth() &&
-            d.getFullYear() === move_date.getFullYear()
-          ) {
-            return date.id;
-          }
-        })
-        .filter((t) => t !== undefined)
-        .includes(truckId);
-    }
-  };
-
   return (
     <div className="row">
-      {/* <div
-                className="col-1 truckDisplay__indicators"
-                onClick={() => !(index - 1 < 0) && setIndex(index - 1)}
-            >
-                <RxCaretLeft />
-            </div> */}
       <div className="col-12">
         <Swiper
           navigation={true}
@@ -172,7 +165,11 @@ const ChooseTruck = () => {
                 truck={truck}
                 onSelect={setSelectedTruck}
                 inView={i === activeTruck}
-                isBooked={isBooked}
+                available={
+                  bookedDates.find(
+                    (availability) => truck.id == availability.id
+                  )?.available
+                }
                 isSelected={
                   selectedTruck
                     ? (selectedTruck as IProduct).id === truck.id
@@ -203,13 +200,6 @@ const ChooseTruck = () => {
             ))}
         </div>
       </div>
-      {/* <div
-                className="col-1 truckDisplay__indicators"
-                // onClick={() => index + 1 < trucks.length && setIndex(index + 1)}
-                onClick={() => swiper.slideNext()}
-            >
-                <RxCaretRight />
-            </div> */}
     </div>
   );
 };

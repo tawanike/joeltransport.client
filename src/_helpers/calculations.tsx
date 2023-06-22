@@ -82,6 +82,7 @@ const getVAT = (products: any, CostSummaryState: any): number => {
 };
 
 const getTotal = (products: any, CostSummaryState: any): number => {
+  console.log("products", products);
   const subTotal = getSubTotal(products, CostSummaryState);
   const total = Number(subTotal) + getVAT(products, CostSummaryState);
   return total;

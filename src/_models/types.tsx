@@ -1,6 +1,7 @@
 //Authorization
 export const LOGIN = "LOGIN";
 export const LOGOUT = "LOGOUT";
+export const LOADING = "LOADING";
 export const GET_BOOKING = "GET_BOOKING";
 export const SELECT_TRUCK = "SELECT_TRUCK";
 export const RESET_BOOKING = "RESET_BOOKING";
@@ -19,6 +20,7 @@ export const ADD_STORAGE_ADDITIONAL_SERVICES =
   "ADD_STORAGE_ADDITIONAL_SERVICES";
 export const CHANGE_OPEN_SECTION = "CHANGE_OPEN_SECTION";
 export const ADD_STORAGE_HANDLING_FEE = "ADD_STORAGE_HANDLING_FEE";
+export const UPDATE_HAS_DIRTY_FIELDS = "UPDATE_HAS_DIRTY_FIELDS";
 
 export type RequestOptions = {
   method: string;
@@ -87,8 +89,8 @@ export interface IProduct {
   slug: string;
   subtitle: string;
   description: string;
-  image: string | null;
-  category: number;
+  image: string;
+  category: number | string;
   ordering: number;
   published: boolean;
   size: string;
@@ -97,6 +99,7 @@ export interface IProduct {
   weight: number | null;
   load_capacity: number | null;
   off_peak_discount: number;
+  available: boolean;
 }
 
 export interface IFormValues {
@@ -133,7 +136,7 @@ export interface IFormValues {
 
   addOns: any[];
   inventoryList: IInventoryListItem[];
-  collection: boolean;
+  self_delivery: boolean;
 
   user: {
     first_name: string;
@@ -156,6 +159,8 @@ export interface IBooking {
   id: string | undefined;
   products: IProduct[];
   formValues: IFormValues;
+  loading: boolean;
+  hasDirtyFields: boolean;
   openSection:
     | "move_details"
     | "additional_services"

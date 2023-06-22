@@ -7,7 +7,11 @@ import { addBakkieShuttle } from "src/_actions/added-services.actions";
 import { getBooking } from "src/_actions/booking.actions";
 import { BookingContext } from "src/_contexts/booking.context";
 import { useAPI } from "src/_hooks";
-import { ADD_FORM_VALUES, IProduct } from "src/_models/types";
+import {
+  ADD_FORM_VALUES,
+  IProduct,
+  UPDATE_HAS_DIRTY_FIELDS,
+} from "src/_models/types";
 import CostSummaryStateContext from "../../_contexts/costSummary.context";
 
 interface IProps {}
@@ -39,17 +43,17 @@ const BakkieShuttle: FC<IProps> = () => {
     })();
   }, []);
 
-  useEffect(() => {
-    window.scrollTo({
-      top: 400,
-      behavior: "smooth",
-    });
-  }, []);
-
   const handleBakkieShuttleAddress = (values: any) => {
     dispatchBookings({
       type: ADD_FORM_VALUES,
       payload: { bakkie_address: values.value },
+    });
+
+    dispatchBookings({
+      type: UPDATE_HAS_DIRTY_FIELDS,
+      payload: {
+        hasDirtyFields: true,
+      },
     });
 
     if (bakkieShuttle) {
@@ -124,6 +128,13 @@ const BakkieShuttle: FC<IProps> = () => {
       },
     });
 
+    dispatchBookings({
+      type: UPDATE_HAS_DIRTY_FIELDS,
+      payload: {
+        hasDirtyFields: true,
+      },
+    });
+
     dispatchCostSummary(
       addBakkieShuttle({
         requires_bakkie_shuttle: 0,
@@ -160,13 +171,13 @@ const BakkieShuttle: FC<IProps> = () => {
     }
   };
 
-  const getBakkieAddressOption = (value: any) => {
-    switch (value) {
-      case Number(value) === 1:
+  const getBakkieAddressOption = (option: any) => {
+    switch (option) {
+      case Number(option) === 1:
         return { value: 1, label: "Loading address" };
-      case Number(value) === 2:
+      case Number(option) === 2:
         return { value: 2, label: "Delivery address" };
-      case Number(value) === 3:
+      case Number(option) === 3:
         return { value: 3, label: "Both address" };
       default:
         return {};
@@ -199,6 +210,12 @@ const BakkieShuttle: FC<IProps> = () => {
                   label: "Loading address",
                 });
               }
+              dispatchBookings({
+                type: UPDATE_HAS_DIRTY_FIELDS,
+                payload: {
+                  hasDirtyFields: true,
+                },
+              });
             }}
             className="pe-5"
             checked={
@@ -248,7 +265,7 @@ const BakkieShuttle: FC<IProps> = () => {
                   !Boolean(bookingState.formValues.requires_bakkie_shuttle)
                 }
                 defaultValue={getBakkieAddressOption(
-                  bookingState.formValues.bakkie_address
+                  bookingState.formValues.bakkie_address || 1
                 )}
                 onChange={handleBakkieShuttleAddress}
                 options={[

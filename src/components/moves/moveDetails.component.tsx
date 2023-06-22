@@ -17,7 +17,7 @@ import {
   stringToDateTime,
 } from "src/_helpers/dateFormat";
 import { useAPI, useNumberInput } from "src/_hooks";
-import { ADD_FORM_VALUES } from "src/_models/types";
+import { ADD_FORM_VALUES, UPDATE_HAS_DIRTY_FIELDS } from "src/_models/types";
 import { bookingsService } from "src/_services/bookings.service";
 import AddressForm from "./AddressForm.component";
 
@@ -38,44 +38,9 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
   const [showToWorkingLift, setShowToWorkingLift] = useState(false);
   const router = useRouter();
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
-  const [bookedDates, setBookedDates] = useState<any[]>([]);
   const [fromWorkingLift, setFromWorkingLift] = useState(false);
   const [toWorkingLift, setToWorkingLift] = useState(false);
 
-  useEffect(() => {
-    let booked: any[] = [];
-    fetchWrapper
-      .get(
-        `/bookings/unavailable?month=${
-          currentMonth + 1
-        }&year=${new Date().getFullYear()}`,
-        false
-      )
-      .then((res) => {
-        if (res.length === 0) {
-          setBookedDates([]);
-          return;
-        }
-
-        //   res.forEach((date: any) => {
-        //     const d = new Date(date.date);
-        //     if (
-        //       currentMonth === d.getMonth() &&
-        //       d.getDate() !== bookingState.formValues.move_date
-        //     ) {
-        //       booked.push(d.getDate());
-        //       setBookedDates([...booked]);
-        //     }
-        //   });
-      });
-  }, [currentMonth]);
-
-  useEffect(() => {
-    window.scrollTo({
-      top: 400,
-      behavior: "smooth",
-    });
-  }, []);
   function tileClassName({ date, view }: any) {
     // Add class to tiles in month view only
     if (view === "month") {
@@ -112,6 +77,12 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
           fetchWrapper
         );
         bookingsDispatch(getBooking(booking));
+        bookingsDispatch({
+          type: UPDATE_HAS_DIRTY_FIELDS,
+          payload: {
+            hasDirtyFields: false,
+          },
+        });
       } else {
         await bookingsService.createBooking(
           bookingState.formValues,
@@ -132,6 +103,13 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
       );
 
       bookingsDispatch(getBooking(booking));
+
+      bookingsDispatch({
+        type: UPDATE_HAS_DIRTY_FIELDS,
+        payload: {
+          hasDirtyFields: true,
+        },
+      });
     }
   };
 
@@ -155,6 +133,13 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
           from_floors_count: FromFloorsCountValue,
           from_working_lift: fromWorkingLift,
           to_working_lift: toWorkingLift,
+        },
+      });
+
+      bookingsDispatch({
+        type: UPDATE_HAS_DIRTY_FIELDS,
+        payload: {
+          hasDirtyFields: true,
         },
       });
 
@@ -223,36 +208,63 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
               <Form.Check
                 type="radio"
                 inline
-                name="collection"
+                name="self_delivery"
                 label="Yes - collect"
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                  bookingsService.updateBooking(
+                    {
+                      id: bookingState.formValues.id,
+                      self_delivery: true,
+                    },
+                    fetchWrapper
+                  );
                   bookingsDispatch({
                     type: ADD_FORM_VALUES,
                     payload: {
-                      collection: Boolean(Number(event.target.value)),
+                      self_delivery: Boolean(Number(event.target.value)),
                     },
-                  })
-                }
-                id="collection"
+                  });
+                  bookingsDispatch({
+                    type: UPDATE_HAS_DIRTY_FIELDS,
+                    payload: {
+                      hasDirtyFields: true,
+                    },
+                  });
+                }}
+                id="self_delivery"
                 value={1}
-                checked={Number(bookingState.formValues.collection) === 1}
+                checked={Number(bookingState.formValues.self_delivery) === 1}
               />
               <Form.Check
                 type="radio"
                 inline
-                name="collection"
+                name="self_delivery"
                 label="No - I will deliver"
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                  bookingsService.updateBooking(
+                    {
+                      id: bookingState.formValues.id,
+                      self_delivery: false,
+                    },
+                    fetchWrapper
+                  );
+                  bookingsDispatch({
+                    type: UPDATE_HAS_DIRTY_FIELDS,
+                    payload: {
+                      hasDirtyFields: true,
+                    },
+                  });
                   bookingsDispatch({
                     type: ADD_FORM_VALUES,
                     payload: {
-                      collection: Boolean(Number(event.target.value)),
+                      id: bookingState.formValues.id,
+                      self_delivery: Boolean(Number(event.target.value)),
                     },
-                  })
-                }
-                id="collection"
+                  });
+                }}
+                id="self_delivery"
                 value={0}
-                checked={Number(bookingState.formValues.collection) === 0}
+                checked={Number(bookingState.formValues.self_delivery) === 0}
               />
             </Form.Group>
           </Row>
@@ -260,7 +272,7 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
         {(["/move/domestic", "/move/inventory-form", "/move/checkout"].includes(
           router.pathname
         ) ||
-          bookingState.formValues.collection) && (
+          bookingState.formValues.self_delivery) && (
           <>
             <h5 className="my-4 my-md-5">Please provide loading details</h5>
             <Row className="mb-4 mb-md-3">
@@ -384,6 +396,12 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
                         from_working_lift: Number(event.target.value),
                       },
                     });
+                    bookingsDispatch({
+                      type: UPDATE_HAS_DIRTY_FIELDS,
+                      payload: {
+                        hasDirtyFields: true,
+                      },
+                    });
                   }}
                   id="yes"
                   value={1}
@@ -417,6 +435,12 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
                       type: ADD_FORM_VALUES,
                       payload: {
                         from_working_lift: Number(event.target.value),
+                      },
+                    });
+                    bookingsDispatch({
+                      type: UPDATE_HAS_DIRTY_FIELDS,
+                      payload: {
+                        hasDirtyFields: true,
                       },
                     });
                   }}
@@ -551,6 +575,12 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
                           to_working_lift: Number(event.target.value),
                         },
                       });
+                      bookingsDispatch({
+                        type: UPDATE_HAS_DIRTY_FIELDS,
+                        payload: {
+                          hasDirtyFields: true,
+                        },
+                      });
                     }}
                     id="yes"
                     value={1}
@@ -583,6 +613,12 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
                         type: ADD_FORM_VALUES,
                         payload: {
                           to_working_lift: Number(event.target.value),
+                        },
+                      });
+                      bookingsDispatch({
+                        type: UPDATE_HAS_DIRTY_FIELDS,
+                        payload: {
+                          hasDirtyFields: true,
                         },
                       });
                     }}

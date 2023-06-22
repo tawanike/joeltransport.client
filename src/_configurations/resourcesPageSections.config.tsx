@@ -20,7 +20,7 @@ export const pageSections: any = {
         </p>
       </>
     ),
-    image: "/img/services/service_home_moves.png",
+    image: "/img/trucks/front-truck.png",
     secondaryButton: { title: "Call me back" },
     primaryButton: { title: "Get a quote" },
   },
@@ -61,7 +61,7 @@ export const pageSections: any = {
         </Accordion>
       </>
     ),
-    image: "/img/services/service_home_moves.png",
+    image: "/img/trucks/long-truck.png",
   },
 };
 
@@ -91,7 +91,7 @@ export const officeMoveSections: any = {
         </p>
       </>
     ),
-    image: "/img/services/office_move.png",
+    image: "/img/trucks/long-truck.png",
     secondaryButton: { title: "Call me back" },
   },
   benefits: {
@@ -123,7 +123,7 @@ export const officeMoveSections: any = {
         </ul>
       </>
     ),
-    image: "/img/services/international.png",
+    image: "/img/international.png",
     secondaryButton: { title: "Call me back" },
   },
 };
@@ -152,7 +152,7 @@ export const storageSections: any = {
         </p>
       </>
     ),
-    image: "/img/services/storage_service.png",
+    image: "/img/services/storage-service.png",
     secondaryButton: { title: "Call me back" },
     primaryButton: { title: "Get a quote" },
   },
@@ -279,7 +279,7 @@ export const internationalMovesConfig = {
       </ul>
     </>
   ),
-  image: "/img/services/international.png",
+  image: "/img/international.png",
   secondaryButton: { title: "Call me back" },
   benefits: {
     ...homeMoversConfig,
@@ -303,7 +303,7 @@ export const domesticMovesConfig = {
       </p>
     </>
   ),
-  image: "/img/truck.png",
+  image: "/img/trucks/long-truck.png",
   secondaryButton: { title: "Call me back" },
   benefits: {
     ...homeMoversConfig,

@@ -14,13 +14,16 @@ import {
 } from "react-bootstrap";
 import { BsInfoCircle } from "react-icons/bs";
 import { FcInfo } from "react-icons/fc";
+import { isLoading } from "src/_actions/booking.actions";
 import { BookingContext } from "src/_contexts/booking.context";
 import useAPI from "../../_hooks/useAPI";
 import {
   ADD_FORM_VALUES,
   ADD_PRODUCTS_DATA,
+  CHANGE_OPEN_SECTION,
   EDIT_ADDITIONAL_SERVICES,
   IBooking,
+  UPDATE_HAS_DIRTY_FIELDS,
 } from "../../_models/types";
 import { productService } from "../../_services/product.service";
 import MoveCostCard from "../../components/moves/moveCostCard.component";
@@ -42,6 +45,7 @@ const DomesticMoveServices = () => {
   const [showSelectorModal, setShowSelectorModal] = useState(false);
   const [selectedServices] = useState([]);
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const getProducts = async () => {
@@ -67,10 +71,33 @@ const DomesticMoveServices = () => {
   }, []);
 
   const goToCheckout = () => {
-    setShowSelectorModal(true);
+    setLoading(true);
+    dispatchBookings(isLoading(true));
+    dispatchBookings({
+      type: UPDATE_HAS_DIRTY_FIELDS,
+      payload: {
+        hasDirtyFields: false,
+      },
+    });
+
+    fetchWrapper
+      .post(`/bookings/confirm-move`, {
+        booking: bookingState.formValues.id,
+      })
+      .then((res) => {
+        setLoading(false);
+        setShowSelectorModal(true);
+        dispatchBookings(isLoading(false));
+        dispatchBookings({
+          type: CHANGE_OPEN_SECTION,
+          payload: { openSection: "move_details" },
+        });
+      });
   };
 
   const selectService = async (e: any) => {
+    // setSelected(e.target.checked)
+
     dispatchBookings({
       type: EDIT_ADDITIONAL_SERVICES,
       payload: { [e.target.name]: e.target.checked },
@@ -87,13 +114,30 @@ const DomesticMoveServices = () => {
     );
   };
 
-  const saveAndContinue = () => {
-    router.push(`/move/checkout`);
+  const saveAndContinue = async () => {
+    setLoading(true);
+    dispatchBookings(isLoading(true));
+    fetchWrapper
+      .get(`/bookings/${bookingState.formValues.id}/products/addons`, false)
+      .then((res) => {
+        setLoading(false);
+        router.push(`/move/checkout`);
+      })
+      .then((res) => {
+        dispatchBookings(isLoading(false));
+        dispatchBookings({
+          type: UPDATE_HAS_DIRTY_FIELDS,
+          payload: {
+            hasDirtyFields: false,
+          },
+        });
+      });
   };
 
-  const isDisabled = (state: IBooking) => {
+  const isDisabled = (state: IBooking): boolean => {
     const objKeys = Object.keys(state.formValues);
     let userVals = true;
+    let truckSelected = true;
 
     const formVals = ["move_date"].some((x) => {
       const xVal = state.formValues[x as keyof typeof state.formValues];
@@ -121,7 +165,15 @@ const DomesticMoveServices = () => {
         }
       );
     }
-    return formVals || userVals;
+
+    if (bookingState.formValues.products) {
+      bookingState.formValues.products.find((product) => {
+        if (product.category == "trucks") {
+          truckSelected = false;
+        }
+      });
+    }
+    return formVals || userVals || truckSelected;
   };
 
   return (
@@ -193,12 +245,12 @@ const DomesticMoveServices = () => {
               >
                 <div className="col-12 d-flex justify-content-end">
                   <Button
-                    disabled={!selectedServices}
+                    disabled={loading}
                     className=""
                     onClick={saveAndContinue}
                     variant="secondary"
                   >
-                    Continue
+                    {loading ? `Loading...` : `Continue`}
                   </Button>
                 </div>
               </div>
@@ -256,11 +308,14 @@ const DomesticMoveServices = () => {
                 <div className="col-12 d-flex justify-content-end">
                   <CallMeBackButton title="Call me back" />
                   <Button
-                    disabled={isDisabled(bookingState)}
+                    disabled={
+                      isDisabled(bookingState) == true ||
+                      bookingState.loading == true
+                    }
                     onClick={goToCheckout}
                     variant="secondary"
                   >
-                    Confirm move
+                    {bookingState.loading ? "Loading..." : "Confirm move"}
                   </Button>
                 </div>
               </div>
