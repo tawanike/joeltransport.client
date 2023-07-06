@@ -58,7 +58,7 @@ export default function About() {
                     </p>
                   </div>
                   <div className="About__our-story--image col-12 col-md-5">
-                    <img src="/img/trucks/long-truck.png" alt="" />
+                    <img src="/img/about/our-story.png" alt="" />
                   </div>
                 </div>
               </Tab>
@@ -247,7 +247,7 @@ export default function About() {
                   <div className="row">
                     <div className="About__team--image col-12">
                       <div className="row">
-                        <img src="/img/team.png" alt="" />
+                        <img src="/img/about/joel-staff.png" alt="" />
                       </div>
                     </div>
                     {/* <div className="About__team--text col-12">

@@ -152,7 +152,7 @@ export const storageSections: any = {
         </p>
       </>
     ),
-    image: "/img/services/storage_service.png",
+    image: "/img/services/storage-service.png",
     secondaryButton: { title: "Call me back" },
     primaryButton: { title: "Get a quote" },
   },

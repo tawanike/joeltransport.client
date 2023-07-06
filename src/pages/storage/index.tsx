@@ -279,7 +279,10 @@ const Storage = () => {
             <div className="col-12 col-lg-6">
               <div className="row">
                 <div className="col-12 col-md-6  moves__container__thumbnail">
-                  <img src="/img/storage_thumb.png" alt="storage" />
+                  <img
+                    src="/img/services/storage-service-journey.png"
+                    alt="storage"
+                  />
                 </div>
                 <div className="col-12 col-md-6 mt-3 mt-md-0 moves__container__summary">
                   <div>
