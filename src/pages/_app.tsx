@@ -1,7 +1,6 @@
 import { Open_Sans } from "@next/font/google";
 import type { AppProps } from "next/app";
 import { useReducer } from "react";
-import { SSRProvider } from "react-bootstrap";
 import "react-phone-number-input/style.css";
 import BookingContextProvider from "src/_contexts/booking.context";
 import {
@@ -25,18 +24,14 @@ export default function App({ Component, pageProps }: AppProps) {
   );
 
   return (
-    <SSRProvider>
-      <CostSummaryStateProvider
-        value={{ CostSummaryState, dispatchCostSummary }}
-      >
-        <BookingContextProvider>
-          <main className={`${OpenSans.className} container-fluid`}>
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
-          </main>
-        </BookingContextProvider>
-      </CostSummaryStateProvider>
-    </SSRProvider>
+    <CostSummaryStateProvider value={{ CostSummaryState, dispatchCostSummary }}>
+      <BookingContextProvider>
+        <main className={`${OpenSans.className} container-fluid`}>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </main>
+      </BookingContextProvider>
+    </CostSummaryStateProvider>
   );
 }
