@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { Button } from "react-bootstrap";
 import { BsCheck2 } from "react-icons/bs";
-import uuid from "react-uuid";
+
 import { BlueSectionConfig } from "../../_configurations/blueSection.config";
 import { storageSections } from "../../_configurations/resourcesPageSections.config";
 import { RightImageSectionConfig } from "../../_configurations/rightsection.config";
@@ -38,10 +38,10 @@ const StorageComponent = ({ getQuote }: any) => {
                           R 350.00<span className="exvat">/ex VAT</span>
                         </p>
                       </div>
-                      {details.map((x) => (
+                      {details.map((x, i) => (
                         <>
                           <div
-                            key={uuid()}
+                            key={i}
                             className="col-12 resources__pricing__prices-container__item-list"
                           >
                             <div className="row">

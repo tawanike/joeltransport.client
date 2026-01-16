@@ -1,4 +1,4 @@
-import { Open_Sans } from "@next/font/google";
+import { Open_Sans } from "next/font/google";
 import type { AppProps } from "next/app";
 import { useReducer } from "react";
 import "react-phone-number-input/style.css";

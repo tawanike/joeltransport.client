@@ -25,56 +25,56 @@ function Navigation() {
                 Home
               </Link>
               <NavDropdown title="Services" id="navbarScrollingDropdown">
-                <Link href="/services/home-moves" passHref>
+                <Link href="/services/home-moves" passHref legacyBehavior>
                   <NavDropdown.Item href="/services/home-moves">
                     Domestic move
                   </NavDropdown.Item>
                 </Link>
 
-                <Link href="/services/long-distance-move" passHref>
+                <Link href="/services/long-distance-move" passHref legacyBehavior>
                   <NavDropdown.Item href="/services/long-distance-move">
                     Long distance move
                   </NavDropdown.Item>
                 </Link>
 
-                <Link href="/services/international-move" passHref>
+                <Link href="/services/international-move" passHref legacyBehavior>
                   <NavDropdown.Item href="/services/international-move">
                     International move
                   </NavDropdown.Item>
                 </Link>
 
-                <Link href="/services/office-relocation" passHref>
+                <Link href="/services/office-relocation" passHref legacyBehavior>
                   <NavDropdown.Item href="/services/office-relocation">
                     Office relocation
                   </NavDropdown.Item>
                 </Link>
 
-                <Link href="/services/storage" passHref>
+                <Link href="/services/storage" passHref legacyBehavior>
                   <NavDropdown.Item href="/services/storage">
                     Storage
                   </NavDropdown.Item>
                 </Link>
 
-                <Link href="/services/specialized-services" passHref>
+                <Link href="/services/specialized-services" passHref legacyBehavior>
                   <NavDropdown.Item href="/services/specialized-services">
                     Specialised services
                   </NavDropdown.Item>
                 </Link>
               </NavDropdown>
               <NavDropdown title="Resources" id="navbarScrollingDropdown">
-                <Link href="/resources" passHref>
+                <Link href="/resources" passHref legacyBehavior>
                   <NavDropdown.Item href="/resources">
                     Resources
                   </NavDropdown.Item>
                 </Link>
-                <Link href="/resources/careers" passHref>
+                <Link href="/resources/careers" passHref legacyBehavior>
                   <NavDropdown.Item href="/resources/careers">
                     Careers
                   </NavDropdown.Item>
                 </Link>
               </NavDropdown>
               <Link href="/about" className="nav-link">
-                <NavDropdown.Item href="/about">About us</NavDropdown.Item>
+                About us
               </Link>
 
               <Link href="/contact-us" className="nav-link">

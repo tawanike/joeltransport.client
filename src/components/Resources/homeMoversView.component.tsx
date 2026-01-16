@@ -1,6 +1,6 @@
 import { Button } from "react-bootstrap";
 import { BsCheck2 } from "react-icons/bs";
-import uuid from "react-uuid";
+
 import { homeMoversConfig } from "../../_configurations/benefits.config";
 import { pricingConfig } from "../../_configurations/pricing.config";
 import { pageSections } from "../../_configurations/resourcesPageSections.config";
@@ -33,7 +33,7 @@ const HomeMoversView = ({ getQuote }: any) => {
                             <div className="resources__pricing__prices col-8 offset-2 pb-5">
                                 <div className="row">
                                     {pricingConfig.map((price) => (
-                                        <div key={uuid()} className="col-12 mb-3 mb-md-0 col-md-4 resources__pricing__prices-container">
+                                        <div key={price.id} className="col-12 mb-3 mb-md-0 col-md-4 resources__pricing__prices-container">
                                             <div className="col-12 resources__pricing__prices-container__item">
                                                 <div className="col-12 resources__pricing__prices-container__item-head">
                                                     <p>{price.title}</p>
@@ -47,10 +47,10 @@ const HomeMoversView = ({ getQuote }: any) => {
                                                         <span className="exvat">/excl. VAT</span>
                                                     </p>
                                                 </div>
-                                                {price.details.map((x) => (
+                                                {price.details.map((x, i) => (
                                                     <>
                                                         <div
-                                                            key={uuid()}
+                                                            key={i}
                                                             className="col-12 resources__pricing__prices-container__item-list"
                                                         >
                                                             <div className="row">
