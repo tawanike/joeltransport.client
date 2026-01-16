@@ -1,15 +1,14 @@
 /** @type {import('next').NextConfig} */
 
 const path = require("path");
-const withSass = require("@zeit/next-sass");
-module.exports = withSass({
+module.exports = {
   cssModules: true,
   poweredByHeader: false,
   generateBuildId: async () => {
     // You can, for example, get the latest git commit hash here
     return "my-build-id";
   },
-});
+};
 
 const nextConfig = {
   reactStrictMode: true,
