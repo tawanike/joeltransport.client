@@ -95,8 +95,8 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
     }
   }, []);
 
-  const onDateChange = async (date: Date) => {
-    if (bookingState.formValues.id) {
+  const onDateChange = async (date: any) => {
+    if (bookingState.formValues.id && date && date instanceof Date) {
       const booking = await bookingsService.updateBooking(
         { id: bookingState.formValues.id, move_date: formatDate(date) },
         fetchWrapper
@@ -273,232 +273,232 @@ const MoveDetails: FC<IProps> = ({ hasDelivery, dateLabel }) => {
           router.pathname
         ) ||
           bookingState.formValues.self_delivery) && (
-          <>
-            <h5 className="my-4 my-md-5">Please provide loading details</h5>
-            <Row className="mb-4 mb-md-3">
-              <Form.Group as={Col} md="12" controlId="from">
-                <Form.Label>
-                  <span className="text-danger">*</span>Search loading location
-                </Form.Label>
-                <AddressForm
-                  address={bookingState.formValues.from_address}
-                  address_type="from_address"
-                />
-              </Form.Group>
-            </Row>
-            <Row className="mb-4 mb-md-3">
-              <Form.Group as={Col} md="6" controlId="move_date">
-                <Form.Label>
-                  <span className="text-danger">*</span>
-                  {dateLabel}
-                </Form.Label>
-                <DatePicker
-                  onChange={onDateChange}
-                  value={
-                    bookingState.formValues.move_date &&
-                    stringToDateTime(bookingState.formValues.move_date)
-                  }
-                  calendarIcon={<FiCalendar className="calendar-icon" />}
-                  clearIcon={null}
-                  dayPlaceholder="dd"
-                  monthPlaceholder="mm"
-                  yearPlaceholder="yyyy"
-                  minDate={addHours(new Date(), 24)}
-                  // tileDisabled={tileDisabled}
-                  tileClassName={tileClassName}
-                  className="date-picker"
-                  onActiveStartDateChange={onActiveStartDateChange}
-                />
-                <Alert variant="warning" className="mt-3">
-                  <div className="row">
-                    <div
-                      className="col-2"
-                      style={{
-                        display: "grid",
-                        placeItems: "center",
-                        fontSize: "2rem",
-                        color: "#fa551e",
-                      }}
-                    >
-                      <MdWarning />
+            <>
+              <h5 className="my-4 my-md-5">Please provide loading details</h5>
+              <Row className="mb-4 mb-md-3">
+                <Form.Group as={Col} md="12" controlId="from">
+                  <Form.Label>
+                    <span className="text-danger">*</span>Search loading location
+                  </Form.Label>
+                  <AddressForm
+                    address={bookingState.formValues.from_address}
+                    address_type="from_address"
+                  />
+                </Form.Group>
+              </Row>
+              <Row className="mb-4 mb-md-3">
+                <Form.Group as={Col} md="6" controlId="move_date">
+                  <Form.Label>
+                    <span className="text-danger">*</span>
+                    {dateLabel}
+                  </Form.Label>
+                  <DatePicker
+                    onChange={onDateChange}
+                    value={
+                      bookingState.formValues.move_date &&
+                      stringToDateTime(bookingState.formValues.move_date)
+                    }
+                    calendarIcon={<FiCalendar className="calendar-icon" />}
+                    clearIcon={null}
+                    dayPlaceholder="dd"
+                    monthPlaceholder="mm"
+                    yearPlaceholder="yyyy"
+                    minDate={addHours(new Date(), 24)}
+                    // tileDisabled={tileDisabled}
+                    tileClassName={tileClassName}
+                    className="date-picker"
+                    onActiveStartDateChange={onActiveStartDateChange}
+                  />
+                  <Alert variant="warning" className="mt-3">
+                    <div className="row">
+                      <div
+                        className="col-2"
+                        style={{
+                          display: "grid",
+                          placeItems: "center",
+                          fontSize: "2rem",
+                          color: "#fa551e",
+                        }}
+                      >
+                        <MdWarning />
+                      </div>
+                      <div className="col-10">
+                        <b>Please note:</b> If the dates you are looking for are
+                        not available, get in touch with us or provide your
+                        contact details for other solutions.
+                        <Link href="/contact-us">Click here</Link>
+                      </div>
                     </div>
-                    <div className="col-10">
-                      <b>Please note:</b> If the dates you are looking for are
-                      not available, get in touch with us or provide your
-                      contact details for other solutions.
-                      <Link href="/contact-us">Click here</Link>
-                    </div>
+                  </Alert>
+                </Form.Group>
+                <Form.Group as={Col} md="6" controlId="from_property_type">
+                  <Form.Label>Property type</Form.Label>
+                  <Select
+                    name="from_property_type"
+                    onChange={async (values: any) => {
+                      const booking = await bookingsService.updateBooking(
+                        {
+                          id: bookingState.formValues.id,
+                          from_property_type: values.value,
+                        },
+                        fetchWrapper
+                      );
+                      bookingsDispatch(getBooking(booking));
+                    }}
+                    defaultValue={getPropertyTypeOption(
+                      bookingState.formValues.from_property_type
+                    )}
+                    options={[
+                      { value: 0, label: "Single Storey" },
+                      { value: 1, label: "Multi Storey" },
+                    ]}
+                    className=""
+                  />
+                </Form.Group>
+              </Row>
+              <Row className="mb-4 mb-md-3">
+                <Form.Group as={Col} md="6" controlId="date" className="mb-4">
+                  <div className="mb-1">
+                    <Form.Label>What level is your apartment on?</Form.Label>
                   </div>
-                </Alert>
-              </Form.Group>
-              <Form.Group as={Col} md="6" controlId="from_property_type">
-                <Form.Label>Property type</Form.Label>
-                <Select
-                  name="from_property_type"
-                  onChange={async (values: any) => {
-                    const booking = await bookingsService.updateBooking(
-                      {
-                        id: bookingState.formValues.id,
-                        from_property_type: values.value,
-                      },
-                      fetchWrapper
-                    );
-                    bookingsDispatch(getBooking(booking));
-                  }}
-                  defaultValue={getPropertyTypeOption(
-                    bookingState.formValues.from_property_type
-                  )}
-                  options={[
-                    { value: 0, label: "Single Storey" },
-                    { value: 1, label: "Multi Storey" },
-                  ]}
-                  className=""
-                />
-              </Form.Group>
-            </Row>
-            <Row className="mb-4 mb-md-3">
-              <Form.Group as={Col} md="6" controlId="date" className="mb-4">
-                <div className="mb-1">
-                  <Form.Label>What level is your apartment on?</Form.Label>
-                </div>
-                {FromFloorsCountDisplay}
-              </Form.Group>
-              <Form.Group as={Col} md="6" className="">
-                <Form.Label>
-                  Does your apartment building have a working lift?
-                </Form.Label>
-                <br />
-                <Form.Check
-                  type="radio"
-                  inline
-                  name="from_working_lift"
-                  label="Yes"
-                  disabled={bookingState.formValues.from_floors_count === 0}
-                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                    if (bookingState.formValues.id) {
-                      bookingsService
-                        .updateBooking(
-                          {
-                            id: bookingState.formValues.id,
-                            from_working_lift: true,
-                            to_floors_count: ToFloorsCountValue,
-                            from_floors_count: FromFloorsCountValue,
-                          },
-                          fetchWrapper
-                        )
-                        .then((booking: any) => {
-                          bookingsDispatch(getBooking(booking));
-                        });
+                  {FromFloorsCountDisplay}
+                </Form.Group>
+                <Form.Group as={Col} md="6" className="">
+                  <Form.Label>
+                    Does your apartment building have a working lift?
+                  </Form.Label>
+                  <br />
+                  <Form.Check
+                    type="radio"
+                    inline
+                    name="from_working_lift"
+                    label="Yes"
+                    disabled={bookingState.formValues.from_floors_count === 0}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                      if (bookingState.formValues.id) {
+                        bookingsService
+                          .updateBooking(
+                            {
+                              id: bookingState.formValues.id,
+                              from_working_lift: true,
+                              to_floors_count: ToFloorsCountValue,
+                              from_floors_count: FromFloorsCountValue,
+                            },
+                            fetchWrapper
+                          )
+                          .then((booking: any) => {
+                            bookingsDispatch(getBooking(booking));
+                          });
+                      }
+                      bookingsDispatch({
+                        type: ADD_FORM_VALUES,
+                        payload: {
+                          from_working_lift: Number(event.target.value),
+                        },
+                      });
+                      bookingsDispatch({
+                        type: UPDATE_HAS_DIRTY_FIELDS,
+                        payload: {
+                          hasDirtyFields: true,
+                        },
+                      });
+                    }}
+                    id="yes"
+                    value={1}
+                    checked={
+                      Number(bookingState.formValues.from_working_lift) === 1
                     }
-                    bookingsDispatch({
-                      type: ADD_FORM_VALUES,
-                      payload: {
-                        from_working_lift: Number(event.target.value),
-                      },
-                    });
-                    bookingsDispatch({
-                      type: UPDATE_HAS_DIRTY_FIELDS,
-                      payload: {
-                        hasDirtyFields: true,
-                      },
-                    });
-                  }}
-                  id="yes"
-                  value={1}
-                  checked={
-                    Number(bookingState.formValues.from_working_lift) === 1
-                  }
-                />
-                <Form.Check
-                  type="radio"
-                  inline
-                  name="from_working_lift"
-                  label="No"
-                  disabled={bookingState.formValues.from_floors_count === 0}
-                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                    if (bookingState.formValues.id) {
-                      bookingsService
-                        .updateBooking(
-                          {
-                            id: bookingState.formValues.id,
-                            from_working_lift: false,
-                            to_floors_count: ToFloorsCountValue,
-                            from_floors_count: FromFloorsCountValue,
-                          },
-                          fetchWrapper
-                        )
-                        .then((booking: any) => {
-                          bookingsDispatch(getBooking(booking));
-                        });
+                  />
+                  <Form.Check
+                    type="radio"
+                    inline
+                    name="from_working_lift"
+                    label="No"
+                    disabled={bookingState.formValues.from_floors_count === 0}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                      if (bookingState.formValues.id) {
+                        bookingsService
+                          .updateBooking(
+                            {
+                              id: bookingState.formValues.id,
+                              from_working_lift: false,
+                              to_floors_count: ToFloorsCountValue,
+                              from_floors_count: FromFloorsCountValue,
+                            },
+                            fetchWrapper
+                          )
+                          .then((booking: any) => {
+                            bookingsDispatch(getBooking(booking));
+                          });
+                      }
+                      bookingsDispatch({
+                        type: ADD_FORM_VALUES,
+                        payload: {
+                          from_working_lift: Number(event.target.value),
+                        },
+                      });
+                      bookingsDispatch({
+                        type: UPDATE_HAS_DIRTY_FIELDS,
+                        payload: {
+                          hasDirtyFields: true,
+                        },
+                      });
+                    }}
+                    id="no"
+                    value={0}
+                    checked={
+                      Number(bookingState.formValues.from_working_lift) === 0
                     }
-                    bookingsDispatch({
-                      type: ADD_FORM_VALUES,
-                      payload: {
-                        from_working_lift: Number(event.target.value),
-                      },
-                    });
-                    bookingsDispatch({
-                      type: UPDATE_HAS_DIRTY_FIELDS,
-                      payload: {
-                        hasDirtyFields: true,
-                      },
-                    });
-                  }}
-                  id="no"
-                  value={0}
-                  checked={
-                    Number(bookingState.formValues.from_working_lift) === 0
-                  }
-                />
-              </Form.Group>
-            </Row>
-            <Row className="mb-4 mb-md-3">
-              <Form.Group as={Col} md="12" className="">
-                <Form.Label>What time should we collect?</Form.Label>
-                <Form.Check
-                  type="radio"
-                  required
-                  name="move_time_period"
-                  label="Morning between (7am to 12pm)"
-                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                    bookingsDispatch({
-                      type: ADD_FORM_VALUES,
-                      payload: {
-                        move_time_period: event.target.value,
-                      },
-                    });
-                    updateTimePeriod(event.target.value);
-                  }}
-                  id="morning"
-                  value="0"
-                  checked={
-                    Number(bookingState.formValues.move_time_period) === 0
-                  }
-                />
-                <Form.Check
-                  type="radio"
-                  required
-                  name="move_time_period"
-                  label="Afternoon between (12pm to 4pm)"
-                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                    bookingsDispatch({
-                      type: ADD_FORM_VALUES,
-                      payload: {
-                        move_time_period: event.target.value,
-                      },
-                    });
-                    updateTimePeriod(event.target.value);
-                  }}
-                  id="afternoon"
-                  value="1"
-                  checked={
-                    Number(bookingState.formValues.move_time_period) === 1
-                  }
-                />
-              </Form.Group>
-            </Row>
-          </>
-        )}
+                  />
+                </Form.Group>
+              </Row>
+              <Row className="mb-4 mb-md-3">
+                <Form.Group as={Col} md="12" className="">
+                  <Form.Label>What time should we collect?</Form.Label>
+                  <Form.Check
+                    type="radio"
+                    required
+                    name="move_time_period"
+                    label="Morning between (7am to 12pm)"
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                      bookingsDispatch({
+                        type: ADD_FORM_VALUES,
+                        payload: {
+                          move_time_period: event.target.value,
+                        },
+                      });
+                      updateTimePeriod(event.target.value);
+                    }}
+                    id="morning"
+                    value="0"
+                    checked={
+                      Number(bookingState.formValues.move_time_period) === 0
+                    }
+                  />
+                  <Form.Check
+                    type="radio"
+                    required
+                    name="move_time_period"
+                    label="Afternoon between (12pm to 4pm)"
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                      bookingsDispatch({
+                        type: ADD_FORM_VALUES,
+                        payload: {
+                          move_time_period: event.target.value,
+                        },
+                      });
+                      updateTimePeriod(event.target.value);
+                    }}
+                    id="afternoon"
+                    value="1"
+                    checked={
+                      Number(bookingState.formValues.move_time_period) === 1
+                    }
+                  />
+                </Form.Group>
+              </Row>
+            </>
+          )}
 
         {hasDelivery && (
           <>
