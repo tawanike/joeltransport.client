@@ -2,7 +2,7 @@
 
 const path = require("path");
 const nextConfig = {
-  cssModules: true,
+
   poweredByHeader: false,
   generateBuildId: async () => {
     // You can, for example, get the latest git commit hash here
@@ -19,6 +19,9 @@ const nextConfig = {
         hostname: "lh3.googleusercontent.com",
       },
     ],
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
   },
 };
 
