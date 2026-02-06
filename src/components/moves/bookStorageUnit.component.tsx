@@ -36,7 +36,7 @@ const BookStorageUnit = () => {
     setAValue,
   } = useNumberInput(bookingState.formValues.storage_units_count);
 
-  const onDateChange = async (date: any) => {
+  const onDateChange = async (date: Date | null | any[]) => {
     if (date && date instanceof Date && bookingState.formValues.id) {
       const booking = await bookingsService.updateBooking(
         { id: bookingState.formValues.id, move_date: formatDate(date) },
